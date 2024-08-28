@@ -3,6 +3,8 @@ import { Button, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { LandingPage } from './components/landing/landing';
+
 
 function DetailsScreen() {
   return (
@@ -67,6 +69,9 @@ export default function App() {
         <Tab.Screen name="HomeStack" component={HomeStackScreen} />
         <Tab.Screen name="SettingsStack" component={SettingsStackScreen} />
       </Tab.Navigator>
+
+      <LandingPage />
+
     </NavigationContainer>
   );
 }
