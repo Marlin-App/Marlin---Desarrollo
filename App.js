@@ -9,8 +9,12 @@ import { MainTabNavigator } from './navigation/MainTabNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
+ <NavigationContainer>
           <MainTabNavigator />
-    </NavigationContainer>
+  </NavigationContainer> 
+
+ 
+   
+ 
   );
 }

@@ -1,22 +1,31 @@
-// navigation/HomeStack.js
+import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../screens/Home';
-import { DetailsScreen } from '../screens/Details';
+import { ProfileScreen } from '../screens/Profile';
+import { LandingPage } from '../components/landing/landing';
+import { LoginPage } from '../screens/Login';
+const ProfileStack = createNativeStackNavigator();
 
-const HomeStack = createNativeStackNavigator();
-
-export function HomeStackScreen() {
+export function ProfileStackScreen({ navigation, route }) {
+ 
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: true }}>
-      <HomeStack.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        initialParams={{ data: 'dad' }} // Puedes pasar cualquier dato inicial aquí
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen 
+        name="ee" 
+        component={ProfileScreen}
+        options={{ headerShown: false }}
       />
-      <HomeStack.Screen 
-        name="Details" 
-        component={DetailsScreen} 
+      <ProfileStack.Screen 
+        name="Landing" 
+        component={LandingPage} 
+        options={{ headerShown: false }}
       />
-    </HomeStack.Navigator>
+      <ProfileStack.Screen 
+        name="Login" 
+        component={LoginPage} 
+        options={{ headerShown: false }}
+      />
+
+     
+    </ProfileStack.Navigator>
   );
 }

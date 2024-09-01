@@ -1,12 +1,10 @@
-// navigation/MainTabNavigator.js
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-/* import { HomeStackScreen } from './HomeStack'; */
 import { SearchScreen } from '../screens/Search';
 import { HomeScreen } from '../screens/Home';
-import { ProfileScreen } from '../screens/Profile';
 import { NotificationScreen } from '../screens/Notification';
+import { ProfileStackScreen } from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,11 +16,19 @@ export function MainTabNavigator() {
                 tabBarActiveTintColor: '#e91e63',
                 tabBarInactiveTintColor: 'white',
                 tabBarLabelPosition: 'below-icon',
-                tabBarLabelStyle: { fontSize: 15 },
+                tabBarLabelStyle: {
+                    fontSize: 15,
+                    marginTop:-20, // Ajusta este valor para aumentar o disminuir el espacio
+                },
                 tabBarStyle: {
                     backgroundColor: '#0038A2',
-                    height: 60,
+                    display: 'flex',
+                    height: 80,
+                    justifyContent: 'center',
+                    paddingBottom: 10,
+                   
                 },
+              /*  */
             }}
         >
             <Tab.Screen
@@ -30,7 +36,7 @@ export function MainTabNavigator() {
                 component={HomeScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="home" size={24} color={color} />
+                        <MaterialCommunityIcons name="home" size={30} color={color} />
                     ),
                 }}
             />
@@ -39,28 +45,28 @@ export function MainTabNavigator() {
                 component={SearchScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="magnify" size={24} color={color} />
+                        <MaterialCommunityIcons name="magnify" size={30} color={color} />
                     ),
                 }}
             />
-
-
-            <Tab.Screen name="Perfil" component={ProfileScreen}
+            <Tab.Screen
+                name="Perfil"
+                component={ProfileStackScreen}
                 options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" size={24} color={color} />
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="account" size={30} color={color} />
                     ),
                 }}
             />
-
-            <Tab.Screen name="Notificaciones" component={NotificationScreen}
+            <Tab.Screen
+                name="Notificaciones"
+                component={NotificationScreen}
                 options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="bell" size={24} color={color} />
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="bell" size={30 } color={color} />
                     ),
                 }}
             />
-
         </Tab.Navigator>
     );
 }
