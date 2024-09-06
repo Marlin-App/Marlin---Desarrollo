@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StatusBar, FlatList } from 'react-native';
+import { Button, Text, TextInput, View, StatusBar, FlatList, RefreshControl } from 'react-native';
 import { useEffect } from 'react';
 import { styled } from 'nativewind';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -31,7 +31,7 @@ export function HomeScreen({ navigation }) {
                 { id: '2c', title: '' }
             ]
         },
-        // Más categorías...
+        
     ];
 
 
@@ -86,7 +86,7 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1">
-            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-10 pb-10 rounded-b-2xl " >
+            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-10 pb-10 rounded-b-2xl" >
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg"   >Carr. Interamericana Norte</Text>
@@ -103,7 +103,6 @@ export function HomeScreen({ navigation }) {
                     </View>
                 </View>
             </View>
-
             <View>
                 <FlatList
                     data={verticalData}

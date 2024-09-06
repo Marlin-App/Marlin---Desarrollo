@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import * as React from 'react';
+import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image } from 'react-native';
+import { styled } from 'nativewind';
 
-export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export function LoginPage({navigation}) {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   const handleLogin = () => {
     // Validación simple
@@ -17,47 +18,72 @@ export function LoginPage() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Correo Electrónico</Text>
+    <View className="flex-1  bg-white  relative">
+      <View>    
+      <Image
+        source={require('../assets/img/FondoLogin.png')}
+        className="w-full h-30  "
+        style={{ resizeMode: 'stretch'}}
+      />
+      <Text style={{ lineHeight: 60 }} className="text-4xl font-bold text-center text-white absolute top-52 w-48 ml-8  ">¡Bienvenido de vuelta!    </Text>
+      </View>
+    <View className="p-4">
+      <Text className="text-lg mb-2">Correo Electrónico</Text>
       <TextInput
-        style={styles.input}
+        className="h-10 border border-gray-300 mb-4 px-2 rounded"
         placeholder="Ingresa tu correo electrónico"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <Text style={styles.label}>Contraseña</Text>
+      <Text className="text-lg mb-2">Contraseña</Text>
       <TextInput
-        style={styles.input}
+        className="h-10 border border-gray-300 mb-4 px-2 rounded"
         placeholder="Ingresa tu contraseña"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         autoCapitalize="none"
       />
-      <Button title="Iniciar Sesión" onPress={handleLogin} />
+      <Pressable 
+        onPress={handleLogin} 
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? 'rgba(0,0,0,0.2)' : '#007BFF',
+          },
+          styles.button
+        ]}
+      >
+        <Text style={styles.text}>Ingresa a la cuenta</Text>
+      </Pressable>
+      <Pressable 
+        onPress={handleLogin} 
+        style={({ pressed }) => [
+          {
+            borderColor: '#007BFF',
+            borderWidth: 3,
+          },
+          styles.button
+        ]}
+      >
+        <Text  style={styles.text}>Crea una cuenta</Text>
+      </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  button: {
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
+    marginBottom: 30,
   },
-  label: {
+  text: {
+    color: 'white',
     fontSize: 16,
-    marginBottom: 8,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 8,
-    borderRadius: 4,
   },
 });
