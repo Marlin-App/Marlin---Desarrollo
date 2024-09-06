@@ -35,7 +35,7 @@ export function LandingPage({ navigation }) {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       {/* Usa require para imágenes locales */}
       <Image
         source={require('../../assets/img/marlin.png')}
@@ -60,7 +60,7 @@ export function LandingPage({ navigation }) {
           Ingresa a ella
         </Link>
       </Text>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -74,8 +74,9 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 20,
-    resizeMode: 'cover',
-    borderRadius: 10,
+    resizeMode: 'contain',
+    width: 200,
+    height: 200,
   },
   title: {
     fontSize: 28,
