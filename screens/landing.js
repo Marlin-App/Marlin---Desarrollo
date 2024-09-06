@@ -38,7 +38,7 @@ export function LandingPage({ navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       {/* Usa require para imágenes locales */}
       <Image
-        source={require('../../assets/img/marlin.png')}
+        source={require('../assets/img/marlin.png')}
         style={styles.image}
       />
       <Text style={styles.title}>¡Bienvenido a nuestra App!</Text>

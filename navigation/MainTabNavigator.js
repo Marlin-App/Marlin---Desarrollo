@@ -10,6 +10,7 @@ const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator() {
     return (
+
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
@@ -18,7 +19,7 @@ export function MainTabNavigator() {
                 tabBarLabelPosition: 'below-icon',
                 tabBarLabelStyle: {
                     fontSize: 15,
-                    marginTop:-20, // Ajusta este valor para aumentar o disminuir el espacio
+                    marginTop:-20, 
                 },
                 tabBarStyle: {
                     backgroundColor: '#0038A2',
@@ -40,6 +41,7 @@ export function MainTabNavigator() {
                     ),
                 }}
             />
+
             <Tab.Screen
                 name="Buscar"
                 component={SearchScreen}
@@ -49,6 +51,7 @@ export function MainTabNavigator() {
                     ),
                 }}
             />
+            
             <Tab.Screen
                 name="Perfil"
                 component={ProfileStackScreen}
@@ -58,8 +61,9 @@ export function MainTabNavigator() {
                     ),
                 }}
             />
+
             <Tab.Screen
-                name="Notificaciones"
+                name="Notificacio"
                 component={NotificationScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -67,6 +71,7 @@ export function MainTabNavigator() {
                     ),
                 }}
             />
+
         </Tab.Navigator>
     );
 }
