@@ -1,7 +1,7 @@
 import { Link } from '@react-navigation/native';
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 
 export function LandingPage({ navigation }) {
 
@@ -36,12 +36,13 @@ export function LandingPage({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <ImageBackground source={require('../assets/img/fondoLanding.png')} style={styles.backgroundImage}>
       {/* Usa require para imágenes locales */}
       <Image
         source={require('../assets/img/marlin.png')}
         style={styles.image}
       />
-      <Text style={styles.title}>¡Bienvenido a nuestra App!</Text>
+      <Text style={styles.title}>¡Bienvenido!</Text>
       <Text style={styles.subtitle}>
         Conéctate con el puerto, compra local y apoya a lo nuestro
       </Text>
@@ -60,6 +61,7 @@ export function LandingPage({ navigation }) {
           Ingresa a ella
         </Link>
       </Text>
+      </ImageBackground>
     </View>
   );
 };
@@ -69,41 +71,43 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
     backgroundColor: '#0038A2',
+    opacity: 0.9,
   },
   image: {
     marginBottom: 20,
     resizeMode: 'contain',
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
+    
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
-
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
-    marginBottom: 30,
+    marginBottom: 25,
     textAlign: 'center',
+    paddingHorizontal: 20,	
   },
   buttonA: {
     backgroundColor: '#fff',
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 5,
-    marginTop: 20,
+    borderRadius: 10,
+    marginTop: 15,
     flexDirection: 'row',
   },
   buttonTextA: {
-    color: '#194599',
+    color: '#0038A2',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    opacity: 1,
   },
 
   buttonB: {
@@ -111,13 +115,13 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 5,
-    marginTop: 20,
+    borderRadius: 10,
+    marginTop: 10,
   },
   buttonTextB: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     textAlign: 'center',
   },
 
@@ -129,12 +133,11 @@ const styles = StyleSheet.create({
   },
 
   enlace: {
-    color: '#fff',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: 'semibold',
     textAlign: 'center',
     paddingTop: 20,
-    color: '#D9D9D9',
+    color: '#CECECE',
   },
 
   link: {
@@ -142,6 +145,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     opacity: 1,
   },
+
+  backgroundImage: {
+    flexGrow: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  }
 });
 
 export default LandingPage;
