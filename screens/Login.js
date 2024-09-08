@@ -19,14 +19,14 @@ export function LoginPage({navigation}) {
 
   return (
     <View className="flex-1  bg-white  relative">
-      <View>    
+       
       <Image
         source={require('../assets/img/FondoLogin.png')}
-        className="w-full h-30  "
+        className="w-full h-[50%]  "
         style={{ resizeMode: 'stretch'}}
       />
-      <Text style={{ lineHeight: 60 }} className="text-4xl font-bold text-center text-white absolute top-52 w-48 ml-8  ">¡Bienvenido de vuelta!    </Text>
-      </View>
+      <Text style={{ lineHeight: 60 }} className="text-4xl font-bold text-center text-white absolute top-[10%] w-48 ml-8  ">¡Bienvenido de vuelta!    </Text>
+      
     <View className="p-4">
       <Text className="text-lg mb-2">Correo Electrónico</Text>
       <TextInput
@@ -76,11 +76,11 @@ export function LoginPage({navigation}) {
 
 const styles = StyleSheet.create({
   button: {
-    padding: 10,
-    borderRadius: 10,
+    padding: 5,
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 15,
   },
   text: {
     color: 'white',

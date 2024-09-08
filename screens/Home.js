@@ -86,7 +86,7 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1">
-            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-10 pb-10 rounded-b-2xl" >
+            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-6 pb-4 rounded-b-2xl" >
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg"   >Carr. Interamericana Norte</Text>
