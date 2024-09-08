@@ -21,12 +21,12 @@ export function LoginPage({ navigation }) {
   };
 
   return (
-    <View className="flex-1  bg-white  relative">
+    <View className="flex-1  bg-white">
 
       <Image
         source={require('../assets/img/FondoLogin.png')}
         className="w-full h-[50%]  "
-        style={{ resizeMode: 'stretch' }}
+        style={{ resizeMode: 'stretch', marginBottom: 30 }}
       />
       <Text style={{ lineHeight: 60 }} className="text-4xl font-bold text-center text-white absolute top-[10%] w-48 ml-8  ">¡Bienvenido de vuelta!    </Text>
 
