@@ -13,13 +13,20 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE)
     phone = models.CharField(max_length=8)
-    #zip_code = models.CharField(max_length=5)
-    #direction = models.CharField(max_length=250)
-    #specific_direction = models.TextField()
+    # zip_code = models.CharField(max_length=5)
+    # direction = models.CharField(max_length=250)
+    # specific_direction = models.TextField()
     picture = models.CharField(max_length=250)
 
     def __str__(self):
         return self.user.username
+    
+class UserPaymentCard(models.Model):
+    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    card_number = models.IntegerField()
+    card_date = models.CharField(max_length=5)
+    card_holder = models.CharField(max_length=1000)
+
 
 class UserDirection(models.Model):
     user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -28,7 +35,7 @@ class UserDirection(models.Model):
     specific_direction = models.TextField()
 
     def __str__(self):
-        return self.user.username
+        return self.user_id
 
 class StoreType(models.Model):
     name = models.CharField(max_length=250)
@@ -74,7 +81,7 @@ class Order(models.Model):
     #delivery = models.ForeignKey(User, on_delete=models.CASCADE) ver si se puede incluir un atributo mas la tabla de user para identificar un user, delivery o store owner
 
     def __str__(self):
-        return self.name
+        return self.user_id
     
 class OrderItem(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -84,7 +91,7 @@ class OrderItem(models.Model):
     #delivery = models.ForeignKey(User, on_delete=models.CASCADE) ver si se puede incluir un atributo mas la tabla de user para identificar un user, delivery o store owner
 
     def __str__(self):
-        return self.name
+        return self.order_id
     
 class Invoice(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -92,7 +99,7 @@ class Invoice(models.Model):
     issue_date = models.DateTimeField()
 
     def __str__(self):
-        return self.name
+        return self.issue_date
    
     #metodos de pago
     #catalogo tienda
