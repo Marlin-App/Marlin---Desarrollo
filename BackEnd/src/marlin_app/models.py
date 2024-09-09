@@ -13,10 +13,19 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE)
     phone = models.CharField(max_length=8)
+    #zip_code = models.CharField(max_length=5)
+    #direction = models.CharField(max_length=250)
+    #specific_direction = models.TextField()
+    picture = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.user.username
+
+class UserDirection(models.Model):
+    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     zip_code = models.CharField(max_length=5)
     direction = models.CharField(max_length=250)
     specific_direction = models.TextField()
-    picture = models.CharField(max_length=250)
 
     def __str__(self):
         return self.user.username
@@ -56,6 +65,37 @@ class StoreItem(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Order(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_price = models.FloatField()
+    order_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField()
+    #delivery = models.ForeignKey(User, on_delete=models.CASCADE) ver si se puede incluir un atributo mas la tabla de user para identificar un user, delivery o store owner
+
+    def __str__(self):
+        return self.name
+    
+class OrderItem(models.Model):
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item_id = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
+    quantity = models.FloatField()
+    total_price = models.FloatField()
+    #delivery = models.ForeignKey(User, on_delete=models.CASCADE) ver si se puede incluir un atributo mas la tabla de user para identificar un user, delivery o store owner
+
+    def __str__(self):
+        return self.name
+    
+class Invoice(models.Model):
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+    payment_method = models.CharField() #cambiar este por un nuevo modelo tipo PaymentMethod
+    issue_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
+   
+    #metodos de pago
+    #catalogo tienda
 
 
 
