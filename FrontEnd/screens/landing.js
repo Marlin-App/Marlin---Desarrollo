@@ -2,6 +2,7 @@ import { Link } from '@react-navigation/native';
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function LandingPage({ navigation }) {
 
@@ -47,20 +48,14 @@ export function LandingPage({ navigation }) {
         Conéctate con el puerto, compra local y apoya a lo nuestro
       </Text>
       <TouchableOpacity style={styles.buttonA} onPress={() => alert('Botón presionado')}>
-        <Text style={styles.google}>X </Text>
+      <AntDesign name="google" size={22} color="#0038A2" />
         <Text style={styles.buttonTextA}>Ingresa mediante google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonB} onPress={() => alert('Botón presionado')}>
+      <TouchableOpacity style={styles.buttonB} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
         <Text style={styles.buttonTextB}>Ingresa mediante otra cuenta</Text>
       </TouchableOpacity>
 
-      <Text style={styles.enlace}>
-        Ya tienes una cuenta?{' '}
-        <Link style={styles.link} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
-          Ingresa a ella
-        </Link>
-      </Text>
       </ImageBackground>
     </View>
   );
@@ -108,6 +103,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     opacity: 1,
+    marginLeft: 12,
   },
 
   buttonB: {
