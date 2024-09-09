@@ -22,7 +22,7 @@ export function LandingPage({ navigation }) {
 
       navigation.getParent().setOptions({
         tabBarStyle: {
-          backgroundColor: '#0038A2',
+          backgroundColor: '#015DEC',
           display: 'flex',
           height: 80,
           justifyContent: 'center',

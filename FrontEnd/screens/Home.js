@@ -31,7 +31,7 @@ export function HomeScreen({ navigation }) {
                 { id: '2c', title: '' }
             ]
         },
-        
+
     ];
 
 
@@ -86,21 +86,21 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1">
-            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-6 pb-4 rounded-b-2xl" >
+            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-6 pb-4 " >
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-lg"   >Carr. Interamericana Norte</Text>
+                        <Text className="text-white text-lg">Carr. Interamericana Norte</Text>
                         <AntDesign name="down" size={18} color="white" />
                     </View>
                     <Feather name="shopping-bag" size={24} color="white" />
                 </View>
-                <View className="flex-row  mt-5 bg-white rounded-sm justify-between">
-                    <TextInput className=" ml-2"
-                        placeholder='Buscar'
-                    />
-                    <View className="bg-blue-400 ">
+                <View className="flex-row  mt-5 bg-white rounded-lg">
+                    <View className="bg-light-blue rounded-l-lg">
                         <MaterialCommunityIcons name="magnify" size={30} color="white" />
                     </View>
+                    <TextInput className="ml-2 w-full "
+                        placeholder='Buscar'
+                    />
                 </View>
             </View>
             <View>
@@ -109,7 +109,7 @@ export function HomeScreen({ navigation }) {
                     renderItem={renderVerticalItem}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 200 }} 
+                    contentContainerStyle={{ paddingBottom: 200 }}
                 />
             </View>
         </View>
