@@ -1,0 +1,32 @@
+# Entorno virtual
+env/
+venv/
+
+# Archivos de configuración de entorno
+.env
+
+# Archivos compilados
+*.pyc
+__pycache__/
+
+# Archivos de base de datos
+db.sqlite3
+
+# Archivos de log
+*.log
+
+# Archivos de traducción
+*.pot
+*.mo
+
+# Configuración de IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de prueba y caché
+.tox/
+.nox/
+.pytest_cache/
+.coverage
