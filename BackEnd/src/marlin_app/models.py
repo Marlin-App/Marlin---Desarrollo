@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     # zip_code = models.CharField(max_length=5)
     # direction = models.CharField(max_length=250)
     # specific_direction = models.TextField()
-    picture = models.CharField(max_length=250)
+    picture = models.ImageField(upload_to='user_pictures/')
 
     def __str__(self):
         return self.user.username
@@ -50,7 +50,7 @@ class Store(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField()
     location = models.CharField(max_length=250)
-    picture = models.CharField(max_length=250)
+    picture = models.ImageField(upload_to='store_pictures/')
 
     def __str__(self):
         return self.name
@@ -68,7 +68,7 @@ class StoreItem(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    picture = models.CharField(max_length=250)
+    picture = models.ImageField(upload_to='product_pictures/')
 
     def __str__(self):
         return self.name
