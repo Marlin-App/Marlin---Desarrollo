@@ -13,13 +13,20 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.ForeignKey(UserType, on_delete=models.CASCADE)
     phone = models.CharField(max_length=8)
-    #zip_code = models.CharField(max_length=5)
-    #direction = models.CharField(max_length=250)
-    #specific_direction = models.TextField()
-    picture = models.CharField(max_length=250)
+    # zip_code = models.CharField(max_length=5)
+    # direction = models.CharField(max_length=250)
+    # specific_direction = models.TextField()
+    picture = models.ImageField(upload_to='user_pictures/')
 
     def __str__(self):
         return self.user.username
+    
+class UserPaymentCard(models.Model):
+    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    card_number = models.IntegerField()
+    card_date = models.CharField(max_length=5)
+    card_holder = models.CharField(max_length=1000)
+
 
 class UserDirection(models.Model):
     user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -43,7 +50,7 @@ class Store(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField()
     location = models.CharField(max_length=250)
-    picture = models.CharField(max_length=250)
+    picture = models.ImageField(upload_to='store_pictures/')
 
     def __str__(self):
         return self.name
@@ -61,7 +68,7 @@ class StoreItem(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    picture = models.CharField(max_length=250)
+    picture = models.ImageField(upload_to='product_pictures/')
 
     def __str__(self):
         return self.name
