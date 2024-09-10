@@ -46,7 +46,7 @@ class StoreType(models.Model):
 
 class Store(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    store_type = models.ForeignKey(StoreType, on_delete=models.CASCADE)
+    store_type = models.ManyToManyField(StoreType)
     name = models.CharField(max_length=250)
     description = models.TextField()
     location = models.CharField(max_length=250)
