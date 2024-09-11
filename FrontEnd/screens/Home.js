@@ -69,7 +69,7 @@ export function HomeScreen({ navigation }) {
 
 
     const renderHorizontalItem = ({ item }) => (
-        <View className="bg-gray-200 p-5 my-2 mx-2 rounded-lg w-40 h-40">
+        <View className="bg-red-800 p-5 my-2 mx-2 rounded-lg w-40 h-40">
             <Text className="text-lg">{item.title}</Text>
         </View>
     );
