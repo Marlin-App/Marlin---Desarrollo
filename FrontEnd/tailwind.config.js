@@ -11,7 +11,14 @@ module.exports = {
         'main-blue': '#015DEC',
         'light-blue': '#60a5fa',
         'gray-tab': '#AAC3F3',
+      },
 
+      fontFamily: {
+        'Excon_regular': ['Excon_regular', 'sans-serif'],
+        'Excon_bold': ['Excon_bold', 'sans-serif'],
+        'Excon_thin': ['Excon_thin', 'sans-serif'],
+        'Erode_regular': ['Erode_regular', 'sans-serif'],
+        'Erode_bold': ['Erode_bold', 'sans-serif', 'bold'],
       },
     },
   },

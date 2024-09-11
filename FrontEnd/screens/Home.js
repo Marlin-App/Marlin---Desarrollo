@@ -1,13 +1,46 @@
 import * as React from 'react';
 import { Button, Text, TextInput, View, StatusBar, FlatList, RefreshControl } from 'react-native';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { styled } from 'nativewind';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 
 export function HomeScreen({ navigation }) {
+
+
+
+    const [fontsLoaded] = useFonts({
+        'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
+        'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
+        'Excon_thin': require('../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf'),
+        'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
+        'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
+    });
+
+
+    
+
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, [])
+
+    const onLayout = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded])
+
+    if (!fontsLoaded)
+        return null;
+
+
 
     const verticalData = [
         {
@@ -42,8 +75,8 @@ export function HomeScreen({ navigation }) {
     );
 
     const renderVerticalItem = ({ item }) => (
-        <View className=" p-2 my-2">
-            <Text className="ml-8 mt-2 text-4xl font-semibold text-blue-950">{item.title}</Text>
+        <View className=" p-2 my-2" onLayout={onLayout}>
+            <Text className="ml-2 mt-2 text-2xl font-Excon_bold">{item.title}</Text>
             <FlatList
                 data={item.horizontalData}
                 renderItem={renderHorizontalItem}
@@ -86,19 +119,19 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1">
-            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-6 pb-4 " >
+            <View className=" w-full flex-col pl-8 pr-8 bg-main-blue pt-8 pb-6 " >
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-lg">Carr. Interamericana Norte</Text>
+                        <Text className="text-white text-lg font-Excon_regular">Carr. Interamericana Norte</Text>
                         <AntDesign name="down" size={18} color="white" />
                     </View>
                     <Feather name="shopping-bag" size={24} color="white" />
                 </View>
-                <View className="flex-row  mt-5 bg-white rounded-lg">
-                    <View className="bg-light-blue rounded-l-lg">
+                <View className="flex-row text-center mt-5 bg-white rounded-lg">
+                    <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
                         <MaterialCommunityIcons name="magnify" size={30} color="white" />
                     </View>
-                    <TextInput className="ml-2 w-full "
+                    <TextInput className="ml-2 py-4 w-full text-md font-Erode_regular"
                         placeholder='Buscar'
                     />
                 </View>
