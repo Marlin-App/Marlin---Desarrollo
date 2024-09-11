@@ -11,31 +11,32 @@ class UserType(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_type = models.ForeignKey(UserType, on_delete=models.CASCADE)
+    user_type = models.ForeignKey('UserType', on_delete=models.CASCADE)
     phone = models.CharField(max_length=8)
-    # zip_code = models.CharField(max_length=5)
-    # direction = models.CharField(max_length=250)
-    # specific_direction = models.TextField()
     picture = models.ImageField(upload_to='user_pictures/')
-
+    
     def __str__(self):
         return self.user.username
-    
+
+
 class UserPaymentCard(models.Model):
-    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    card_number = models.IntegerField()
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='payment_cards')
+    card_number = models.CharField(max_length=16)
     card_date = models.CharField(max_length=5)
-    card_holder = models.CharField(max_length=1000)
+    card_holder = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f"{self.card_holder} - {self.card_number}"
 
 
 class UserDirection(models.Model):
-    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='directions')
     zip_code = models.CharField(max_length=5)
     direction = models.CharField(max_length=250)
     specific_direction = models.TextField()
-
+    
     def __str__(self):
-        return self.user_id
+        return f"{self.direction}, {self.zip_code}"
 
 class StoreType(models.Model):
     name = models.CharField(max_length=250)
