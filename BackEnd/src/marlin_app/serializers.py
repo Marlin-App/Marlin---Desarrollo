@@ -4,12 +4,13 @@ from .models import UserProfile, Store
 from rest_framework.permissions import AllowAny
 
 # Registrar un usuario
+from rest_framework import serializers
+from django.contrib.auth.models import User
+
 class UserSerializer(serializers.ModelSerializer):
-    permission_classes = [AllowAny]
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)  
     class Meta:
         model = User
-        #datos necesarios
         fields = ['username', 'password', 'email']
 
     def create(self, validated_data):
@@ -18,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        UserProfile.objects.create(user = user)
         return user
 
 #Serializador para comunicar datos por medio de json
