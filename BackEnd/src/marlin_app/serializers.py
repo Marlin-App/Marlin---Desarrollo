@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserProfile, Store
-from rest_framework.permissions import AllowAny
-
-# Registrar un usuario
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+# Registrar un usuario
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  
@@ -21,6 +21,18 @@ class UserSerializer(serializers.ModelSerializer):
         )
         UserProfile.objects.create(user = user)
         return user
+    
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        
+        #Datos extras al token
+        token['username'] = user.username
+        token['email'] = user.email
+        
+        # Devuelve el token
+        return token
 
 #Serializador para comunicar datos por medio de json
 class StoreSerializer(serializers.ModelSerializer):

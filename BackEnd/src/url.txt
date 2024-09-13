@@ -1,0 +1,18 @@
+Usuario
+
+Login : http://127.0.0.1:8000/api/token/
+Register: http://127.0.0.1:8000/api/register
+Reiniciar contraseña:http://127.0.0.1:8000/api/recover-password
+Metodos de pago: http://127.0.0.1:8000/api/payments
+Actualizar datos: 
+
+Tienda
+
+
+Stores: http://127.0.0.1:8000/api/stores
+Items: 
+
+
+Repartidores
+
+
