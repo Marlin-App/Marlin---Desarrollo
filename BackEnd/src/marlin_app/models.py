@@ -10,8 +10,10 @@ class UserType(models.Model):
         return self.name
 
 class UserProfile(models.Model):
+    def get_default_user_type():
+        return UserType.objects.get(id=3)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_type = models.ForeignKey('UserType', on_delete=models.CASCADE)
+    user_type = models.ForeignKey('UserType', on_delete=models.CASCADE, default=get_default_user_type)
     phone = models.CharField(max_length=8)
     picture = models.ImageField(upload_to='user_pictures/')
     
