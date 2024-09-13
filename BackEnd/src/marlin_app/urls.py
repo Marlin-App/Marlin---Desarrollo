@@ -6,6 +6,9 @@ from .views import RegisterUserAPIView
 # Url para las apis
 router = routers.DefaultRouter()
 router.register(r'stores', viewsets.StoreViewSet)
+router.register(r'storeItems',viewsets.StoreItemViewSet)
+router.register(r'storeTypes',viewsets.StoreTypeViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),
