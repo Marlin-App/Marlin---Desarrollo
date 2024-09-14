@@ -11,6 +11,7 @@ class StoreViewSet(viewsets.ModelViewSet):
     serializer_class = StoreSerializer
 
 class StoreItemViewSet(viewsets.ModelViewSet):
+    permission_classes =  [IsAuthenticatedOrOwner]
     queryset = StoreItem.objects.all()
     serializer_class = StoreItemSerializer
 
