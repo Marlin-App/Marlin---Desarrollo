@@ -80,7 +80,7 @@ export function MainTabNavigator() {
                 component={NotificationScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="notifications" size={30} color={color}/>
+                        <MaterialIcons name="notifications" size={30} color={color} />
                     ),
                 }}
             />
