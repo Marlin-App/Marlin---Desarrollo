@@ -6,6 +6,7 @@ import { NotificationScreen } from '../screens/Notification';
 import { ProfileStackScreen } from './ProfileStack';
 import { Keyboard, Platform } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { HomeStackScreen } from './HomeStack'
 
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +57,7 @@ export function MainTabNavigator() {
         >
             <Tab.Screen
                 name="Inicio"
-                component={HomeScreen}
+                component={HomeStackScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="home" size={30} color={color} />
@@ -79,7 +80,7 @@ export function MainTabNavigator() {
                 component={NotificationScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="notifications" size={30} color={color}/>
+                        <MaterialIcons name="notifications" size={30} color={color} />
                     ),
                 }}
             />

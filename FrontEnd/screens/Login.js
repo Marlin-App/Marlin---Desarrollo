@@ -59,6 +59,7 @@ export function LoginPage({ navigation }) {
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2 ">
           <Feather name="mail" size={18} color="#1952BE" />
           <TextInput
+            id='email'
             className="w-full"
             placeholder="Ej: correo@electronico.com"
             placeholderTextColor={'#1877F2'}
@@ -73,6 +74,7 @@ export function LoginPage({ navigation }) {
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2 ">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
+            id='password'
             className="w-full"
             placeholder="Ej: contraseña123"
             placeholderTextColor={'#1877F2'}
