@@ -2,22 +2,46 @@ import * as React from 'react';
 import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image } from 'react-native';
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function LoginPage({ navigation }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  const handleLogin = ({navigation}) => {/* 
-    // Validación simple
-    if (!email || !password) {
-      Alert.alert('Error', 'Por favor, ingresa tu correo electrónico y contraseña.');
-      return;
+  const handleLogin = async () => {
+
+     //Ip para el fetch desde la web: 127.0.0.1:8000
+    //Ip para el fetch desde el emulador: 10.0.2.2:8000
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: password,
+          username: email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Registro exitoso:', data);
+        
+        await AsyncStorage.setItem('userToken', data);
+        Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
+        
+        navigation.navigate('Profile'); 
+      } else {
+       
+        Alert.alert('Error en el registro', data.message || 'Algo salió mal');
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      Alert.alert('Error', 'No se pudo completar el registro. Inténtalo de nuevo más tarde.');
     }
-
-    // Aquí iría la lógica de autenticación, por ejemplo, enviar los datos al servidor
-    Alert.alert('Éxito', 'Inicio de sesión exitoso'); */
   };
 
   return (

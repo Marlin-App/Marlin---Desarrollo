@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useCallback } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,6 +8,9 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { HomeScreen } from './screens/Home.js';
 import { MainTabNavigator } from './navigation/MainTabNavigator';
 import { NativeWindStyleSheet } from "nativewind";
+import { CartScreen } from './screens/Cart.js';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -14,13 +18,38 @@ NativeWindStyleSheet.setOutput({
 
 
 export default function App() {
+  
+  const [fontsLoaded] = useFonts({
+    'Excon_regular': require('./assets/fonts/Excon/Excon-Regular.otf'),
+    'Excon_bold': require('./assets/fonts/Excon/Excon-Bold.otf'),
+    'Excon_thin': require('./assets/fonts/Excon/Excon-Thin.otf'),
+    'Erode_regular': require('./assets/fonts/Erode/Erode-Regular.otf'),
+    'Erode_bold': require('./assets/fonts/Erode/Erode-Bold.otf')
+    
+});
+
+useEffect(() => {
+    async function prepare() {
+        await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+}, [])
+
+const onLayout = useCallback(async () => {
+    if (fontsLoaded) {
+        await SplashScreen.hideAsync();
+    }
+}, [fontsLoaded])
+
+if (!fontsLoaded) return null;
+  
   return (
  <NavigationContainer>
           <MainTabNavigator />
   </NavigationContainer> 
 
-  
-   
+
+ 
  
   );
 }

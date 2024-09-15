@@ -13,7 +13,7 @@ export function ProfileStackScreen({ navigation, route }) {
     <ProfileStack.Navigator>
 
       <ProfileStack.Screen 
-        name="ee" 
+        name="Profile" 
         component={ProfileScreen}
         options={{ headerShown: false }}
       />

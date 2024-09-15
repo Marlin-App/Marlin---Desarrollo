@@ -19,6 +19,7 @@ module.exports = {
         'Excon_thin': ['Excon_thin', 'sans-serif'],
         'Erode_regular': ['Erode_regular', 'sans-serif'],
         'Erode_bold': ['Erode_bold', 'sans-serif', 'bold'],
+        
       },
     },
   },
