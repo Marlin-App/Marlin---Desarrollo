@@ -172,13 +172,11 @@ export function HomeScreen({ navigation }) {
                         <MaterialCommunityIcons name="magnify" size={30} color="white" />
                     </View>
                     <TextInput
-                        className="mr-2 bg-white w-64 rounded-r-lg pl-4"
+                        className="mr-2 bg-white w-72 rounded-r-lg pl-4"
                         placeholder='Buscar'
                         placeholderTextColor={"#88B1FF"}
                     />
-                    <View className="bg-white rounded-lg p-2">
-                        <AntDesign name="filter" size={28} color="#60a5fa" />
-                    </View>
+                    
                 </View>
             </View>
             <ScrollView>

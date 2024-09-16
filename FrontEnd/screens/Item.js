@@ -1,8 +1,33 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 
 export function ItemPage({ navigation }) {
+
+    const [fontsLoaded] = useFonts({
+        'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
+        'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
+        'Excon_thin': require('../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf'),
+        'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
+        'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
+    })
+
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, [])
+
+    const onLayout = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded])
+
+    if (!fontsLoaded) return null;
+
     const [quantity, setQuantity] = useState(1);
 
     const increaseQuantity = () => {
@@ -51,8 +76,8 @@ export function ItemPage({ navigation }) {
                     className="w-full h-[400] rounded-3xl bg-black mt-10 mb-3"
                     source={require('../../FrontEnd/assets/img/item.png')}
                 />
-                <Text className="text-xl font-bold pl-1">Camiseta Volcom YEWBISU CREW</Text>
-                <Text className="text-sm pl-1">Disfruta de las rayas de barril con la camiseta
+                <Text className="text-xl pl-1 font-Excon_bold">Camiseta Volcom YEWBISU CREW</Text>
+                <Text className="text-sm pl-1 font-Excon_regular">Disfruta de las rayas de barril con la camiseta
                     de hombre Yewbisu. Un corte moderno viene
                     confeccionado...</Text>
 
