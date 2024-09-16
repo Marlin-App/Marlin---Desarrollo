@@ -89,7 +89,7 @@ export function ItemPage({ navigation }) {
                 </View>
             </View>
 
-            <View className="absolute bg-[#89cefc] p-5 w-full bottom-0">
+            <View className="absolute bg-main-blue p-5 w-full bottom-0">
                 <Text className="text-xl font-bold text-white mb-4">Precio: ₡  29.900</Text>
 
                 <View className="flex-row justify-between pb-3">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ProfileScreen } from '../screens/Profile';
+import { ProfileScreen } from '../screens/Settings';
 import { LandingPage } from '../screens/landing';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';

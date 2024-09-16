@@ -116,12 +116,9 @@ export function CartScreen({navigation}) {
 
         <View style={{ flex: 1 }}>
               
-            <Pressable className="mt-4 ml-3 flex-row " onPress={() => navigation.navigate('Home')}>
-                <AntDesign name="arrowleft" size={24} color="#015DEC" />
-                <Text className="text-[15px] font-Excon_regular text-main-blue " >regresar</Text>
-            </Pressable>
+           
 
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }} className="bg-white">
                 <Text className="text-[24px] font-Excon_regular text-main-blue mt-4 text-center">Carrito</Text>
                 {
                 cart.length === 0 && (

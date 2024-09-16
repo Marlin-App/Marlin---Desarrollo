@@ -22,14 +22,17 @@ export function HomeStackScreen({ navigation, route }) {
         component={ItemPage}
         options={{ headerShown: true,
          headerTitle: 'Regresar',
+         headerTintColor: "#015DEC"
          }} 
       />
 
       <HomeStack.Screen 
         name="Cart" 
         component={CartScreen}
-        options={{ headerShown: false,
-         headerTitle: 'Regresar',
+        options={{ headerShown: true,
+        headerTitle: 'Regresar',
+        headerTintColor: "#015DEC"
+        
          }} 
       />
 
