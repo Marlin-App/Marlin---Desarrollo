@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, Store, StoreItem, StoreType
+from .models import UserProfile, Store, StoreItem, StoreType, ItemTag
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -50,5 +50,10 @@ class StoreItemSerializer(serializers.ModelSerializer):
 class StoreTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = StoreType
+        fields = '__all__'
+
+class StoreItemTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemTag
         fields = '__all__'
 
