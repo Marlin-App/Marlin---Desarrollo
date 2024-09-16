@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens/Home';
 
 import { ItemPage } from '../screens/Item';
+import { CartScreen } from '../screens/Cart';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -20,6 +21,14 @@ export function HomeStackScreen({ navigation, route }) {
         name="Item" 
         component={ItemPage}
         options={{ headerShown: true,
+         headerTitle: 'Regresar',
+         }} 
+      />
+
+      <HomeStack.Screen 
+        name="Cart" 
+        component={CartScreen}
+        options={{ headerShown: false,
          headerTitle: 'Regresar',
          }} 
       />

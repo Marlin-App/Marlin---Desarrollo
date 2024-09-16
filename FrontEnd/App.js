@@ -8,7 +8,6 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { HomeScreen } from './screens/Home.js';
 import { MainTabNavigator } from './navigation/MainTabNavigator';
 import { NativeWindStyleSheet } from "nativewind";
-import { CartScreen } from './screens/Cart.js';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -47,9 +46,5 @@ if (!fontsLoaded) return null;
  <NavigationContainer>
           <MainTabNavigator />
   </NavigationContainer> 
-
-
- 
- 
   );
 }

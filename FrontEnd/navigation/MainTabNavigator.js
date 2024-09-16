@@ -4,6 +4,7 @@ import { SearchScreen } from '../screens/Search';
 import { HomeScreen } from '../screens/Home';
 import { NotificationScreen } from '../screens/Notification';
 import { ProfileStackScreen } from './ProfileStack';
+import { CardScreen } from '../screens/CardScreen';
 import { Keyboard, Platform } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { HomeStackScreen } from './HomeStack'
@@ -16,14 +17,14 @@ export function MainTabNavigator() {
 
     useEffect(() => {
         const keyboardShowListener = Platform.OS === 'ios'
-            ? Keyboard.addListener('keyboardWillShow', () => setKeyboardVisible(true)) // Se activa antes de que el teclado aparezca
-            : Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true)); // Se activa justo después en Android
+            ? Keyboard.addListener('keyboardWillShow', () => setKeyboardVisible(true)) 
+            : Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true)); 
 
         const keyboardHideListener = Platform.OS === 'ios'
-            ? Keyboard.addListener('keyboardWillHide', () => setKeyboardVisible(false)) // Se activa antes de que el teclado desaparezca
-            : Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false)); // Se activa justo después en Android
+            ? Keyboard.addListener('keyboardWillHide', () => setKeyboardVisible(false)) 
+            : Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false)); 
 
-        // Cleanup listeners on unmount
+        
         return () => {
             keyboardShowListener.remove();
             keyboardHideListener.remove();
@@ -76,8 +77,8 @@ export function MainTabNavigator() {
             />
 
             <Tab.Screen
-                name="Notificaciones"
-                component={NotificationScreen}
+                name="Card"
+                component={CardScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="notifications" size={30} color={color} />

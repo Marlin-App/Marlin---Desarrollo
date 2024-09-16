@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { useEffect, useCallback } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import useCart from '../hooks/useCart'
+
 
 export function HomeScreen({ navigation }) {
+    const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart, addToCart, total } = useCart();
 
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
@@ -152,8 +155,17 @@ export function HomeScreen({ navigation }) {
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">Carr. Interamericana Norte</Text>
                         <AntDesign name="down" size={18} color="white" />
+
                     </View>
-                    <Feather name="shopping-bag" size={24} color="white" />
+                    <View className="flex-row items-center justify-center">
+                        <Pressable
+                            onPress={() => navigation.navigate('Cart')}
+                        >
+                            <Feather name="shopping-bag" size={24} color="white" />
+                        </Pressable>
+                        <Text
+                            className={`items-center justify-center w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? 'bg-red-600' : '' }`}> </Text>
+                    </View>
                 </View>
                 <View className="flex-row mt-9 rounded-lg">
                     <View className="bg-light-blue rounded-l-lg p-2">

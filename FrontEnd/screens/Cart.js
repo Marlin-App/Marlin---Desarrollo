@@ -5,10 +5,38 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import useCart from '../hooks/useCart'
 
-export function CartScreen() {
+export function CartScreen({navigation}) {
 
     const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart, addToCart, total } = useCart();
     
+    useEffect(() => {
+        navigation.getParent().setOptions({
+            tabBarStyle: {
+                backgroundColor: '#0038A2',
+                display: 'none',
+                height: 80,
+                justifyContent: 'center',
+                paddingBottom: 10,
+            }
+
+        });
+
+        return () => {
+
+            navigation.getParent().setOptions({
+                tabBarStyle: {
+                    backgroundColor: '#015DEC',
+                    display: 'flex',
+                    height: 80,
+                    justifyContent: 'center',
+                    paddingBottom: 10,
+                }
+
+            });
+        }
+
+
+    }, []);
 
     useEffect(() => {
         const initializeCart = async () => {
@@ -87,6 +115,7 @@ export function CartScreen() {
     return (
 
         <View style={{ flex: 1 }}>
+              
             <Pressable className="mt-4 ml-3 flex-row " onPress={() => navigation.navigate('Home')}>
                 <AntDesign name="arrowleft" size={24} color="#015DEC" />
                 <Text className="text-[15px] font-Excon_regular text-main-blue " >regresar</Text>
@@ -94,7 +123,13 @@ export function CartScreen() {
 
             <View style={{ flex: 1 }}>
                 <Text className="text-[24px] font-Excon_regular text-main-blue mt-4 text-center">Carrito</Text>
-
+                {
+                cart.length === 0 && (
+                    <View className="flex-1 items-center justify-center">
+                        <Text className="text-[20px] font-Excon_regular text-main-blue">No hay productos en el carrito</Text>
+                    </View>
+                )
+              }
                 <FlatList
                     data={cart}
                     renderItem={CartItem}
@@ -111,12 +146,13 @@ export function CartScreen() {
                 </View>
                 <View>
                     <Pressable
-                       
+                       onPress={() => clearCart()}
                         style={({ pressed }) => [
                             {   
                                 backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : 'white',
                                 padding: 4,
                                 borderRadius: 5,
+                                marginBottom: 10,
                             },
                         ]}
                        
