@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StatusBar, FlatList, RefreshControl, Image } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect, useCallback } from 'react';
-import { styled } from 'nativewind';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -39,10 +38,10 @@ export function HomeScreen({ navigation }) {
             title: 'Categorias',
             type: 'category',
             horizontalData: [
-                { id: '1a', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '1b', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '1c', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '1d', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') }
+                { id: '1a', title: 'Cat 1', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
+                { id: '1b', title: 'Cat 2', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
+                { id: '1c', title: 'Cat 3', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
+                { id: '1d', title: 'Cat 4', image: require('../../FrontEnd/assets/img/fondoLanding.png') }
             ]
         },
         {
@@ -50,13 +49,18 @@ export function HomeScreen({ navigation }) {
             title: 'Productos para ti',
             type: 'product',
             horizontalData: [
-                { id: '2a', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2b', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2c', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2d', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2e', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2f', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '2g', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') }
+                { id: '2a', title: 'Producto 1', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2b', title: 'Producto 2', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2c', title: 'Producto 3', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2d', title: 'Producto 4', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2e', title: 'Producto 5', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2f', title: 'Producto 6', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2g', title: 'Producto 7', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2h', title: 'Producto 8', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2i', title: 'Producto 9', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2j', title: 'Producto 10', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2k', title: 'Producto 11', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '2l', title: 'Producto 12', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') }
             ]
         },
         {
@@ -64,47 +68,82 @@ export function HomeScreen({ navigation }) {
             title: 'Tiendas destacadas',
             type: 'store',
             horizontalData: [
-                { id: '3a', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '3b', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') },
-                { id: '3c', title: '', image: require('../../FrontEnd/assets/img/fondoLanding.png') }
+                { id: '3a', title: 'Tienda 1', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '3b', title: 'Tienda 2', image: require('../../FrontEnd/assets/img/marlin.png') },
+                { id: '3c', title: 'Tienda 3', image: require('../../FrontEnd/assets/img/marlin.png') }
             ]
         }
     ];
 
     const renderHorizontalItem = ({ item }) => (
-        <View className="bg-cyan-600 my-2 mx-2 rounded-lg w-40 h-40">
-            <Image
-                source={item.image}
-                className="w-full h-full rounded-lg"
-                resizeMode="cover"
-            />
-            <Text className="text-lg">{item.title}</Text>
-        </View>
+        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item')}>
+            <View className="my-2 mx-2 items-start">
+                <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
+                    <Image
+                        source={item.image}
+                        className="w-full h-full rounded-lg"
+                        resizeMode="stretch"
+                    />
+                </View>
+                <Text className="text-lg font-bold text-left text-light-blue">{item.title}</Text>
+                <Text className="text-sm text-left text-light-blue font-thin">{item.subtitle}</Text>
+            </View>
+        </TouchableOpacity>
     );
 
     const renderHorizontalC = ({ item }) => (
-        <View className="bg-gray-200 p-5 my-2 mx-2 rounded-lg w-20 h-20">
-            <Image
-                source={item.image}
-                className="w-full h-12 rounded-lg"
-                resizeMode="cover"
-            />
-            <Text className="text-lg">{item.title}</Text>
+        <View className="my-2 mx-2 items-center">
+            <View className="bg-gray-200 p-5 rounded-lg w-20 h-20">
+                <Image
+                    source={item.image}
+                    className="w-full h-12 rounded-lg"
+                    resizeMode="cover"
+                />
+            </View>
+            <Text className="text-lg text-center text-light-blue">{item.title}</Text>
+            <Text className="text-sm text-center text-light-blue">{item.subtitle}</Text>
         </View>
     );
 
-    const renderVerticalItem = ({ item }) => (
-        <View className="p-2 my-2" onLayout={onLayout}>
-            <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
-            <FlatList
-                data={item.horizontalData}
-                renderItem={item.type === 'category' ? renderHorizontalC : renderHorizontalItem}
-                keyExtractor={horizontalItem => horizontalItem.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            />
-        </View>
-    );
+    const renderVerticalItem = ({ item }) => {
+        if (item.id === '2') {
+            const firstHalf = item.horizontalData.slice(0, Math.ceil(item.horizontalData.length / 2));
+            const secondHalf = item.horizontalData.slice(Math.ceil(item.horizontalData.length / 2));
+
+            return (
+                <View className="p-2 my-2" onLayout={onLayout}>
+                    <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                    <FlatList
+                        data={firstHalf}
+                        renderItem={renderHorizontalItem}
+                        keyExtractor={horizontalItem => horizontalItem.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                    <FlatList
+                        data={secondHalf}
+                        renderItem={renderHorizontalItem}
+                        keyExtractor={horizontalItem => horizontalItem.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+            );
+        }
+
+        return (
+            <View className="p-2 my-2 mt-0" onLayout={onLayout}>
+                <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                <FlatList
+                    data={item.horizontalData}
+                    renderItem={item.type === 'category' ? renderHorizontalC : renderHorizontalItem}
+                    keyExtractor={horizontalItem => horizontalItem.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                />
+            </View>
+        );
+    };
 
     return (
         <View className="flex-1">
@@ -130,7 +169,7 @@ export function HomeScreen({ navigation }) {
                     </View>
                 </View>
             </View>
-            <View>
+            <ScrollView>
                 <FlatList
                     data={verticalData}
                     renderItem={renderVerticalItem}
@@ -138,7 +177,7 @@ export function HomeScreen({ navigation }) {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 200 }}
                 />
-            </View>
+            </ScrollView>
         </View>
     );
 }
