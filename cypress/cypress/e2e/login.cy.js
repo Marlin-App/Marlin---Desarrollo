@@ -10,9 +10,13 @@ describe('Login test', () => {
 
     it('It should type an email and password of an user already registered', () => {
         cy.contains('Ingresa mediante otra cuenta').click()
-        cy.get('input[id="email"]').type('drexjesusguzman@gmail.com')
-        cy.get('input[id="password"]').type('admin123')
+        cy.get('input[id="email"]').type('Jeremy')
+        cy.get('input[id="password"]').type('Sofi4231')
         cy.contains('Ingresa a la cuenta').click()
+        cy.intercept('POST', '/api/token').as('loginRequest');
+        cy.wait('@loginRequest').then((interception) => {
+        expect(interception.response.statusCode).to.eq(200);
+        });
         //logica para terminar de navegar a la pagina principal
     })
 
