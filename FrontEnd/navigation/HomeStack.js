@@ -1,7 +1,7 @@
 // navigation/HomeStack.js
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens/Home';
-
+import { StoreCat } from '../screens/StoreCat';
 import { ItemPage } from '../screens/Item';
 import { CartScreen } from '../screens/Cart';
 
@@ -29,6 +29,16 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen 
         name="Cart" 
         component={CartScreen}
+        options={{ headerShown: true,
+        headerTitle: 'Regresar',
+        headerTintColor: "#015DEC"
+        
+         }} 
+      />
+
+<HomeStack.Screen 
+        name="StoreCat" 
+        component={StoreCat}
         options={{ headerShown: true,
         headerTitle: 'Regresar',
         headerTintColor: "#015DEC"

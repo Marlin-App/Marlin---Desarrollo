@@ -95,17 +95,19 @@ export function HomeScreen({ navigation }) {
     );
 
     const renderHorizontalC = ({ item }) => (
-        <View className="my-2 mx-2 items-center">
-            <View className="bg-gray-200 p-5 rounded-lg w-20 h-20">
-                <Image
-                    source={item.image}
-                    className="w-full h-12 rounded-lg"
-                    resizeMode="cover"
-                />
+        <Pressable onPress={() => navigation.navigate('StoreCat')}>
+            <View className="my-2 mx-2 items-center">
+                <View className="bg-gray-200 p-5 rounded-lg w-20 h-20">
+                    <Image
+                        source={item.image}
+                        className="w-full h-12 rounded-lg"
+                        resizeMode="cover"
+                        />
+                </View>
+                <Text className="text-lg text-center text-light-blue">{item.title}</Text>
+                <Text className="text-sm text-center text-light-blue">{item.subtitle}</Text>
             </View>
-            <Text className="text-lg text-center text-light-blue">{item.title}</Text>
-            <Text className="text-sm text-center text-light-blue">{item.subtitle}</Text>
-        </View>
+        </Pressable>
     );
 
     const renderVerticalItem = ({ item }) => {
