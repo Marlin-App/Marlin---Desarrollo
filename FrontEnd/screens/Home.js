@@ -135,7 +135,7 @@ export function HomeScreen({ navigation }) {
         }
 
         return (
-            <View className="p-2 my-2 mt-0" onLayout={onLayout}>
+            <View className="p-2 my-2 mt-0 bg-white" onLayout={onLayout}>
                 <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
                 <FlatList
                     data={item.horizontalData}
@@ -149,7 +149,7 @@ export function HomeScreen({ navigation }) {
     };
 
     return (
-        <View className="flex-1">
+        <View className="flex-1 bg-white">
             <View className="w-full flex-col pl-8 pr-8 bg-main-blue pt-14 pb-4">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">

@@ -3,14 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TouchableOpacity, ScrollView  } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Feather } from '@expo/vector-icons'; // Usa feather como iconos
-{/* import { PaymentIcon } from 'react-native-payment-icons'
-npm install react-native-payment-icons utilizar los iconos de visa y mastercard
-<PaymentIcon type='visa'/>
-<PaymentIcon type='master'/> */}
 
 
 
-export function CardScreen({ navigation }) {
+
+export function DirectionScreen({ navigation }) {
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
@@ -56,7 +53,7 @@ export function CardScreen({ navigation }) {
             
           </TouchableOpacity>
     
-          <Text className="text-xl font-bold mb-6 text-center">Métodos de pago</Text>
+          <Text className="text-xl font-bold mb-6 text-center">Mis Direcciones</Text>
           <ScrollView className="space-y-4">
             {methods.map((method) => (
             <TouchableOpacity

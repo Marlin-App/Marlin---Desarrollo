@@ -4,6 +4,8 @@ import { ProfileScreen } from '../screens/Settings';
 import { LandingPage } from '../screens/landing';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
+import { DirectionScreen } from '../screens/DirectionScreen';
+import { CardScreen } from '../screens/CardScreen';
 import { ItemPage } from '../screens/Item';
 
 const ProfileStack = createNativeStackNavigator();
@@ -35,6 +37,24 @@ export function ProfileStackScreen({ navigation, route }) {
         name="Register"
         component={RegisterPage}
         options={{ headerShown: false }}
+      />
+
+      <ProfileStack.Screen
+        name="CardScreen"
+        component={CardScreen}
+        options={{headerShown: true, 
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+<ProfileStack.Screen
+        name="DirectionScreen"
+        component={DirectionScreen}
+        options={{headerShown: true, 
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
       />
 
 
