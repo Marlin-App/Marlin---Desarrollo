@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TouchableOpacity, ScrollView  } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { View, Text, Button, TouchableOpacity, ScrollView, Pressable  } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Feather } from '@expo/vector-icons'; // Usa feather como iconos
 
 
@@ -12,9 +12,9 @@ export function DirectionScreen({ navigation }) {
     const [selectedMethod, setSelectedMethod] = useState(null);
 
     const methods = [
-      { id: 1, type: 'Visa', cardNumber: '****5584', expiry: '12/24' },
-      { id: 2, type: 'Mastercard', cardNumber: '****5194', expiry: '12/24' },
-      { id: 3, type: 'SinpeMovil' },
+      { id: 1, type: 'Casa', Direction: '2 metros del pali"' },
+      { id: 2, type: 'Trabajo', Direction: 'Trabajo en casa, asi que 2 metros del pali'},
+      { id: 3, type: 'Universidad', Direction: 'UCR de Nances'},
     ];
 
     useEffect(() => {
@@ -49,14 +49,12 @@ export function DirectionScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white p-4">
-          <TouchableOpacity className="flex-row items-center mb-4">
-            
-          </TouchableOpacity>
+          
     
           <Text className="text-xl font-bold mb-6 text-center">Mis Direcciones</Text>
           <ScrollView className="space-y-4">
             {methods.map((method) => (
-            <TouchableOpacity
+            <Pressable
                 key={method.id}
                 onPress={() => setSelectedMethod(method.id)}
                 className={`flex-row items-center justify-between p-4 border rounded-lg ${
@@ -93,13 +91,13 @@ export function DirectionScreen({ navigation }) {
                   </View>
                 </View>
                     <Feather name="more-vertical" className="absolute" size={24} color="gray" />
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </ScrollView>
     
           <TouchableOpacity className="bg-main-blue p-4 mt-6 rounded-lg flex-row items-center justify-center">
-            <MaterialIcons name="payment" size={30} color="white" />
-            <Text className="text-white font-bold ml-2">Agregar método de pago</Text>
+            <MaterialCommunityIcons name="map-marker-plus-outline" size={30} color="white" />
+            <Text className="text-white font-bold ml-2">Agregar dirección</Text>
           </TouchableOpacity>
         </View>
       );

@@ -57,7 +57,7 @@ if (!fontsLoaded) return null;
       <View className="w-full mt-4">
         <Text className="text-lg font-Excon_bold mb-4">Perfil</Text>
 
-        <Pressable className="flex-row justify-between  border-b-2 border-light-blue">
+        <Pressable className="flex-row justify-between border-b-2 border-light-blue">
           <View className="flex-row gap-2">
             <Feather name="user" size={24} color="#015DEC" />
             <Text className="text-center font-Erode_regular">Información</Text>
