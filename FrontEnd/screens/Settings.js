@@ -39,7 +39,7 @@ const onLayout = useCallback(async () => {
 if (!fontsLoaded) return null;
 
   return (
-    // <ScrollView className="">
+    <ScrollView className="py-8 bg-white">
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white">
       <Text className="font-Excon_bold bottom-4 text-2xl">Configuración de Usuario</Text>
       <View className="flex flex-row justify-center items-center">
@@ -137,6 +137,6 @@ if (!fontsLoaded) return null;
 
       /> */}
     </View>
-    // </ScrollView>
+    </ScrollView>
   );
 }

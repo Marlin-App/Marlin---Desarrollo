@@ -277,7 +277,7 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white">
-            <View className="w-full flex-col pl-8 pr-8 bg-main-blue py-12">
+            <View className="w-full flex-col px-4 bg-main-blue py-12">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">
