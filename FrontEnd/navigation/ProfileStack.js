@@ -15,11 +15,11 @@ export function ProfileStackScreen({ navigation, route }) {
   return (
     <ProfileStack.Navigator>
 
-      <ProfileStack.Screen
+     <ProfileStack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ headerShown: false }}
-      />
+      /> 
 
       <ProfileStack.Screen
         name="Landing"

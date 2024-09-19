@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -68,7 +68,7 @@ export function ProfileScreen({ navigation }) {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('@userToken');
-      navigation.navigate('Landing'); // Navega a la pantalla de inicio de sesión
+      navigation.navigate('Landing'); 
     } catch (e) {
       console.error('Error al cerrar sesión:', e);
     }
