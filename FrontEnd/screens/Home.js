@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable } from 'react-native';
-import { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import useCart from '../hooks/useCart'
-
+import useCart from '../hooks/useCart';
+import useItems from '../hooks/useItems';
 
 export function HomeScreen({ navigation }) {
     const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart, addToCart, total } = useCart();
+    const { data: items, loading, error } = useItems();
 
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
@@ -51,20 +51,16 @@ export function HomeScreen({ navigation }) {
             id: '2',
             title: 'Productos para ti',
             type: 'product',
-            horizontalData: [
-                { id: '2a', title: 'Producto 1', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2b', title: 'Producto 2', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2c', title: 'Producto 3', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2d', title: 'Producto 4', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2e', title: 'Producto 5', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2f', title: 'Producto 6', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2g', title: 'Producto 7', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2h', title: 'Producto 8', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2i', title: 'Producto 9', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2j', title: 'Producto 10', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2k', title: 'Producto 11', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') },
-                { id: '2l', title: 'Producto 12', subtitle: '$0', image: require('../../FrontEnd/assets/img/marlin.png') }
-            ]
+            horizontalData: items.map(item => ({
+                id: item.id.toString(),
+                name: item.name,
+                description: item.description,
+                price: `$${item.price}`,
+                stock: item.stock,
+                picture: { uri: item.picture },
+                storeId: item.storeId,
+                item_type: item.item_type
+            }))
         },
         {
             id: '3',
@@ -79,29 +75,29 @@ export function HomeScreen({ navigation }) {
     ];
 
     const renderHorizontalItem = ({ item }) => (
-        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item')}>
-            <View className="my-2 mx-2 items-start">
+        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
+            <View className="my-2 mx-4 items-start">
                 <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
                     <Image
-                        source={item.image}
+                        source={item.picture}
                         className="w-full h-full rounded-lg"
                         resizeMode="stretch"
                     />
                 </View>
                 <Text className="text-lg font-bold text-left text-light-blue">{item.title}</Text>
-                <Text className="text-sm text-left text-light-blue font-thin">{item.subtitle}</Text>
+                <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
             </View>
         </TouchableOpacity>
     );
 
     const renderHorizontalC = ({ item }) => (
         <Pressable onPress={() => navigation.navigate('StoreCat')}>
-            <View className="my-2 mx-2 items-center">
-                <View className="bg-gray-200 p-5 rounded-lg w-20 h-20">
+            <View className="my-2 mx-4 items-center">
+                <View className="bg-gray-200 rounded-full w-16 h-16">
                     <Image
                         source={item.image}
-                        className="w-full h-12 rounded-lg"
-                        resizeMode="cover"
+                        className="w-full h-full rounded-full"
+                        resizeMode="contain"
                         />
                 </View>
                 <Text className="text-lg text-center text-light-blue">{item.title}</Text>
@@ -117,7 +113,7 @@ export function HomeScreen({ navigation }) {
 
             return (
                 <View className="p-2 my-2" onLayout={onLayout}>
-                    <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                    <Text className="ml-4 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
                     <FlatList
                         data={firstHalf}
                         renderItem={renderHorizontalItem}
@@ -138,7 +134,7 @@ export function HomeScreen({ navigation }) {
 
         return (
             <View className="p-2 my-2 mt-0 bg-white" onLayout={onLayout}>
-                <Text className="ml-2 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                <Text className="ml-4 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
                 <FlatList
                     data={item.horizontalData}
                     renderItem={item.type === 'category' ? renderHorizontalC : renderHorizontalItem}
@@ -150,6 +146,22 @@ export function HomeScreen({ navigation }) {
         );
     };
 
+    if (loading) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <Text className="text-red-500">Error: {error.message}</Text>
+            </View>
+        );
+    }
+
     return (
         <View className="flex-1 bg-white">
             <View className="w-full flex-col pl-8 pr-8 bg-main-blue pt-14 pb-4">
@@ -157,16 +169,12 @@ export function HomeScreen({ navigation }) {
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">Carr. Interamericana Norte</Text>
                         <AntDesign name="down" size={18} color="white" />
-
                     </View>
                     <View className="flex-row items-center justify-center">
-                        <Pressable
-                            onPress={() => navigation.navigate('Cart')}
-                        >
+                        <Pressable onPress={() => navigation.navigate('Cart')}>
                             <Feather name="shopping-bag" size={24} color="white" />
                         </Pressable>
-                        <Text
-                            className={`items-center justify-center w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? 'bg-red-600' : '' }`}> </Text>
+                        <Text className={`items-center justify-center w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? 'bg-red-600' : '' }`}> </Text>
                     </View>
                 </View>
                 <View className="flex-row mt-9 rounded-lg">
@@ -178,7 +186,6 @@ export function HomeScreen({ navigation }) {
                         placeholder='Buscar'
                         placeholderTextColor={"#88B1FF"}
                     />
-                    
                 </View>
             </View>
             <ScrollView>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 export function ItemPage({ navigation }) {
-
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -29,6 +29,11 @@ export function ItemPage({ navigation }) {
     if (!fontsLoaded) return null;
 
     const [quantity, setQuantity] = useState(1);
+    const route = useRoute();
+    const { product } = route.params;
+    console.log(product);
+
+    console.log(product.picture)
 
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
@@ -74,12 +79,12 @@ export function ItemPage({ navigation }) {
             <View className="px-8">
                 <Image
                     className="w-full h-[400] rounded-3xl bg-black mt-10 mb-3"
-                    source={require('../../FrontEnd/assets/img/item.png')}
+                    source={ product.picture }
+                    resizeMode="cover"
+                    onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
                 />
-                <Text className="text-xl pl-1 font-Excon_bold">Camiseta Volcom YEWBISU CREW</Text>
-                <Text className="text-sm pl-1 font-Excon_regular">Disfruta de las rayas de barril con la camiseta
-                    de hombre Yewbisu. Un corte moderno viene
-                    confeccionado...</Text>
+                <Text className="text-xl pl-1 font-Excon_bold">{product.name}</Text>
+                <Text className="text-sm pl-1 font-Excon_regular">{product.description}</Text>
 
                 <Text className="text-base font-bold pl-1 mt-3">Color</Text>
                 <View className="flex-row">
@@ -90,7 +95,7 @@ export function ItemPage({ navigation }) {
             </View>
 
             <View className="absolute bg-main-blue p-5 w-full bottom-0">
-                <Text className="text-xl font-bold text-white mb-4">Precio: ₡  29.900</Text>
+                <Text className="text-xl font-bold text-white mb-4">Precio: ₡ {product.price}</Text>
 
                 <View className="flex-row justify-between pb-3">
                     <View className="flex-row ">
