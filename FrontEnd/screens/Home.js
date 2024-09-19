@@ -1,4 +1,3 @@
-import * as React from "react";
 import React, { useEffect, useCallback } from 'react';
 import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -125,7 +124,7 @@ export function HomeScreen({ navigation }) {
                         resizeMode="stretch"
                     />
                 </View>
-                <Text className="text-lg font-bold text-left text-light-blue">{item.title}</Text>
+                <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
                 <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
             </View>
         </TouchableOpacity>
