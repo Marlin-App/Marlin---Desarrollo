@@ -75,7 +75,7 @@ export function ProfileScreen({ navigation }) {
   };
 
   return (
-  
+    <ScrollView className="py-8 bg-white">
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white">
       <Text className="font-Excon_bold bottom-4 text-2xl">Configuración de Usuario</Text>
       <View className="flex flex-row justify-center items-center">
@@ -91,7 +91,7 @@ export function ProfileScreen({ navigation }) {
       <View className="w-full mt-4">
         <Text className="text-lg font-Excon_bold mb-4">Perfil</Text>
 
-        <Pressable className="flex-row justify-between  border-b-2 border-light-blue">
+        <Pressable className="flex-row justify-between border-b-2 border-light-blue">
           <View className="flex-row gap-2">
             <Feather name="user" size={24} color="#015DEC" />
             <Text className="text-center font-Erode_regular">Información</Text>
@@ -167,6 +167,6 @@ export function ProfileScreen({ navigation }) {
         </Pressable>
       </View>
     </View>
-    // </ScrollView>
+    </ScrollView>
   );
 }
