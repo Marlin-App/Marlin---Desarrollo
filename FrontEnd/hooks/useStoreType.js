@@ -9,8 +9,11 @@ const useStoreType = () => {
             const data = await response.json();
             const formattedData = [
                 {
-                    title: 'Categorías', 
-                    data: data.map(item => item.name)
+                    title: 'Categorías',
+                    data: data.map(item => ({
+                        id: item.id,
+                        name: item.name
+                    }))
                 }
             ];
             setCategories(formattedData);
