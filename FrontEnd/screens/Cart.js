@@ -5,6 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import useCart from '../hooks/useCart'
 
+
 export function CartScreen({navigation}) {
 
     const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart, addToCart, total } = useCart();
@@ -37,6 +38,8 @@ export function CartScreen({navigation}) {
 
 
     }, []);
+
+    
 
     useEffect(() => {
         const initializeCart = async () => {
@@ -153,7 +156,7 @@ export function CartScreen({navigation}) {
                             },
                         ]}
                        
-                    >
+                    >   
                         <Text className="text-main-blue font-Excon_regular text-[20px] text-center">Pagar</Text>
                     </Pressable>
                 </View>

@@ -1,45 +1,81 @@
-
-import React from "react";
-import { View, Text, Button, Pressable, ScrollView } from "react-native";
-import Feather from "@expo/vector-icons/Feather";
+import React, { useEffect, useCallback, useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
+import { useIsFocused } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 
+const base64UrlDecode = (base64Url) => {
+  let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = base64.length % 4;
+  if (padding) {
+    base64 += '='.repeat(4 - padding);
+  }
+  return decodeURIComponent(escape(atob(base64)));
+};
 
+const decodeJWT = (token) => {
+  const [header, payload, signature] = token.split('.');
+  const decodedHeader = base64UrlDecode(header);
+  const decodedPayload = base64UrlDecode(payload);
+
+  const headerObj = JSON.parse(decodedHeader);
+  const payloadObj = JSON.parse(decodedPayload);
+
+  return {
+    header: headerObj,
+    payload: payloadObj,
+    signature: signature 
+  };
+};
 
 export function ProfileScreen({ navigation }) {
+  
+  const [user, setUser] = useState({});
+  const isFocused = useIsFocused();
+  
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        if (jsonValue) {
+          const userData = JSON.parse(jsonValue);
+          const token = userData.access;
+          if (token) {
+            const decodedToken = decodeJWT(token); 
+            setUser(decodedToken.payload); // Guardar el payload decodificado en el estado
+            console.log('Token de usuario cargado:', decodedToken.payload);
+          } else {
+            console.log('No se encontró el token en el objeto.');
+          }
+        } else {
+          console.log('No se encontró ningún token de usuario.');
+          navigation.navigate('Landing');
+        }
+      } catch (e) {
+        console.error('Error al cargar el token de usuario:', e);
+      }
+    };
 
-  const [fontsLoaded] = useFonts({
-    'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
-    'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
-    'Excon_thin': require('../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf'),
-    'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
-    'Erode_medium': require('../../FrontEnd/assets/fonts/Erode/Erode-Medium.otf'),
-    'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
-});
+    loadUser();
+  }, [isFocused, navigation]);
 
-useEffect(() => {
-    async function prepare() {
-        await SplashScreen.preventAutoHideAsync();
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('@userToken');
+      navigation.navigate('Landing'); // Navega a la pantalla de inicio de sesión
+    } catch (e) {
+      console.error('Error al cerrar sesión:', e);
     }
-    prepare();
-}, [])
-
-const onLayout = useCallback(async () => {
-    if (fontsLoaded) {
-        await SplashScreen.hideAsync();
-    }
-}, [fontsLoaded])
-
-if (!fontsLoaded) return null;
+  };
 
   return (
-    // <ScrollView className="">
+  
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white">
       <Text className="font-Excon_bold bottom-4 text-2xl">Configuración de Usuario</Text>
       <View className="flex flex-row justify-center items-center">
@@ -47,12 +83,10 @@ if (!fontsLoaded) return null;
           <Text>Profile image</Text>
         </View>
         <View className="ml-6">
-          <Text className="text-lg text-gray-600 font-Erode_medium">Jeremy Guzman Vargas</Text>
-          <Text className="text-sm text-gray-600 font-Erode_regular">jeremyGD997@gmail.com</Text>
+          <Text className="text-lg text-gray-600 font-Erode_medium">{user.username} </Text>
+          <Text className="text-sm text-gray-600 font-Erode_regular">{user.email} </Text>
         </View>
       </View>
-
-
 
       <View className="w-full mt-4">
         <Text className="text-lg font-Excon_bold mb-4">Perfil</Text>
@@ -125,17 +159,13 @@ if (!fontsLoaded) return null;
           <Text>FAQs</Text>
         </Pressable>
 
-        <Pressable className='flex-row flex gap-3 items-center'>
+        <Pressable className='flex-row flex gap-3 items-center'
+          onPress={handleLogout}
+        >
         <MaterialIcons name="logout" size={24} color="#015DEC" />
           <Text className=''>Cerrar Sesión</Text>
         </Pressable>
       </View>
-
-      {/* <Button
-        title="Login"
-        onPress={() => navigation.navigate("Landing")}
-
-      /> */}
     </View>
     // </ScrollView>
   );

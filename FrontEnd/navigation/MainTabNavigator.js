@@ -49,7 +49,7 @@ export function MainTabNavigator() {
                     backgroundColor: '#015DEC',
                     display: 'flex',
                     height: 80,
-                    justifyContent: 'center',
+                    justifyContent: 'around',
                     paddingBottom: 10,
                     display: isKeyboardVisible ? 'none' : 'flex',
                 },
