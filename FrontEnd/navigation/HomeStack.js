@@ -2,6 +2,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from '../screens/Home';
 import { StoreCat } from '../screens/StoreCat';
+import { Store } from '../screens/Store';
 import { ItemPage } from '../screens/Item';
 import { CartScreen } from '../screens/Cart';
 import * as React from "react";
@@ -74,6 +75,19 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         name="StoreCat"
         component={StoreCat}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC",
+          headerTitleStyle: {
+            fontFamily: 'Excon_regular',
+          }
+        }}
+      />
+
+      <HomeStack.Screen
+        name="Store"
+        component={Store}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
