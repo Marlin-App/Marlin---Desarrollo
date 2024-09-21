@@ -67,6 +67,7 @@ export function RegisterPage({ navigation }) {
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
+            id='fullNameRegister'
             className="w-full"
             placeholder="Ej: Nombre Apellido Apellido"
             placeholderTextColor={'#1877F2'}
@@ -80,6 +81,7 @@ export function RegisterPage({ navigation }) {
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="mail" size={18} color="#1952BE" />
           <TextInput
+            id='emailRegister'
             className="w-full"
             placeholder="Ej: correo@electronico.com"
             placeholderTextColor={'#1877F2'}
@@ -94,6 +96,7 @@ export function RegisterPage({ navigation }) {
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-6 gap-2">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
+            id='passwordRegister'
             className="w-full"
             placeholder="Ej: contraseña123"
             placeholderTextColor={'#1877F2'}
@@ -105,6 +108,7 @@ export function RegisterPage({ navigation }) {
         </View>
 
         <Pressable
+          id='createRegister'
           onPress={handleLogin}
           style={({ pressed }) => [
             {

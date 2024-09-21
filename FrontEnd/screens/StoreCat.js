@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Text, View, Button, Item, FlatList, SafeAreaView, SectionList, Pressable, Image } from 'react-native';
 import useStoreType from '../hooks/useStoreType';
-import image from '../assets/img/fondoLanding.png';
+import image from '../assets/img/category.svg';
+import imageWhite from '../assets/img/categoryWhite.svg';
 
 export function StoreCat({ navigation }) {
 
@@ -51,7 +52,7 @@ export function StoreCat({ navigation }) {
                                 <View className="my-4 mx-2 items-center">
                                     <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId === item.id ? 'bg-main-blue' : ''}`}>
                                         <Image
-                                            source={image}
+                                            source={selectedCategoryId === item.id ? imageWhite : image}
                                             className="w-full h-12 rounded-lg"
                                             resizeMode="cover"
                                         />
@@ -88,6 +89,5 @@ export function StoreCat({ navigation }) {
                 />
             </SafeAreaView>
         </View>
-
     );
 }
