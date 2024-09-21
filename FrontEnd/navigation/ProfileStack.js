@@ -15,11 +15,11 @@ export function ProfileStackScreen({ navigation, route }) {
   return (
     <ProfileStack.Navigator>
 
-     <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ headerShown: false }}
-      /> 
+      />
 
       <ProfileStack.Screen
         name="Landing"
@@ -42,16 +42,18 @@ export function ProfileStackScreen({ navigation, route }) {
       <ProfileStack.Screen
         name="CardScreen"
         component={CardScreen}
-        options={{headerShown: true, 
+        options={{
+          headerShown: true,
           headerTitle: 'Regresar',
           headerTintColor: "#015DEC"
         }}
       />
 
-<ProfileStack.Screen
+      <ProfileStack.Screen
         name="DirectionScreen"
         component={DirectionScreen}
-        options={{headerShown: true, 
+        options={{
+          headerShown: true,
           headerTitle: 'Regresar',
           headerTintColor: "#015DEC"
         }}

@@ -11,6 +11,7 @@ module.exports = {
         'main-blue': '#015DEC',
         'light-blue': '#60a5fa',
         'gray-tab': '#AAC3F3',
+        'grey-light': '#EDEEF3'
       },
 
       fontFamily: {
