@@ -48,7 +48,7 @@ export function ProfileScreen({ navigation }) {
           const token = userData.access;
           if (token) {
             const decodedToken = decodeJWT(token); 
-            setUser(decodedToken.payload); // Guardar el payload decodificado en el estado
+            setUser(decodedToken.payload); 
             console.log('Token de usuario cargado:', decodedToken.payload);
           } else {
             console.log('No se encontró el token en el objeto.');

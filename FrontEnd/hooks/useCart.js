@@ -2,26 +2,7 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useCart = () => {
-  const [cart, setCart] = useState([
-    {
-      id: '1',
-      name: 'Boys 8-16 Surfsilk Mix Volley',
-      cantidad: 3,
-      precio: 30500,
-    },
-    {
-      id: '2',
-      name: 'Camiseta Volcom YEWBISU CREW',
-      cantidad: 1,
-      precio: 39500,
-    },
-    {
-      id: '3',
-      name: 'Tennis Adidas Grand Court Base',
-      cantidad: 1,
-      precio: 79000,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
 
   const [total, setTotal] = useState(0);
 
@@ -61,6 +42,7 @@ const useCart = () => {
   }, [cart]);
 
   const addToCart = (product) => {
+    console.log(product.cantidad);
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
@@ -68,7 +50,7 @@ const useCart = () => {
           item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
         );
       }
-      return [...prevCart, { ...product, cantidad: 1 }];
+      return [...prevCart, { ...product, cantidad: product.cantidad  }];
     });
   };
 
@@ -103,7 +85,7 @@ const useCart = () => {
   };
 
   const calcularTotal = () => {
-    const totalAmount = cart.reduce((total, item) => total + item.cantidad * item.precio, 0);
+    const totalAmount = cart.reduce((total, item) => total + item.cantidad * item.price.replace(/[^0-9.]/g, ''), 0);
     setTotal(totalAmount);
   };
 

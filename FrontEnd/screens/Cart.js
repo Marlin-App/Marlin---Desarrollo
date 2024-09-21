@@ -79,6 +79,7 @@ export function CartScreen({navigation}) {
 
 
     const CartItem = ({ item }) => {
+        console.log(item);
         return (
             <View className=" mx-4 my-2 rounded-lg border-2 border-main-blue p-2 " onLayout={onLayout}>
                 <View className="items-end justify-end" >
@@ -95,8 +96,9 @@ export function CartScreen({navigation}) {
                         }}
                     >
                         <Image
-                            source={require('../assets/img/cart.png')}
+                             source={ item.picture }
                             className=" rounded-lg"
+                            style={{ width: 100, height: 100 }}
                         />
                     </View>
                     <View className="ml-2 flex-1">
@@ -135,7 +137,7 @@ export function CartScreen({navigation}) {
                     </View>
                 </View>
                 <View className="items-end justify-end" >
-                    <Text className="font-Excon_regular" > ₡{item.precio} CRC</Text>
+                    <Text className="font-Excon_regular" >{item.price} CRC</Text>
                 </View>
             </View>
         );

@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Button, Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-
+import useCart from '../hooks/useCart'
 export function ItemPage({ navigation }) {
+
+    const { addToCart } = useCart();
+    const [modalVisible, setModalVisible] = useState(false);  
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -70,12 +73,44 @@ export function ItemPage({ navigation }) {
 
             });
         }
-
-
     }, []);
 
+    
+    const handleAddToCart = () => {
+       
+        setModalVisible(!modalVisible);
+        addToCart({ ...product, cantidad: quantity });
+       
+    };
+
+
+
+
+    
+
+
+
     return (
-        <View className="flex-grow-1 bg-white h-full">
+        <View className="flex-grow-1 bg-white h-full">  
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Se agrego el producto al carrito!</Text>
+                    <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>carrar</Text>
+                    </Pressable>
+                </View>
+                </View>
+            </Modal>
             <View className="px-8">
                 <Image
                     className="w-full h-[400] rounded-3xl bg-black mt-10 mb-3"
@@ -114,7 +149,7 @@ export function ItemPage({ navigation }) {
                     </View>
                     <Pressable
                         style={styles.carrito}
-                        onPress={() => alert(`Agregado ${quantity} al carrito`)}
+                        onPress={() => handleAddToCart()}
                     > 
                     <Text className="text-lg font-bold text-main-blue">Agregar al carrito</Text>
                     </Pressable>
@@ -131,5 +166,47 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+      },
+      buttonOpen: {
+        backgroundColor: '#F194FF',
+      },
+      buttonClose: {
+        backgroundColor: '#2196F3',
+      },
+      textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+      },
 });
