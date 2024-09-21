@@ -3,11 +3,9 @@ import { useState, useEffect } from 'react';
 import { Text, View, Button, Item, FlatList, SafeAreaView, SectionList, Pressable, Image } from 'react-native';
 import useStoreType from '../hooks/useStoreType';
 import image from '../assets/img/fondoLanding.png';
-import useSelectedStoreType from '../hooks/useSelectedStoreType';
 
 export function StoreCat({ navigation }) {
 
-    //const { categories } = useStoreType();
     const { allCategories, allStores } = useStoreType();
     const [categoryId, setCategoryId] = useState(null);
    
@@ -15,31 +13,28 @@ export function StoreCat({ navigation }) {
 
     useEffect(() => {
         const selectedStoreType = () => {
-            
-            //const filteredData = allStores.filter(item => item.store_type.includes(categoryId));
-             //console.log('filteredData', filteredData);
-           /*   const formattedData2 = filteredData.map(item => ({
+
+            const filteredData = allStores.filter(item => item.store_type.includes(categoryId));
+            const formattedData2 = filteredData.map(item => ({
+
                 id: item.id,
                 name: item.name,
                 location: item.location,
                 picture: item.picture,
                 type: item.store_type,
+
             }));
-            setStoreSelected(formattedData2); */
+            setStoreSelected(formattedData2);
         };
 
         selectedStoreType();
     }, [categoryId]);
     
-    //const [stores] = useSelectedStoreType(categoryId);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-
     const handleCategorySelect = (categoryId) => {
         setCategoryId(categoryId);
         setSelectedCategoryId(categoryId);
     };
-
-    
 
     return (
         <View className="p-2 bg-white">
@@ -72,7 +67,7 @@ export function StoreCat({ navigation }) {
             <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Tiendas de esta categoría</Text>
             <SafeAreaView  className="flex-1 items-center">
                 <FlatList
-                    data={allStores}
+                    data={storeSelected}
                     numColumns={2}
                     renderItem={({ item }) => <View>
                         <Pressable onPress={() => navigation.navigate('Store')}>
