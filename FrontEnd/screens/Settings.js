@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -49,7 +49,7 @@ export function ProfileScreen({ navigation }) {
           if (token) {
             const decodedToken = decodeJWT(token); 
             setUser(decodedToken.payload); 
-            console.log('Token de usuario cargado:', decodedToken.payload);
+            
           } else {
             console.log('No se encontró el token en el objeto.');
           }
@@ -79,8 +79,11 @@ export function ProfileScreen({ navigation }) {
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white">
       <Text className="font-Excon_bold bottom-4 text-2xl">Configuración de Usuario</Text>
       <View className="flex flex-row justify-center items-center">
-        <View className="flex justify-center items-center bg-[#C4C4C4] w-28 h-28 rounded-full">
-          <Text>Profile image</Text>
+        <View className="flex justify-center items-center  w-28 h-28 rounded-full">
+          <Image
+            source={{ uri:`https://ui-avatars.com/api/?name=${user.username}&background=random`}}
+            style={{ width: 100, height: 100, borderRadius: 100 }}
+          />
         </View>
         <View className="ml-6">
           <Text className="text-lg text-gray-600 font-Erode_medium">{user.username} </Text>

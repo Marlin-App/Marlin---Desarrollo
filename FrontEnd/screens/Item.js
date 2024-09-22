@@ -76,11 +76,9 @@ export function ItemPage({ navigation }) {
     }, []);
 
     
-    const handleAddToCart = () => {
-       
+    const handleAddToCart = () => { 
         setModalVisible(!modalVisible);
-        addToCart({ ...product, cantidad: quantity });
-       
+        addToCart({ ...product, cantidad: quantity }); 
     };
 
 
@@ -105,7 +103,11 @@ export function ItemPage({ navigation }) {
                     <Text style={styles.modalText}>Se agrego el producto al carrito!</Text>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
+                    onPress={() => {
+                        setModalVisible(!modalVisible);
+                        navigation.goBack(); 
+                      }}
+                    >
                     <Text style={styles.textStyle}>carrar</Text>
                     </Pressable>
                 </View>

@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { Text, View, Image, Pressable, TextInput, ScrollView, FlatList, SafeAreaView, } from 'react-native';
+import { Text, View, Image, Pressable, TextInput, ScrollView, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import fusion from '../assets/fusion.png';
 import surf from '../assets/boysurf.png';
 import pant from '../assets/pant.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import useStoreType from '../hooks/useStoreType';
-
+import useStoreItem from '../hooks/useStoreItem';
+import { useRoute } from '@react-navigation/native';
 
 export function Store({ navigation }) {
 
-    const { allCategories, allStores } = useStoreType();
-
+    const route = useRoute();
+    console.log(route.params);
+    const { data, loading } = useStoreItem(route.params.id);
+    const dataArray = Array.isArray(data) ? data : [data];
     return (
         <View className="h-full bg-white">
             <Image
                 source={fusion}
-                className="w-full h-28">
-            </Image>
+                className="w-full h-28"
+            />
             <ScrollView>
                 <View className="px-4">
                     <View className="flex-row justify-center items-center">
-                        <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">ARENAS SKATE AND SURF</Text>
+                        <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">{route.params.store.name} </Text>
                         <Pressable className="p-4 h-10 bg-main-blue flex justify-center items-center mr-2 rounded-md">
                             <Text className="text-white font-Excon_regular text-[20px] text-center">Catálogo</Text>
                         </Pressable>
@@ -29,41 +31,48 @@ export function Store({ navigation }) {
                         <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </View>
-                        <TextInput className="ml-2 py-4 w-full text-md font-Erode_regular"
+                        <TextInput
+                            className="ml-2 py-4 w-full text-md font-Erode_regular"
                             placeholder='Buscar'
                         />
                     </View>
                 </View>
                 <Image
-                    source={surf}
-                    className="w-full my-4  h-28">
-                </Image>
+                    source={{ uri: route.params.store.picture }} 
+                    className="w-full my-4 h-28"
+                    resizeMode="stretch"
+                />
                 <View>
-                    <SafeAreaView className="flex-1 items-center">
-                        <FlatList
-                            data={allStores}
-                            numColumns={2}
-                            renderItem={({ item }) => <View>
-                                <Pressable>
-                                    <View className="my-4 mx-2">
-                                        <View className="border-[0.5px] border-black rounded-lg w-[40vw] h-[40vw]">
-                                            <Image
-                                                source={{ uri: item.picture }}
-                                                className="rounded-lg w-full h-full"
-                                                resizeMode="cover"
-                                            />
+
+                        {!loading ? (
+                            <FlatList
+                                data={dataArray}
+                                numColumns={2}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
+                                        <View className="my-2 mx-4 items-start">
+                                            <View className=" rounded-lg w-40 h-40 ">
+                                                <Image
+                                                    source={{ uri: item.picture }} // Suponiendo que sea una URL
+                                                    className="w-full h-full rounded-lg"
+                                                    resizeMode="stretch"
+                                                />
+                                            </View>
+                                            <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
+                                            <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
                                         </View>
-                                        <Text className="text-lg text-light-blue">{item.name}</Text>
-                                        <Text className="text-lg text-light-blue">Ubicacion</Text>
-                                    </View>
-                                </Pressable>
-                            </View>}
-                            keyExtractor={item => item.id}
-                        />
-                    </SafeAreaView>
+                                    </TouchableOpacity>
+                                )}
+                                keyExtractor={item => item.id.toString()}
+                            />
+                        ) : (
+                           
+                            <ActivityIndicator size="large" color="#3498db" />
+                            
+                        )}
+
                 </View>
             </ScrollView>
-
         </View>
     );
 }

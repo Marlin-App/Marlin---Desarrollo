@@ -65,7 +65,9 @@ export function StoreCat({ navigation }) {
                     data={storeSelected}
                     numColumns={2}
                     renderItem={({ item }) => <View>
-                        <Pressable onPress={() => navigation.navigate('Store')}>
+                        <Pressable
+                            onPress={() => navigation.navigate('Store', { id: item.id, store: item })}
+                        >
                             <View className="my-4 mx-2">
                                 <View className="border-[0.5px] border-black rounded-lg w-[40vw] h-[40vw]">
                                     <Image
