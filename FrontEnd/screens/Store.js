@@ -48,7 +48,7 @@ export function Store({ navigation }) {
                                     <View className="my-4 mx-2">
                                         <View className="border-[0.5px] border-black rounded-lg w-[40vw] h-[40vw]">
                                             <Image
-                                                source={item.picture}
+                                                source={{ uri: item.picture }}
                                                 className="rounded-lg w-full h-full"
                                                 resizeMode="cover"
                                             />

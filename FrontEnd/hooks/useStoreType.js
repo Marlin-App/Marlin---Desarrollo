@@ -6,7 +6,7 @@ const useStoreType = () => {
 
     const getStoreCat = async () => {
         try {
-            const response1 = await fetch('http://127.0.0.1:8000/api/storeTypes/');
+            const response1 = await fetch('https://marlin-backend.vercel.app/api/storeTypes/');
             const data1 = await response1.json();
             const formattedData1 = [
                 {
@@ -19,7 +19,7 @@ const useStoreType = () => {
             ];
             setAllCategories(formattedData1);
 
-            const response2 = await fetch("http://127.0.0.1:8000/api/stores/");
+            const response2 = await fetch("https://marlin-backend.vercel.app/api/stores/");
             const data2 = await response2.json();
             setAllStores(data2);
         } catch (error) {

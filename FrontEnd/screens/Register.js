@@ -16,7 +16,7 @@ export function RegisterPage({ navigation }) {
     //Ip para el fetch desde la web: 127.0.0.1:8000
     //Ip para el fetch desde el emulador: 10.0.2.2:8000
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/register/', {
+      const response = await fetch('https://marlin-backend.vercel.app/api/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ const useSelectedStoreType = (categoryId) => {
 
     const getStores = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/stores/");
+            const response = await fetch("https://marlin-backend.vercel.app/api/stores/");
             const data = await response.json();
             const filteredData = data.filter(item => item.store_type.includes(categoryId));
             const formattedData = filteredData.map(item => ({

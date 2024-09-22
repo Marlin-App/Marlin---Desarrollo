@@ -10,6 +10,7 @@ import { MainTabNavigator } from './navigation/MainTabNavigator';
 import { NativeWindStyleSheet } from "nativewind";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -33,6 +34,8 @@ useEffect(() => {
     }
     prepare();
 }, [])
+
+AsyncStorage.removeItem('@cart');
 
 const onLayout = useCallback(async () => {
     if (fontsLoaded) {

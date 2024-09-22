@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Text, View, Button, Item, FlatList, SafeAreaView, SectionList, Pressable, Image } from 'react-native';
 import useStoreType from '../hooks/useStoreType';
-import image from '../assets/img/category.svg';
-import imageWhite from '../assets/img/categoryWhite.svg';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function StoreCat({ navigation }) {
 
@@ -43,19 +42,14 @@ export function StoreCat({ navigation }) {
 
             <SafeAreaView>
                 <SectionList
-                    className="flex-1"
                     sections={allCategories}
                     horizontal={true}
                     renderItem={({ item }) => (
                         <View>
                             <Pressable onPress={() => handleCategorySelect(item.id)}>
                                 <View className="my-4 mx-2 items-center">
-                                    <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId === item.id ? 'bg-main-blue' : ''}`}>
-                                        <Image
-                                            source={selectedCategoryId === item.id ? imageWhite : image}
-                                            className="w-full h-12 rounded-lg"
-                                            resizeMode="cover"
-                                        />
+                                    <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''}`}>
+                                    <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == item.id ? "white" : "black"} />
                                     </View>
                                     <Text className="text-lg text-center text-light-blue">{item.name}</Text>
                                 </View>
@@ -66,7 +60,7 @@ export function StoreCat({ navigation }) {
             </SafeAreaView>
 
             <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Tiendas de esta categoría</Text>
-            <SafeAreaView  className="flex-1 items-center">
+            <SafeAreaView  className="items-center">
                 <FlatList
                     data={storeSelected}
                     numColumns={2}
@@ -75,7 +69,7 @@ export function StoreCat({ navigation }) {
                             <View className="my-4 mx-2">
                                 <View className="border-[0.5px] border-black rounded-lg w-[40vw] h-[40vw]">
                                     <Image
-                                        source={item.picture}
+                                        source={{ uri: item.picture }}
                                         className="rounded-lg w-full h-full"
                                         resizeMode="cover"
                                     />
