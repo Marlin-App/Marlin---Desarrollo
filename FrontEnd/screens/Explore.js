@@ -98,29 +98,43 @@ export function ExploreScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white">
-            <View className="w-full flex-col px-4 bg-main-blue h-[92px] justify-center ">
-                    <View className="flex-row justify-between">
-                        <View className="flex-row  text-center bg-grey-light rounded-lg">
-                            <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
-                                <MaterialCommunityIcons name="magnify" size={30} color="white" />
-                            </View>
-                            <TextInput
-                                className="ml-2 w-52 my-4 text-md  text-light-blue font-Excon_regular"
-                                placeholder='Buscar'
-                            />
-                        </View>
-                        <View className="flex-row items-center justify-center gap-x-4 ">
-                            <Ionicons name="notifications-outline" size={24} color="white" />
-                            <View className="flex-row items-center justify-center relative">
-                                <Pressable onPress={() => navigation.navigate("Cart")}>
-                                    <Feather name="shopping-bag" size={24} color="white" />
-                                </Pressable>
-
-                            </View>
+            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
+                <View className="flex-row justify-between w-full">
+                    <View className="flex-row items-center">
+                        <Text className="text-white text-lg font-Excon_regular">
+                            Carr. Interamericana Norte
+                        </Text>
+                        <AntDesign name="down" size={18} color="white" />
                     </View>
-                </View>
-
+                    <View className="flex-row items-center justify-center gap-x-4 ">
+                        <Ionicons name="notifications-outline" size={24} color="white" />
+                        <View className="flex-row items-center justify-center relative">
+                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                                <Feather name="shopping-bag" size={24} color="white" />
+                            </Pressable>
+                            
+                        </View>
+                    </View>
+                </View>    
             </View>
+
+            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2">
+                <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
+                    <MaterialCommunityIcons name="magnify" size={30} color="white" />
+                </View>
+                <TextInput className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
+                    placeholder='Buscar Producto'
+                />
+            </View>
+
+            <Text style={{
+                borderBottomColor: '#015DEC',
+                borderBottomWidth: 2,
+                opacity: 0.2,
+                marginBottom: 10
+            }}>
+
+            </Text>
             <ScrollView>
                 <FlatList
                     data={verticalData}

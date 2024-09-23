@@ -67,7 +67,7 @@ export function StoreCat({ navigation }) {
 
     return (
         <View className=" bg-white">
-            <View className="w-full flex-col px-4 bg-main-blue py-8">
+            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">
@@ -92,7 +92,7 @@ export function StoreCat({ navigation }) {
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </View>
                         <TextInput className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
-                            placeholder='Buscar'
+                            placeholder='Buscar Tienda'
                         />
                     </View>
             <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
