@@ -127,14 +127,8 @@ export function ExploreScreen({ navigation }) {
                 />
             </View>
 
-            <Text style={{
-                borderBottomColor: '#015DEC',
-                borderBottomWidth: 2,
-                opacity: 0.2,
-                marginBottom: 10
-            }}>
+            
 
-            </Text>
             <ScrollView>
                 <FlatList
                     data={verticalData}

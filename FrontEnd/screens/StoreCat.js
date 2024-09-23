@@ -86,15 +86,19 @@ export function StoreCat({ navigation }) {
                     </View>
                 </View>    
             </View>
-            <View className="p-2 bg-white">
-            <View className="flex-row text-center mt-5 bg-grey-light rounded-lg">
-                        <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
-                            <MaterialCommunityIcons name="magnify" size={30} color="white" />
-                        </View>
-                        <TextInput className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
-                            placeholder='Buscar Tienda'
-                        />
-                    </View>
+
+            <View className="flex-row text-center mt-5 mb-2 bg-grey-light rounded-lg mx-2">
+                <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
+                    <MaterialCommunityIcons name="magnify" size={30} color="white" />
+                </View>
+                <TextInput className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
+                    placeholder='Buscar Tiendas'
+                />
+            </View>
+
+            <View className="px-2">
+
+            
             <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
 
             <SafeAreaView>
@@ -141,7 +145,7 @@ export function StoreCat({ navigation }) {
                     keyExtractor={item => item.id}
                 />
             </SafeAreaView>
-            </View>
+        </View>
         </View>
     );
 }
