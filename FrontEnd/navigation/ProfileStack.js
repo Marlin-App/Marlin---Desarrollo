@@ -38,6 +38,7 @@ export function ProfileStackScreen({ navigation, route }) {
         component={RegisterPage}
         options={{ headerShown: false }}
       />
+      
 
       <ProfileStack.Screen
         name="CardScreen"

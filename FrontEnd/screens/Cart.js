@@ -8,7 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import useCart from '../hooks/useCart'
 
 
-export function CartScreen({navigation}) {
+export function CartScreen({ navigation }) {
 
     const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart, addToCart, total } = useCart();
 
@@ -45,7 +45,7 @@ export function CartScreen({navigation}) {
             }
 
         });
-        
+
         if (!fontsLoaded) return null;
 
         return () => {
@@ -65,7 +65,7 @@ export function CartScreen({navigation}) {
 
     }, []);
 
-    
+
 
     useEffect(() => {
         const initializeCart = async () => {
@@ -96,7 +96,7 @@ export function CartScreen({navigation}) {
                         }}
                     >
                         <Image
-                             source={ item.picture }
+                            source={item.picture}
                             className=" rounded-lg"
                             style={{ width: 100, height: 100 }}
                         />
@@ -180,8 +180,8 @@ export function CartScreen({navigation}) {
                                 marginBottom: 10,
                             },
                         ]}
-                       
-                    >   
+
+                    >
                         <Text className="text-main-blue font-Excon_regular text-[20px] text-center">Pagar</Text>
                     </Pressable>
                 </View>

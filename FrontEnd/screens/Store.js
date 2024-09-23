@@ -38,38 +38,38 @@ export function Store({ navigation }) {
                     </View>
                 </View>
                 <Image
-                    source={{ uri: route.params.store.picture }} 
+                    source={{ uri: route.params.store.picture }}
                     className="w-full my-4 h-28"
                     resizeMode="stretch"
                 />
                 <View>
 
-                        {!loading ? (
-                            <FlatList
-                                data={dataArray}
-                                numColumns={2}
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
-                                        <View className="my-2 mx-4 items-start">
-                                            <View className=" rounded-lg w-40 h-40 ">
-                                                <Image
-                                                    source={{ uri: item.picture }} // Suponiendo que sea una URL
-                                                    className="w-full h-full rounded-lg"
-                                                    resizeMode="stretch"
-                                                />
-                                            </View>
-                                            <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
-                                            <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
+                    {!loading ? (
+                        <FlatList
+                            data={dataArray}
+                            numColumns={2}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
+                                    <View className="my-2 mx-4 items-start">
+                                        <View className=" rounded-lg w-40 h-40 ">
+                                            <Image
+                                                source={{ uri: item.picture }} // Suponiendo que sea una URL
+                                                className="w-full h-full rounded-lg"
+                                                resizeMode="stretch"
+                                            />
                                         </View>
-                                    </TouchableOpacity>
-                                )}
-                                keyExtractor={item => item.id.toString()}
-                            />
-                        ) : (
-                           
-                            <ActivityIndicator size="large" color="#3498db" />
-                            
-                        )}
+                                        <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
+                                        <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={item => item.id.toString()}
+                        />
+                    ) : (
+
+                        <ActivityIndicator size="large" color="#3498db" />
+
+                    )}
 
                 </View>
             </ScrollView>

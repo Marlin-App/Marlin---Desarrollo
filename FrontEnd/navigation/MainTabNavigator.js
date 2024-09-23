@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SearchScreen } from "../screens/Search";
 import { HomeScreen } from "../screens/Home";
 import { NotificationScreen } from "../screens/Notification";
 import { ProfileStackScreen } from "./ProfileStack";
+import { ExplorerStack } from "./ExplorerStack";
 import { CardScreen } from "../screens/CardScreen";
 import { Keyboard, Platform } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Ionicons from "@expo/vector-icons/Ionicons";
+import Ionicons from '@expo/vector-icons/Ionicons';;
 import Feather from "@expo/vector-icons/Feather";
 import { HomeStackScreen } from "./HomeStack";
+import { StoreCat } from "../screens/StoreCat";
+import { CartScreen } from '../screens/Cart';
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 const Tab = createBottomTabNavigator();
 
@@ -42,6 +46,30 @@ export function MainTabNavigator() {
         };
     }, []);
 
+    const [fontsLoaded] = useFonts({
+        Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
+        Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
+        Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
+        Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
+        Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
+    });
+
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, []);
+
+    const onLayout = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    if (!fontsLoaded) return null;
+
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -53,6 +81,7 @@ export function MainTabNavigator() {
                 tabBarLabelStyle: {
                     fontSize: 15,
                     marginTop: -20,
+                    fontFamily: "Excon_regular",
                 },
                 tabBarStyle: {
                     backgroundColor: "#015DEC",
@@ -74,34 +103,25 @@ export function MainTabNavigator() {
                         <MaterialIcons name="home" size={30} color={color} />
                     ),
                 }}
+
             />
 
             <Tab.Screen
-                name="Buscar"
-                component={SearchScreen}
+                name="Explorar"
+                component={ExplorerStack}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="search" size={30} color={color} />
+                        <Feather name="search" size={30} color={color} />
                     ),
                 }}
             />
 
-            {/* <Tab.Screen
-                name="Mensajes"
-                component={ProfileStackScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Ionicons name="chatbox-outline" size={30} color={color} />
-                    ),
-                }}
-            /> */}
-
             <Tab.Screen
-                name="Favoritos"
-                component={ProfileStackScreen}
+                name="Tiendas"
+                component={StoreCat}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome name="heart-o" size={30} color={color} />
+                        <MaterialIcons name="store-mall-directory" size={30} color={color} />
                     ),
                 }}
             />

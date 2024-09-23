@@ -177,20 +177,7 @@ export function HomeScreen({ navigation }) {
             );
         }
 
-        return (
-            <View className="p-2 my-2 mt-0 bg-white" onLayout={onLayout}>
-                <Text className="ml-4 mt-2 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
-                <FlatList
-                    data={item.horizontalData}
-                    renderItem={
-                        item.type === "category" ? renderHorizontalC : renderHorizontalItem
-                    }
-                    keyExtractor={(horizontalItem) => horizontalItem.id}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                />
-            </View>
-        );
+        
     };
 
     if (loading) {
@@ -211,7 +198,7 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white">
-            <View className="w-full flex-col px-4 bg-main-blue py-12">
+            <View className="w-full flex-col px-4 bg-main-blue py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">

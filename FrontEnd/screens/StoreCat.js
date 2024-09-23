@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Text, View, Button, Item, FlatList, SafeAreaView, SectionList, Pressable, Image } from 'react-native';
+import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image } from 'react-native';
 import useStoreType from '../hooks/useStoreType';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import image from '../assets/img/fondoLanding.png';
 
 export function StoreCat({ navigation }) {
 
     const { allCategories, allStores } = useStoreType();
     const [categoryId, setCategoryId] = useState(null);
-   
     const [storeSelected, setStoreSelected] = useState([]);
 
     useEffect(() => {
@@ -37,7 +41,35 @@ export function StoreCat({ navigation }) {
     };
 
     return (
-        <View className="p-2 bg-white">
+        <View className=" bg-white">
+            <View className="w-full flex-col px-4 bg-main-blue py-8">
+                <View className="flex-row justify-between w-full">
+                    <View className="flex-row items-center">
+                        <Text className="text-white text-lg font-Excon_regular">
+                            Carr. Interamericana Norte
+                        </Text>
+                        <AntDesign name="down" size={18} color="white" />
+                    </View>
+                    <View className="flex-row items-center justify-center gap-x-4 ">
+                        <Ionicons name="notifications-outline" size={24} color="white" />
+                        <View className="flex-row items-center justify-center relative">
+                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                                <Feather name="shopping-bag" size={24} color="white" />
+                            </Pressable>
+                            
+                        </View>
+                    </View>
+                </View>    
+            </View>
+            <View className="p-2 bg-white">
+            <View className="flex-row text-center mt-5 bg-grey-light rounded-lg">
+                        <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
+                            <MaterialCommunityIcons name="magnify" size={30} color="white" />
+                        </View>
+                        <TextInput className="ml-2 py-4 w-full text-md font-Erode_regular"
+                            placeholder='Buscar'
+                        />
+                    </View>
             <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
 
             <SafeAreaView>
@@ -84,6 +116,7 @@ export function StoreCat({ navigation }) {
                     keyExtractor={item => item.id}
                 />
             </SafeAreaView>
+            </View>
         </View>
     );
 }
