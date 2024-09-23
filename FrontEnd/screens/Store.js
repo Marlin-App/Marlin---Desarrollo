@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Text, View, Image, Pressable, TextInput, ScrollView, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import fusion from '../assets/fusion.png';
 import surf from '../assets/boysurf.png';
@@ -6,6 +6,8 @@ import pant from '../assets/pant.png';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useStoreItem from '../hooks/useStoreItem';
 import { useRoute } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 export function Store({ navigation }) {
 
@@ -13,6 +15,31 @@ export function Store({ navigation }) {
     console.log(route.params);
     const { data, loading } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
+
+
+    const [fontsLoaded] = useFonts({
+        Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
+        Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
+        Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
+        Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
+        Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
+    });
+
+    useEffect(() => {
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    }, []);
+
+    const onLayout = useCallback(async () => {
+        if (fontsLoaded) {
+            await SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    if (!fontsLoaded) return null;
+
     return (
         <View className="h-full bg-white">
             <Image
@@ -32,7 +59,7 @@ export function Store({ navigation }) {
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </View>
                         <TextInput
-                            className="ml-2 py-4 w-full text-md font-Erode_regular"
+                            className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
                             placeholder='Buscar'
                         />
                     </View>

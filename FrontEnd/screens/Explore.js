@@ -105,7 +105,7 @@ export function ExploreScreen({ navigation }) {
                                 <MaterialCommunityIcons name="magnify" size={30} color="white" />
                             </View>
                             <TextInput
-                                className="ml-2 w-52 my-4 text-md font-Erode_regular"
+                                className="ml-2 w-52 my-4 text-md  text-light-blue font-Excon_regular"
                                 placeholder='Buscar'
                             />
                         </View>
