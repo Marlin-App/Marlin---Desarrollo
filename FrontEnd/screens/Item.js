@@ -116,7 +116,7 @@ export function ItemPage({ navigation }) {
             <View className="px-8">
                 <Image
                     className="w-full h-[400] rounded-3xl bg-black mt-10 mb-3"
-                    source={ product.picture }
+                    source={{uri: product.picture} }
                     resizeMode="cover"
                     onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
                 />

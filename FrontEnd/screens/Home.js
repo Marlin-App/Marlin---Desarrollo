@@ -85,7 +85,7 @@ export function HomeScreen({ navigation }) {
                 description: item.description,
                 price: `$${item.price}`,
                 stock: item.stock,
-                picture: { uri: item.picture },
+                picture:  item.picture ,
                 storeId: item.storeId,
                 item_type: item.item_type
             }))
@@ -119,7 +119,7 @@ export function HomeScreen({ navigation }) {
             <View className="my-2 mx-4 items-start">
                 <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
                     <Image
-                        source={item.picture}
+                        source={{ uri: item.picture }}
                         className="w-full h-full rounded-lg"
                         resizeMode="stretch"
                     />
