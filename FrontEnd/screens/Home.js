@@ -9,6 +9,7 @@ import useCart from '../hooks/useCart';
 import useItems from '../hooks/useItems';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import HomeCarousel from '../components/CarouselHome';
 
 
 export function HomeScreen({ navigation }) {
@@ -198,7 +199,7 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white">
-            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16 mb-2">
+            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-lg font-Excon_regular">
@@ -222,6 +223,9 @@ export function HomeScreen({ navigation }) {
                     </View>
                 </View>
                 
+            </View>
+            <View>
+            <HomeCarousel />
             </View>
             <ScrollView>
                 <FlatList
