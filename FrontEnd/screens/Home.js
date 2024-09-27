@@ -224,10 +224,9 @@ export function HomeScreen({ navigation }) {
                 </View>
                 
             </View>
-            <View>
-            <HomeCarousel />
-            </View>
+
             <ScrollView>
+            <HomeCarousel />
                 <FlatList
                     data={verticalData}
                     renderItem={renderVerticalItem}

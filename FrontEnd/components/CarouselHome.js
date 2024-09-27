@@ -19,7 +19,7 @@ export default CarouselHome = () => {
                 CarouselInfoRef.current.scrollToIndex({ index: nextIndex, animated: true });
                 return nextIndex;
             });
-        }, 3000); // Cambia el tiempo según tus necesidades
+        }, 5000); // Cambia el tiempo según tus necesidades
 
         return () => clearInterval(interval);
     }, [CarouselInfo.length]);
