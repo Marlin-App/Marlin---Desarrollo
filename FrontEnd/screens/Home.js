@@ -86,7 +86,7 @@ export function HomeScreen({ navigation }) {
                 description: item.description,
                 price: `$${item.price}`,
                 stock: item.stock,
-                picture:  item.picture ,
+                picture: item.picture,
                 storeId: item.storeId,
                 item_type: item.item_type
             }))
@@ -118,7 +118,9 @@ export function HomeScreen({ navigation }) {
     const renderHorizontalItem = ({ item }) => (
         <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
-                <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
+                <View className="shadow-lg rounded-lg w-40 h-40"
+                style={{shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.15, shadowRadius: 2.84, elevation: 3 }}
+                >
                     <Image
                         source={{ uri: item.picture }}
                         className="w-full h-full rounded-lg"
@@ -139,7 +141,7 @@ export function HomeScreen({ navigation }) {
                         source={item.image}
                         className="w-full h-full rounded-full"
                         resizeMode="contain"
-                        />
+                    />
                 </View>
                 <Text className="text-lg text-center text-light-blue">{item.title}</Text>
                 <Text className="text-sm text-center text-light-blue">{item.subtitle}</Text>
@@ -178,7 +180,7 @@ export function HomeScreen({ navigation }) {
             );
         }
 
-        
+
     };
 
     if (loading) {
@@ -222,11 +224,11 @@ export function HomeScreen({ navigation }) {
                         </View>
                     </View>
                 </View>
-                
+
             </View>
 
             <ScrollView>
-            <HomeCarousel />
+                    <HomeCarousel />
                 <FlatList
                     data={verticalData}
                     renderItem={renderVerticalItem}

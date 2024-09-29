@@ -5,7 +5,7 @@ import HomeCarouselItem from "./HomeCarouselItem";
 import { useRef, useState, useEffect } from "react";
 
 
-export default CarouselHome = () => {
+export default CarouselHome = ({navigation}) => {
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const CarouselInfoRef = useRef(null);
@@ -19,7 +19,7 @@ export default CarouselHome = () => {
                 CarouselInfoRef.current.scrollToIndex({ index: nextIndex, animated: true });
                 return nextIndex;
             });
-        }, 5000); // Cambia el tiempo según tus necesidades
+        }, 8000); // Cambia el tiempo según tus necesidades
 
         return () => clearInterval(interval);
     }, [CarouselInfo.length]);
@@ -34,7 +34,7 @@ export default CarouselHome = () => {
         <View>
             <FlatList
                 data={CarouselInfo}
-                renderItem={({ item }) => <HomeCarouselItem item={item} />}
+                renderItem={({ item }) => <HomeCarouselItem item={item} navigation={navigation} />}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled
