@@ -96,7 +96,7 @@ export function CartScreen({ navigation }) {
                         }}
                     >
                         <Image
-                            source={item.picture}
+                            source={{uri:item.picture}}
                             className=" rounded-lg"
                             style={{ width: 100, height: 100 }}
                         />

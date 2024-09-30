@@ -40,13 +40,40 @@ export function Store({ navigation }) {
 
     if (!fontsLoaded) return null;
 
+    useEffect(() => {
+        navigation.getParent().setOptions({
+            tabBarStyle: {
+                backgroundColor: '#0038A2',
+                display: 'none',
+                height: 80,
+                justifyContent: 'center',
+                paddingBottom: 10,
+            }
+
+        });
+
+        return () => {
+
+            navigation.getParent().setOptions({
+                tabBarStyle: {
+                    backgroundColor: '#015DEC',
+                    display: 'flex',
+                    height: 80,
+                    justifyContent: 'center',
+                    paddingBottom: 10,
+                }
+
+            });
+        }
+    }, []);
+
     return (
         <View className="h-full bg-white">
             <Image
                 source={fusion}
                 className="w-full h-28"
             />
-            <ScrollView>
+           
                 <View className="px-4">
                     <View className="flex-row justify-center items-center">
                         <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">{route.params.store.name} </Text>
@@ -99,7 +126,7 @@ export function Store({ navigation }) {
                     )}
 
                 </View>
-            </ScrollView>
+            
         </View>
     );
 }

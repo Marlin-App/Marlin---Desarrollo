@@ -50,7 +50,7 @@ export function LoginPage({ navigation }) {
     <View className="flex-1  bg-white"   >
        
         {isLoading ? (
-           <View className={`w-full h-full justify-center items-center absolute z-10  bg-white ${isLoading ? 'blur-sm' : 'blur-0'}`}>
+           <View className={`w-full h-full justify-center items-center absolute z-10  `}>
           <ActivityIndicator size="large" color="#3498db" />
           </View>
         ): null}

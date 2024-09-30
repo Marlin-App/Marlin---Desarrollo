@@ -9,6 +9,7 @@ import * as React from "react";
 import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { LandingPage } from '../screens/landing';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -46,6 +47,12 @@ export function HomeStackScreen({ navigation, route }) {
         options={{ headerShown: false }}
       />
 
+<HomeStack.Screen
+        name="Landing"
+        component={LandingPage}
+        options={{ headerShown: true }}
+      />
+
       <HomeStack.Screen
         name="Item"
         component={ItemPage}
@@ -62,32 +69,6 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         name="Cart"
         component={CartScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
-          headerTitleStyle: {
-            fontFamily: 'Excon_regular',
-          }
-        }}
-      />
-
-      <HomeStack.Screen
-        name="StoreCat"
-        component={StoreCat}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
-          headerTitleStyle: {
-            fontFamily: 'Excon_regular',
-          }
-        }}
-      />
-
-      <HomeStack.Screen
-        name="Store"
-        component={Store}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',

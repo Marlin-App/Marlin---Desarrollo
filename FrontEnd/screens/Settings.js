@@ -9,6 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useFonts } from 'expo-font';
 import { useIsFocused } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
+import { styled, useColorScheme } from "nativewind";
 
 const base64UrlDecode = (base64Url) => {
   let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -38,6 +39,7 @@ export function ProfileScreen({ navigation }) {
   
   const [user, setUser] = useState({});
   const isFocused = useIsFocused();
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   
   useEffect(() => {
     const loadUser = async () => {
@@ -75,9 +77,9 @@ export function ProfileScreen({ navigation }) {
   };
 
   return (
-    <ScrollView className="py-8 bg-white">
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white">
-      <Text className="font-Excon_bold bottom-4 text-2xl">Configuración de Usuario</Text>
+    
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} className="px-8 bg-white dark:bg-black">
+      <Text className="font-Excon_bold bottom-4 text-2xl dark:text-white">Configuración de Usuario</Text>
       <View className="flex flex-row justify-center items-center">
         <View className="flex justify-center items-center  w-28 h-28 rounded-full">
           <Image
@@ -86,90 +88,92 @@ export function ProfileScreen({ navigation }) {
           />
         </View>
         <View className="ml-6">
-          <Text className="text-lg text-gray-600 font-Erode_medium">{user.username} </Text>
-          <Text className="text-sm text-gray-600 font-Erode_regular">{user.email} </Text>
+          <Text className="text-lg dark:text-white font-Erode_regular  ">{user.username} </Text>
+          <Text className="text-sm dark:text-white  font-Erode_regular">{user.email} </Text>
         </View>
       </View>
 
       <View className="w-full mt-4">
-        <Text className="text-lg font-Excon_bold mb-4">Perfil</Text>
+        <Text className="text-lg font-Excon_bold mb-4 dark:text-white ">Perfil</Text>
 
         <Pressable className="flex-row justify-between border-b-2 border-light-blue">
           <View className="flex-row gap-2">
             <Feather name="user" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Información</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Información</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
         <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue" onPress={() => navigation.navigate("DirectionScreen")}>
           <View className="flex-row gap-2">
             <Feather name="map-pin" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Direcciones</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Direcciones</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
         <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue" onPress={() => navigation.navigate("CardScreen")}>
           <View className="flex-row gap-2">
             <MaterialIcons name="payment" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Metodos de pago</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Metodos de pago</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
         <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue">
           <View className="flex-row gap-2">
             <MaterialIcons name="history" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Historial de compras</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Historial de compras</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
       </View>
 
       <View className="w-full mt-6">
-        <Text className="text-lg font-Excon_bold mb-4">Ajustes de la aplicación</Text>
+        <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
 
         <Pressable className=" flex-row justify-between  border-b-2 border-light-blue">
           <View className="flex-row gap-2">
             <Entypo name="language" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">idioma</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">idioma</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
-        <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue">
+        <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue"
+          onPress={() => toggleColorScheme()}
+        >
           <View className="flex-row gap-2">
             <Ionicons name="color-palette-outline" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Tema de la aplicación </Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Tema de la aplicación </Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
 
         <Pressable className=" flex-row justify-between mt-5 border-b-2 border-light-blue">
           <View className="flex-row gap-2">
           <Ionicons name="notifications-outline" size={24} color="#015DEC" />
-            <Text className="text-center font-Erode_regular">Notificaciones</Text>
+            <Text className="text-center font-Erode_regular dark:text-white">Notificaciones</Text>
           </View>
-          <Text className="text-light-blue">{">"}</Text>
+          <Text className="text-light-blue dark:text-white">{">"}</Text>
         </Pressable>
       </View>
 
       <View className='w-full mt-6'>
         <Pressable className='flex-row items-center py-4 flex gap-3'>
         <AntDesign name="questioncircleo" size={24} color="#015DEC" />
-          <Text>FAQs</Text>
+          <Text className="dark:text-white" >FAQs</Text>
         </Pressable>
 
         <Pressable className='flex-row flex gap-3 items-center'
           onPress={handleLogout}
         >
         <MaterialIcons name="logout" size={24} color="#015DEC" />
-          <Text className=''>Cerrar Sesión</Text>
+          <Text className='dark:text-white'>Cerrar Sesión</Text>
         </Pressable>
       </View>
     </View>
-    </ScrollView>
+    
   );
 }

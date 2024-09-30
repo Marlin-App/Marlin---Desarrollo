@@ -3,6 +3,7 @@ import { useState, useEffect} from 'react';
 const useStoreType = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [allStores, setAllStores] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getStoreCat = async () => {
         try {
@@ -17,11 +18,13 @@ const useStoreType = () => {
                     }))
                 }
             ];
+            formattedData1[0].data.unshift({id: null, name: 'Todas'});
             setAllCategories(formattedData1);
 
             const response2 = await fetch("https://marlin-backend.vercel.app/api/stores/");
             const data2 = await response2.json();
             setAllStores(data2);
+            setLoading(false);
         } catch (error) {
             console.error('Error en el registro:', error);
         }
@@ -29,7 +32,7 @@ const useStoreType = () => {
     useEffect(() => {
         getStoreCat();
     }, []);
-    return {allCategories, allStores};
+    return {allCategories, allStores, loading};
 };
 
 export default useStoreType;

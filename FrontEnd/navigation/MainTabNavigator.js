@@ -11,8 +11,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from '@expo/vector-icons/Ionicons';;
 import Feather from "@expo/vector-icons/Feather";
 import { HomeStackScreen } from "./HomeStack";
-import { StoreCat } from "../screens/StoreCat";
-import { CartScreen } from '../screens/Cart';
+import { StoreStackScreen } from "./StoreStack";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -118,7 +117,7 @@ export function MainTabNavigator() {
 
             <Tab.Screen
                 name="Tiendas"
-                component={StoreCat}
+                component={StoreStackScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="store-mall-directory" size={30} color={color} />
