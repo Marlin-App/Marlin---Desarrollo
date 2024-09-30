@@ -84,7 +84,7 @@ export function HomeScreen({ navigation }) {
                 id: item.id.toString(),
                 name: item.name,
                 description: item.description,
-                price: `$${item.price}`,
+                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC' })}`,
                 stock: item.stock,
                 picture:  item.picture ,
                 storeId: item.storeId,

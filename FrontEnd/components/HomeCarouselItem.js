@@ -13,7 +13,7 @@ const HomeCarouselItem = ({ item, navigation }) => {
           style={{ width, height: height / 3.5 }}
         />
       </View>
-      <View style={styles.overlay} className="items-center justify-center"/>
+      {/* <View style={styles.overlay} className="items-center justify-center"/> */}
 
       <View className="absolute flex items-center m-auto top-4 bottom-0 left-0 right-0">
         <Text className="text-white text-3xl font-bold text-center">{item.title}</Text>

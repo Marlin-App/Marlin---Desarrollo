@@ -100,7 +100,7 @@ export function ItemPage({ navigation }) {
                 }}>
                 <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Se agrego el producto al carrito!</Text>
+                    <Text style={styles.modalText}>Se agrego el producto {product.name} al carrito!</Text>
                     <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => {
@@ -108,7 +108,7 @@ export function ItemPage({ navigation }) {
                         navigation.goBack(); 
                       }}
                     >
-                    <Text style={styles.textStyle}>carrar</Text>
+                    <Text style={styles.textStyle}>cerrar</Text>
                     </Pressable>
                 </View>
                 </View>
@@ -132,7 +132,7 @@ export function ItemPage({ navigation }) {
             </View>
 
             <View className="absolute bg-main-blue p-5 w-full bottom-0">
-                <Text className="text-xl font-bold text-white mb-4">Precio: ₡ {product.price}</Text>
+                <Text className="text-xl font-bold text-white mb-4">Precio:{product.price}</Text>
 
                 <View className="flex-row justify-between pb-3">
                     <View className="flex-row ">
@@ -143,7 +143,7 @@ export function ItemPage({ navigation }) {
                             className="w-16 text-center text-lg bg-white text-main-blue"
                             keyboardType="numeric"
                             value={String(quantity)}
-                            onChangeText={(value) => setQuantity(Number(value))}
+                            onChangeText={(value) => setQuantity(Number(value.replace(/[^0-9]/g, '')))}                        
                         />
                         <TouchableOpacity className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3" onPress={increaseQuantity}>
                             <Text className="text-main-blue text-lg">+</Text>
