@@ -147,6 +147,21 @@ export function HomeScreen({ navigation }) {
         </Pressable>
     );
 
+    const renderStoreItem = ({ item }) => (
+        <TouchableOpacity onPress={() => navigation.navigate('Store', { store: item })}>
+            <View className="my-2 mx-4 items-center">
+                <View className="bg-white rounded-lg shadow-lg w-40 h-40 p-2">
+                    <Image
+                        source={item.image}
+                        className="w-full h-full rounded-lg"
+                        resizeMode="cover"
+                    />
+                </View>
+                <Text className="text-lg font-bold text-center text-light-blue mt-2">{item.title}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
     const renderVerticalItem = ({ item }) => {
         if (item.id === "2") {
             const firstHalf = item.horizontalData.slice(
@@ -170,6 +185,19 @@ export function HomeScreen({ navigation }) {
                     <FlatList
                         data={secondHalf}
                         renderItem={renderHorizontalItem}
+                        keyExtractor={(horizontalItem) => horizontalItem.id}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+            );
+        } else if (item.type === "store") {
+            return (
+                <View className="p-2 my-2" onLayout={onLayout}>
+                    <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                    <FlatList
+                        data={item.horizontalData}
+                        renderItem={renderStoreItem}
                         keyExtractor={(horizontalItem) => horizontalItem.id}
                         horizontal
                         showsHorizontalScrollIndicator={false}
