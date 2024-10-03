@@ -101,16 +101,7 @@ export function StoreCat({ navigation }) {
 
     const sectionListRef = useRef(null);
 
-    /* useEffect(() => {
-        const scrollToSectionItem = (sectionIndex, itemIndex) => {
-            sectionListRef.current?.scrollToLocation({
-                sectionIndex,
-                itemIndex,
-                animated: true,
-            });
-        };
-        scrollToSectionItem(1, 2);
-    }, [loading==true]); */
+    
 
     return (
         <View className="bg-white flex-1 " onLayout={onLayout}>

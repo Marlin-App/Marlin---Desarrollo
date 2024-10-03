@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart'
 export function ItemPage({ navigation }) {
@@ -15,7 +15,9 @@ export function ItemPage({ navigation }) {
         'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
         'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
     })
-
+    
+    
+    
     useEffect(() => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
@@ -47,46 +49,12 @@ export function ItemPage({ navigation }) {
             setQuantity(quantity - 1);
         }
     };
-
-    useEffect(() => {
-        navigation.getParent().setOptions({
-            tabBarStyle: {
-                backgroundColor: '#0038A2',
-                display: 'none',
-                height: 80,
-                justifyContent: 'center',
-                paddingBottom: 10,
-            }
-
-        });
-
-        return () => {
-
-            navigation.getParent().setOptions({
-                tabBarStyle: {
-                    backgroundColor: '#015DEC',
-                    display: 'flex',
-                    height: 80,
-                    justifyContent: 'center',
-                    paddingBottom: 10,
-                }
-
-            });
-        }
-    }, []);
-
+   
     
     const handleAddToCart = () => { 
         setModalVisible(!modalVisible);
         addToCart({ ...product, cantidad: quantity }); 
     };
-
-
-
-
-    
-
-
 
     return (
         <View className="flex-grow-1 bg-white h-full">  

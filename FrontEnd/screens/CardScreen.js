@@ -20,36 +20,6 @@ export function CardScreen({ navigation }) {
       { id: 3, type: 'SinpeMovil' },
     ];
 
-    useEffect(() => {
-      navigation.getParent().setOptions({
-        tabBarStyle: {
-          backgroundColor: '#0038A2',
-                      display: 'none',
-                      height: 80,
-                      justifyContent: 'center',
-                      paddingBottom: 10,
-        }
-  
-      });
-  
-      return () => {
-  
-        navigation.getParent().setOptions({
-          tabBarStyle: {
-            backgroundColor: '#015DEC',
-            display: 'flex',
-            height: 80,
-            justifyContent: 'center',
-            paddingBottom: 10,
-          }
-  
-        });
-      }
-  
-  
-    }, []);
-  
-
     return (
         <View className="flex-1 bg-white p-4">
           <TouchableOpacity className="flex-row items-center mb-4">

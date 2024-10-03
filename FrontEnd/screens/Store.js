@@ -40,32 +40,7 @@ export function Store({ navigation }) {
 
     if (!fontsLoaded) return null;
 
-    useEffect(() => {
-        navigation.getParent().setOptions({
-            tabBarStyle: {
-                backgroundColor: '#0038A2',
-                display: 'none',
-                height: 80,
-                justifyContent: 'center',
-                paddingBottom: 10,
-            }
-
-        });
-
-        return () => {
-
-            navigation.getParent().setOptions({
-                tabBarStyle: {
-                    backgroundColor: '#015DEC',
-                    display: 'flex',
-                    height: 80,
-                    justifyContent: 'center',
-                    paddingBottom: 10,
-                }
-
-            });
-        }
-    }, []);
+   
 
     return (
         <View className="h-full bg-white">
@@ -98,7 +73,8 @@ export function Store({ navigation }) {
                 />
                 <View>
 
-                    {!loading ? (
+                    {!loading  ? (
+                        
                         <FlatList
                             data={dataArray}
                             numColumns={2}
@@ -107,7 +83,7 @@ export function Store({ navigation }) {
                                     <View className="my-2 mx-4 items-start">
                                         <View className=" rounded-lg w-40 h-40 ">
                                             <Image
-                                                source={{ uri: item.picture }} // Suponiendo que sea una URL
+                                                source={{ uri: item.picture }} 
                                                 className="w-full h-full rounded-lg"
                                                 resizeMode="stretch"
                                             />
