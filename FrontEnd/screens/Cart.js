@@ -171,7 +171,8 @@ export function CartScreen({ navigation }) {
                 </View>
                 <View>
                     <Pressable
-                        onPress={() => clearCart()}
+                        //onPress={() => clearCart()}
+                        onPress={() => navigation.navigate('Pay')}
                         style={({ pressed }) => [
                             {
                                 backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : 'white',

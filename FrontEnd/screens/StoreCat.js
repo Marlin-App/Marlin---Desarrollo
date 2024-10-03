@@ -33,12 +33,12 @@ export function StoreCat({ navigation }) {
         selectedStore();
     }, [allStores]);
 
-   
+
     const searchStore = (text) => {
-        const filteredData = storeSelected.filter(item => 
-            item.name.toLowerCase().startsWith(text.toLowerCase()) 
+        const filteredData = storeSelected.filter(item =>
+            item.name.toLowerCase().startsWith(text.toLowerCase())
         );
-        
+
         const formattedData2 = filteredData.map(item => ({
             id: item.id,
             name: item.name,
@@ -46,7 +46,7 @@ export function StoreCat({ navigation }) {
             picture: item.picture,
             type: item.store_type,
         }));
-        
+
         setStoreSelected(formattedData2);
     };
 
@@ -135,9 +135,9 @@ export function StoreCat({ navigation }) {
 
             <View className="flex-row text-center mt-5 mb-2 bg-grey-light rounded-lg mx-2">
                 <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
-                    onPress={ () => searchStore(search) }
+                    onPress={() => searchStore(search)}
                 >
-                <MaterialCommunityIcons name="magnify" size={30} color="white" />
+                    <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                 <TextInput
                     className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
@@ -196,7 +196,10 @@ export function StoreCat({ navigation }) {
                                             resizeMode="cover"
                                         />
                                     </View>
-                                    <Text className="text-lg text-light-blue">{item.name}</Text>
+                                    <Text className="text-lg text-light-blue w-40"
+                                        numberOfLines={1}
+                                        ellipsizeMode='tail'
+                                    >{item.name}</Text>
                                     <Text className="text-lg text-light-blue">{item.location}</Text>
                                 </View>
                             </Pressable>

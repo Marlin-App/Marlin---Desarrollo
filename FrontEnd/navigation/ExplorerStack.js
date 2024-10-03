@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ExploreScreen } from '../screens/Explore';
 import { ItemPage } from '../screens/Item';
+import { PayScreen } from '../screens/Pay';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -20,6 +21,19 @@ export function ExplorerStack({ navigation, route }) {
 <ProfileStack.Screen
         name="Item"
         component={ItemPage}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC",
+          headerTitleStyle: {
+            fontFamily: 'Excon_regular',
+          }
+        }}
+      />
+
+<ProfileStack.Screen
+        name="Pay"
+        component={PayScreen}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',

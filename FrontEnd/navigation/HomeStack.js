@@ -10,6 +10,7 @@ import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { LandingPage } from '../screens/landing';
+import { PayScreen } from '../screens/Pay';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -47,7 +48,7 @@ export function HomeStackScreen({ navigation, route }) {
         options={{ headerShown: false }}
       />
 
-<HomeStack.Screen
+      <HomeStack.Screen
         name="Landing"
         component={LandingPage}
         options={{ headerShown: true }}
@@ -76,6 +77,19 @@ export function HomeStackScreen({ navigation, route }) {
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
           }
+        }}
+      />
+
+      <HomeStack.Screen
+        name="Pay"
+        component={PayScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC",
+          headerTitleStyle: {
+            fontFamily: 'Excon_regular',
+          },
         }}
       />
 

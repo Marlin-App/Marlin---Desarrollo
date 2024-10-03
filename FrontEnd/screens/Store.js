@@ -112,7 +112,10 @@ export function Store({ navigation }) {
                                                 resizeMode="stretch"
                                             />
                                         </View>
-                                        <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
+                                        <Text className="text-lg font-bold text-left text-light-blue w-40"
+                                        numberOfLines={1}
+                                        ellipsizeMode='tail'
+                                        >{item.name}</Text>
                                         <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
                                     </View>
                                 </TouchableOpacity>

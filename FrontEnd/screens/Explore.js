@@ -24,10 +24,10 @@ export function ExploreScreen({ navigation }) {
     } = useCart();
 
     const { data: items, loading, error } = useItems();
-    const [ verticalData, setverticalData] = useState([]);
+    const [verticalData, setverticalData] = useState([]);
     const [search, setSearch] = useState('');
 
-   
+
 
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
@@ -68,7 +68,7 @@ export function ExploreScreen({ navigation }) {
         }
     }, [items]);
 
-    
+
     const searchProduct = (text) => {
         const filteredData = items.filter(item =>
             item.name.toLowerCase().startsWith(text.toLowerCase())
@@ -101,7 +101,10 @@ export function ExploreScreen({ navigation }) {
                         resizeMode="stretch"
                     />
                 </View>
-                <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
+                <Text className="text-lg font-bold text-left text-light-blue w-40"
+                    numberOfLines={1}
+                    ellipsizeMode='tail'
+                >{item.name}</Text>
                 <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
             </View>
         </TouchableOpacity>
@@ -131,43 +134,43 @@ export function ExploreScreen({ navigation }) {
                             <Pressable onPress={() => navigation.navigate("Cart")}>
                                 <Feather name="shopping-bag" size={24} color="white" />
                             </Pressable>
-                            
+
                         </View>
                     </View>
-                </View>    
+                </View>
             </View>
 
             {loading ? (
-           <View className={`w-full h-full justify-center items-center absolute z-10 `}>
-          <ActivityIndicator size="large" color="#3498db" />
-          </View>
-        ): null}
+                <View className={`w-full h-full justify-center items-center absolute z-10 `}>
+                    <ActivityIndicator size="large" color="#3498db" />
+                </View>
+            ) : null}
 
             <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2">
                 <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
-                        onPress={ () => searchProduct(search) }
-                    >
+                    onPress={() => searchProduct(search)}
+                >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
-                    </Pressable>
-                    <TextInput
-                        className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
-                        placeholder='Buscar Tiendas'
-                        onChangeText={setSearch}
-                    />
+                </Pressable>
+                <TextInput
+                    className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
+                    placeholder='Buscar Tiendas'
+                    onChangeText={setSearch}
+                />
             </View>
             {verticalData.length == 0 ? (
-                    <View className="flex-1 justify-center items-center">
-                        <Text className="text-red-500">No se encontraron tiendas</Text>
-                    </View>
-                ) : null}
-                <FlatList
-                    data={verticalData}
-                    renderItem={renderHorizontalItem}
-                    numColumns={2}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                />
-           
+                <View className="flex-1 justify-center items-center">
+                    <Text className="text-red-500">No se encontraron tiendas</Text>
+                </View>
+            ) : null}
+            <FlatList
+                data={verticalData}
+                renderItem={renderHorizontalItem}
+                numColumns={2}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={{ paddingBottom: 20 }}
+            />
+
         </View>
     );
 }

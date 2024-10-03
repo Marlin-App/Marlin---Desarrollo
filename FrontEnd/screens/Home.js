@@ -48,6 +48,14 @@ export function HomeScreen({ navigation }) {
 
     if (!fontsLoaded) return null;
 
+    const division = (array, divisionSize) => {
+        const parte = [];
+        for (let i = 0; i < array.length; i += divisionSize) {
+            parte.push(array.slice(i, i + divisionSize));
+        }
+        return parte;
+    };
+
     const verticalData = [
         {
             id: "1",
@@ -86,7 +94,7 @@ export function HomeScreen({ navigation }) {
                 description: item.description,
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC' })}`,
                 stock: item.stock,
-                picture:  item.picture ,
+                picture:  item.picture,
                 storeId: item.storeId,
                 item_type: item.item_type
             }))
@@ -116,7 +124,7 @@ export function HomeScreen({ navigation }) {
     ];
 
     const renderHorizontalItem = ({ item }) => (
-        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
                 <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
                     <Image
@@ -125,27 +133,15 @@ export function HomeScreen({ navigation }) {
                         resizeMode="stretch"
                     />
                 </View>
-                <Text className="text-lg font-bold text-left text-light-blue">{item.name}</Text>
+                <Text className="text-lg font-bold text-left text-light-blue w-40"
+                numberOfLines={1}
+                ellipsizeMode='tail'
+                >{item.name}</Text>
                 <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
             </View>
         </TouchableOpacity>
     );
 
-    const renderHorizontalC = ({ item }) => (
-        <Pressable onPress={() => navigation.navigate('StoreCat')}>
-            <View className="my-2 mx-4 items-center">
-                <View className="bg-gray-200 rounded-full w-16 h-16">
-                    <Image
-                        source={item.image}
-                        className="w-full h-full rounded-full"
-                        resizeMode="contain"
-                        />
-                </View>
-                <Text className="text-lg text-center text-light-blue">{item.title}</Text>
-                <Text className="text-sm text-center text-light-blue">{item.subtitle}</Text>
-            </View>
-        </Pressable>
-    );
 
     const renderStoreItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Store', { store: item })}>
@@ -163,32 +159,23 @@ export function HomeScreen({ navigation }) {
     );
 
     const renderVerticalItem = ({ item }) => {
-        if (item.id === "2") {
-            const firstHalf = item.horizontalData.slice(
-                0,
-                Math.ceil(item.horizontalData.length / 2)
-            );
-            const secondHalf = item.horizontalData.slice(
-                Math.ceil(item.horizontalData.length / 2)
-            );
+        if (item.type === "product") {
+            const largo = division(item.horizontalData, 10);
 
             return (
                 <View className="p-2 my-2" onLayout={onLayout}>
                     <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
-                    <FlatList
-                        data={firstHalf}
-                        renderItem={renderHorizontalItem}
-                        keyExtractor={(horizontalItem) => horizontalItem.id}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                    />
-                    <FlatList
-                        data={secondHalf}
-                        renderItem={renderHorizontalItem}
-                        keyExtractor={(horizontalItem) => horizontalItem.id}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                    />
+                    {largo.map((largo, index) => (
+                        <FlatList
+                            key={`product-chunk-${index}`}
+                            data={largo}
+                            renderItem={renderHorizontalItem}
+                            keyExtractor={(horizontalItem) => horizontalItem.id}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{ marginBottom: 10 }}
+                        />
+                    ))}
                 </View>
             );
         } else if (item.type === "store") {
@@ -204,9 +191,9 @@ export function HomeScreen({ navigation }) {
                     />
                 </View>
             );
-        }
+        } 
 
-        
+        return null;
     };
 
     if (error) {
@@ -246,14 +233,13 @@ export function HomeScreen({ navigation }) {
             </View>
 
             {loading ? (
-           <View className={`w-full h-full justify-center items-center  bg-white ${loading ? 'blur-sm' : 'blur-0'}`}>
-                <ActivityIndicator size="large" color="#3498db" />
-           </View>
-        ): null}
-
+               <View className={`w-full h-full justify-center items-center  bg-white ${loading ? 'blur-sm' : 'blur-0'}`}>
+                    <ActivityIndicator size="large" color="#3498db" />
+               </View>
+            ) : null}
 
             <ScrollView>
-            <HomeCarousel navigation={navigation} />
+                <HomeCarousel navigation={navigation} />
                 <FlatList
                     data={verticalData}
                     scrollEnabled={false}
