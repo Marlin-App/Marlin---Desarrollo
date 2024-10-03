@@ -9,9 +9,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
+import { HomeComercianteScreen } from "../screens/HomeComerciante";
 const Tab = createBottomTabNavigator();
 
-export function MainTabNavigator() {
+export function ComercianteTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     useEffect(() => {
@@ -90,7 +91,7 @@ export function MainTabNavigator() {
         >
             <Tab.Screen
                 name="Inicio"
-                component={HomeScreen}
+                component={HomeComercianteScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="home" size={30} color={color} />

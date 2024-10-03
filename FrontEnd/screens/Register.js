@@ -13,8 +13,6 @@ export function RegisterPage({ navigation }) {
   const handleLogin = async () => {
 
 
-    //Ip para el fetch desde la web: 127.0.0.1:8000
-    //Ip para el fetch desde el emulador: 10.0.2.2:8000
     try {
       const response = await fetch('https://marlin-backend.vercel.app/api/register/', {
         method: 'POST',
@@ -30,7 +28,7 @@ export function RegisterPage({ navigation }) {
 
      
       const data = await response.json();
-
+      console.log('Data:', data);
       if (response.ok) {
         console.log('Registro exitoso:', data);
         

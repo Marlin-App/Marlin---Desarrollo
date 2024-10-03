@@ -12,6 +12,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 
+
 export function ExploreScreen({ navigation }) {
     const {
         cart,
@@ -26,6 +27,7 @@ export function ExploreScreen({ navigation }) {
     const { data: items, loading, error } = useItems();
     const [verticalData, setverticalData] = useState([]);
     const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
 
 
 
@@ -134,7 +136,6 @@ export function ExploreScreen({ navigation }) {
                             <Pressable onPress={() => navigation.navigate("Cart")}>
                                 <Feather name="shopping-bag" size={24} color="white" />
                             </Pressable>
-
                         </View>
                     </View>
                 </View>
@@ -146,18 +147,47 @@ export function ExploreScreen({ navigation }) {
                 </View>
             ) : null}
 
-            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2">
+            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2 ">
                 <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
-                    onPress={() => searchProduct(search)}
-                >
+                        onPress={() => {
+                            searchProduct(search);
+                        }}
+                    >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
-                <TextInput
-                    className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
-                    placeholder='Buscar Tiendas'
-                    onChangeText={setSearch}
-                />
+                    <TextInput
+                        className="ml-2 py-4  text-md text-light-blue font-Excon_regular w-[70%] "
+                        placeholder='Buscar Tiendas'
+                        value={search}
+                        onChangeText={setSearch}
+                        onSubmitEditing={() => {
+                            searchProduct(search);
+                            setIsSearch(!isSearch);
+                        }}
+                    />
+                    { search ? (
+                        <Pressable className="flex-1 items-end mr-4 justify-center"
+                        onPress={() => {
+                            setSearch('');
+                            searchProduct('');
+                            setIsSearch(!isSearch);
+                        }}
+                        
+                        >
+                            <Ionicons  name="close-sharp" size={35} color="black" />
+                        </Pressable>
+                    ) : null
+
+                    }
             </View>
+            {isSearch ? (
+                <View className="flex-row items-center justify-between px-4">
+                    <Text className="text-lg font-Excon_regular">Resultados de la busqueda</Text>
+                </View>
+            ) : null
+
+            }
+
             {verticalData.length == 0 ? (
                 <View className="flex-1 justify-center items-center">
                     <Text className="text-red-500">No se encontraron tiendas</Text>

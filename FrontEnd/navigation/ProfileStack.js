@@ -6,7 +6,7 @@ import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
 import { CardScreen } from '../screens/CardScreen';
-import { ItemPage } from '../screens/Item';
+import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ export function ProfileStackScreen({ navigation, route }) {
 
       <ProfileStack.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ComercianteTabNavigator}
         options={{ headerShown: false }}
       />
 

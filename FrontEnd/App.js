@@ -11,6 +11,7 @@ import { NativeWindStyleSheet } from "nativewind";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HomeStackScreen } from './navigation/HomeStack.js';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -47,7 +48,7 @@ if (!fontsLoaded) return null;
   
   return (
  <NavigationContainer>
-          <MainTabNavigator />
+          <HomeStackScreen />
   </NavigationContainer> 
   );
 }

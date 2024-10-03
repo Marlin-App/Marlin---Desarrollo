@@ -39,10 +39,12 @@ export function LoginPage({ navigation }) {
       } else {
        
         Alert.alert('Error en el registro', data.message || 'Algo salió mal');
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Error en el registro:', error);
       Alert.alert('Error', 'No se pudo completar el registro. Inténtalo de nuevo más tarde.');
+      setIsLoading(false);
     }
   };
 
