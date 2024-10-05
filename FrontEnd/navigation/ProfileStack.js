@@ -6,7 +6,9 @@ import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
 import { CardScreen } from '../screens/CardScreen';
-import { ItemPage } from '../screens/Item';
+import { ComercianteTabNavigator } from './ComercianteTabNavigator';
+import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
+import { NuevaTienda } from '../screens/NuevaTienda';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -17,11 +19,27 @@ export function ProfileStackScreen({ navigation, route }) {
 
       <ProfileStack.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ComercianteTabNavigator}
         options={{ headerShown: false }}
       />
 
       <ProfileStack.Screen
+        name="Pedido"
+        component={ComerciantePedidoScreen}
+        options={{ headerShown: false }}
+      />
+
+      <ProfileStack.Screen
+        name="NuevaTienda"
+        component={NuevaTienda}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      {/* <ProfileStack.Screen
         name="Landing"
         component={LandingPage}
         options={{ headerShown: false }}
@@ -38,7 +56,7 @@ export function ProfileStackScreen({ navigation, route }) {
         component={RegisterPage}
         options={{ headerShown: false }}
       />
-      
+
 
       <ProfileStack.Screen
         name="CardScreen"
@@ -58,9 +76,7 @@ export function ProfileStackScreen({ navigation, route }) {
           headerTitle: 'Regresar',
           headerTintColor: "#015DEC"
         }}
-      />
-
-
+      /> */}
 
     </ProfileStack.Navigator>
   );

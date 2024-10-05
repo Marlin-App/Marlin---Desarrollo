@@ -3,14 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TouchableOpacity, ScrollView  } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Feather } from '@expo/vector-icons'; // Usa feather como iconos
-{/* import { PaymentIcon } from 'react-native-payment-icons'
-npm install react-native-payment-icons utilizar los iconos de visa y mastercard
-<PaymentIcon type='visa'/>
-<PaymentIcon type='master'/> */}
 
-
-
-export function CardScreen({ navigation }) {
+export function PayScreen({ navigation }) {
 
     const [selectedMethod, setSelectedMethod] = useState(null);
 
@@ -19,6 +13,36 @@ export function CardScreen({ navigation }) {
       { id: 2, type: 'Mastercard', cardNumber: '****5194', expiry: '12/24' },
       { id: 3, type: 'SinpeMovil' },
     ];
+
+    // useEffect(() => {
+    //   navigation.getParent().setOptions({
+    //     tabBarStyle: {
+    //       backgroundColor: '#0038A2',
+    //                   display: 'none',
+    //                   height: 80,
+    //                   justifyContent: 'center',
+    //                   paddingBottom: 10,
+    //     }
+  
+    //   });
+  
+    //   return () => {
+  
+    //     navigation.getParent().setOptions({
+    //       tabBarStyle: {
+    //         backgroundColor: '#015DEC',
+    //         display: 'flex',
+    //         height: 80,
+    //         justifyContent: 'center',
+    //         paddingBottom: 10,
+    //       }
+  
+    //     });
+    //   }
+  
+  
+    // }, []);
+  
 
     return (
         <View className="flex-1 bg-white p-4">

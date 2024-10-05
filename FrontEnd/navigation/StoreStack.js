@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StoreCat } from '../screens/StoreCat';
 import { Store } from '../screens/Store';
 import { ItemPage } from '../screens/Item';
-
+import { MainTabNavigator } from './MainTabNavigator';
 
 const StoreStack = createNativeStackNavigator();
 
@@ -14,7 +13,7 @@ export function StoreStackScreen({ navigation }) {
 
             <StoreStack.Screen
                 name="Stores"
-                component={StoreCat}
+                component={MainTabNavigator}
                 options={{ headerShown: false }}
             />
 

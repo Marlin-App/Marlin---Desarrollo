@@ -10,7 +10,15 @@ import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { LandingPage } from '../screens/landing';
+import { PayScreen } from '../screens/Pay';
 
+import { MainTabNavigator } from './MainTabNavigator';
+import { LoginPage } from '../screens/Login';
+import { RegisterPage } from '../screens/Register';
+import { DirectionScreen } from '../screens/DirectionScreen';
+import { CardScreen } from '../screens/CardScreen';
+import {HomeComercianteScreen} from '../screens/HomeComerciante';
+import { ProfileStackScreen } from './ProfileStack';
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
@@ -42,15 +50,15 @@ export function HomeStackScreen({ navigation, route }) {
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home"
-        component={HomeScreen}
-        initialParams={{ data: 'dad' }} // Puedes pasar cualquier dato inicial aquí
+        component={MainTabNavigator}
+        initialParams={{ data: 'dad' }} 
         options={{ headerShown: false }}
       />
 
-<HomeStack.Screen
+  <HomeStack.Screen
         name="Landing"
         component={LandingPage}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
 
       <HomeStack.Screen
@@ -76,6 +84,75 @@ export function HomeStackScreen({ navigation, route }) {
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
           }
+        }}
+      />
+
+<HomeStack.Screen
+        name="Pay"
+        component={PayScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC",
+          headerTitleStyle: {
+            fontFamily: 'Excon_regular',
+          }
+        }}
+      />
+
+      <HomeStack.Screen
+        name="Store"
+        component={Store}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC",
+          headerTitleStyle: {
+            fontFamily: 'Excon_regular',
+          }
+        }}
+      />
+
+    <HomeStack.Screen
+        name="Login"
+        component={LoginPage}
+        options={{ headerShown: false }}
+      />
+
+      <HomeStack.Screen
+        name="Register"
+        component={RegisterPage}
+        options={{ headerShown: false }}
+      />
+      
+
+      <HomeStack.Screen
+        name="CardScreen"
+        component={CardScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      <HomeStack.Screen
+        name="DirectionScreen"
+        component={DirectionScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      <HomeStack.Screen
+        name="secondScreen"
+        component={ProfileStackScreen}
+        options={{
+          headerShown: false,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
         }}
       />
 

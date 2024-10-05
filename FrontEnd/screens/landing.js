@@ -6,34 +6,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function LandingPage({ navigation }) {
 
-  useEffect(() => {
-    navigation.getParent().setOptions({
-      tabBarStyle: {
-        backgroundColor: '#0038A2',
-                    display: 'none',
-                    height: 80,
-                    justifyContent: 'center',
-                    paddingBottom: 10,
-      }
-
-    });
-
-    return () => {
-
-      navigation.getParent().setOptions({
-        tabBarStyle: {
-          backgroundColor: '#015DEC',
-          display: 'flex',
-          height: 80,
-          justifyContent: 'center',
-          paddingBottom: 10,
-        }
-
-      });
-    }
-
-
-  }, []);
+ 
 
   return (
     <View style={styles.container}>

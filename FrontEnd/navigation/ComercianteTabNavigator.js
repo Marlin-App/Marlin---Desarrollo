@@ -9,9 +9,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
+import { HomeComercianteScreen } from "../screens/HomeComerciante";
+import Octicons from '@expo/vector-icons/Octicons';
+import {MisTiendas} from '../screens/MisTiendas';
 const Tab = createBottomTabNavigator();
 
-export function MainTabNavigator() {
+export function ComercianteTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     useEffect(() => {
@@ -90,7 +93,7 @@ export function MainTabNavigator() {
         >
             <Tab.Screen
                 name="Inicio"
-                component={HomeScreen}
+                component={HomeComercianteScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="home" size={30} color={color} />
@@ -100,18 +103,8 @@ export function MainTabNavigator() {
             />
 
             <Tab.Screen
-                name="Explorar"
-                component={ExploreScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="search" size={30} color={color} />
-                    ),
-                }}
-            />
-
-            <Tab.Screen
-                name="Tiendas"
-                component={StoreCat}
+                name="Mi tiendas"
+                component={MisTiendas}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="store-mall-directory" size={30} color={color} />
@@ -120,7 +113,17 @@ export function MainTabNavigator() {
             />
 
             <Tab.Screen
-                name="Profile"
+                name="Inventario"
+                component={StoreCat}
+                options={{
+                    tabBarIcon: ({ color }) => (
+                        <Octicons name="stack" size={24} color={color} />
+                    ),
+                }}
+            />
+
+            <Tab.Screen
+                name="Perfil"
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ color }) => (

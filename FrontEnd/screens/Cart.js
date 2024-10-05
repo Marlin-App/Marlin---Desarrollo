@@ -34,36 +34,7 @@ export function CartScreen({ navigation }) {
     }, [fontsLoaded]);
 
 
-    useEffect(() => {
-        navigation.getParent().setOptions({
-            tabBarStyle: {
-                backgroundColor: '#0038A2',
-                display: 'none',
-                height: 80,
-                justifyContent: 'center',
-                paddingBottom: 10,
-            }
-
-        });
-
-        if (!fontsLoaded) return null;
-
-        return () => {
-
-            navigation.getParent().setOptions({
-                tabBarStyle: {
-                    backgroundColor: '#015DEC',
-                    display: 'flex',
-                    height: 80,
-                    justifyContent: 'center',
-                    paddingBottom: 10,
-                }
-
-            });
-        }
-
-
-    }, []);
+    
 
 
 
@@ -171,7 +142,8 @@ export function CartScreen({ navigation }) {
                 </View>
                 <View>
                     <Pressable
-                        onPress={() => clearCart()}
+                        //onPress={() => clearCart()}
+                        onPress={() => navigation.navigate('Pay')}
                         style={({ pressed }) => [
                             {
                                 backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : 'white',
