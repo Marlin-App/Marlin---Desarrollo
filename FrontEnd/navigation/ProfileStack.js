@@ -32,7 +32,11 @@ export function ProfileStackScreen({ navigation, route }) {
       <ProfileStack.Screen
         name="NuevaTienda"
         component={NuevaTienda}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
       />
 
       {/* <ProfileStack.Screen
