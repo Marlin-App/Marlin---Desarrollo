@@ -3,6 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useCallback, useState } from 'react';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
+
 export function MisTiendas({navigation}) {
 
     function onPressFunction(pedido) {
