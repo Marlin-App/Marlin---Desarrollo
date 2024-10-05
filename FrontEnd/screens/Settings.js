@@ -195,7 +195,7 @@ export function ProfileScreen({ navigation }) {
         <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
 
         <Pressable className=" flex-row justify-between  border-b-2 border-light-blue"
-          onPress={() => navigation.navigate("secondScreen")}
+          onPress={() => navigation.replace("secondScreen")}
         >
           <View className="flex-row gap-2">
             <Entypo name="language" size={24} color="#015DEC" />

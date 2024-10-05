@@ -7,7 +7,7 @@ const useStoreItem = (id) => {
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}`);
+            const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/?store_id=${id}`);
             const json = await response.json();
             setData(json);
         } catch (err) {
