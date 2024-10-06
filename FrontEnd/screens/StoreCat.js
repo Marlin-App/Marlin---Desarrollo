@@ -15,10 +15,11 @@ export function StoreCat({ navigation }) {
     const [categoryId, setCategoryId] = useState(null);
     const [storeSelected, setStoreSelected] = useState([]);
     const [search, setSearch] = useState('');
+    const [originalStoreSelected, setOriginalStoreSelected] = useState([]);
 
     useEffect(() => {
         const selectedStore = () => {
-            const formattedData2 = allStores.map(item => ({
+            const formattedData = allStores.map(item => ({
                 id: item.id,
                 name: item.name,
                 location: item.location,
@@ -26,8 +27,8 @@ export function StoreCat({ navigation }) {
                 type: item.store_type,
             }));
 
-            setStoreSelected(formattedData2);
-            console.log(formattedData2);
+            setOriginalStoreSelected(formattedData);  // Guardar el estado inicial completo
+            setStoreSelected(formattedData);
         };
 
         selectedStore();
@@ -35,21 +36,17 @@ export function StoreCat({ navigation }) {
 
 
     const searchStore = (text) => {
-        const filteredData = storeSelected.filter(item =>
+        const filteredData = originalStoreSelected.filter(item =>
             item.name.toLowerCase().startsWith(text.toLowerCase())
         );
-
-        const formattedData2 = filteredData.map(item => ({
-            id: item.id,
-            name: item.name,
-            location: item.location,
-            picture: item.picture,
-            type: item.store_type,
-        }));
-
-        setStoreSelected(formattedData2);
+        setStoreSelected(filteredData);
     };
 
+    // Para limpiar la búsqueda
+    const clearSearch = () => {
+        setSearch('');
+        setStoreSelected(originalStoreSelected);  // Restablecer la lista original
+    };
     useEffect(() => {
         if (categoryId === null) {
             setStoreSelected(allStores);
@@ -64,7 +61,9 @@ export function StoreCat({ navigation }) {
                 picture: item.picture,
                 type: item.store_type,
             }));
+            clearSearch();
             setStoreSelected(formattedData2);
+            setOriginalStoreSelected(formattedData2);  
         };
 
         selectedStoreType();
@@ -101,7 +100,7 @@ export function StoreCat({ navigation }) {
 
     const sectionListRef = useRef(null);
 
-    
+
 
     return (
         <View className="bg-white flex-1 " onLayout={onLayout}>
@@ -124,18 +123,37 @@ export function StoreCat({ navigation }) {
                 </View>
             </View>
 
-            <View className="flex-row text-center mt-5 mb-2 bg-grey-light rounded-lg mx-2">
+
+            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2 ">
                 <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
-                    onPress={() => searchStore(search)}
+                    onPress={() => {
+                        searchStore(search);
+                    }}
                 >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                 <TextInput
-                    className="ml-2 py-4 w-full text-md text-light-blue font-Excon_regular"
-                    placeholder='Buscar Tiendas'
+                    className="ml-2 py-4  text-md text-light-blue font-Excon_regular w-[70%] "
+                    placeholder='Buscar Productos'
+                    value={search}
                     onChangeText={setSearch}
+                    onSubmitEditing={() => {
+                        searchStore(search);
+                        /* setIsSearch(!isSearch); */
+                    }}
                 />
+                {search ? (
+                    <Pressable
+                        className="flex-1 items-end mr-4 justify-center"
+                        onPress={() => {
+                            clearSearch(); // Usar la función que restablece el estado original
+                        }}
+                    >
+                        <Ionicons name="close-sharp" size={35} color="black" />
+                    </Pressable>
+                ) : null}
             </View>
+
 
             <View className="px-2 flex-1">
                 {loading ? (
@@ -176,25 +194,27 @@ export function StoreCat({ navigation }) {
                 <FlatList
                     data={storeSelected}
                     numColumns={2}
+                    className="flex  "
+                    columnWrapperStyle={{ justifyContent: 'space-around' }}
                     renderItem={({ item }) => (
-                        <View>
-                            <Pressable onPress={() => navigation.navigate('Store', { id: item.id, store: item })}>
-                                <View className="my-4 mx-2">
-                                    <View className="border-[0.5px] border-black rounded-lg w-[40vw] h-[40vw]">
-                                        <Image
-                                            source={{ uri: item.picture }}
-                                            className="rounded-lg w-full h-full"
-                                            resizeMode="cover"
-                                        />
-                                    </View>
-                                    <Text className="text-lg text-light-blue w-40"
-                                        numberOfLines={1}
-                                        ellipsizeMode='tail'
-                                    >{item.name}</Text>
-                                    <Text className="text-lg text-light-blue">{item.location}</Text>
+
+                        <Pressable onPress={() => navigation.navigate('Store', { id: item.id, store: item })} className=" mt-4">
+                            <View className="items-center ">
+                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
+                                    <Image
+                                        source={{ uri: item.picture }}
+                                        className="rounded-lg w-full h-full"
+                                        resizeMode="cover"
+                                    />
                                 </View>
-                            </Pressable>
-                        </View>
+                                <Text className="text-lg text-light-blue w-40"
+                                    numberOfLines={1}
+                                    ellipsizeMode='tail'
+                                >{item.name}</Text>
+                                <Text className="text-lg text-light-blue text-start w-full ml-12">{item.location}</Text>
+                            </View>
+                        </Pressable>
+
                     )}
                     keyExtractor={item => item.id}
                 />

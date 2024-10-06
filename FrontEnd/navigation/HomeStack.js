@@ -19,6 +19,8 @@ import { DirectionScreen } from '../screens/DirectionScreen';
 import { CardScreen } from '../screens/CardScreen';
 import {HomeComercianteScreen} from '../screens/HomeComerciante';
 import { ProfileStackScreen } from './ProfileStack';
+import { InformationScreen } from '../screens/Information';
+
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
@@ -151,6 +153,16 @@ export function HomeStackScreen({ navigation, route }) {
         component={ProfileStackScreen}
         options={{
           headerShown: false,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+    <HomeStack.Screen
+        name="InformationScreen"
+        component={InformationScreen}
+        options={{
+          headerShown: true,
           headerTitle: 'Regresar',
           headerTintColor: "#015DEC"
         }}

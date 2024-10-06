@@ -3,7 +3,6 @@ import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ActivityInd
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export function LoginPage({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -31,6 +30,7 @@ export function LoginPage({ navigation }) {
       if (response.ok) {
         console.log('Registro exitoso:', data);
         setIsLoading(false);
+        
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
         Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');

@@ -16,7 +16,7 @@ export function Store({ navigation }) {
     const { data, loading } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
 
-
+    console.log(data)
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -43,18 +43,15 @@ export function Store({ navigation }) {
    
 
     return (
-        <View className="h-full bg-white">
+        <View className=" bg-white flex-1 w-full">
             <Image
                 source={fusion}
                 className="w-full h-28"
             />
            
-                <View className="px-4">
-                    <View className="flex-row justify-center items-center">
+                <View className="px-4 mb-4">
+                    <View className="flex-row  ">
                         <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">{route.params.store.name} </Text>
-                        <Pressable className="p-4 h-10 bg-main-blue flex justify-center items-center mr-2 rounded-md">
-                            <Text className="text-white font-Excon_regular text-[20px] text-center">Catálogo</Text>
-                        </Pressable>
                     </View>
                     <View className="flex-row text-center mt-5 bg-grey-light rounded-lg">
                         <View className="bg-light-blue rounded-l-lg px-2 flex justify-center">
@@ -66,45 +63,46 @@ export function Store({ navigation }) {
                         />
                     </View>
                 </View>
-                <Image
-                    source={{ uri: route.params.store.picture }}
-                    className="w-full my-4 h-28"
-                    resizeMode="stretch"
-                />
-                <View>
-
+             
                     {!loading  ? (
-                        
-                        <FlatList
-                            data={dataArray}
-                            numColumns={2}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
-                                    <View className="my-2 mx-4 items-start">
-                                        <View className=" rounded-lg w-40 h-40 ">
+                     
+                     
+                            <FlatList
+                                data={dataArray}
+                                className="flex px-4  "
+                                columnWrapperStyle={{ justifyContent: 'space-around' }}
+                                numColumns={2}
+                                renderItem={({ item }) => (
+                                    <Pressable onPress={() => navigation.navigate('Item', { product: item })} className=" mt-4">
+                                    <View className="items-center ">
+                                        <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
                                             <Image
-                                                source={{ uri: item.picture }} 
-                                                className="w-full h-full rounded-lg"
-                                                resizeMode="stretch"
+                                                source={{ uri: item.picture }}
+                                                className="rounded-lg w-full h-full"
+                                                resizeMode="cover"
                                             />
                                         </View>
-                                        <Text className="text-lg font-bold text-left text-light-blue w-40"
-                                        numberOfLines={1}
-                                        ellipsizeMode='tail'
+                                        <Text className="text-lg text-light-blue w-40"
+                                            numberOfLines={1}
+                                            ellipsizeMode='tail'
                                         >{item.name}</Text>
-                                        <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
+                                        <Text className="text-lg text-light-blue text-start w-full ">{item.price}</Text>
                                     </View>
-                                </TouchableOpacity>
-                            )}
-                            keyExtractor={item => item.id.toString()}
-                        />
+                                </Pressable>
+                                )}
+                                keyExtractor={item => item.id.toString()}
+                                contentContainerStyle={{ paddingBottom: 20 }}
+                            />
+                  
+                            
+                        
                     ) : (
 
                         <ActivityIndicator size="large" color="#3498db" />
 
                     )}
 
-                </View>
+                
             
         </View>
     );

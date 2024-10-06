@@ -94,9 +94,11 @@ export function ExploreScreen({ navigation }) {
 
     const renderHorizontalItem = ({ item }) => (
 
-        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}>
-            <View className="mt-4 mr-4 ml-5 items-start">
-                <View className="bg-cyan-600 rounded-lg w-40 h-40 p-1">
+        <TouchableOpacity to={{ screen: 'Item' }} onPress={() => navigation.navigate('Item', { product: item })}
+            
+        >
+            <View className="mt-4 items-center">
+                <View className=" rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
                     <Image
                         source={{ uri: item.picture }}
                         className="w-full h-full rounded-lg"
@@ -107,7 +109,7 @@ export function ExploreScreen({ navigation }) {
                     numberOfLines={1}
                     ellipsizeMode='tail'
                 >{item.name}</Text>
-                <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
+                <Text className="text-sm text-start w-full  text-light-blue font-thin">{item.price}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -151,13 +153,14 @@ export function ExploreScreen({ navigation }) {
                 <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
                         onPress={() => {
                             searchProduct(search);
+                            setIsSearch(true);
                         }}
                     >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                     <TextInput
                         className="ml-2 py-4  text-md text-light-blue font-Excon_regular w-[70%] "
-                        placeholder='Buscar Tiendas'
+                        placeholder='Buscar Productos'
                         value={search}
                         onChangeText={setSearch}
                         onSubmitEditing={() => {
@@ -170,7 +173,7 @@ export function ExploreScreen({ navigation }) {
                         onPress={() => {
                             setSearch('');
                             searchProduct('');
-                            setIsSearch(!isSearch);
+                            setIsSearch(false);
                         }}
                         
                         >
@@ -190,16 +193,21 @@ export function ExploreScreen({ navigation }) {
 
             {verticalData.length == 0 ? (
                 <View className="flex-1 justify-center items-center">
-                    <Text className="text-red-500">No se encontraron tiendas</Text>
+                    <Text className="text-red-500">No se encontraron Productos</Text>
                 </View>
             ) : null}
+          
             <FlatList
                 data={verticalData}
+                className="px-4 flex"
                 renderItem={renderHorizontalItem}
                 numColumns={2}
+                columnWrapperStyle={{ justifyContent: 'space-around' }}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ paddingBottom: 20 }}
             />
+
+           
 
         </View>
     );

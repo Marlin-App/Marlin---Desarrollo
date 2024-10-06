@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useEffect, useCallback } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,6 +11,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeStackScreen } from './navigation/HomeStack.js';
+import { StatusBar } from 'react-native';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -48,6 +48,7 @@ if (!fontsLoaded) return null;
   
   return (
  <NavigationContainer>
+          {/*  <StatusBar barStyle="light-content" backgroundColor="#6a51ae" /> */}
           <HomeStackScreen />
   </NavigationContainer> 
   );
