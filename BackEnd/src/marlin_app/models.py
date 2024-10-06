@@ -164,36 +164,6 @@ class StoreItem(models.Model):
             self.picture = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
         super(StoreItem, self).save(*args, **kwargs)
         
-
-
-    # def save(self, *args, **kwargs):
-    #     # Si hay una imagen, la convertimos a .webp antes de guardar
-    #     if self.picture:
-    #         # Abrir la imagen usando PIL
-    #         img = Image.open(self.picture)
-            
-    #         # Convertir la imagen a webp en memoria
-    #         webp_image = BytesIO()
-    #         img.save(webp_image, format='WEBP', quality=85)  # Ajustar calidad si es necesario
-            
-    #         # Crear un nuevo archivo en memoria con la imagen .webp
-    #         webp_image.seek(0)  # Regresar al inicio del archivo BytesIO
-            
-    #         # Asignar el nuevo nombre con la extensión .webp basado en el nombre de la tienda
-    #         new_filename = f"{self.name}.webp"
-    #         self.picture = ContentFile(webp_image.getvalue(), new_filename)
-
-    #     # Guardar la imagen convertida con el nuevo nombre
-    #     super().save(*args, **kwargs)
-
-    # def delete(self, *args, **kwargs):
-    #     # Eliminar la imagen del sistema de archivos si existe
-    #     if self.picture:
-    #         self.picture.delete(save=False)
-    #     # Llamar al método delete() del padre para eliminar el objeto
-    #     super().delete(*args, **kwargs)
-    
-
     def __str__(self):
         return self.name
     
