@@ -1,4 +1,4 @@
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { DropDown } from '../components/DropDown';
 import useSelectLocation from '../hooks/useSelectLocation';
@@ -8,14 +8,21 @@ import * as ImagePicker from 'expo-image-picker';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import useCRUDTiendas from '../hooks/useCRUDTiendas';
+import { useRoute } from '@react-navigation/native';
 
 export function NuevaTienda({ navigation }) {
 
     //categorias
-    const { allCategories, allStores, loading } = useStoreType();
+    const { allCategories, allStores } = useStoreType();
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const sectionListRef = useRef(null);
+    const {createShop, loading } = useCRUDTiendas();
+    const route = useRoute();
+    const { store } = route.params || {};
+
+    
+
 
     const addCategoryList = (id) => {
         setSelectedCategoryIds((prevSelected) => {
@@ -74,107 +81,92 @@ export function NuevaTienda({ navigation }) {
 
     //aceptar terminos y condiciones
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [formData, setFormData] = useState({
+        name: 'Nueva tienda 3',
+        description: "Esto es una descripcion de la tienda",
+        referencias: "",
+        canton: "dsad",
+        district: "sdasd",
+        coodernates: "fdsfsdf",
+        picture: "",
+        user_id: 1,
+        sinpe: "",
+        banner: "",
+        sinpe_name: "",
+        opening_hour: "09:00:00",
+        closing_hour: "18:00:00",
+        store_type: 1 
+    });
 
-    //desencriptar token
-    const base64UrlDecode = (base64Url) => {
-        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const padding = base64.length % 4;
-        if (padding) {
-            base64 += '='.repeat(4 - padding);
-        }
-        return decodeURIComponent(escape(atob(base64)));
+    const handleInputChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
     };
 
-    const decodeJWT = (token) => {
-        const [header, payload, signature] = token.split('.');
-        const decodedHeader = base64UrlDecode(header);
-        const decodedPayload = base64UrlDecode(payload);
+     useEffect(() => {
+        handleInputChange('district', selectedValue2);
+    }, [selectedValue2]);
 
-        const headerObj = JSON.parse(decodedHeader);
-        const payloadObj = JSON.parse(decodedPayload);
+    useEffect(() => {
+        handleInputChange('canton', selectedValue);
+    }, [selectedValue]);
+ 
+   /*  useEffect(() => {
+        handleInputChange('coodernates', location);
+    }, [location]); */
 
-        return {
-            header: headerObj,
-            payload: payloadObj,
-            signature: signature
-        };
-    };
+    /* useEffect(() => {
+        handleInputChange('store_type', selectedCategoryIds);
+    }, [selectedCategoryIds]);
+ */
+    useEffect(() => {
+        handleInputChange('picture', imagePerfil);
+    }, [imagePerfil]);
 
-    //fetch para mandar a crear la tienda y redigir a la vista para añadir articulos
+    useEffect(() => {
+        handleInputChange('banner', imagePortada);
+    }, [imagePortada]);
+
+   /*  useEffect(() => {
+        console.log(formData);  
+    }, [formData]); */
+
+
     const [modalVisible, setModalVisible] = useState(false);
-    const createShop = async () => {
-        if (acceptedTerms) {
-            // const data = {
-            //     user_id: "nombre",
-            //     store_type: location,
-            //     name: "referencias",
-            //     description: "telefono",
-            //     canton: "nombre",
-            //     distrito: selectedCategoryIds,
-            //     coordenates: imagePerfil,
-            //     picture_profile: imagePortada,
-            //     picture_portada: "nombre",
-            //     sinpe_movil: "nombre",
-            //     sinpe_movil_name: "nombre",
-            // }
-            // console.log(data);
-            const jsonValue = await AsyncStorage.getItem('@userToken');
-            const userData = JSON.parse(jsonValue);
-            const token = userData.access;
-            const decodedToken = decodeJWT(token);
-            console.log(decodedToken.payload.user_id);
 
-            // await fetch('https://your-api-endpoint.com/create-shop', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${token}`
-            //     },
-            //     body: JSON.stringify({
-            //         user_id: decodedToken.payload.user_id,
-            //         store_type: selectedCategoryIds,
-            //         name: "nombre",
-            //         description: "referencias",
-            //         canton: selectedValue,
-            //         distrito: selectedValue2,
-            //         coordenates: location,
-            //         picture_profile: imagePerfil,
-            //         picture_portada: imagePortada,
-            //         sinpe_movil: "telefono",
-            //         sinpe_movil_name: "nombre"
-            //     })
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     if (data.success) {
-            //         navigation.navigate("NuevoProducto");
-            //     } else {
-            //         console.error('Error creating shop:', data.message);
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error('Error:', error);
-            // });
-            navigation.navigate("NuevoProducto");
-
-        }
-
-
-
-
-    }
+    const handleShop = async () => {
+       
+           await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
+        
+    };
 
     return (
         <ScrollView className="bg-white px-5">
+            {loading ? (
+           <View className={`w-full h-full justify-center items-center absolute z-10  `}>
+          <ActivityIndicator size="large" color="#3498db" />
+          </View>
+        ): null}
             <View className="w-full flex-col px-4 py-8">
-                <Text className="text-main-blue text-3xl font-Excon_bold">
-                    ¡Aquí inicia el camino al emprendimiento!
-                </Text>
+                {store ? (
+                    <Text className="text-main-blue text-3xl font-Excon_bold">
+                        ¡Edita tu tienda!
+                        
+                    </Text>
+                ) : (
+                    <Text className="text-main-blue text-3xl font-Excon_bold">
+                        ¡Aquí inicia el camino al emprendimiento!
+                    </Text>
+                )
+                }
             </View>
 
             <View className="flex-col px-5">
                 <Text className="text-main-blue text-md font-Excon_bold">¿Cómo se llama tu negocio?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Nombre de la tienda" />
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin"
+                    value={store ? store.name : formData.name}
+                    onChangeText={(value) => handleInputChange('name', value)}
+                    placeholder="Nombre de la tienda"
+                />
             </View>
 
             <View className="flex-col px-5 mb-4">
@@ -184,7 +176,7 @@ export function NuevaTienda({ navigation }) {
                         title="Selecciona el cantón donde se ubica tu emprendimiento:"
                         place="Cantón"
                         options={cantones}
-                        selectedValue={selectedValue}
+                        selectedValue={store ? store.location : selectedValue}
                         onValueChange={(value) => setSelectedValue(value)}
                     />
                 </View>
@@ -217,17 +209,25 @@ export function NuevaTienda({ navigation }) {
                     numberOfLines={4}
                     maxLength={120}
                     placeholder="Brinda direcciones, calles, avenidas o puntos de referencia para que tu negocio pueda ser ubicado."
+                    value={formData.referencias}
+                    onChangeText={(value) => handleInputChange('referencias', value)}
                 />
             </View>
 
             <View className="flex-col px-5 my-4">
                 <Text className="text-main-blue text-md font-Excon_bold">¿Numero para recibir Sinpe Movil?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Número de teléfono" />
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Número de teléfono"
+                    value={formData.sinpe}
+                    onChangeText={(value) => handleInputChange('sinpe', value)}
+                    keyboardType='numeric' />
             </View>
 
             <View className="flex-col px-5 my-4">
                 <Text className="text-main-blue text-md font-Excon_bold">¿A nombre de quien está el Sinpe Movil?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Nombre" />
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Digitale el nombre del titular de la cuenta"
+                    value={formData.sinpe_name}
+                    onChangeText={(value) => handleInputChange('sinpe_name', value)}
+                />
             </View>
 
             <View className="w-full flex-col px-4 py-8">
@@ -244,7 +244,9 @@ export function NuevaTienda({ navigation }) {
                     ref={sectionListRef}
                     renderItem={({ item }) => (
                         <View>
-                            <Pressable onPress={() => addCategoryList(item.id)}>
+                            <Pressable onPress={() => addCategoryList(item.id)}
+
+                            >
                                 <View className="my-4 mx-2 items-center">
                                     <View
                                         className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryIds.includes(item.id) ? 'bg-main-blue' : ''}`}>
@@ -296,11 +298,11 @@ export function NuevaTienda({ navigation }) {
                 </View>
             </View>
             <TouchableOpacity
-                // className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                // onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                // disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
-                className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                onPress={createShop}
+                /*  className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                 onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
+                 disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
+ /*                */ className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                onPress={handleShop}
 
 
             >

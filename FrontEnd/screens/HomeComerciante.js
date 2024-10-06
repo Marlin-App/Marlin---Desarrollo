@@ -11,13 +11,13 @@ export function HomeComercianteScreen({ navigation }) {
     function onPressFunction(pedido) {
         switch (pedido) {
             case 1:
-                console.log("Completados");
+               
                 break;
             case 2:
-                console.log("Pendientes");
+               
                 break;
             case 3:
-                console.log("Cancelados");
+               
                 break;
             default:
                 console.log("Opción no válida");
