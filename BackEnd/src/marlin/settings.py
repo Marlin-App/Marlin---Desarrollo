@@ -199,14 +199,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': getenv('CLOUD_NAME'),
-#     'API_KEY': getenv('API_KEY'),
-#     'API_SECRET': getenv('API_SECRET'),
-# }
-
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 cloudinary.config(
     cloud_name = getenv('CLOUD_NAME'),
     api_key = getenv('API_KEY'),
