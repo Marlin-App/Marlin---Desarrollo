@@ -20,16 +20,14 @@ class Command(BaseCommand):
             for i in range(0,5):
                 with open(os.path.join(images_dir, image_files[random.randint(0, len(image_files)-1)]), 'rb') as image_file:
                     image_uploaded = upload(image_file, folder="items", public_id=f"{store.name}_{i}_image", format="webp")
-                    url1 = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
-                    extracted_url1 = url1.split('image', 1)[1]
-                    final_url1 = 'image' + extracted_url1
+                    
 
 
                     items.append(StoreItem(name=f'Item{i+1} de {store.name}',
                                     description = f'Descripcion de item {i+1} de {store.name}',
                                      price = random.randint(1000, 30000),
                                      stock = random.randint(1, 100),
-                                     picture=final_url1,
+                                     picture=image_uploaded['url'],
                                      store_id = store,
                                      item_type = random.choice(tags)))
         

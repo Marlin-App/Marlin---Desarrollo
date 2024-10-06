@@ -90,6 +90,8 @@ class Store(models.Model):
     canton = models.CharField(max_length=250)
     district = models.CharField(max_length=250)
     coodernates = models.CharField(max_length=250)
+    num_sinpe = models.CharField(max_length=250)
+    owner_sinpe = models.CharField(max_length=250)
     opening_hour = models.TimeField()
     closing_hour = models.TimeField()
     picture = CloudinaryField('image')
