@@ -56,6 +56,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         #Datos extras al token
         token['username'] = user.username
         token['email'] = user.email
+        token['userprofile'] = user.userprofile.id
         
         # Devuelve el token
         return token
@@ -66,11 +67,23 @@ class StoreSerializer(serializers.ModelSerializer):
         model = Store
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['picture'].startswith('image/upload/'):
+            representation['picture'] = representation['picture'].replace('image/upload/', '')
+        if representation['banner'].startswith('image/upload/'):
+            representation['banner'] = representation['banner'].replace('image/upload/', '')
+        return representation
+
 class StoreItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = StoreItem
         fields = '__all__'
-
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['picture'].startswith('image/upload/'):
+            representation['picture'] = representation['picture'].replace('image/upload/', '')
+        return representation
 
 class StoreTypeSerializer(serializers.ModelSerializer):
     class Meta:
