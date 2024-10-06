@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProfileScreen } from '../screens/Settings';
 import { LandingPage } from '../screens/landing';
@@ -9,6 +10,8 @@ import { CardScreen } from '../screens/CardScreen';
 import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
 import { NuevaTienda } from '../screens/NuevaTienda';
+import { NuevoProducto } from '../screens/NuevoProducto';
+import { ComercianteInventario } from '../screens/ComercianteInventario';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -36,6 +39,21 @@ export function ProfileStackScreen({ navigation, route }) {
           headerShown: true,
           headerTitle: 'Regresar',
           headerTintColor: "#015DEC"
+        }}
+      />
+      <ProfileStack.Screen
+        name="NuevoProducto"
+        component={NuevoProducto}
+        options={{
+          headerShown: false
+        }}
+      />
+
+      <ProfileStack.Screen
+        name="Inventario"
+        component={ComercianteInventario}
+        options={{
+          headerShown: false
         }}
       />
 

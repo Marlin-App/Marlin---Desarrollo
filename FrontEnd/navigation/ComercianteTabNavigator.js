@@ -12,6 +12,7 @@ import { ProfileScreen } from '../screens/Settings';
 import { HomeComercianteScreen } from "../screens/HomeComerciante";
 import Octicons from '@expo/vector-icons/Octicons';
 import {MisTiendas} from '../screens/MisTiendas';
+import { ComercianteInventario } from '../screens/ComercianteInventario';
 const Tab = createBottomTabNavigator();
 
 export function ComercianteTabNavigator() {
@@ -114,7 +115,7 @@ export function ComercianteTabNavigator() {
 
             <Tab.Screen
                 name="Inventario"
-                component={StoreCat}
+                component={ComercianteInventario}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Octicons name="stack" size={24} color={color} />

@@ -113,7 +113,7 @@ class ItemTag(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class StoreItem(models.Model):
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE)
     item_type = models.ForeignKey(ItemTag, on_delete=models.CASCADE)
@@ -153,6 +153,20 @@ class StoreItem(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Atribute(models.Model):
+    name = models.CharField(max_length=250)
+    
+    def __str__(self):
+        return self.name
+    
+class AtributeValue(models.Model):
+    attribute = models.ForeignKey(Atribute, on_delete=models.CASCADE)
+    storeItem = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
+    value = models.CharField(max_length=250)
+
+    def __str__(self):
+        return f"{self.attribute.name}: {self.value}"
     
 class Order(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
