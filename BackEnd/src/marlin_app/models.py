@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     picture = CloudinaryField('image', null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.picture:
+        if self.picture and hasattr(self.picture, 'name'):
             ext = os.path.splitext(self.picture.name)[1]
             public_id_picture = f'{self.user.username}_picture'
             image_uploaded = upload(self.picture, folder="items", public_id=public_id_picture, format="webp")
@@ -96,13 +96,13 @@ class Store(models.Model):
     banner = CloudinaryField('image')
 
     def save(self, *args, **kwargs):
-        if self.picture:
+        if self.picture and hasattr(self.picture, 'name'):
             ext = os.path.splitext(self.picture.name)[1]
             public_id_picture = f'{self.name}_picture'
             image_uploaded = upload(self.picture, folder="stores", public_id=public_id_picture, format="webp")
             self.picture = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
         
-        if self.banner:
+        if self.banner and hasattr(self.picture, 'name'):
             ext = os.path.splitext(self.banner.name)[1]
             public_id_banner = f'{self.name}_banner'
             banner_uploaded = upload(self.banner, folder="stores", public_id=public_id_banner, format="webp")
@@ -157,7 +157,7 @@ class StoreItem(models.Model):
     picture = CloudinaryField('image')
 
     def save(self, *args, **kwargs):
-        if self.picture:
+        if self.picture and hasattr(self.picture, 'name'):
             ext = os.path.splitext(self.picture.name)[1]
             public_id_picture = f'{self.name}_picture'
             image_uploaded = upload(self.picture, folder="items", public_id=public_id_picture, format="webp")
