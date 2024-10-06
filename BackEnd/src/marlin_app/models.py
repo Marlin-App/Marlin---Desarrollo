@@ -29,7 +29,7 @@ class UserProfile(models.Model):
         if self.picture and hasattr(self.picture, 'name'):
             ext = os.path.splitext(self.picture.name)[1]
             public_id_picture = f'{self.user.username}_picture'
-            image_uploaded = upload(self.picture, folder="items", public_id=public_id_picture, format="webp")
+            image_uploaded = upload(self.picture, folder="userpictures", public_id=public_id_picture, format="webp")
             self.picture = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
         super(UserProfile, self).save(*args, **kwargs)
 
