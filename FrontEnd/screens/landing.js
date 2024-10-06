@@ -4,9 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export function LandingPage({ navigation }) {
 
- 
+export function LandingPage({ navigation }) {
 
   return (
     <View style={styles.container}>

@@ -15,7 +15,7 @@ export default CarouselHome = ({navigation}) => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
                 const nextIndex = (prevIndex + 1) % CarouselInfo.length; 
-                console.log(nextIndex);
+                /* console.log(nextIndex); */
                 CarouselInfoRef.current.scrollToIndex({ index: nextIndex, animated: true });
                 return nextIndex;
             });

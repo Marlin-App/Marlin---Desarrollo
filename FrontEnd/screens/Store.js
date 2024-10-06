@@ -69,7 +69,7 @@ export function Store({ navigation }) {
                      
                             <FlatList
                                 data={dataArray}
-                                className="flex  "
+                                className="flex px-4  "
                                 columnWrapperStyle={{ justifyContent: 'space-around' }}
                                 numColumns={2}
                                 renderItem={({ item }) => (
