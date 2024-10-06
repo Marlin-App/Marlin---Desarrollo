@@ -50,9 +50,6 @@ const useGetUser  = () => {
                     throw new Error('No se encontró el token de usuario');
                 }
                 
-               
-               
-                
                 if (!token) {
                     throw new Error('Token no disponible');
                 }
