@@ -11,6 +11,8 @@ import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
 import { NuevaTienda } from '../screens/NuevaTienda';
 import { NuevoProducto } from '../screens/NuevoProducto';
+import { EditarProducto } from '../screens/EditarProducto';
+import { AgregarProducto } from '../screens/AgregarProducto';
 import { ComercianteInventario } from '../screens/ComercianteInventario';
 
 const ProfileStack = createNativeStackNavigator();
@@ -29,7 +31,11 @@ export function ProfileStackScreen({ navigation, route }) {
       <ProfileStack.Screen
         name="Pedido"
         component={ComerciantePedidoScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
       />
 
       <ProfileStack.Screen
@@ -46,6 +52,26 @@ export function ProfileStackScreen({ navigation, route }) {
         component={NuevoProducto}
         options={{
           headerShown: false
+        }}
+      />
+
+      <ProfileStack.Screen
+        name="AgregarProducto"
+        component={AgregarProducto}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      <ProfileStack.Screen
+        name="EditarProducto"
+        component={EditarProducto}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
         }}
       />
 
