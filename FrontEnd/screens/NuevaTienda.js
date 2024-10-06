@@ -7,6 +7,7 @@ import useStoreType from '../hooks/useStoreType';
 import * as ImagePicker from 'expo-image-picker';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export function NuevaTienda({ navigation }) {
@@ -74,31 +75,94 @@ export function NuevaTienda({ navigation }) {
     //aceptar terminos y condiciones
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+    //desencriptar token
+    const base64UrlDecode = (base64Url) => {
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const padding = base64.length % 4;
+        if (padding) {
+            base64 += '='.repeat(4 - padding);
+        }
+        return decodeURIComponent(escape(atob(base64)));
+    };
+
+    const decodeJWT = (token) => {
+        const [header, payload, signature] = token.split('.');
+        const decodedHeader = base64UrlDecode(header);
+        const decodedPayload = base64UrlDecode(payload);
+
+        const headerObj = JSON.parse(decodedHeader);
+        const payloadObj = JSON.parse(decodedPayload);
+
+        return {
+            header: headerObj,
+            payload: payloadObj,
+            signature: signature
+        };
+    };
+
     //fetch para mandar a crear la tienda y redigir a la vista para añadir articulos
     const [modalVisible, setModalVisible] = useState(false);
     const createShop = async () => {
         if (acceptedTerms) {
-            const data = {
-                user_id: "nombre",
-                store_type: location,
-                name: "referencias",
-                description: "telefono",
-                canton: "nombre",
-                distrito: selectedCategoryIds,
-                coordenates: imagePerfil,
-                picture_profile: imagePortada,
-                picture_portada: "nombre",
-                sinpe_movil: "nombre",
-                sinpe_movil_name: "nombre",
-            }
-            console.log(data);
-            
+            // const data = {
+            //     user_id: "nombre",
+            //     store_type: location,
+            //     name: "referencias",
+            //     description: "telefono",
+            //     canton: "nombre",
+            //     distrito: selectedCategoryIds,
+            //     coordenates: imagePerfil,
+            //     picture_profile: imagePortada,
+            //     picture_portada: "nombre",
+            //     sinpe_movil: "nombre",
+            //     sinpe_movil_name: "nombre",
+            // }
+            // console.log(data);
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+            const userData = JSON.parse(jsonValue);
+            const token = userData.access;
+            const decodedToken = decodeJWT(token);
+            console.log(decodedToken.payload.user_id);
+
+            // await fetch('https://your-api-endpoint.com/create-shop', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${token}`
+            //     },
+            //     body: JSON.stringify({
+            //         user_id: decodedToken.payload.user_id,
+            //         store_type: selectedCategoryIds,
+            //         name: "nombre",
+            //         description: "referencias",
+            //         canton: selectedValue,
+            //         distrito: selectedValue2,
+            //         coordenates: location,
+            //         picture_profile: imagePerfil,
+            //         picture_portada: imagePortada,
+            //         sinpe_movil: "telefono",
+            //         sinpe_movil_name: "nombre"
+            //     })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         navigation.navigate("NuevoProducto");
+            //     } else {
+            //         console.error('Error creating shop:', data.message);
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            // });
+            navigation.navigate("NuevoProducto");
+
         }
 
 
 
-    }
 
+    }
 
     return (
         <ScrollView className="bg-white px-5">
@@ -232,9 +296,13 @@ export function NuevaTienda({ navigation }) {
                 </View>
             </View>
             <TouchableOpacity
+                // className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                // onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
+                // disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
                 className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
+                onPress={createShop}
+
+
             >
                 <FontAwesome5 name="upload" size={24} color="white" />
                 <Text className="text-white font-Excon_bold text-lg ml-2">Guardar</Text>
