@@ -18,6 +18,16 @@ export function PayScreen({ navigation }) {
       { id: 2, type: 'PayPal' },
     ];
 
+    const formatCurrency = (value) => {
+      return value.toLocaleString('es-CR', {
+          style: 'currency',
+          currency: 'CRC',
+      });
+  };
+
+  const deliveryFee = 25000;
+    const transportFee = 75000;
+
     const storeName = "Nombre de la tienda"; 
     const sinpeNumber = "8888-8888";
 
@@ -33,6 +43,7 @@ export function PayScreen({ navigation }) {
         clearCart();
         navigation.navigate('Home');
     };
+
 
     const pickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -94,7 +105,7 @@ export function PayScreen({ navigation }) {
                         <Text className="font-Erode_regular text-gray-800 text-lg">Nombre: {storeName}</Text>
                         <Text className="font-Erode_regular text-gray-800 text-lg">Número: {sinpeNumber}</Text>
                         <Text className="font-Erode_regular text-gray-800 text-lg">Detalle de compra: {generateRandomCode()}</Text>
-                        <Text className="font-Erode_regular text-gray-800 text-lg">Total a pagar: {total}</Text>
+                        <Text className="font-Erode_regular text-gray-800 text-lg">Total a pagar: {formatCurrency((total + deliveryFee + transportFee) / 100)}</Text>
                     </View>
                 )}
 

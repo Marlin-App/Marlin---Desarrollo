@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import { View, Text, Pressable, FlatList, Image, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -19,7 +19,6 @@ export function CartScreen({ navigation }) {
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
 
-
     useEffect(() => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
@@ -33,19 +32,16 @@ export function CartScreen({ navigation }) {
         }
     }, [fontsLoaded]);
 
-    useEffect(() => {
-        const initializeCart = async () => {
-            /*  await clearCart(); */
+    const deliveryFee = 25000;
+    const transportFee = 75000;
+    const total = (cartTotal + deliveryFee + transportFee) / 100;
 
-            //addToCart(product);
-        };
-
-        initializeCart();
-    }, []);
-
-    const deliveryFee = 250;
-    const transportFee = 750;
-    const total = cartTotal + deliveryFee + transportFee;
+    const formatCurrency = (value) => {
+        return value.toLocaleString('es-CR', {
+            style: 'currency',
+            currency: 'CRC',
+        });
+    };
 
     const CartItem = ({ item }) => {
         return (
@@ -123,14 +119,14 @@ export function CartScreen({ navigation }) {
                             contentContainerStyle={{ paddingBottom: 50 }}
                         />
 
-                        <View className="mt-6 p-4 rounded-lg mx-4 border-t-2 border-slate-200">
-                            <Text className="text-[20px] font-Excon_regular text-main-blue mb-4">Datos de entrega</Text>
+                        <View className="px-4 pt-2 rounded-lg mx-4 border-t-2 border-slate-200">
+                            <Text className="text-[18px] font-Excon_regular text-main-blue mb-2">Datos de entrega</Text>
 
                             <View className="flex-row gap-x-6 items-center mb-4">
                                 <EvilIcons name="location" size={24} color="black" />
                                 <View className="flex-1">
-                                    <Text className="font-Erode_regular text-gray-800 font-bold text-base">Ubicación de entrega</Text>
-                                    <Text className="font-Erode_regular text-gray-800 w-60">
+                                    <Text className="font-Erode_regular text-gray-800 font-bold text-[14px]">Ubicación de entrega</Text>
+                                    <Text className="font-Erode_regular text-gray-800 text-[13px]">
                                         Direccion ramdom, por puntarenas, Costa Rica
                                     </Text>
                                 </View>
@@ -144,8 +140,8 @@ export function CartScreen({ navigation }) {
                             <View className="flex-row gap-x-6 items-center">
                                 <FontAwesome5 name="search-location" size={20} color="black" />
                                 <View className="flex-1">
-                                    <Text className="font-Erode_regular text-gray-800 font-bold text-base">Indicaciones para la entrega</Text>
-                                    <Text className="font-Erode_regular text-gray-800 w-60">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
+                                    <Text className="font-Erode_regular text-gray-800 font-bold text-[14px]">Indicaciones para la entrega</Text>
+                                    <Text className="font-Erode_regular text-gray-800 text-[13px]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
                                 </View>
                                 <Pressable onPress={() => {
                                     Alert.alert('Cambiar indicaciones', 'Implementa la lógica para cambiar las indicaciones.');
@@ -156,18 +152,18 @@ export function CartScreen({ navigation }) {
                         </View>
 
                         <View className="mt-6 p-4 bg-gray-100 rounded-lg mx-4 mb-2">
-                            <Text className="text-[20px] font-Excon_regular text-main-blue mb-4">Resumen</Text>
+                            <Text className="text-[18px] font-Excon_regular text-main-blue mb-4">Resumen</Text>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Precio de productos:</Text>
-                                <Text className="font-Erode_regular text-gray-800">₡{cartTotal}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(cartTotal / 100)}</Text>
                             </View>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Tarifa de entrega:</Text>
-                                <Text className="font-Erode_regular text-gray-800">₡{deliveryFee}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(deliveryFee / 100)}</Text>
                             </View>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Tarifa de transporte:</Text>
-                                <Text className="font-Erode_regular text-gray-800">₡{transportFee}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(transportFee / 100)}</Text>
                             </View>
                         </View>
                     </>
@@ -178,7 +174,7 @@ export function CartScreen({ navigation }) {
                 <View className="bg-main-blue p-4">
                     <View className="flex-row justify-between mb-4">
                         <Text className="font-Excon_regular text-[20px] text-white">Total a pagar:</Text>
-                        <Text className="font-Excon_regular text-[20px] text-white">₡{total}</Text>
+                        <Text className="font-Excon_regular text-[20px] text-white">{formatCurrency(total)}</Text>
                     </View>
                     <Pressable
                         onPress={() => navigation.navigate('Pay')}
@@ -191,5 +187,4 @@ export function CartScreen({ navigation }) {
             )}
         </View>
     );
-
 }
