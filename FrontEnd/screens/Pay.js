@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Feather } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import useCart from '../hooks/useCart';
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from 'react';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export function PayScreen({ navigation }) {
 
     const { clearCart, total } = useCart();
+
+    const [fontsLoaded] = useFonts({
+      Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
+      Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
+      Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
+      Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
+      Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
+  });
+
+  useEffect(() => {
+      async function prepare() {
+          await SplashScreen.preventAutoHideAsync();
+      }
+      prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+      if (fontsLoaded) {
+          await SplashScreen.hideAsync();
+      }
+  }, [fontsLoaded]);
 
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [paymentReceipt, setPaymentReceipt] = useState(null);
@@ -62,8 +87,8 @@ export function PayScreen({ navigation }) {
     };
 
     return (
-        <View className="flex-1 bg-white p-4">
-            <Text className="text-2xl font-bold mb-6 text-center">Métodos de pago</Text>
+        <View className="flex-1 bg-white p-4 " onLayout={onLayoutRootView}>
+            <Text className="text-2xl mb-6 text-center font-Excon_regular text-main-blue">Métodos de pago</Text>
             <ScrollView className="space-y-4">
                 {methods.map((method) => (
                     <TouchableOpacity
@@ -86,7 +111,8 @@ export function PayScreen({ navigation }) {
 
                             <View className="flex-row items-center gap-2">
                                 {method.type === 'SinpeMovil' ? (
-                                    <Feather name="phone-call" size={24} color="#25D366" className="mr-2" />
+                                   // <Feather name="phone-call" size={24} color="#25D366" className="mr-2" />
+                                   <MaterialCommunityIcons name="cellphone-wireless" size={24} color="#25D366" />
                                 ) : (
                                     <FontAwesome5 name="paypal" size={24} color="#003087" className="mr-2" />
                                 )}

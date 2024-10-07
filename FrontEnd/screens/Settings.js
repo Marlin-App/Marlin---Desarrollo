@@ -98,7 +98,7 @@ export function ProfileScreen({ navigation }) {
       ) : (
         <ScrollView className="w-full">
           <View className="w-full mt-14">
-            <Text className="font-Excon_bold text-center bottom-4 text-2xl dark:text-white">Configuración de Usuario</Text>
+            <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
             <View className="flex flex-row justify-center items-center">
               <View className="flex justify-center items-center w-28 h-28 rounded-full">
                 <Image
@@ -136,7 +136,7 @@ export function ProfileScreen({ navigation }) {
                 </View>
                 <Text className="text-light-blue dark:text-white">{">"}</Text>
               </Pressable>
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-light-blue">
+              <Pressable className="flex-row justify-between mt-5 border-b-2 border-light-blue" onPress={() => navigation.navigate("HistoricalScreen")}>
                 <View className="flex-row gap-2">
                   <MaterialIcons name="history" size={24} color="#015DEC" />
                   <Text className="text-center font-Erode_regular dark:text-white">Historial de compras</Text>
