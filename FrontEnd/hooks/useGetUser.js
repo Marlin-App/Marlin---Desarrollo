@@ -44,7 +44,7 @@ const useGetUser  = () => {
                 const jsonValue = await AsyncStorage.getItem('@userToken');
                 const userData = JSON.parse(jsonValue);
                 const token = userData.access;
-               
+
 
                 if (!jsonValue) {
                     throw new Error('No se encontró el token de usuario');
@@ -56,12 +56,12 @@ const useGetUser  = () => {
 
                     const decodedToken = decodeJWT(token);
                     const user_id = decodedToken.payload.userprofile;
-
+                    setFormData({ ...formData, [name]: value });
                 const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}/`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4MjczNDUzLCJpYXQiOjE3MjgyNzI1NTMsImp0aSI6IjgxOGZiODIzY2E2MTQ0MDNhZDA3OGUwMmFhNWQyNjY1IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkxIiwiZW1haWwiOiJob2xhbXVuZG8yQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjoxfQ.u7pkK2eDkWNaxV3cK1GhM6vRrASQsb2L4nwV3tVOlJE`
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(updatedUser)
                 });

@@ -125,10 +125,6 @@ export function NuevaTienda({ navigation }) {
         handleInputChange('banner', imagePortada);
     }, [imagePortada]);
 
-   /*  useEffect(() => {
-        console.log(formData);  
-    }, [formData]); */
-
 
     const [modalVisible, setModalVisible] = useState(false);
 

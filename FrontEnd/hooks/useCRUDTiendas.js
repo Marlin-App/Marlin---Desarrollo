@@ -14,7 +14,10 @@ const useCRUDTiendas = (navigation) => {
         if (acceptedTerms) {
             setLoading(true);
             setError(null);
-         
+            
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+            const userData = JSON.parse(jsonValue);
+            const token = userData.access;
 
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
@@ -31,7 +34,6 @@ const useCRUDTiendas = (navigation) => {
             const type= 1;
             formDataToSend.append('store_type', type);
 
-            // Agregar la imagen de perfil si existe
             if (imagePerfil) {
                 const perfilFile = {
                     uri: imagePerfil,
@@ -56,7 +58,7 @@ const useCRUDTiendas = (navigation) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4Mjc1NTE2LCJpYXQiOjE3MjgyNzQ2MTYsImp0aSI6ImMwNDYxMGVhYTA2YjQ0ZmFhMDgyYjYxMDI5Zjg4ZWE5IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkxIiwiZW1haWwiOiJob2xhbXVuZG8yQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjoxfQ.EuqeKAEqp0cSwB52MM05qKgL01e4wht4nS5yohh0rPw`
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: formDataToSend
                 });
@@ -115,13 +117,15 @@ const useCRUDTiendas = (navigation) => {
 
 
     const deleteShop = async (storeId) => {
-       
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
         console.log(storeId);
         try {
             const response = await fetch(`https://marlin-backend.vercel.app/api/stores/${storeId}/`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4MjcwMDAwLCJpYXQiOjE3MjgyNjkxMDAsImp0aSI6ImVjMmRlODU2MDI2NTRlZjhhMGUxNGM2MmI0Yzg1MGNmIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkxIiwiZW1haWwiOiJob2xhbXVuZG8yQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjoxfQ.kVAiY5wlW-jKgISSjplkQyfkmSp2kBPVTnFXiozBiGk`
+                    'Authorization': `Bearer ${token}`,
                 }
             });
 
@@ -148,6 +152,11 @@ const useCRUDTiendas = (navigation) => {
     const updateShop = async (formData, imagePerfil, imagePortada, store_id) => {
         setLoading(true);
         setError(null);
+
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
+
 
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
@@ -189,7 +198,7 @@ const useCRUDTiendas = (navigation) => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4Mjc2NjQwLCJpYXQiOjE3MjgyNzU3NDAsImp0aSI6IjUxNDMzYmI2MTZmODQwYTI4ZWIwMThjOTI4MWUxZjE1IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkxIiwiZW1haWwiOiJob2xhbXVuZG8yQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjoxfQ.cwnIYncbp5Y9K_QUqODvnN1JTN1R4_TcmAxhLRWD2eg`,
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: formDataToSend
                 
