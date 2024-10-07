@@ -55,7 +55,9 @@ export function InformationScreen() {
             last_name: formData.lastName,
             username: formData.username,
             email: formData.email,
-            phone: formData.phone
+            phone: formData.phone,
+            picture: image
+
         };
         updateUser(updatedUser);
     };

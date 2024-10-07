@@ -40,7 +40,7 @@ const useGetUser  = () => {
             try {
                 setLoading(true);
         
-                // Obtener el token del almacenamiento
+                
                 const jsonValue = await AsyncStorage.getItem('@userToken');
                 const userData = JSON.parse(jsonValue);
                 const token = userData.access;
@@ -61,7 +61,7 @@ const useGetUser  = () => {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4MTgxMjkxLCJpYXQiOjE3MjgxODAzOTEsImp0aSI6IjQ5NjA4NzU5MThkNDQ4NGZhMGFmY2RlZDI2NjBjMDg5IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkiLCJlbWFpbCI6ImplcmVtaWFzQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjo0fQ.-fpDpIShiWFj6Z_6l9BCLGgs1ltu_TmmhoIoS_kV6D8`
+                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4MjczNDUzLCJpYXQiOjE3MjgyNzI1NTMsImp0aSI6IjgxOGZiODIzY2E2MTQ0MDNhZDA3OGUwMmFhNWQyNjY1IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkxIiwiZW1haWwiOiJob2xhbXVuZG8yQGdtYWlsLmNvbSIsInVzZXJwcm9maWxlIjoxfQ.u7pkK2eDkWNaxV3cK1GhM6vRrASQsb2L4nwV3tVOlJE`
                     },
                     body: JSON.stringify(updatedUser)
                 });
