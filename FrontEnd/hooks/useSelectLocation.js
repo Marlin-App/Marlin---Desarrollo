@@ -3,7 +3,7 @@ import { Modal, View, Button, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 const useSelectLocation = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(); // Coordenadas iniciales
   const [isModalVisible, setModalVisible] = useState(false);
 
   const openLocationPicker = () => {

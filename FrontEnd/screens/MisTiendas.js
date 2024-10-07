@@ -10,16 +10,15 @@ export function MisTiendas({ navigation }) {
     useEffect(() => {
         const fetchStores = async () => {
             await getUserStores(1);
-            console.log(allStores)
+           /*  console.log(allStores) */
         };
-
         fetchStores();
-    }, []);
+    }, [navigation]);
     
 
-    useEffect(() => {
+   /*  useEffect(() => {
         console.log(allStores);
-    }, [allStores]);
+    }, [allStores]); */
 
 
     const renderStoreItem = ({ item }) => (
