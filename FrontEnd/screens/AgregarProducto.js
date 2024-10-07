@@ -18,23 +18,27 @@ export function AgregarProducto({ navigation }) {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const {addProduct} = useCRUDProductos();
     const route = useRoute();
-    const { storeId } = route.params || {};
+    const storeId = route.params || {};
+    console.log(route.params);
 
-    // const [nombreProducto, setNombreProducto] = useState("");
-    //const [descripcion, setDescripcion] = useState("");	
-    //const [color, setColor] = useState("");
-    //const [talla, setTalla] = useState("");
-    //const [cantidad, setCantidad] = useState("");
-    //const [precio, setPrecio] = useState("");
-    //const [foto, setfoto] = useState("");
+
+    const [formData, setFormData] = useState({
+        name: "a",
+        description: "a",
+        price: 0,
+        stock: 0,
+        picture: "a",
+        store_id: storeId.store,
+        item_type: 3
+    });
 
 
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
 
 
-    const AddProduct = () => {
-        setModalVisible(true);
+    const AddProductos = () => {
+        addProduct(formData, imagePerfil);
     };
 
     const [row, setRow] = useState(1);
@@ -74,6 +78,21 @@ export function AgregarProducto({ navigation }) {
 
     //fetch para agregar producto a la base de datos
 
+    const handleInputChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+    };
+
+    useEffect(() => {
+
+        console.log(formData);
+
+    }, [formData]);
+
+    useEffect(() => {
+        handleInputChange('picture', imagePerfil);
+    }, [imagePerfil]);
+
+
 
     return (
         <ScrollView className="bg-white">
@@ -81,11 +100,12 @@ export function AgregarProducto({ navigation }) {
                 <View className="bg-white p-5 w-full h-full">
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold">Nombre del producto</Text>
-                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Nombre de la tienda" />
+                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" />
                     </View>
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold">Descripción</Text>
                         <TextInput className="border-[0.5px] border-main-blue rounded-lg px-4 my-2 font-Excon_thin"
+                        value={formData.description} onChangeText={(value) => handleInputChange('description', value)}
                             multiline
                             numberOfLines={4}
                             maxLength={120}
@@ -155,14 +175,14 @@ export function AgregarProducto({ navigation }) {
                                 </ScrollView>) :
                             (<View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
                                 <Text className="text-main-blue text-md font-Excon_bold">Cantidad en inventario</Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
                             </View>)}
 
                         <View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
                             <Text className="text-main-blue text-md font-Excon_bold">Precio</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-main-blue text-md font-Excon_regular">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.price} onChangeText={(value) => handleInputChange('price', value)}/>
                             </View>
                         </View>
 
@@ -181,7 +201,7 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-center gap-x-2 px-5">
-                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={()=>addProduct()}>
+                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={()=>AddProductos()}>
                         <Feather name="check" size={24} color="white" />
                             <Text className="text-white text-md font-Excon_bold">Agregar</Text>
                         </Pressable>
