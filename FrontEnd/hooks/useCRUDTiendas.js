@@ -9,7 +9,10 @@ const useCRUDTiendas = () => {
         if (acceptedTerms) {
             setLoading(true);
             setError(null);
-         
+            
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+            const userData = JSON.parse(jsonValue);
+            const token = userData.access;
 
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
@@ -25,7 +28,6 @@ const useCRUDTiendas = () => {
             formDataToSend.append('closing_hour', formData.closing_hour);
             formDataToSend.append('store_type', formData.store_type);
 
-            // Agregar la imagen de perfil si existe
             if (imagePerfil) {
                 const perfilFile = {
                     uri: imagePerfil,
@@ -50,7 +52,7 @@ const useCRUDTiendas = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4MjQxNzgxLCJpYXQiOjE3MjgyNDA4ODEsImp0aSI6IjIyYjg5NDczZGVkYjQ3NTZiOTYzMmRkNDI0NmIxNjJkIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJKZXJlbXkiLCJlbWFpbCI6IiIsInVzZXJwcm9maWxlIjoxfQ.8h2vlO7hAI1mcYsbEQhkeFt5g3IlG_vwCaMwosgCTPM`
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: formDataToSend
                 });
@@ -95,7 +97,115 @@ const useCRUDTiendas = () => {
         }
     };
 
-    return { createShop, loading, error, getUserStores, allStores, getUserStores, setAllStores };
+
+    const deleteShop = async (storeId) => {
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
+        console.log(storeId);
+        try {
+            const response = await fetch(`https://marlin-backend.vercel.app/api/stores/${storeId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log('Error de respuesta:', errorData);
+                throw new Error('Error eliminando la tienda');
+            } else {
+                console.log('Tienda eliminada con éxito');
+                getUserStores(1);
+                Alert.alert('Tienda eliminada', '¡Tu tienda ha sido eliminada con éxito!');
+                navigation.navigate('Mi tiendas');
+            }
+        } catch (error) {
+            console.error('Error al eliminar la tienda:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
+
+    const updateShop = async (formData, imagePerfil, imagePortada, store_id) => {
+        setLoading(true);
+        setError(null);
+
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
+
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', formData.name);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('referencias', formData.referencias);
+        formDataToSend.append('canton', formData.canton);
+        formDataToSend.append('district', formData.district);
+        formDataToSend.append('coodernates', formData.coodernates.location+','+formData.coodernates.latitude);
+        formDataToSend.append('user_id', formData.user_id);
+        formDataToSend.append('num_sinpe', formData.sinpe);
+        formDataToSend.append('owner_sinpe', formData.sinpe_name);
+        formDataToSend.append('opening_hour', formData.opening_hour);
+        formDataToSend.append('closing_hour', formData.closing_hour);
+        const type= 1;
+        formDataToSend.append('store_type', type);
+
+        // Agregar la imagen de perfil si existe
+        if (imagePerfil) {
+            const perfilFile = {
+                uri: imagePerfil,
+                type: 'image/jpeg',
+                name: 'perfil.jpg',
+            };
+            formDataToSend.append('picture', perfilFile);
+        }
+
+        // Agregar la imagen de portada si existe
+        if (imagePortada) {
+            const portadaFile = {
+                uri: imagePortada,
+                type: 'image/jpeg',
+                name: 'portada.jpg',
+            };
+            formDataToSend.append('banner', portadaFile);
+        }
+
+        try {
+            const response = await fetch(`https://marlin-backend.vercel.app/api/stores/${store_id}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: formDataToSend
+                
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log('Error de respuesta:', errorData);
+                throw new Error('Error actualizando la tienda');
+            } else {
+                console.log('Tienda actualizada con éxito');
+                Alert.alert('Tienda actualizada', '¡Tu tienda ha sido actualizada con éxito!');
+                navigation.navigate('Mi tiendas');
+            }
+        } catch (error) {
+            console.error('Error al actualizar la tienda:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+        
+        
+
+    return { createShop, loading, error, getUserStores, allStores, getUserStores, setAllStores, deleteShop, updateShop };
 };
 
 export default useCRUDTiendas;
