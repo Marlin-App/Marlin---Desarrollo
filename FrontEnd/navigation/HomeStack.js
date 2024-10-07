@@ -20,6 +20,8 @@ import { CardScreen } from '../screens/CardScreen';
 import {HomeComercianteScreen} from '../screens/HomeComerciante';
 import { ProfileStackScreen } from './ProfileStack';
 import { InformationScreen } from '../screens/Information';
+import {HistoricalScreen} from '../screens/Historical';
+import {HistoricalDetailsScreen} from '../screens/HistoricalDetails';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -161,6 +163,25 @@ export function HomeStackScreen({ navigation, route }) {
     <HomeStack.Screen
         name="InformationScreen"
         component={InformationScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+      <HomeStack.Screen
+        name="HistoricalScreen"
+        component={HistoricalScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+<HomeStack.Screen
+        name="HistoricalDetailsScreen"
+        component={HistoricalDetailsScreen}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
