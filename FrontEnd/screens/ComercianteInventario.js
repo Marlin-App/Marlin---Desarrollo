@@ -8,13 +8,12 @@ import { useCRUDProductos } from '../hooks/useCRUDProductos';
 export function ComercianteInventario({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false);
-    const { fecthProductList, productLista, deleteProduct, fetchStoresWithProducts, storesWithProducts } = useCRUDProductos();
+    const {deleteProduct, fetchStoresWithProducts, storesWithProducts } = useCRUDProductos();
     const [longPressProduct, setLongPressProduct] = useState(null);
 
 
     useEffect(() => {
         fetchStoresWithProducts();
-        //fecthProductList();
     }, []);
 
     const longpress = (id) => {
@@ -43,7 +42,7 @@ export function ComercianteInventario({ navigation }) {
                         <Text className="text-md font-Excon_thin text-main-blue">{store.canton}, {store.district}</Text>
                         <View className="flex-col">
                             <View className="items-end mb-4">
-                                <Pressable className="border-main-blue border-[1.5px] rounded-full w-7 h-7 justify-center items-center" onPress={() => navigation.navigate("AgregarProducto")}>
+                                <Pressable className="border-main-blue border-[1.5px] rounded-full w-7 h-7 justify-center items-center" onPress={() => navigation.navigate("AgregarProducto", { store: store.id })}>
                                     <Ionicons name="add" size={24} color="#015DEC" />
                                 </Pressable>
                             </View>

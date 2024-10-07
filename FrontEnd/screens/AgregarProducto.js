@@ -5,6 +5,8 @@ import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { useCRUDProductos } from '../hooks/useCRUDProductos';
+import { useRoute } from '@react-navigation/native';
 
 
 export function AgregarProducto({ navigation }) {
@@ -14,6 +16,9 @@ export function AgregarProducto({ navigation }) {
     const [imagePerfil, setimagePerfil] = useState(null);
     const [isEnabled2, setIsEnabled2] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const {addProduct} = useCRUDProductos();
+    const route = useRoute();
+    const { storeId } = route.params || {};
 
     // const [nombreProducto, setNombreProducto] = useState("");
     //const [descripcion, setDescripcion] = useState("");	
@@ -176,7 +181,7 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-center gap-x-2 px-5">
-                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={""}>
+                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={()=>addProduct()}>
                         <Feather name="check" size={24} color="white" />
                             <Text className="text-white text-md font-Excon_bold">Agregar</Text>
                         </Pressable>

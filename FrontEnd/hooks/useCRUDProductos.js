@@ -5,9 +5,11 @@ import useDecodeJWT from './useDecodeJWT';
 
 export function useCRUDProductos() {
 
+//funcion para devolver todas las tiendas con sus productos
 
     const [storesWithProducts, setStoresWithProducts] = useState([]);
     const { decodeJWT } = useDecodeJWT();
+    const [loading, setLoading] = useState(true);
 
     const fetchStoresWithProducts = async () => {
         try {
@@ -74,28 +76,15 @@ export function useCRUDProductos() {
         }
     };
 
+    //funcion para agrergar productos a una tienda
 
+    const addProduct = async (id_store) => {
 
-
-
-
-    const [idStore, setIdStore] = useState(3);
-    const [productLista, setProductLista] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const fecthProductList = async () => {
-
-        try {
-            const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/?store_id=${idStore}`);
-            const json = await response.json();
-            setProductLista(json);
-        } catch (err) {
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
     };
+
+
+
+    //funcion para eliminar productos de una tienda
 
     const deleteProduct = async (id) => {
 
@@ -122,13 +111,13 @@ export function useCRUDProductos() {
                 return;
             }
             console.log('Producto eliminado exitosamente');
-            fecthProductList();
+            fetchStoresWithProducts();
         } catch (err) {
             console.log('Error al eliminar el producto:', err);
         }
     };
 
 
-    return { fecthProductList, productLista, deleteProduct, fetchStoresWithProducts, storesWithProducts };
+    return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct };
 
 }
