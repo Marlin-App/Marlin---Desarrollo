@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import {  Alert} from 'react-native';
-const useCRUDTiendas = () => {
+import useDecodeJWT from './useDecodeJWT';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const useCRUDTiendas = (navigation) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [allStores, setAllStores] = useState([]);
+;
+    const { decodeJWT } = useDecodeJWT();
 
     const createShop = async (formData, imagePerfil, imagePortada, acceptedTerms) => {
         if (acceptedTerms) {
@@ -20,13 +25,14 @@ const useCRUDTiendas = () => {
             formDataToSend.append('referencias', formData.referencias);
             formDataToSend.append('canton', formData.canton);
             formDataToSend.append('district', formData.district);
-            formDataToSend.append('coodernates', formData.coodernates);
+            formDataToSend.append('coodernates', formData.coodernates.location+','+formData.coodernates.latitude);
             formDataToSend.append('user_id', formData.user_id);
-            formDataToSend.append('sinpe', formData.sinpe);
-            formDataToSend.append('sinpe_name', formData.sinpe_name);
+            formDataToSend.append('num_sinpe', formData.sinpe);
+            formDataToSend.append('owner_sinpe', formData.sinpe_name);
             formDataToSend.append('opening_hour', formData.opening_hour);
             formDataToSend.append('closing_hour', formData.closing_hour);
-            formDataToSend.append('store_type', formData.store_type);
+            const type= 1;
+            formDataToSend.append('store_type', type);
 
             if (imagePerfil) {
                 const perfilFile = {
@@ -48,7 +54,7 @@ const useCRUDTiendas = () => {
             }
 
             try {
-                const response = await fetch(`https://marlin-desarrollo.vercel.app/api/stores/`, {
+                const response = await fetch(`https://marlin-backend.vercel.app/api/stores/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -63,6 +69,7 @@ const useCRUDTiendas = () => {
                     throw new Error('Error creando la tienda');
                 } else {
                     console.log('Tienda creada con éxito');
+                    navigation.navigate('Mi tiendas');
                     Alert.alert('Tienda creada', '¡Tu tienda ha sido creada con éxito!');
                 }
             } catch (error) {
@@ -74,12 +81,23 @@ const useCRUDTiendas = () => {
         }
     };
 
-
     const getUserStores = async (userId) => {
         setLoading(true);
         setError(null);
+
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        if (jsonValue==null) {
+            setLoading(false);
+            setIsLogged(false);
+            return;
+        }
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
+        const decodedToken = decodeJWT(token);
+        const user_id = decodedToken.payload.userprofile;
+
         try {
-            const response = await fetch("https://marlin-backend.vercel.app/api/stores/");
+            const response = await fetch(`https://marlin-backend.vercel.app/api/stores/?user_id=${user_id}`);
             const data2 = await response.json();
             setAllStores(data2);
             setLoading(false);

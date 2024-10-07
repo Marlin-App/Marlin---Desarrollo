@@ -56,7 +56,7 @@ const useGetUser  = () => {
 
                     const decodedToken = decodeJWT(token);
                     const user_id = decodedToken.payload.userprofile;
-                    setFormData({ ...formData, [name]: value });
+                   
                 const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}/`, {
                     method: 'PATCH',
                     headers: {
