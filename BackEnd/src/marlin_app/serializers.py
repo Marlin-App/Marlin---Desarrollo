@@ -119,5 +119,10 @@ class StoreItemTagSerializer(serializers.ModelSerializer):
         model = ItemTag
         fields = '__all__'
 
+class AtributeValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AtributeValue
+        fields = '__all__'
+
 
 
