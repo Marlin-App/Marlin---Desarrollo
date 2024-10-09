@@ -114,6 +114,14 @@ class StoreTypeSerializer(serializers.ModelSerializer):
         model = StoreType
         fields = '__all__'
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['image'].startswith('image/upload/'):
+            representation['image'] = representation['image'].replace('image/upload/', '')
+        if representation['image_selected'].startswith('image/upload/'):
+            representation['image_selected'] = representation['image_selected'].replace('image/upload/', '')
+        return representation
+
 class StoreItemTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemTag
