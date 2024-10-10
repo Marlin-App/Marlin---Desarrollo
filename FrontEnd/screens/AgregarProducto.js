@@ -7,7 +7,6 @@ import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useCRUDProductos } from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
-import {ColorPicker} from '../components/ColorPicker';
 
 
 export function AgregarProducto({ navigation }) {
@@ -135,8 +134,6 @@ export function AgregarProducto({ navigation }) {
                             value={isEnabled2}
                         />
                     </View>
-
-                    <ColorPicker></ColorPicker>
 
                     <View className="px-5">
 

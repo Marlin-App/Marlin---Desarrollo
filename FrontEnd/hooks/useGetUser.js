@@ -41,7 +41,7 @@ const useGetUser  = () => {
         const updateUser = async (updatedUser) => {
             try {
 
-                if (!isTokenExpired()) {
+                if (await isTokenExpired()) {
                     await refreshToken();
                     console.log('Token expirado');
                 }else{
