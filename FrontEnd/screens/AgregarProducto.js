@@ -7,6 +7,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useCRUDProductos } from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
+import {ColorPicker} from '../components/ColorPicker';
 
 
 export function AgregarProducto({ navigation }) {
@@ -16,18 +17,18 @@ export function AgregarProducto({ navigation }) {
     const [imagePerfil, setimagePerfil] = useState(null);
     const [isEnabled2, setIsEnabled2] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
-    const {addProduct} = useCRUDProductos();
+    const { addProduct } = useCRUDProductos();
     const route = useRoute();
     const storeId = route.params || {};
     console.log(route.params);
 
 
     const [formData, setFormData] = useState({
-        name: "a",
-        description: "a",
+        name: "",
+        description: "",
         price: 0,
         stock: 0,
-        picture: "a",
+        picture: "",
         store_id: storeId.store,
         item_type: 3
     });
@@ -105,7 +106,7 @@ export function AgregarProducto({ navigation }) {
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold">Descripción</Text>
                         <TextInput className="border-[0.5px] border-main-blue rounded-lg px-4 my-2 font-Excon_thin"
-                        value={formData.description} onChangeText={(value) => handleInputChange('description', value)}
+                            value={formData.description} onChangeText={(value) => handleInputChange('description', value)}
                             multiline
                             numberOfLines={4}
                             maxLength={120}
@@ -114,7 +115,7 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-between items-center px-5">
-                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir tallas?</Text>
+                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir color?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
                             thumbColor={isEnabled ? '#015DEC' : '#f4f3f4'}
@@ -125,7 +126,7 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-between items-center px-5 mb-2">
-                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir color?</Text>
+                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir Talla?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
                             thumbColor={isEnabled2 ? '#015DEC' : '#f4f3f4'}
@@ -134,6 +135,8 @@ export function AgregarProducto({ navigation }) {
                             value={isEnabled2}
                         />
                     </View>
+
+                    <ColorPicker></ColorPicker>
 
                     <View className="px-5">
 
@@ -182,7 +185,7 @@ export function AgregarProducto({ navigation }) {
                             <Text className="text-main-blue text-md font-Excon_bold">Precio</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-main-blue text-md font-Excon_regular">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.price} onChangeText={(value) => handleInputChange('price', value)}/>
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
                             </View>
                         </View>
 
@@ -201,8 +204,8 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-center gap-x-2 px-5">
-                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={()=>AddProductos()}>
-                        <Feather name="check" size={24} color="white" />
+                        <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={() => AddProductos()}>
+                            <Feather name="check" size={24} color="white" />
                             <Text className="text-white text-md font-Excon_bold">Agregar</Text>
                         </Pressable>
                         <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2" onPress={""}>
