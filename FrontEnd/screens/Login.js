@@ -82,7 +82,7 @@ export function LoginPage({ navigation }) {
         </View>
 
         <Text className="text-[24px] font-Excon_regular text-[#1952BE] ">Contraseña</Text>
-        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-8 gap-2 ">
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 ">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
             id='password'
@@ -95,6 +95,8 @@ export function LoginPage({ navigation }) {
             autoCapitalize="none"
           />
         </View>
+
+        <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular">Olvidaste tu contraseña?</Text></Pressable>
 
         <Pressable
           onPress={handleLogin}
