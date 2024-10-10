@@ -7,7 +7,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import useCart from '../hooks/useCart';
 import useItems from '../hooks/useItems';
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 
@@ -145,7 +145,12 @@ export function ExploreScreen({ navigation }) {
 
             {loading ? (
                 <View className={`w-full h-full justify-center items-center absolute z-10 `}>
-                    <ActivityIndicator size="large" color="#3498db" />
+                     <Image
+                        source={require('../../FrontEnd/assets/img/loading.gif')}
+                        className="h-36 w-36 rounded-lg"
+                        resizeMode="center"
+                    />
+                 
                 </View>
             ) : null}
 
@@ -191,7 +196,7 @@ export function ExploreScreen({ navigation }) {
 
             }
 
-            {verticalData.length == 0 ? (
+            {verticalData.length == 0 && isSearch ? (
                 <View className="flex-1 justify-center items-center">
                     <Text className="text-red-500">No se encontraron Productos</Text>
                 </View>

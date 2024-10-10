@@ -28,7 +28,7 @@ export function LoginPage({ navigation }) {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Registro exitoso:', data);
+        console.log('Registro exitoso:');
         setIsLoading(false);
         
         

@@ -28,14 +28,12 @@ export function RegisterPage({ navigation }) {
 
      
       const data = await response.json();
-      console.log('Data:', data);
       if (response.ok) {
         console.log('Registro exitoso:', data);
+        Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
+        navigation.navigate('Profile'); 
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
-        Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
-        
-        navigation.navigate('Profile'); 
       } else {
        
         Alert.alert('Error en el registro', data.message || 'Algo salió mal');
