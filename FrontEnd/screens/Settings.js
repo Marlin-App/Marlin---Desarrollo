@@ -19,7 +19,7 @@ export function ProfileScreen({ navigation }) {
   const { decodeJWT } = useDecodeJWT();
   const isFocused = useIsFocused();
   const { toggleColorScheme } = useColorScheme();
-
+  let formatePicture = "";
 
 
   useEffect(() => {
@@ -31,8 +31,6 @@ export function ProfileScreen({ navigation }) {
         setIsLogged(true);
          await fetchData();
          /* console.log(user); */
-        
-        
       }
     };
 
@@ -51,7 +49,7 @@ export function ProfileScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center" }} className="px-8 bg-white dark:bg-black">
       {isLogged == false ? (
-        <ScrollView className="w-full">
+        <ScrollView className="w-full h-full">
           <View className="w-full mt-14">
             <View className="flex justify-center items-center">
               <View className="flex justify-center items-center bg-main-blue p-4 rounded-3xl">
@@ -96,13 +94,13 @@ export function ProfileScreen({ navigation }) {
           </View>
         </ScrollView>
       ) : (
-        <ScrollView className="w-full">
+        <ScrollView className="w-full h-full">
           <View className="w-full mt-14">
             <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
             <View className="flex flex-row justify-center items-center">
               <View className="flex justify-center items-center w-28 h-28 rounded-full">
                 <Image
-                  source={{ uri: user.picture ? user.picture : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
+                  source={{ uri: user.picture ?  user.picture.replace("image/upload/", "") : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
                   style={{ width: 100, height: 100, borderRadius: 100 }}
                 />
               </View>

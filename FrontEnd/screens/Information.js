@@ -6,7 +6,7 @@ import useGetUser from '../hooks/useGetUser';
 
 export function InformationScreen() {
     const [image, setImage] = useState(null);
-    const { fetchData, user, updateUser } = useGetUser();
+    const { fetchData, user, updateUser, loading } = useGetUser();
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -64,14 +64,30 @@ export function InformationScreen() {
 
     return (
         <ScrollView className="w-full ">
+            <Text className="font-Excon_regular text-main-blue text-[24px] text-center " >Mi perfil</Text>
+            {loading ? (
+                <View className={`w-full h-full justify-center items-center  bg-grey-light `}>
+                     <Image
+                        source={require('../../FrontEnd/assets/img/loading.gif')}
+                        className="h-36 w-36 rounded-lg"
+                        resizeMode="center"
+                    />
+                 
+                </View>
+            ) : null}
             <View className="mt-4 items-center p-4">
-                <Text className="font-Excon_regular text-main-blue text-[24px] text-center " >Mi perfil</Text>
+
+
+
 
                 <Pressable
                     className="mt-4 h-44 w-44 bg-[#C4C4C4] rounded-full relative"
                     onPress={pickImage}
                 >
-                    {image && <Image source={{ uri: image }} className="rounded-full w-full h-full" />}
+                    {image ? (<Image source={{ uri: image }} className="rounded-full w-full h-full" />) : (<Image
+                        source={{ uri: user.picture ? user.picture.replace("image/upload/", "") : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
+                      className="rounded-full w-full h-full"
+                    />)}
                     <View className="absolute h-14 w-14 rounded-full bg-[#D9D9D9] bottom-0 right-0 items-center justify-center">
                         <Feather name="camera" size={28} color="#015DEC" />
                     </View>

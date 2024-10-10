@@ -9,11 +9,16 @@ export function useCRUDProductos() {
     //funcion para devolver todas las tiendas con sus productos
 
     const [storesWithProducts, setStoresWithProducts] = useState([]);
-    const { decodeJWT } = useDecodeJWT();
+    const { decodeJWT, refreshToken, isTokenExpired } = useDecodeJWT();
     const [loading, setLoading] = useState(true);
 
     const fetchStoresWithProducts = async () => {
         try {
+            if (await isTokenExpired()) {
+                await refreshToken();
+            }else{
+                console.log('Token no expirado');
+            }
             // Obtén el token almacenado en AsyncStorage
             const jsonValue = await AsyncStorage.getItem('@userToken');
 

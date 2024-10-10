@@ -44,11 +44,10 @@ const onLayout = useCallback(async () => {
     }
 }, [fontsLoaded])
 
-if (!fontsLoaded) return null;
+/* if (!fontsLoaded) return null; */
   
   return (
  <NavigationContainer>
-          {/*  <StatusBar barStyle="light-content" backgroundColor="#6a51ae" /> */}
           <HomeStackScreen />
   </NavigationContainer> 
   );

@@ -20,7 +20,7 @@ const useStoreItem = (id) => {
         fetchData();
     }, [id]);
     
-    return { data, loading };
+    return { data, loading, setData };
     }
 
     export default useStoreItem; 
