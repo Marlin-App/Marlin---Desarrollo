@@ -25,6 +25,7 @@ export function StoreCat({ navigation }) {
                 location: item.location,
                 picture: item.picture,
                 type: item.store_type,
+                banner: item.banner,
             }));
 
             setOriginalStoreSelected(formattedData);  // Guardar el estado inicial completo
@@ -59,6 +60,7 @@ export function StoreCat({ navigation }) {
                 name: item.name,
                 location: item.location,
                 picture: item.picture,
+                banner: item.banner,
                 type: item.store_type,
             }));
             clearSearch();
