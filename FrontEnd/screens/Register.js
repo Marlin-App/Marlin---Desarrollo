@@ -1,13 +1,18 @@
 import * as React from 'react';
-import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image } from 'react-native';
+import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export function RegisterPage({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [fullName, setFullName] = React.useState("");
+  const [userName, setUserName] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // Modificación de la función handleLogin
   const handleLogin = async () => {
@@ -21,8 +26,10 @@ export function RegisterPage({ navigation }) {
         },
         body: JSON.stringify({
           password: password,
-          username: fullName,
+          username: userName,
           email: email,
+          first_name: firstName,
+          last_name: lastName
         }),
       });
 
@@ -50,7 +57,7 @@ export function RegisterPage({ navigation }) {
       <Image
         source={require('../assets/img/FondoLogin.png')}
         className="w-full h-[50%]"
-        style={{ resizeMode: 'stretch', marginBottom: 30 }}
+        style={{ resizeMode: 'stretch' }}
       />
       <Text
        className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 "
@@ -58,17 +65,51 @@ export function RegisterPage({ navigation }) {
         ¡Crea una cuenta!
       </Text>
 
-      <View className="px-8">
-        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombre Completo</Text>
+      <ScrollView className="px-8">
+
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombre</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
-            id='fullNameRegister'
+            id='firstName'
             className="w-full"
-            placeholder="Ej: Nombre Apellido Apellido"
+            placeholder="Ej: Nombre 1 Nombre 2"
             placeholderTextColor={'#1877F2'}
-            value={fullName}
-            onChangeText={setFullName}
+            value={firstName}
+            onChangeText={setFirstName}
+            onBlur={() => {
+              if (!firstName) {
+                Alert.alert('Campo requerido', 'El nombre es requerido');
+              }
+            }}
+            autoCapitalize="none"
+          />
+        </View>
+
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Apellidos</Text>
+        <View className="flex-row items-center border-b-2 border-[#1952BE] gap-2">
+          <Feather name="user" size={18} color="#1952BE" />
+          <TextInput
+            id='lastName'
+            className="w-full"
+            placeholder="Ej: Apellido 1 Apellido 2"
+            placeholderTextColor={'#1877F2'}
+            value={lastName}
+            onChangeText={setLastName}
+            autoCapitalize="none"
+          />
+        </View>
+
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombre de usuario</Text>
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
+          <Feather name="user" size={18} color="#1952BE" />
+          <TextInput
+            id='userName'
+            className="w-full"
+            placeholder="Ej: MarlinPescador24"
+            placeholderTextColor={'#1877F2'}
+            value={userName}
+            onChangeText={setUserName}
             autoCapitalize="none"
           />
         </View>
@@ -103,20 +144,24 @@ export function RegisterPage({ navigation }) {
           />
         </View>
 
-        <Pressable
-          id='createRegister'
-          onPress={handleLogin}
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : '#3765AE',
-              marginBottom: 15,
-            },
-            styles.button,
-          ]}
-        >
-          <Text className="text-[16px] font-Excon_bold" style={styles.text}>Crear cuenta</Text>
-        </Pressable>
-      </View>
+        <View className="flex-col px-5 my-4">
+                <View className="flex-row items-center">
+                    <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
+                        <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
+                    </TouchableOpacity>
+                    {/* corregir la ruta para mostrar los terminos y condiciones */}
+                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                </View>
+            </View>
+
+            <TouchableOpacity
+                 className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && email && password && userName && firstName && lastName ? '' : 'opacity-50'}`}
+                 onPress={acceptedTerms && email && password && userName && firstName && lastName ? handleLogin : null}
+                 disabled={!acceptedTerms || !email || !password || !userName || !firstName || !lastName}
+            >
+                    <Text className="text-white font-Excon_bold text-lg ml-2">Crear cuenta</Text>
+            </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }

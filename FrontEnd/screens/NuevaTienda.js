@@ -93,7 +93,7 @@ export function NuevaTienda({ navigation }) {
                 
                 const [selectedValue, setSelectedValue] = useState(formData.canton);
                 const [selectedValue2, setSelectedValue2] = useState(formData.district);
-                /* const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();   */
+                const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();  
                 const [imagePerfil, setimagePerfil] = useState(formData.picture);
                 const [imagePortada, setimagePortada] = useState(formData.banner);
                 
@@ -109,9 +109,9 @@ export function NuevaTienda({ navigation }) {
         handleInputChange('canton', selectedValue);
     }, [selectedValue]);
 
-    /* useEffect(() => {
-        handleInputChange('coodernates', location);FF
-    }, [location]); */
+    useEffect(() => {
+        handleInputChange('coodernates', location);
+    }, [location]);
 
     /* useEffect(() => {
         handleInputChange('store_type', selectedCategoryIds);

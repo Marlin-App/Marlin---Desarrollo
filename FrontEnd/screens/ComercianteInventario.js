@@ -55,7 +55,7 @@ export function ComercianteInventario({ navigation }) {
                                             key={index}
                                             className="flex-col justify-center mb-1"
                                             onPress={() => navigation.navigate("EditarProducto")}
-                                            onLongPress={() => longpress(index)}
+                                            onLongPress={() => longpress(item.id)}
                                         >
                                             <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-main-blue w-full items-center rounded-md">
 

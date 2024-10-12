@@ -4,7 +4,7 @@ import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export function LoginPage({ navigation }) {
-  const [email, setEmail] = React.useState("");
+  const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const handleLogin = async () => {
@@ -21,7 +21,7 @@ export function LoginPage({ navigation }) {
         },
         body: JSON.stringify({
           password: password,
-          username: email,
+          username: userName,
         }),
       });
 
@@ -66,23 +66,23 @@ export function LoginPage({ navigation }) {
       <Text  className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4  ">¡Bienvenido de vuelta!    </Text>
 
       <View className="px-8">
-        <Text className="text-[24px] font-Excon_regular  text-[#1952BE]">Correo Electrónico</Text>
+        <Text className="text-[24px] font-Excon_regular  text-[#1952BE]">Nombre de usuario</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2 ">
-          <Feather name="mail" size={18} color="#1952BE" />
+          <Feather name="user" size={18} color="#1952BE" />
           <TextInput
-            id='email'
+            id='userName'
             className="w-full"
-            placeholder="Ej: correo@electronico.com"
+            placeholder="Ej: marlinPescador24"
             placeholderTextColor={'#1877F2'}
-            value={email}
-            onChangeText={setEmail}
+            value={userName}
+            onChangeText={setUserName}
             keyboardType="email-address"
             autoCapitalize="none"
           />
         </View>
 
         <Text className="text-[24px] font-Excon_regular text-[#1952BE] ">Contraseña</Text>
-        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-8 gap-2 ">
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 ">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
             id='password'
@@ -95,6 +95,8 @@ export function LoginPage({ navigation }) {
             autoCapitalize="none"
           />
         </View>
+
+        <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular">Olvidaste tu contraseña?</Text></Pressable>
 
         <Pressable
           onPress={handleLogin}

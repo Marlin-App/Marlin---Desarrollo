@@ -17,11 +17,12 @@ import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
 import { CardScreen } from '../screens/CardScreen';
-import {HomeComercianteScreen} from '../screens/HomeComerciante';
+import { HomeComercianteScreen } from '../screens/HomeComerciante';
 import { ProfileStackScreen } from './ProfileStack';
 import { InformationScreen } from '../screens/Information';
-import {HistoricalScreen} from '../screens/Historical';
-import {HistoricalDetailsScreen} from '../screens/HistoricalDetails';
+import { HistoricalScreen } from '../screens/Historical';
+import { HistoricalDetailsScreen } from '../screens/HistoricalDetails';
+import { RestorePasswordScreen } from '../screens/RestorePassword';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -55,11 +56,11 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         name="Home"
         component={MainTabNavigator}
-        initialParams={{ data: 'dad' }} 
+        initialParams={{ data: 'dad' }}
         options={{ headerShown: false }}
       />
 
-  <HomeStack.Screen
+      <HomeStack.Screen
         name="Landing"
         component={LandingPage}
         options={{ headerShown: false }}
@@ -91,7 +92,7 @@ export function HomeStackScreen({ navigation, route }) {
         }}
       />
 
-<HomeStack.Screen
+      <HomeStack.Screen
         name="Pay"
         component={PayScreen}
         options={{
@@ -117,7 +118,7 @@ export function HomeStackScreen({ navigation, route }) {
         }}
       />
 
-    <HomeStack.Screen
+      <HomeStack.Screen
         name="Login"
         component={LoginPage}
         options={{ headerShown: false }}
@@ -128,7 +129,7 @@ export function HomeStackScreen({ navigation, route }) {
         component={RegisterPage}
         options={{ headerShown: false }}
       />
-      
+
 
       <HomeStack.Screen
         name="CardScreen"
@@ -160,7 +161,7 @@ export function HomeStackScreen({ navigation, route }) {
         }}
       />
 
-    <HomeStack.Screen
+      <HomeStack.Screen
         name="InformationScreen"
         component={InformationScreen}
         options={{
@@ -179,9 +180,19 @@ export function HomeStackScreen({ navigation, route }) {
         }}
       />
 
-<HomeStack.Screen
+      <HomeStack.Screen
         name="HistoricalDetailsScreen"
         component={HistoricalDetailsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      <HomeStack.Screen
+        name="RestorePasswordScreen"
+        component={RestorePasswordScreen}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
