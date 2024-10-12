@@ -95,7 +95,7 @@ export function HomeScreen({ navigation }) {
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC' })}`,
                 stock: item.stock,
                 picture:  item.picture,
-                storeId: item.storeId,
+                store_id: item.store_id,
                 item_type: item.item_type
             }))
         },

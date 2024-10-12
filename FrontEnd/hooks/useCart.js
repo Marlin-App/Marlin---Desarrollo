@@ -17,13 +17,15 @@ const useCart = () => {
         const jsonValue = await AsyncStorage.getItem('@cart');
         if (jsonValue != null) {
           setCart(JSON.parse(jsonValue));
+          console.log(cart);
         }
       } catch (e) {
         console.error('Error al cargar el carrito:', e);
       }
     };
-
+  
     loadCart();
+
   }, []);
 
   useEffect(() => {
@@ -42,7 +44,6 @@ const useCart = () => {
   }, [cart]);
 
   const addToCart = (product) => {
-    console.log(product.cantidad);
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
@@ -89,6 +90,22 @@ const useCart = () => {
     setTotal(totalAmount);
   };
 
+
+  const isSameStore = (store_id) => {
+    
+    if(cart.length == 0){
+      return true;
+    }
+
+    if(cart[0].store_id == store_id){
+      return true;
+    }
+      return false;
+      
+
+
+  };
+
   return {
     cart,
     addToCart,
@@ -96,6 +113,7 @@ const useCart = () => {
     decreaseQuantity,
     removeFromCart,
     clearCart,
+    isSameStore,
     total,
   };
 };

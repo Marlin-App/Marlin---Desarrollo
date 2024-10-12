@@ -63,7 +63,7 @@ export function ExploreScreen({ navigation }) {
                 price: `$${item.price}`,
                 stock: item.stock,
                 picture: item.picture,
-                storeId: item.storeId,
+                store_id: item.store_id,
                 item_type: item.item_type
             }));
             setverticalData(data);

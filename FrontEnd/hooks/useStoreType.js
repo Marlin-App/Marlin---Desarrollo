@@ -14,11 +14,13 @@ const useStoreType = () => {
                     title: 'Categorías',
                     data: data1.map(item => ({
                         id: item.id,
-                        name: item.name
+                        name: item.name,
+                        image: item.image,
+                        image_selected: item.image_selected,
                     }))
                 }
             ];
-            formattedData1[0].data.unshift({id: null, name: 'Todas'});
+            formattedData1[0].data.unshift({id: null, name: 'Todas', image:"http://res.cloudinary.com/dgpqi6ukf/image/upload/v1728176023/categories/Zapateria_image.webp", image_selected:"https://res.cloudinary.com/dgpqi6ukf/image/upload/v1728176024/categories/Zapateria_selected_image.webp"});
             setAllCategories(formattedData1);
 
             const response2 = await fetch("https://marlin-backend.vercel.app/api/stores/");

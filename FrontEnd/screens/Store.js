@@ -13,12 +13,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 export function Store({ navigation }) {
 
     const route = useRoute();
-    console.log(route.params);
     const { data, loading, setData } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState('');
-    console.log(data)
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -83,7 +81,7 @@ export function Store({ navigation }) {
                     </View>
 
                     <View className="flex-row text-center  bg-grey-light rounded-lg ">
-                        <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
+                        <Pressable className="bg-main-blue rounded-l-lg px-2 flex justify-center"
                             onPress={() => {
                                 searchProduct(search);
                                 setIsSearch(true);
@@ -92,7 +90,7 @@ export function Store({ navigation }) {
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </Pressable>
                         <TextInput
-                            className="ml-2 py-3  text-md text-light-blue font-Excon_regular w-[70%] "
+                            className="ml-2 py-2  text-md text-black font-Excon_regular w-[70%] "
                             placeholder='Buscar Productos'
                             placeholderTextColor={'#3498db'}
                             value={search}

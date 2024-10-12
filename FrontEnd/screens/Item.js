@@ -6,8 +6,9 @@ import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart'
 export function ItemPage({ navigation }) {
 
-    const { addToCart } = useCart();
+    const { addToCart, isSameStore, clearCart, cart } = useCart();
     const [modalVisible, setModalVisible] = useState(false);  
+    const [modalVisible2, setModalVisible2] = useState(false);  
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -36,9 +37,8 @@ export function ItemPage({ navigation }) {
     const [quantity, setQuantity] = useState(1);
     const route = useRoute();
     const { product } = route.params;
-    console.log(product);
 
-    console.log(product.picture)
+
 
     const increaseQuantity = () => {
         setQuantity(quantity + 1);
@@ -50,10 +50,21 @@ export function ItemPage({ navigation }) {
         }
     };
    
-    
-    const handleAddToCart = () => { 
+    const vericarCarrito = () => {
+
+        console.log(isSameStore(product.store_id));
+        if(isSameStore(product.store_id)){
+            handleAddToCart();
+
+        }else{
+            setModalVisible2(!modalVisible2);
+        }
+       
+    }
+
+    const  handleAddToCart = () => { 
         setModalVisible(!modalVisible);
-        addToCart({ ...product, cantidad: quantity }); 
+         addToCart({ ...product, cantidad: quantity }); 
     };
 
     return (
@@ -62,10 +73,7 @@ export function ItemPage({ navigation }) {
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalVisible(modalVisible);
-                }}>
+                >
                 <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalText}>Se agrego el producto {product.name} al carrito!</Text>
@@ -81,12 +89,49 @@ export function ItemPage({ navigation }) {
                 </View>
                 </View>
             </Modal>
+
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible2}
+                >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Este producto pertenece a una tienda distinta. Si diceas crear un nuevo carrito perderas los productos guardados hasta ahora!</Text>
+                    
+                    <View className="flex-row gap-2">
+                        <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={async () => {
+                            await clearCart();  
+                            handleAddToCart();
+                            navigation.goBack();
+                        }}
+                        >
+                        <Text style={styles.textStyle}> Nuevo Carrito</Text>
+                        </Pressable>
+
+                        <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => {
+                            setModalVisible2(!modalVisible2); 
+                        }}
+                        >
+                        <Text style={styles.textStyle}>Cancelar</Text>
+                        </Pressable>
+
+                    </View>
+                </View>
+                </View>
+            </Modal>
+
+
             <View className="px-8">
                 <Image
                     className="w-full h-[400] rounded-3xl bg-black mt-10 mb-3"
                     source={{uri: product.picture} }
                     resizeMode="cover"
-                    onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
                 />
                 <Text className="text-xl pl-1 font-Excon_bold">{product.name}</Text>
                 <Text className="text-sm pl-1 font-Excon_regular">{product.description}</Text>
@@ -119,7 +164,8 @@ export function ItemPage({ navigation }) {
                     </View>
                     <Pressable
                         style={styles.carrito}
-                        onPress={() => handleAddToCart()}
+                        onPress={() =>vericarCarrito()}
+                       
                     > 
                     <Text className="text-lg font-bold text-main-blue">Agregar al carrito</Text>
                     </Pressable>
