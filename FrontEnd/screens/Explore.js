@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl, useColorScheme } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl } from 'react-native';
+import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,8 +15,9 @@ export function ExploreScreen({ navigation }) {
     const { cart, addToCart } = useCart();
     const { data: items, loading, error, refetch } = useItems();  // refetch for pull-to-refresh
     const [verticalData, setVerticalData] = useState([]);
-    const colorScheme = useColorScheme();
-    const placeholderTextColor = colorScheme === 'dark' ? 'light-blue' : 'white';
+    const { colorScheme } = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [refreshing, setRefreshing] = useState(false);  // for pull-to-refresh
@@ -116,13 +118,13 @@ export function ExploreScreen({ navigation }) {
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 ">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
-                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                         </View>
                     </View>
@@ -160,7 +162,7 @@ export function ExploreScreen({ navigation }) {
                         }}
 
                     >
-                        <Ionicons name="close-sharp" size={35} color={colorScheme === 'dark' ? "black" : "white"} />
+                        <Ionicons name="close-sharp" size={35} color={placeholderTextColor} />
                     </Pressable>
                 ) : null
 

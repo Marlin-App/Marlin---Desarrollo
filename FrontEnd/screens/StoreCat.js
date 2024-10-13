@@ -1,5 +1,6 @@
 import { React, useState, useEffect, useCallback, useRef } from 'react';
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, useColorScheme } from 'react-native';
+import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator} from 'react-native';
+import { useColorScheme } from "nativewind";
 import useStoreType from '../hooks/useStoreType';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -16,8 +17,8 @@ export function StoreCat({ navigation }) {
     const [storeSelected, setStoreSelected] = useState([]);
     const [search, setSearch] = useState('');
     const [originalStoreSelected, setOriginalStoreSelected] = useState([]);
-    const colorScheme = useColorScheme();
-    const placeholderTextColor = colorScheme === 'dark' ? 'light-blue' : 'white';
+    const { colorScheme } = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
 
     useEffect(() => {
         const selectedStore = () => {
@@ -115,13 +116,13 @@ export function StoreCat({ navigation }) {
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"}  />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"}  />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 ">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
-                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                         </View>
                     </View>
@@ -158,7 +159,7 @@ export function StoreCat({ navigation }) {
                         }}
 
                     >
-                        <Ionicons name="close-sharp" size={35} color={colorScheme === 'dark' ? "black" : "white"} />
+                        <Ionicons name="close-sharp" size={35} color={placeholderTextColor} />
                     </Pressable>
                 ) : null
 

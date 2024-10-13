@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, useColorScheme, Alert, ScrollView } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, Alert, ScrollView, useColorScheme } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 
 export function ItemPage({ navigation }) {
+    const colorScheme  = useColorScheme();
     const { addToCart, isSameStore, clearCart, cart } = useCart();
-    const [modalVisible, setModalVisible] = useState(false);  
-    const [modalVisible2, setModalVisible2] = useState(false);  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible2, setModalVisible2] = useState(false);
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -47,44 +48,44 @@ export function ItemPage({ navigation }) {
             setQuantity(prevQuantity => prevQuantity - 1);
         }
     };
-   
+
     const vericarCarrito = () => {
 
         console.log(isSameStore(product.store_id));
-        if(isSameStore(product.store_id)){
+        if (isSameStore(product.store_id)) {
             handleAddToCart();
 
-        }else{
+        } else {
             setModalVisible2(!modalVisible2);
         }
-       
+
     }
 
-    const  handleAddToCart = () => { 
+    const handleAddToCart = () => {
         setModalVisible(!modalVisible);
-         addToCart({ ...product, cantidad: quantity }); 
+        addToCart({ ...product, cantidad: quantity });
     };
 
     // **1. Extraer el Valor Numérico del Precio**
     const unitPrice = Number(product.price.replace(/[^0-9]/g, ''));
-    
+
     // **2. Calcular el Precio Total**
     const totalPrice = unitPrice * quantity;
 
     // **3. Formatear el Precio Total**
-    const formattedTotalPrice = totalPrice.toLocaleString('es-CR', { 
-        style: 'currency', 
-        currency: 'CRC', 
-        maximumFractionDigits: 0 
+    const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
+        style: 'currency',
+        currency: 'CRC',
+        maximumFractionDigits: 0
     });
 
 
-    
+
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
             <ScrollView className="mb-20">
 
-            <Modal
+                <Modal
                     animationType="slide"
                     transparent={true}
                     visible={modalVisible}
@@ -110,8 +111,8 @@ export function ItemPage({ navigation }) {
                             </View>
                         </View>
                     </View>
-            </Modal>
-            <Modal
+                </Modal>
+                <Modal
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible2}
@@ -128,7 +129,7 @@ export function ItemPage({ navigation }) {
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={async () => {
-                                        await clearCart();  
+                                        await clearCart();
                                         handleAddToCart();
                                         navigation.goBack();
                                     }}
@@ -139,7 +140,7 @@ export function ItemPage({ navigation }) {
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={() => {
-                                        setModalVisible2(!modalVisible2); 
+                                        setModalVisible2(!modalVisible2);
                                     }}
                                 >
                                     <Text className="text-white font-Excon_regular">Cancelar</Text>
@@ -147,8 +148,8 @@ export function ItemPage({ navigation }) {
                             </View>
                         </View>
                     </View>
-            </Modal>    
-                
+                </Modal>
+
                 <View className="px-8">
                     <Image
                         className="w-full h-[300] rounded-3xl bg-black mt-10 mb-3"
@@ -174,8 +175,8 @@ export function ItemPage({ navigation }) {
 
                 <View className="flex-row justify-between pb-3">
                     <View className="flex-row ">
-                        <TouchableOpacity 
-                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue" 
+                        <TouchableOpacity
+                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
                             onPress={decreaseQuantity}
                         >
                             <Text className="text-main-blue dark:text-white text-3xl">-</Text>
@@ -189,20 +190,20 @@ export function ItemPage({ navigation }) {
                                 setQuantity(isNaN(numericValue) || numericValue < 1 ? 1 : numericValue);
                             }}
                         />
-                        <TouchableOpacity 
-                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue" 
+                        <TouchableOpacity
+                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue"
                             onPress={increaseQuantity}
                         >
                             <Text className="text-main-blue dark:text-white text-lg">+</Text>
                         </TouchableOpacity>
                     </View>
-                    <Pressable 
+                    <Pressable
                         style={styles.carrito}
-                        onPress={() =>vericarCarrito()}
-                       
-                    > 
-                    <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
-                    </Pressable> 
+                        onPress={() => vericarCarrito()}
+
+                    >
+                        <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
@@ -211,7 +212,8 @@ export function ItemPage({ navigation }) {
 const styles = StyleSheet.create({
 
     carrito: {
-        backgroundColor: 'white',
+        backgroundColor: useColorScheme === 'dark' ? '#1952BE' : '#ffffff',
+        // colorScheme: 'dark' ? '#1952BE' : '#ffffff',
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',
