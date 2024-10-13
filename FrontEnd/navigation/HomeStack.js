@@ -11,7 +11,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { LandingPage } from '../screens/landing';
 import { PayScreen } from '../screens/Pay';
-
+import { useColorScheme } from "nativewind";
 import { MainTabNavigator } from './MainTabNavigator';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
@@ -37,6 +37,7 @@ export function HomeStackScreen({ navigation, route }) {
     Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
   });
 
+  const { colorScheme } = useColorScheme();
 
   return (
     <HomeStack.Navigator>
@@ -59,9 +60,12 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
+          },
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
           }
         }}
       />
@@ -72,9 +76,12 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
+          },
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
           }
         }}
       />
@@ -85,9 +92,12 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
+          },
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
           }
         }}
       />
@@ -98,9 +108,12 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC",
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerTitleStyle: {
             fontFamily: 'Excon_regular',
+          },
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
           }
         }}
       />
@@ -124,7 +137,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -134,7 +150,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -144,7 +163,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: false,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -154,7 +176,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
       <HomeStack.Screen
@@ -163,7 +188,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -173,7 +201,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -183,7 +214,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -193,7 +227,10 @@ export function HomeStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, Alert, ScrollView, useColorScheme } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, Alert, ScrollView } from 'react-native';
+import { useColorScheme } from "nativewind";
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 
 export function ItemPage({ navigation }) {
-    const colorScheme  = useColorScheme();
     const { addToCart, isSameStore, clearCart, cart } = useCart();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
@@ -80,6 +80,7 @@ export function ItemPage({ navigation }) {
     });
 
 
+    const {colorScheme} = useColorScheme();
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
@@ -91,16 +92,16 @@ export function ItemPage({ navigation }) {
                     visible={modalVisible}
                 >
                     <View className="flex-1 justify-center items-center bg-black/50">
-                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw]">
+                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw] dark:bg-dk-main-bg">
                             <View className="justify-center items-center">
-                                <View className="border-b-[0.5px] w-full mb-4">
-                                    <Text className="text-lg text-center font-Excon_bold mb-2">Producto Agregado!</Text>
+                                <View className="border-b-[0.5px] dark:border-light-blue w-full mb-4">
+                                    <Text className="text-lg text-center font-Excon_bold mb-2 dark:text-white">Producto Agregado!</Text>
                                 </View>
-                                <Text className="text-md font-Excon_regular mb-4">Se agrego el {product.name} al carrito.</Text>
+                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agrego el {product.name} al carrito.</Text>
                             </View>
                             <View className="flex-row justify-center">
                                 <TouchableOpacity
-                                    className="bg-main-blue rounded-lg px-4 py-2"
+                                    className="bg-main-blue dark:bg-light-blue rounded-lg px-4 py-2"
                                     onPress={() => {
                                         setModalVisible(false);
                                         navigation.goBack();
@@ -198,6 +199,7 @@ export function ItemPage({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <Pressable
+                    className="bg-white dark:bg-[#1952BE]"
                         style={styles.carrito}
                         onPress={() => vericarCarrito()}
 
@@ -210,10 +212,9 @@ export function ItemPage({ navigation }) {
     );
 }
 const styles = StyleSheet.create({
+    
 
     carrito: {
-        backgroundColor: useColorScheme === 'dark' ? '#1952BE' : '#ffffff',
-        // colorScheme: 'dark' ? '#1952BE' : '#ffffff',
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',

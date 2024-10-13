@@ -170,7 +170,7 @@ export function HomeScreen({ navigation }) {
     const renderHorizontalItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
-                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px]">
+                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                     <Image
                         source={{ uri: item.picture }}
                         className="w-full h-full rounded-lg"
