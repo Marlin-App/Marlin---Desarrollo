@@ -283,14 +283,14 @@ export function HomeScreen({ navigation }) {
 
             <ScrollView>
                 <HomeCarousel navigation={navigation} />
-               {/* <FlatList
+               <FlatList
                     data={verticalData}
                     scrollEnabled={false}
                     renderItem={renderVerticalItem}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 20 }}
-                />  */}
+                /> 
             </ScrollView>
         </View>
     );
