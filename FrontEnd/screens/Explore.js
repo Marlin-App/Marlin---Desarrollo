@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl, useColorScheme } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,34 +14,36 @@ export function ExploreScreen({ navigation }) {
     const { cart, addToCart } = useCart();
     const { data: items, loading, error, refetch } = useItems();  // refetch for pull-to-refresh
     const [verticalData, setVerticalData] = useState([]);
+    const colorScheme = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'light-blue' : 'white';
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [refreshing, setRefreshing] = useState(false);  // for pull-to-refresh
 
-  /*   const [fontsLoaded] = useFonts({
-        Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
-        Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
-        Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
-        Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
-        Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
-    });
-
-    useEffect(() => {
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    }, []);
-
-    useEffect(() => {
-        if (fontsLoaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]); */
+    /*   const [fontsLoaded] = useFonts({
+          Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
+          Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
+          Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
+          Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
+          Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
+      });
+  
+      useEffect(() => {
+          async function prepare() {
+              await SplashScreen.preventAutoHideAsync();
+          }
+          prepare();
+      }, []);
+  
+      useEffect(() => {
+          if (fontsLoaded) {
+              SplashScreen.hideAsync();
+          }
+      }, [fontsLoaded]); */
 
     useEffect(() => {
         if (items) {
-            setVerticalData(formatItems(items)); 
+            setVerticalData(formatItems(items));
         }
     }, [items]);
 
@@ -58,20 +60,20 @@ export function ExploreScreen({ navigation }) {
 
     const handleSearch = debounce((text) => {
         if (items) {
-            const filteredData = items.filter(item => 
+            const filteredData = items.filter(item =>
                 item.name.toLowerCase().includes(text.toLowerCase())
             );
             setVerticalData(formatItems(filteredData));
-            setIsSearch(!!text);  
+            setIsSearch(!!text);
         }
-    }, 300);  
+    }, 300);
 
     const onRefresh = async () => {
-        if(isSearch) {
+        if (isSearch) {
             return;
         }
         setRefreshing(true);
-        await refetch();  
+        await refetch();
         setRefreshing(false);
     };
 
@@ -85,21 +87,17 @@ export function ExploreScreen({ navigation }) {
                         resizeMode="stretch"
                     />
                 </View>
-                <Text className="text-lg font-bold text-left text-light-blue w-40"
+                <Text className="text-lg font-Excon_bold text-left text-light-blue dark:text-white w-40"
                     numberOfLines={1}
                     ellipsizeMode='tail'
-                >
-                    {item.name}
-                </Text>
-                <Text className="text-sm text-start w-full text-light-blue font-thin">
-                    {item.price}
-                </Text>
+                >{item.name}</Text>
+                <Text className="text-sm text-start w-full  text-light-blue dark:text-white font-Erode_bold">{item.price}</Text>
             </View>
         </Pressable>
     ), [navigation]);
 
     const getItemLayout = (data, index) => (
-        { length: 100, offset: 100 * index, index } 
+        { length: 100, offset: 100 * index, index }
     );
 
     if (error) {
@@ -111,20 +109,22 @@ export function ExploreScreen({ navigation }) {
     }
 
     return (
-        <View className="flex-1 bg-white">
-            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
+        <View className="flex-1 bg-white dark:bg-neutral-950">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-lg font-Excon_regular">
+                        <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color="white" />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4">
-                        <Ionicons name="notifications-outline" size={24} color="white" />
-                        <Pressable onPress={() => navigation.navigate("Cart")}>
-                            <Feather name="shopping-bag" size={24} color="white" />
-                        </Pressable>
+                    <View className="flex-row items-center justify-center gap-x-4 ">
+                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                        <View className="flex-row items-center justify-center relative">
+                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -135,15 +135,16 @@ export function ExploreScreen({ navigation }) {
                 </View>
             )}
 
-            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2">
-                <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
+            <View className="flex-row text-center mt-5 mb-5 bg-grey-light dark:bg-dk-input rounded-lg mx-2">
+                <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => handleSearch(search)}
                 >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                 <TextInput
-                    className="ml-2 py-4 text-md text-light-blue font-Excon_regular w-[70%]"
+                    className="ml-2 py-4 text-md text-light-blue dark:text-white font-Excon_regular w-[70%]"
                     placeholder='Buscar Productos'
+                    placeholderTextColor={placeholderTextColor}
                     value={search}
                     onChangeText={(text) => {
                         setSearch(text);
@@ -155,17 +156,20 @@ export function ExploreScreen({ navigation }) {
                         onPress={() => {
                             setSearch('');
                             setIsSearch(false);
-                            setVerticalData(formatItems(items)); 
+                            setVerticalData(formatItems(items));
                         }}
+
                     >
-                        <Ionicons name="close-sharp" size={35} color="black" />
+                        <Ionicons name="close-sharp" size={35} color={colorScheme === 'dark' ? "black" : "white"} />
                     </Pressable>
-                ) : null}
+                ) : null
+
+                }
             </View>
 
             {isSearch ? (
                 <View className="flex-row items-center justify-between px-4">
-                    <Text className="text-lg font-Excon_regular">Resultados</Text>
+                    <Text className="text-lg font-Excon_regular text-main-blue dark:text-dk-blue">Resultados</Text>
                 </View>
             ) : null
 
