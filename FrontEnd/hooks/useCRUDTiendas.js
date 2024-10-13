@@ -8,9 +8,14 @@ const useCRUDTiendas = (navigation) => {
     const [error, setError] = useState(null);
     const [allStores, setAllStores] = useState([]);
 ;
-    const { decodeJWT } = useDecodeJWT();
+    const { decodeJWT, isTokenExpired, refreshToken } = useDecodeJWT();
 
     const createShop = async (formData, imagePerfil, imagePortada, acceptedTerms) => {
+
+        if (await isTokenExpired()) {
+            await refreshToken();
+        }
+
         if (acceptedTerms) {
             setLoading(true);
             setError(null);
@@ -43,7 +48,7 @@ const useCRUDTiendas = (navigation) => {
                 formDataToSend.append('picture', perfilFile);
             }
 
-            // Agregar la imagen de portada si existe
+            
             if (imagePortada) {
                 const portadaFile = {
                     uri: imagePortada,
@@ -81,7 +86,7 @@ const useCRUDTiendas = (navigation) => {
         }
     };
 
-    const getUserStores = async (userId) => {
+    const getUserStores = async () => {
         setLoading(true);
         setError(null);
 
@@ -150,6 +155,9 @@ const useCRUDTiendas = (navigation) => {
 
 
     const updateShop = async (formData, imagePerfil, imagePortada, store_id) => {
+        if (await isTokenExpired()) {
+            await refreshToken();
+        }
         setLoading(true);
         setError(null);
 

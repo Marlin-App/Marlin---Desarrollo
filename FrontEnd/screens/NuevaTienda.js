@@ -19,6 +19,8 @@ export function NuevaTienda({ navigation }) {
     const {createShop, loading, deleteShop, updateShop } = useCRUDTiendas(navigation);
     const route = useRoute();
     const { store } = route.params || {};
+    const { refreshStores } = route.params || {};
+  
     
     
     
@@ -35,7 +37,7 @@ export function NuevaTienda({ navigation }) {
         });
     };
     
-    //coordenadas escogidas
+ 
     
     const cantones = [
         { label: 'Puntarenas', value: 'Puntarenas' },
@@ -71,7 +73,7 @@ export function NuevaTienda({ navigation }) {
                     }
                 };
                 
-                //aceptar terminos y condiciones
+               
                 const [acceptedTerms, setAcceptedTerms] = useState(false);
                 const [formData, setFormData] = useState({
                     name: store ? store.name : "Name",
@@ -80,7 +82,7 @@ export function NuevaTienda({ navigation }) {
                     district: store ? store.district : "Puntarenas",
                     coodernates: store ? store.coodernates : "31231232312321",
                     picture: store ? store.picture : "",
-                    user_id: 3,
+                    user_id: 5,
                     sinpe: store ? store.num_sinpe : "1541561",
                     banner: store ? store.banner : "",
                     sinpe_name: store ? store.owner_sinpe : "5644654",
@@ -90,7 +92,6 @@ export function NuevaTienda({ navigation }) {
                 });
                 
                 const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
-                
                 const [selectedValue, setSelectedValue] = useState(formData.canton);
                 const [selectedValue2, setSelectedValue2] = useState(formData.district);
                 const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();  
@@ -126,24 +127,27 @@ export function NuevaTienda({ navigation }) {
     }, [imagePortada]);
 
 
-    const [modalVisible, setModalVisible] = useState(false);
 
     const handleShop = async () => {
        
            await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
            if(createShop.ok){
                navigation.navigate('Home');
+               refreshStores();
            }
         
     };
 
     const handledeleteShop = async () => {   
         await deleteShop(store.id);
+        refreshStores();
+
     }
 
     const handleUpdateShop = async () => {
         await updateShop(formData, imagePerfil, imagePortada, store.id);
-       
+
+           refreshStores();
     }
 
     return (

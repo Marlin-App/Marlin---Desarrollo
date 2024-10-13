@@ -3,15 +3,13 @@ import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ActivityInd
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { err } from 'react-native-svg';
 export function LoginPage({ navigation }) {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const handleLogin = async () => {
-   
-     //Ip para el fetch desde la web: 127.0.0.1:8000
-    //Ip para el fetch desde el emulador: 10.0.2.2:8000
-    
     try {
       setIsLoading(true);
       const response = await fetch('https://marlin-backend.vercel.app/api/token/', {
@@ -33,12 +31,10 @@ export function LoginPage({ navigation }) {
         
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
-        Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
-        
         navigation.navigate('Profile'); 
       } else {
        
-        Alert.alert('Error en el registro', data.message || 'Algo salió mal');
+      setError("Nombre de usuario o contraseña incorrectos!");  
         setIsLoading(false);
       }
     } catch (error) {
@@ -95,8 +91,8 @@ export function LoginPage({ navigation }) {
             autoCapitalize="none"
           />
         </View>
-
-        <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular">Olvidaste tu contraseña?</Text></Pressable>
+        <Text  className="mb-6 text-red-500 text-center w-full">{error} </Text>
+        <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
 
         <Pressable
           onPress={handleLogin}

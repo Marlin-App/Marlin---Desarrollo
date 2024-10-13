@@ -65,7 +65,7 @@ export function Store({ navigation }) {
             <View className=" h-[200px] items-center justify-center">
 
                 <Image
-                    source={{ uri: route.params.store.picture}}
+                    source={{ uri: route.params.store.picture }}
                     className="w-full h-full absolute "
                 />
                 <View className="absolute bg-black opacity-50 w-full h-full "></View>
@@ -104,7 +104,7 @@ export function Store({ navigation }) {
                             <Pressable className="flex-1 items-end mr-4 justify-center"
                                 onPress={() => {
                                     setSearch('');
-                                     searchProduct('');
+                                    searchProduct('');
                                     setIsSearch(false);
                                 }}
 
@@ -135,30 +135,42 @@ export function Store({ navigation }) {
 
                 <FlatList
                     data={dataArray}
-                    className="flex px-4  "
-                    columnWrapperStyle={{ justifyContent: 'space-around' }}
+                    className="flex px-4"
+                    columnWrapperStyle={{ justifyContent: 'space-around' }} 
                     numColumns={2}
-                    renderItem={({ item }) => (
-                        <Pressable onPress={() => navigation.navigate('Item', { product: item })} className=" mt-4">
-                            <View className="items-center ">
-                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
+                    renderItem={({ item, index }) => (
+                        <Pressable
+                            onPress={() => navigation.navigate('Item', { product: item })}
+                            className="mt-4"
+                            style={[
+                                index === dataArray.length - 1 ? { alignSelf: 'stretch'} : {} 
+                            ]}
+                        >
+                            <View className="items-center">
+                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px]">
                                     <Image
                                         source={{ uri: item.picture }}
                                         className="rounded-lg w-full h-full"
                                         resizeMode="cover"
                                     />
                                 </View>
-                                <Text className="text-lg text-light-blue w-40"
+                                <Text
+                                    className="text-lg text-light-blue w-40"
                                     numberOfLines={1}
-                                    ellipsizeMode='tail'
-                                >{item.name}</Text>
-                                <Text className="text-lg text-light-blue text-start w-full ">{item.price}</Text>
+                                    ellipsizeMode="tail"
+                                >
+                                    {item.name}
+                                </Text>
+                                <Text className="text-lg text-light-blue text-start w-full">
+                                    {item.price}
+                                </Text>
                             </View>
                         </Pressable>
                     )}
                     keyExtractor={item => item.id.toString()}
-                    contentContainerStyle={{ paddingBottom: 20 }}
+                    contentContainerStyle={{ paddingBottom: 20 }} // Añade espacio al final
                 />
+
 
 
 

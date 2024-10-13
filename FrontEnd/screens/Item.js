@@ -70,28 +70,70 @@ export function ItemPage({ navigation }) {
     return (
         <View className="flex-grow-1 bg-white h-full">  
             <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
                 >
-                <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Se agrego el producto {product.name} al carrito!</Text>
-                    <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => {
-                        setModalVisible(!modalVisible);
-                        navigation.goBack(); 
-                      }}
-                    >
-                    <Text style={styles.textStyle}>cerrar</Text>
-                    </Pressable>
-                </View>
-                </View>
+                    <View className="flex-1 justify-center items-center bg-black/50">
+                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw]">
+                            <View className="justify-center items-center">
+                                <View className="border-b-[0.5px] w-full mb-4">
+                                    <Text className="text-lg text-center font-Excon_bold mb-2">Producto Agregado!</Text>
+                                </View>
+                                <Text className="text-md font-Excon_regular mb-4">Se agrego el {product.name} al carrito.</Text>
+                            </View>
+                            <View className="flex-row justify-center">
+                                <TouchableOpacity
+                                    className="bg-main-blue rounded-lg px-4 py-2"
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        navigation.goBack();
+                                    }}
+                                >
+                                    <Text className="text-white font-Excon_regular">Continuar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
             </Modal>
-
-
             <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible2}
+                >
+                    <View className="flex-1 justify-center items-center bg-black/50">
+                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw]">
+                            <View className="justify-center items-center">
+                                <View className="border-b-[0.5px] w-full mb-4">
+                                    <Text className="text-lg text-center font-Excon_bold mb-2">Atencion!</Text>
+                                </View>
+                                <Text className="text-md font-Excon_regular mb-4">Este producto pertenece a una tienda distinta. Si diceas crear un nuevo carrito perderas los productos guardados hasta ahora!</Text>
+                            </View>
+                            <View className="flex-row justify-center">
+                                <TouchableOpacity
+                                    className="bg-main-blue rounded-lg px-4 py-2"
+                                    onPress={async () => {
+                                        await clearCart();  
+                                        handleAddToCart();
+                                        navigation.goBack();
+                                    }}
+                                >
+                                    <Text className="text-white font-Excon_regular">Nuevo Carrito</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    className="bg-main-blue rounded-lg px-4 py-2"
+                                    onPress={() => {
+                                        setModalVisible2(!modalVisible2); 
+                                    }}
+                                >
+                                    <Text className="text-white font-Excon_regular">Cancelar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+            </Modal>                  
+           {/*  <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible2}
@@ -124,7 +166,7 @@ export function ItemPage({ navigation }) {
                     </View>
                 </View>
                 </View>
-            </Modal>
+            </Modal> */}
 
 
             <View className="px-8">

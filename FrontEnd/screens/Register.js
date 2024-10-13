@@ -13,6 +13,7 @@ export function RegisterPage({ navigation }) {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [error, setError] = useState("");
 
   // Modificación de la función handleLogin
   const handleLogin = async () => {
@@ -42,12 +43,16 @@ export function RegisterPage({ navigation }) {
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
       } else {
-       
-        Alert.alert('Error en el registro', data.message || 'Algo salió mal');
+       if(Object.keys(data)[0] === 'email'){
+        setError('El correo electrónico ya está en uso');
+        }else if(Object.keys(data)[0] === 'username'){
+          setError('El nombre de usuario ya está en uso');
+        }else{
+          setError('Error en el registro, por favor intenta de nuevo o más tarde.');
+        }
       }
     } catch (error) {
-      console.error('Error en el registro:', error);
-      Alert.alert('Error', 'No se pudo completar el registro. Inténtalo de nuevo más tarde.');
+      setError('Error en el registro, por favor intenta de nuevo o más tarde');
     }
 
   };
@@ -130,7 +135,7 @@ export function RegisterPage({ navigation }) {
         </View>
 
         <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Contraseña</Text>
-        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-6 gap-2">
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
             id='passwordRegister'
@@ -143,6 +148,8 @@ export function RegisterPage({ navigation }) {
             autoCapitalize="none"
           />
         </View>
+
+        <Text className="mb-6 text-red-500 text-center w-full">{error} </Text>
 
         <View className="flex-col px-5 my-4">
                 <View className="flex-row items-center">

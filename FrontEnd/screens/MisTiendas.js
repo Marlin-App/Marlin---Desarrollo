@@ -9,11 +9,11 @@ export function MisTiendas({ navigation }) {
 
     useEffect(() => {
         const fetchStores = async () => {
-            await getUserStores(1);
-           /*  console.log(allStores) */
+            await getUserStores();
+          
         };
         fetchStores();
-    }, [navigation]);
+    }, []);
     
 
    /*  useEffect(() => {
@@ -23,10 +23,10 @@ export function MisTiendas({ navigation }) {
 
     const renderStoreItem = ({ item }) => (
         <Pressable className="flex-row justify-center px-4 mb-5" 
-          onPress={() => navigation.navigate("NuevaTienda", { store: item })}
+          onPress={() => navigation.navigate("NuevaTienda", { store: item, refreshStores: getUserStores })}
         >
             <View className="flex-col w-full">
-                <Image className="rounded-xl  h-[150] " source={{uri: item.picture }} style={{ resizeMode: "stretch" }} />
+               <Image className="rounded-xl  h-[150] " source={{uri: item.banner }} style={{ resizeMode: "stretch" }} />
                 <Text className="text-black text-lg font-Excon_bold">{item.name}</Text>
                 <Text className="text-black text-md font-Excon_thin">{item.location}</Text> 
             </View>
