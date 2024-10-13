@@ -6,6 +6,9 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+
 
 # Registrar un usuario
 
@@ -184,5 +187,41 @@ class AtributeValueSerializer(serializers.ModelSerializer):
         model = AtributeValue
         fields = '__all__'
 
+
+#Proceso de cambio de contraseña
+class PasswordResetRequestSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User 
+        fields = ['email']
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('No hay un usuario registrado con este email.')
+        return value
+    
+class PasswordResetSerializer(serializers.Serializer):
+    uidb64 = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        try:
+            uid = urlsafe_base64_decode(data['uidb64']).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            raise serializers.ValidationError('El enlace no es valido')
+        
+        if not default_token_generator.check_token(user, data['token']):
+            raise serializers.ValidationError('El token no es valido')
+        
+        return data
+    
+    def save(self):
+        uid = urlsafe_base64_decode(self.validated_data['uidb64']).decode()
+        user = User.objects.get(pk=uid)
+        user.set_password(self.validated_data['new_password'])
+        user.save()
 
 
