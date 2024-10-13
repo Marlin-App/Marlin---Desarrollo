@@ -9,16 +9,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         types = [
-            'Zapateria',
-            'Ferreteria',
-            'Mascotas',
-            'Ropa',
-            'Surf',
             'Pesca',
             'Deporte',
             'Bisuteria',
+            'Floristeria',
+            'Ferreteria',
+            'Mascotas',
+            'Ropa',
+            'Zapateria',
+            'Surf',
             'Pasamaneria',
-            'Floristeria'
         ]
         images_dir = os.path.join(settings.MEDIA_ROOT, 'categories')
         image_files = os.listdir(images_dir)
