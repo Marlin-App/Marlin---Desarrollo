@@ -30,6 +30,7 @@ export function HistoricalScreen({ navigation }) {
     return value.toLocaleString('es-CR', {
       style: 'currency',
       currency: 'CRC',
+      maximumFractionDigits: 0,
     });
   };
 

@@ -37,20 +37,6 @@ export function HomeStackScreen({ navigation, route }) {
     Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
   });
 
-  useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-    }
-    prepare();
-  }, []);
-
-  const onLayout = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
 
   return (
     <HomeStack.Navigator>

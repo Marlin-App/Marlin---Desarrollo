@@ -30,11 +30,9 @@ const useDecodeJWT = () => {
 
   async function isTokenExpired() {
     const token = await getToken();
-
     if (!token) return true;
     const decodeToken = decodeJWT(token.access);
     const currentTime = Math.floor(Date.now() / 1000);
-    
     return decodeToken.payload.exp < currentTime;
   }
 

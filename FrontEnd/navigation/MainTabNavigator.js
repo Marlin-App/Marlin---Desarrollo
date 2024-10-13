@@ -9,6 +9,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
+import { Text } from "react-native";
 const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator() {
@@ -39,7 +40,7 @@ export function MainTabNavigator() {
         };
     }, []);
 
-    const [fontsLoaded] = useFonts({
+     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
         Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
@@ -47,20 +48,7 @@ export function MainTabNavigator() {
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
 
-    useEffect(() => {
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    }, []);
-
-    const onLayout = useCallback(async () => {
-        if (fontsLoaded) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
-    if (!fontsLoaded) return null;
+   
 
 
     return (
@@ -71,6 +59,7 @@ export function MainTabNavigator() {
                 tabBarInactiveTintColor: "white",
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
+                
                 tabBarLabelStyle: {
                     fontSize: 15,
                     marginTop: -20,
@@ -94,7 +83,8 @@ export function MainTabNavigator() {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="home" size={30} color={color} />
-                    ),
+                    )
+
                 }}
 
             />

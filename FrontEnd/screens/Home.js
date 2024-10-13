@@ -24,13 +24,13 @@ export function HomeScreen({ navigation }) {
 
     const { data: items, loading, error } = useItems();
 
-    const [fontsLoaded] = useFonts({
+    /*  const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
         Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
-    });
+    });  */
 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -38,21 +38,7 @@ export function HomeScreen({ navigation }) {
         // aqui se tendrian que cargar las notificaciones xd
     ];
 
-    useEffect(() => {
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    }, []);
-
-    const onLayout = useCallback(async () => {
-        if (fontsLoaded) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
-    if (!fontsLoaded) return null;
-
+   
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
     };
@@ -141,10 +127,11 @@ export function HomeScreen({ navigation }) {
                 id: item.id.toString(),
                 name: item.name,
                 description: item.description,
-                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC' })}`,
+                baseprice: item.price,
+                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
                 stock: item.stock,
-                picture: item.picture,
-                storeId: item.storeId,
+                picture:  item.picture,
+                store_id: item.store_id,
                 item_type: item.item_type
             }))
         },
@@ -214,7 +201,7 @@ export function HomeScreen({ navigation }) {
             const largo = division(item.horizontalData, 10);
 
             return (
-                <View className="p-2 my-2" onLayout={onLayout}>
+                <View className="p-2 my-2" /* onLayout={onLayout} */>
                     <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
                     {largo.map((largo, index) => (
                         <FlatList
@@ -231,7 +218,7 @@ export function HomeScreen({ navigation }) {
             );
         } else if (item.type === "store") {
             return (
-                <View className="p-2 my-2" onLayout={onLayout}>
+                <View className="p-2 my-2" /* onLayout={onLayout} */>
                     <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
                     <FlatList
                         data={item.horizontalData}
@@ -296,14 +283,14 @@ export function HomeScreen({ navigation }) {
 
             <ScrollView>
                 <HomeCarousel navigation={navigation} />
-               <FlatList
+               {/* <FlatList
                     data={verticalData}
                     scrollEnabled={false}
                     renderItem={renderVerticalItem}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 20 }}
-                /> 
+                />  */}
             </ScrollView>
         </View>
     );

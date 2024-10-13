@@ -58,7 +58,8 @@ export function StoreCat({ navigation }) {
             const formattedData2 = filteredData.map(item => ({
                 id: item.id,
                 name: item.name,
-                location: item.location,
+                canton: item.canton,
+                district: item.district,
                 picture: item.picture,
                 banner: item.banner,
                 type: item.store_type,
@@ -175,8 +176,16 @@ export function StoreCat({ navigation }) {
                             <View>
                                 <Pressable onPress={() => handleCategorySelect(item.id)}>
                                     <View className="my-4 mx-2 items-center">
-                                        <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''}`}>
-                                            <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == item.id ? "white" : "black"} />
+                                        <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
+                                            {selectedCategoryId == item.id ? (
+
+                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
+                                            ):(
+                                                
+                                                <Image source={{ uri: item.image.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
+                                            )
+                                            }
+                                            
                                         </View>
                                         <Text className="text-lg text-center text-light-blue">{item.name}</Text>
                                     </View>
@@ -213,7 +222,7 @@ export function StoreCat({ navigation }) {
                                     numberOfLines={1}
                                     ellipsizeMode='tail'
                                 >{item.name}</Text>
-                                <Text className="text-lg text-light-blue text-start w-full ml-12">{item.location}</Text>
+                                <Text className="text-lg text-light-blue">{item.district} </Text>
                             </View>
                         </Pressable>
 
