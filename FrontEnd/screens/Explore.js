@@ -49,7 +49,7 @@ export function ExploreScreen({ navigation }) {
         id: item.id.toString(),
         name: item.name,
         description: item.description,
-        price: `$${item.price}`,
+        price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
         stock: item.stock,
         picture: item.picture,
         store_id: item.store_id,

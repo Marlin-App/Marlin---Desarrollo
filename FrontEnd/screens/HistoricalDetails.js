@@ -36,6 +36,7 @@ export function HistoricalDetailsScreen({ route, navigation }) {
     return value.toLocaleString('es-CR', {
       style: 'currency',
       currency: 'CRC',
+      maximumFractionDigits: 0,
     });
   };
 
@@ -48,7 +49,6 @@ export function HistoricalDetailsScreen({ route, navigation }) {
     </View>
   );
 
-  // Función para generar y compartir el PDF usando Expo Print y Sharing
   const handleDownload = async () => {
     try {
       const htmlContent = `
@@ -83,10 +83,8 @@ export function HistoricalDetailsScreen({ route, navigation }) {
         <p>Lorem ipsum dolor sit amet consectetur. Et consectetur magnis nulla enim luctus turpis egestas. Adipiscing tortor facilisis risus risus in ornare. Sagittis mi aliquam purus lorem elementum. Est non volutpat turpis lectus et urna.</p>
       `;
 
-      // Generar PDF usando Expo Print
       const { uri } = await Print.printToFileAsync({ html: htmlContent });
       
-      // Compartir PDF usando Expo Sharing
       await Sharing.shareAsync(uri);
       
     } catch (error) {
@@ -95,7 +93,6 @@ export function HistoricalDetailsScreen({ route, navigation }) {
     }
   };
 
-  // Función para manejar el botón de notificar problema
   const handleNotifyProblem = () => {
     Alert.alert('Notificación', 'Has presionado el botón de notificar problema.');
   };
@@ -122,7 +119,6 @@ export function HistoricalDetailsScreen({ route, navigation }) {
         <Text className="font-Erode_regular w-1/6 text-main-blue text-base">Subtotal</Text>
       </View>
 
-      {/* Detalle de la orden: lista de productos */}
       <FlatList
         data={compra.items}
         renderItem={renderItem}
@@ -132,13 +128,11 @@ export function HistoricalDetailsScreen({ route, navigation }) {
 
      
 
-      {/* Información de Entrega */}
       <View className="border-b border-gray-300 mb-4" />
       
       <Text className="text-lg mb-4 font-Erode_medium text-main-blue">Entrega:</Text>
       <Text className="text-gray-600 font-Erode_regular mb-2">Lorem ipsum dolor sit amet consectetur. Et consectetur magnis nulla enim luctus turpis egestas. Adipiscing tortor facilisis risus risus in ornare. Sagittis mi aliquam purus lorem elementum. Est non volutpat turpis lectus et urna.</Text>
 
-       {/* Botones de Descarga y Notificar Problema */}
        <View className="flex-row justify-evenly mt-4 mb-20">
         <TouchableOpacity
           className="bg-main-blue px-4 py-2 rounded-lg"

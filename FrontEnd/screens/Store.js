@@ -1,8 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Text, View, Image, Pressable, TextInput, ScrollView, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
-import fusion from '../assets/fusion.png';
-import surf from '../assets/boysurf.png';
-import pant from '../assets/pant.png';
+import { Text, View, Image, Pressable, TextInput, ScrollView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useStoreItem from '../hooks/useStoreItem';
 import { useRoute } from '@react-navigation/native';
@@ -11,10 +8,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export function Store({ navigation }) {
-
     const route = useRoute();
     const { data, loading, setData } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
+    console.log(route.params);
+    const [formattedData, setFormattedData] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState('');
     const [fontsLoaded] = useFonts({
@@ -40,44 +38,54 @@ export function Store({ navigation }) {
 
     if (!fontsLoaded) return null;
 
+    useEffect(() => {
+        if (data && data.length > 0) {
+            const recontar = data.map(item => ({
+                ...item,
+                price: Number(item.price).toLocaleString('es-CR', { 
+                    style: 'currency', 
+                    currency: 'CRC', 
+                    maximumFractionDigits: 0 
+                })
+            }));
+            setFormattedData(recontar);
+        }
+    }, [data]);
+
     const searchProduct = (text) => {
         const filteredData = data.filter(item =>
             item.name.toLowerCase().startsWith(text.toLowerCase())
-
         );
-        const verticalData = filteredData.map(item => ({
-            id: item.id.toString(),
-            name: item.name,
-            description: item.description,
-            price: `$${item.price}`,
-            stock: item.stock,
-            picture: item.picture,
-            storeId: item.storeId,
-            item_type: item.item_type
+        const recontarFilteredData = filteredData.map(item => ({
+            ...item,
+            price: Number(item.price).toLocaleString('es-CR', { 
+                style: 'currency', 
+                currency: 'CRC', 
+                maximumFractionDigits: 0 
+            })
         }));
-
-        setData(verticalData);
+        setFormattedData(recontarFilteredData);
     };
 
     return (
-        <View className=" bg-white flex-1 w-full">
+        <View className="bg-white flex-1 w-full" onLayout={onLayout}>
 
-            <View className=" h-[200px] items-center justify-center">
+            <View className="h-[200px] items-center justify-center">
 
                 <Image
                     source={{ uri: route.params.store.picture }}
                     className="w-full h-full absolute "
                 />
-                <View className="absolute bg-black opacity-50 w-full h-full "></View>
-                <View className="mt-5" >
-
-                    <View className="flex-row mb-2 justify-between items-center ">
-                        <Text className="text-[22px] font-Excon_bold text-white text-start w-[70%] " >{route.params.store.name}</Text>
+                <View className="absolute bg-black opacity-50 w-full h-full"></View>
+                <View className="mt-5">
+                    <View className="flex-row mb-2 justify-between items-center">
+                        <Text className="text-[22px] font-Excon_bold text-white text-start w-[70%]">
+                            {route.params.store.name}
+                        </Text>
                         <Image
                             source={{ uri: route.params.store.banner }}
-                            className="h-20 w-20 rounded-lg "
+                            className="h-20 w-20 rounded-lg"
                         />
-
                     </View>
 
                     <View className="flex-row text-center  bg-grey-light rounded-lg ">
@@ -97,54 +105,41 @@ export function Store({ navigation }) {
                             onChangeText={setSearch}
                             onSubmitEditing={() => {
                                 searchProduct(search);
-                                setIsSearch(!isSearch);
+                                setIsSearch(true);
                             }}
                         />
                         {search ? (
-                            <Pressable className="flex-1 items-end mr-4 justify-center"
+                            <Pressable
+                                className="flex-1 items-end mr-4 justify-center"
                                 onPress={() => {
                                     setSearch('');
                                     searchProduct('');
                                     setIsSearch(false);
                                 }}
-
                             >
                                 <Ionicons name="close-sharp" size={35} color="black" />
                             </Pressable>
-                        ) : null
-
-                        }
+                        ) : null}
                     </View>
-
-
                 </View>
-
-
             </View>
+
             {isSearch ? (
                 <View className="flex-row items-center justify-between px-4">
-                    <Text className="text-lg font-Excon_regular">Resultados de la busqueda</Text>
+                    <Text className="text-lg font-Excon_regular">Resultados de la búsqueda</Text>
                 </View>
-            ) : null
-
-            }
-
+            ) : null}
 
             {!loading ? (
-
-
                 <FlatList
-                    data={dataArray}
+                    data={formattedData}
                     className="flex px-4"
-                    columnWrapperStyle={{ justifyContent: 'space-around' }} 
+                    columnWrapperStyle={{ justifyContent: 'space-around' }}
                     numColumns={2}
-                    renderItem={({ item, index }) => (
+                    renderItem={({ item }) => (
                         <Pressable
                             onPress={() => navigation.navigate('Item', { product: item })}
                             className="mt-4"
-                            style={[
-                                index === dataArray.length - 1 ? { alignSelf: 'stretch'} : {} 
-                            ]}
                         >
                             <View className="items-center">
                                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px]">
@@ -175,13 +170,10 @@ export function Store({ navigation }) {
 
 
             ) : (
-
                 <ActivityIndicator size="large" color="#3498db" />
-
             )}
-
-
-
         </View>
     );
 }
+
+

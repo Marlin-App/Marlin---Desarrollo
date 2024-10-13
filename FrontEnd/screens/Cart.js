@@ -32,14 +32,15 @@ export function CartScreen({ navigation }) {
         }
     }, [fontsLoaded]);
 
-    const deliveryFee = 25000;
-    const transportFee = 75000;
-    const total = (cartTotal + deliveryFee + transportFee) / 100;
+    const deliveryFee = 250;
+    const transportFee = 750;
+    const total = (deliveryFee + transportFee) + cartTotal;
 
     const formatCurrency = (value) => {
         return value.toLocaleString('es-CR', {
             style: 'currency',
             currency: 'CRC',
+            maximumFractionDigits: 0
         });
     };
 
@@ -155,15 +156,15 @@ export function CartScreen({ navigation }) {
                             <Text className="text-[18px] font-Excon_regular text-main-blue mb-4">Resumen</Text>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Precio de productos:</Text>
-                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(cartTotal / 100)}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(cartTotal)}</Text>
                             </View>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Tarifa de entrega:</Text>
-                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(deliveryFee / 100)}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(deliveryFee)}</Text>
                             </View>
                             <View className="flex-row justify-between mb-2">
                                 <Text className="font-Erode_regular text-gray-800">Tarifa de transporte:</Text>
-                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(transportFee / 100)}</Text>
+                                <Text className="font-Erode_regular text-gray-800">{formatCurrency(transportFee)}</Text>
                             </View>
                         </View>
                     </>
