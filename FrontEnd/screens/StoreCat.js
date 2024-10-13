@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useCallback, useRef } from 'react';
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, useColorScheme } from 'react-native';
 import useStoreType from '../hooks/useStoreType';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -16,6 +16,8 @@ export function StoreCat({ navigation }) {
     const [storeSelected, setStoreSelected] = useState([]);
     const [search, setSearch] = useState('');
     const [originalStoreSelected, setOriginalStoreSelected] = useState([]);
+    const colorScheme = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'light-blue' : 'white';
 
     useEffect(() => {
         const selectedStore = () => {
@@ -66,7 +68,7 @@ export function StoreCat({ navigation }) {
             }));
             clearSearch();
             setStoreSelected(formattedData2);
-            setOriginalStoreSelected(formattedData2);  
+            setOriginalStoreSelected(formattedData2);
         };
 
         selectedStoreType();
@@ -106,20 +108,20 @@ export function StoreCat({ navigation }) {
 
 
     return (
-        <View className="bg-white flex-1 " onLayout={onLayout}>
-            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
+        <View className="bg-white dark:bg-neutral-950 flex-1 " onLayout={onLayout}>
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-lg font-Excon_regular">
+                        <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color="white" />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"}  />
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4">
-                        <Ionicons name="notifications-outline" size={24} color="white" />
+                    <View className="flex-row items-center justify-center gap-x-4 ">
+                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
-                                <Feather name="shopping-bag" size={24} color="white" />
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                             </Pressable>
                         </View>
                     </View>
@@ -127,34 +129,40 @@ export function StoreCat({ navigation }) {
             </View>
 
 
-            <View className="flex-row text-center mt-5 mb-5 bg-grey-light rounded-lg mx-2 ">
-                <Pressable className="bg-light-blue rounded-l-lg px-2 flex justify-center"
+            <View className="flex-row text-center mt-5 mb-5 bg-grey-light dark:bg-dk-input rounded-lg mx-2 ">
+                <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => {
-                        searchStore(search);
+                        searchProduct(search);
+                        setIsSearch(true);
                     }}
                 >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                 <TextInput
-                    className="ml-2 py-4  text-md text-light-blue font-Excon_regular w-[70%] "
+                    className="ml-2 py-4 text-md text-light-blue dark:text-white font-Excon_regular w-[70%] "
                     placeholder='Buscar Productos'
+                    placeholderTextColor={placeholderTextColor}
                     value={search}
                     onChangeText={setSearch}
                     onSubmitEditing={() => {
-                        searchStore(search);
-                        /* setIsSearch(!isSearch); */
+                        searchProduct(search);
+                        setIsSearch(!isSearch);
                     }}
                 />
                 {search ? (
-                    <Pressable
-                        className="flex-1 items-end mr-4 justify-center"
+                    <Pressable className="flex-1 items-end mr-4 justify-center"
                         onPress={() => {
-                            clearSearch(); // Usar la función que restablece el estado original
+                            setSearch('');
+                            searchProduct('');
+                            setIsSearch(false);
                         }}
+
                     >
-                        <Ionicons name="close-sharp" size={35} color="black" />
+                        <Ionicons name="close-sharp" size={35} color={colorScheme === 'dark' ? "black" : "white"} />
                     </Pressable>
-                ) : null}
+                ) : null
+
+                }
             </View>
 
 
@@ -218,7 +226,7 @@ export function StoreCat({ navigation }) {
                                         resizeMode="cover"
                                     />
                                 </View>
-                                <Text className="text-lg text-light-blue w-40"
+                                <Text className="text-lg text-light-blue dark:text-white w-40"
                                     numberOfLines={1}
                                     ellipsizeMode='tail'
                                 >{item.name}</Text>

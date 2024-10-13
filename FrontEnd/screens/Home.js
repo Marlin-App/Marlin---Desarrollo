@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback, useColorScheme} from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
 
 export function HomeScreen({ navigation }) {
+    const colorScheme = useColorScheme();
     const {
         cart,
         increaseQuantity,
@@ -38,7 +39,7 @@ export function HomeScreen({ navigation }) {
         // aqui se tendrian que cargar las notificaciones xd
     ];
 
-   
+
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
     };
@@ -56,7 +57,7 @@ export function HomeScreen({ navigation }) {
         >
             <TouchableWithoutFeedback onPress={closeDropdown}>
                 <View className="flex-1 justify-start items-end p-4 bg-[#00000070]">
-                    
+
                     <TouchableWithoutFeedback>
                         <View className="w-72 bg-white rounded-lg shadow-lg max-h-96">
                             <Text className="text-xl font-Excon_bold px-4 py-2 border-b text-light-blue">Notificaciones</Text>
@@ -77,11 +78,12 @@ export function HomeScreen({ navigation }) {
                             />
                         </View>
                     </TouchableWithoutFeedback>
-                    
+
                 </View>
             </TouchableWithoutFeedback>
         </Modal>
     );
+
 
     const division = (array, divisionSize) => {
         const parte = [];
@@ -90,6 +92,7 @@ export function HomeScreen({ navigation }) {
         }
         return parte;
     };
+
 
     const verticalData = [
         {
@@ -130,12 +133,13 @@ export function HomeScreen({ navigation }) {
                 baseprice: item.price,
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
                 stock: item.stock,
-                picture:  item.picture,
+                picture: item.picture,
                 store_id: item.store_id,
                 item_type: item.item_type
             }))
         },
         {
+
             id: "3",
             title: "Tiendas destacadas",
             type: "store",
@@ -159,6 +163,7 @@ export function HomeScreen({ navigation }) {
         },
     ];
 
+
     const renderHorizontalItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
@@ -170,13 +175,13 @@ export function HomeScreen({ navigation }) {
                     />
                 </View>
                 <Text
-                    className="text-lg font-bold text-left text-light-blue w-40"
+                    className="text-lg font-Excon_bold  text-left text-light-blue dark:text-white w-40"
                     numberOfLines={1}
                     ellipsizeMode='tail'
                 >
                     {item.name}
                 </Text>
-                <Text className="text-sm text-left text-light-blue font-thin">{item.price}</Text>
+                <Text className="text-sm text-left text-light-blue dark:text-white font-Erode_bold">{item.price}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -191,7 +196,7 @@ export function HomeScreen({ navigation }) {
                         resizeMode="cover"
                     />
                 </View>
-                <Text className="text-lg font-bold text-center text-light-blue mt-2">{item.title}</Text>
+                <Text className="text-lg font-bold text-center text-light-blue dark:text-white mt-2">{item.title}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -201,8 +206,8 @@ export function HomeScreen({ navigation }) {
             const largo = division(item.horizontalData, 10);
 
             return (
-                <View className="p-2 my-2" /* onLayout={onLayout} */>
-                    <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                <View className="p-2 my-2" /*onLayout={onLayout}*/>
+                    <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue dark:text-dk-blue">{item.title}</Text>
                     {largo.map((largo, index) => (
                         <FlatList
                             key={`product-chunk-${index}`}
@@ -219,7 +224,7 @@ export function HomeScreen({ navigation }) {
         } else if (item.type === "store") {
             return (
                 <View className="p-2 my-2" /* onLayout={onLayout} */>
-                    <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue">{item.title}</Text>
+                    <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue dark:text-dk-blue">{item.title}</Text>
                     <FlatList
                         data={item.horizontalData}
                         renderItem={renderStoreItem}
@@ -243,26 +248,26 @@ export function HomeScreen({ navigation }) {
     }
 
     return (
-        <View className="flex-1 bg-white">
+        <View className="flex-1 bg-white dark:bg-neutral-950">
             <NotificationDropdown />
-            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-lg font-Excon_regular">
+                        <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color="white" />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
-                            <Ionicons name="notifications-outline" size={24} color="white" />
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
                             )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
-                                <Feather name="shopping-bag" size={24} color="white" />
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
                             </Pressable>
                             <Text
                                 className={`absolute left-4 w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? "bg-red-600" : "bg-transparent"
@@ -283,15 +288,17 @@ export function HomeScreen({ navigation }) {
 
             <ScrollView>
                 <HomeCarousel navigation={navigation} />
-               {/* <FlatList
+                <FlatList
                     data={verticalData}
                     scrollEnabled={false}
                     renderItem={renderVerticalItem}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 20 }}
-                />  */}
+                /> 
             </ScrollView>
         </View>
     );
+
+
 }

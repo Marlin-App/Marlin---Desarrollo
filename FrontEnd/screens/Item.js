@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Alert, ScrollView } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, useColorScheme, Alert, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 
@@ -81,7 +81,7 @@ export function ItemPage({ navigation }) {
 
     
     return (
-        <View className="flex-grow-1 bg-white h-full" onLayout={onLayout}>
+        <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
             <ScrollView className="mb-20">
 
             <Modal
@@ -156,32 +156,32 @@ export function ItemPage({ navigation }) {
                         resizeMode="cover"
                         onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
                     />
-                    <Text className="text-xl pl-1 font-Excon_bold">{product.name}</Text>
-                    <Text className="text-sm pl-1 font-Excon_regular">{product.description}</Text>
+                    <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{product.name}</Text>
+                    <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{product.description}</Text>
 
-                    <Text className="text-base font-bold pl-1 mt-3">Color</Text>
+                    <Text className="text-base font-bold pl-1 mt-3 dark:text-white">Color</Text>
                     <View className="flex-row">
-                        <TouchableOpacity className="rounded-full w-6 h-6 bg-black mx-1" />
+                        <TouchableOpacity className="rounded-full w-6 h-6 bg-black mx-1 dark:border-2 border-white" />
                         <TouchableOpacity className="rounded-full w-6 h-6 bg-red-600 mx-1" />
                         <TouchableOpacity className="rounded-full w-6 h-6 bg-blue-700 mx-1" />
                     </View>
                 </View>
             </ScrollView>
 
-            <View className="absolute bg-main-blue p-5 w-full bottom-0">
+            <View className="absolute bg-main-blue dark:bg-dk-main-bg p-5 w-full bottom-0">
                 {/* **4. Mostrar el Precio Total Formateado** */}
                 <Text className="text-xl font-bold text-white mb-4">Precio: {formattedTotalPrice}</Text>
 
                 <View className="flex-row justify-between pb-3">
                     <View className="flex-row ">
                         <TouchableOpacity 
-                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3" 
+                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue" 
                             onPress={decreaseQuantity}
                         >
-                            <Text className="text-main-blue text-3xl">-</Text>
+                            <Text className="text-main-blue dark:text-white text-3xl">-</Text>
                         </TouchableOpacity>
                         <TextInput
-                            className="w-16 text-center text-lg bg-white text-main-blue"
+                            className="w-16 text-center text-lg bg-white text-main-blue dark:bg-main-blue dark:text-white"
                             keyboardType="numeric"
                             value={String(quantity)}
                             onChangeText={(value) => {
@@ -190,18 +190,18 @@ export function ItemPage({ navigation }) {
                             }}
                         />
                         <TouchableOpacity 
-                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3" 
+                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue" 
                             onPress={increaseQuantity}
                         >
-                            <Text className="text-main-blue text-lg">+</Text>
+                            <Text className="text-main-blue dark:text-white text-lg">+</Text>
                         </TouchableOpacity>
                     </View>
-                    <Pressable
+                    <Pressable 
                         style={styles.carrito}
                         onPress={() =>vericarCarrito()}
                        
                     > 
-                    <Text className="text-lg font-bold text-main-blue">Agregar al carrito</Text>
+                    <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
                     </Pressable> 
                 </View>
             </View>
@@ -209,8 +209,9 @@ export function ItemPage({ navigation }) {
     );
 }
 const styles = StyleSheet.create({
+
     carrito: {
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',
@@ -256,9 +257,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-        
-                         
-          
-          
-                   
-

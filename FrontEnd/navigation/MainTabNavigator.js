@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard, Platform, Text } from "react-native"
+import { useColorScheme } from "nativewind";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
@@ -9,11 +10,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
-import { Text } from "react-native";
 const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const { toggleColorScheme } = useColorScheme();
+    const colorScheme = useColorScheme();
 
     useEffect(() => {
         const keyboardShowListener =
@@ -50,27 +52,25 @@ export function MainTabNavigator() {
 
    
 
-
     return (
+        
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: "#AAC3F3",
-                tabBarInactiveTintColor: "white",
+                tabBarActiveTintColor: colorScheme ==='dark' ? "#FFFFF" : "#5186EC",
+                tabBarInactiveTintColor: colorScheme ==='dark' ? "#AAC3F3" : "#B0B0B0",
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
-                
                 tabBarLabelStyle: {
                     fontSize: 15,
                     marginTop: -20,
                     fontFamily: "Excon_regular",
                 },
                 tabBarStyle: {
-                    backgroundColor: "#015DEC",
+                    backgroundColor: colorScheme ==='dark' ? "#015DEC" : "#1C1C1C",
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",
-
                     paddingBottom: 10,
                     display: isKeyboardVisible ? "none" : "flex",
                 },
