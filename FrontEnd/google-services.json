@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918286493312",
+    "project_id": "pruebanoti-3ecd9",
+    "storage_bucket": "pruebanoti-3ecd9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918286493312:android:b0536a360f78db45ca2865",
+        "android_client_info": {
+          "package_name": "Marlin.App1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBykcWz6lZUX9oU2uwhfUq7eBPuVizRYQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

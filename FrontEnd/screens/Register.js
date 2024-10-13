@@ -150,7 +150,7 @@ export function RegisterPage({ navigation }) {
                         <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
                     </TouchableOpacity>
                     {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
                 </View>
             </View>
 

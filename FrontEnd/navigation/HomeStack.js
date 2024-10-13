@@ -23,6 +23,7 @@ import { InformationScreen } from '../screens/Information';
 import { HistoricalScreen } from '../screens/Historical';
 import { HistoricalDetailsScreen } from '../screens/HistoricalDetails';
 import { RestorePasswordScreen } from '../screens/RestorePassword';
+import { TerminosCondiciones } from '../screens/TerminosCondiciones';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -193,6 +194,16 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         name="RestorePasswordScreen"
         component={RestorePasswordScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Regresar',
+          headerTintColor: "#015DEC"
+        }}
+      />
+
+      <HomeStack.Screen
+        name="TerminosCondiciones"
+        component={TerminosCondiciones}
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
