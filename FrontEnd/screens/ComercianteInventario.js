@@ -29,7 +29,7 @@ export function ComercianteInventario({ navigation }) {
                             ¡Rellená tu inventario con más mercadería!
                         </Text>
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4 ">
+                    <View className="flex-row items-center justify-center gap-x-4 mr-2">
                         <Ionicons name="notifications-outline" size={24} color="white" />
                     </View>
                 </View>

@@ -1,4 +1,5 @@
 import { Text, View, TextInput, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useColorScheme } from "nativewind";
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { DropDown } from '../components/DropDown';
 import useSelectLocation from '../hooks/useSelectLocation';
@@ -16,15 +17,18 @@ export function NuevaTienda({ navigation }) {
     //categorias
     const { allCategories, allStores } = useStoreType();
     const sectionListRef = useRef(null);
-    const {createShop, loading, deleteShop, updateShop } = useCRUDTiendas(navigation);
+    const { createShop, loading, deleteShop, updateShop } = useCRUDTiendas(navigation);
     const route = useRoute();
     const { store } = route.params || {};
     const { refreshStores } = route.params || {};
-  
-    
-    
-    
-    
+
+
+
+    const { colorScheme } = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+
+
+
     const addCategoryList = (id) => {
         setSelectedCategoryIds((prevSelected) => {
             if (prevSelected.includes(id)) {
@@ -36,22 +40,22 @@ export function NuevaTienda({ navigation }) {
             }
         });
     };
-    
- 
-    
+
+
+
     const cantones = [
         { label: 'Puntarenas', value: 'Puntarenas' },
         { label: 'Esparza', value: 'Esparza' },
         { label: 'Miramar', value: 'Miramar' },
     ];
-    
+
     const options2 = [
         { label: 'Puntarenas', value: 'Puntarenas' },
         { label: 'Esparza', value: 'Esparza' },
         { label: 'Miramar', value: 'Miramar' },
     ];
-    
-    
+
+
     const pickImage = async (pic) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -64,45 +68,45 @@ export function NuevaTienda({ navigation }) {
                 case 'perfil':
                     setimagePerfil(result.assets[0].uri);
                     break;
-                    case 'portada':
-                        setimagePortada(result.assets[0].uri);
-                        break;
-                        default:
-                            console.warn('Tipo de imagen no soportado');
-                        }
-                    }
-                };
-                
-               
-                const [acceptedTerms, setAcceptedTerms] = useState(false);
-                const [formData, setFormData] = useState({
-                    name: store ? store.name : "Name",
-                    description: store ? store.description : "Cruddasdsad",
-                    canton: store ? store.canton : "Puntarenas",
-                    district: store ? store.district : "Puntarenas",
-                    coodernates: store ? store.coodernates : "31231232312321",
-                    picture: store ? store.picture : "",
-                    user_id: 5,
-                    sinpe: store ? store.num_sinpe : "1541561",
-                    banner: store ? store.banner : "",
-                    sinpe_name: store ? store.owner_sinpe : "5644654",
-                    opening_hour: "09:00:00",
-                    closing_hour: "18:00:00",
-                    store_type: store ? store.store_type : [], 
-                });
-                
-                const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
-                const [selectedValue, setSelectedValue] = useState(formData.canton);
-                const [selectedValue2, setSelectedValue2] = useState(formData.district);
-                const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();  
-                const [imagePerfil, setimagePerfil] = useState(formData.picture);
-                const [imagePortada, setimagePortada] = useState(formData.banner);
-                
+                case 'portada':
+                    setimagePortada(result.assets[0].uri);
+                    break;
+                default:
+                    console.warn('Tipo de imagen no soportado');
+            }
+        }
+    };
+
+
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [formData, setFormData] = useState({
+        name: store ? store.name : "Name",
+        description: store ? store.description : "Cruddasdsad",
+        canton: store ? store.canton : "Puntarenas",
+        district: store ? store.district : "Puntarenas",
+        coodernates: store ? store.coodernates : "31231232312321",
+        picture: store ? store.picture : "",
+        user_id: 5,
+        sinpe: store ? store.num_sinpe : "1541561",
+        banner: store ? store.banner : "",
+        sinpe_name: store ? store.owner_sinpe : "5644654",
+        opening_hour: "09:00:00",
+        closing_hour: "18:00:00",
+        store_type: store ? store.store_type : [],
+    });
+
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
+    const [selectedValue, setSelectedValue] = useState(formData.canton);
+    const [selectedValue2, setSelectedValue2] = useState(formData.district);
+    const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();
+    const [imagePerfil, setimagePerfil] = useState(formData.picture);
+    const [imagePortada, setimagePortada] = useState(formData.banner);
+
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
-     useEffect(() => {
+    useEffect(() => {
         handleInputChange('district', selectedValue2);
     }, [selectedValue2]);
 
@@ -129,16 +133,16 @@ export function NuevaTienda({ navigation }) {
 
 
     const handleShop = async () => {
-       
-           await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
-           if(createShop.ok){
-               navigation.navigate('Home');
-               refreshStores();
-           }
-        
+
+        await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
+        if (createShop.ok) {
+            navigation.navigate('Home');
+            refreshStores();
+        }
+
     };
 
-    const handledeleteShop = async () => {   
+    const handledeleteShop = async () => {
         await deleteShop(store.id);
         refreshStores();
 
@@ -147,24 +151,24 @@ export function NuevaTienda({ navigation }) {
     const handleUpdateShop = async () => {
         await updateShop(formData, imagePerfil, imagePortada, store.id);
 
-           refreshStores();
+        refreshStores();
     }
 
     return (
-        <ScrollView className="bg-white px-5">
+        <ScrollView className="bg-white dark:bg-neutral-950 px-5">
             {loading ? (
-           <View className={`w-full h-full justify-center items-center absolute z-10  `}>
-          <ActivityIndicator size="large" color="#3498db" />
-          </View>
-        ): null}
+                <View className={`w-full h-full justify-center items-center absolute z-10  `}>
+                    <ActivityIndicator size="large" color="#3498db" />
+                </View>
+            ) : null}
             <View className="w-full flex-col px-4 py-8">
                 {store ? (
                     <Text className="text-main-blue text-3xl font-Excon_bold">
                         ¡Edita tu tienda!
-                        
+
                     </Text>
                 ) : (
-                    <Text className="text-main-blue text-3xl font-Excon_bold">
+                    <Text className="text-main-blue text-3xl font-Excon_bold dark:text-light-blue">
                         ¡Aquí inicia el camino al emprendimiento!
                     </Text>
                 )
@@ -172,7 +176,7 @@ export function NuevaTienda({ navigation }) {
             </View>
 
             <View className="flex-col px-5">
-                <Text className="text-main-blue text-md font-Excon_bold">¿Cómo se llama tu negocio?</Text>
+                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Cómo se llama tu negocio?</Text>
                 <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin"
                     value={formData.name}
                     onChangeText={(value) => handleInputChange('name', value)}
@@ -181,11 +185,12 @@ export function NuevaTienda({ navigation }) {
             </View>
 
             <View className="flex-col px-5 mb-4">
-                <Text className="text-main-blue text-md font-Excon_bold">Ubicación</Text>
-                <View className="border-[0.5px] px-4 py-2 rounded-lg my-2">
+                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Ubicación</Text>
+                <View className="border-[0.5px] px-4 py-2 rounded-lg my-2 dark:border-main-blue">
                     <DropDown
                         title="Selecciona el cantón donde se ubica tu emprendimiento:"
                         place="Cantón"
+                        placeholder={placeholderTextColor}
                         options={cantones}
                         selectedValue={selectedValue}
                         onValueChange={(value) => setSelectedValue(value)}
@@ -214,7 +219,7 @@ export function NuevaTienda({ navigation }) {
                 </View>
             </View>
             <View className="flex-col px-5">
-                <Text className="text-main-blue text-md font-Excon_bold">Referencias</Text>
+                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Referencias</Text>
                 <TextInput className="border-[0.5px] border-main-blue px-4 my-2 font-Excon_thin"
                     multiline
                     numberOfLines={4}
@@ -226,7 +231,7 @@ export function NuevaTienda({ navigation }) {
             </View>
 
             <View className="flex-col px-5 my-4">
-                <Text className="text-main-blue text-md font-Excon_bold">¿Numero para recibir Sinpe Movil?</Text>
+                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Numero para recibir Sinpe Movil?</Text>
                 <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Número de teléfono"
                     value={formData.sinpe}
                     onChangeText={(value) => handleInputChange('sinpe', value)}
@@ -234,7 +239,7 @@ export function NuevaTienda({ navigation }) {
             </View>
 
             <View className="flex-col px-5 my-4">
-                <Text className="text-main-blue text-md font-Excon_bold">¿A nombre de quien está el Sinpe Movil?</Text>
+                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿A nombre de quien está el Sinpe Movil?</Text>
                 <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Digitale el nombre del titular de la cuenta"
                     value={formData.sinpe_name}
                     onChangeText={(value) => handleInputChange('sinpe_name', value)}
@@ -242,7 +247,7 @@ export function NuevaTienda({ navigation }) {
             </View>
 
             <View className="w-full flex-col px-4 py-8">
-                <Text className="text-main-blue text-3xl font-Excon_bold">
+                <Text className="text-main-blue text-3xl font-Excon_bold dark:text-light-blue">
                     ¡Contanos más sobre tu emprendimiento!
                 </Text>
             </View>
@@ -308,34 +313,34 @@ export function NuevaTienda({ navigation }) {
                     <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
                 </View>
             </View>
-           
-           {store? (
+
+            {store ? (
                 <TouchableOpacity
                 /*  className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
                  onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
                  disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
                     */ className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                        onPress={handleUpdateShop}
+                    onPress={handleUpdateShop}
                 >
                     <FontAwesome5 name="upload" size={24} color="white" />
-                            <Text className="text-white font-Excon_bold text-lg ml-2">Actualizar</Text>
+                    <Text className="text-white font-Excon_bold text-lg ml-2">Actualizar</Text>
                 </TouchableOpacity>
             ) : (
 
-            <TouchableOpacity
+                <TouchableOpacity
                 /*  className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
                  onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
                  disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
  /*                */ className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
                     onPress={handleShop}
-            >
-                <FontAwesome5 name="upload" size={24} color="white" />
-                
+                >
+                    <FontAwesome5 name="upload" size={24} color="white" />
+
                     <Text className="text-white font-Excon_bold text-lg ml-2">Guardar</Text>
-            </TouchableOpacity>
+                </TouchableOpacity>
 
             )
-           }
+            }
 
 
             {store ? (
@@ -347,7 +352,7 @@ export function NuevaTienda({ navigation }) {
                 </TouchableOpacity>
             ) : null}
 
-            
+
         </ScrollView>
     );
 
