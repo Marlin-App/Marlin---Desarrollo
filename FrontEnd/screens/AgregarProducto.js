@@ -11,11 +11,10 @@ import { useRoute } from '@react-navigation/native';
 
 export function AgregarProducto({ navigation }) {
 
-    const [modalVisible, setModalVisible] = useState(false);
     const [isEnabled, setIsEnabled] = useState(false);
     const [imagePerfil, setimagePerfil] = useState(null);
     const [isEnabled2, setIsEnabled2] = useState(false);
-    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [images, setImages] = useState([]);
     const { addProduct } = useCRUDProductos();
     const route = useRoute();
     const storeId = route.params || {};
@@ -38,7 +37,7 @@ export function AgregarProducto({ navigation }) {
 
 
     const AddProductos = () => {
-        addProduct(formData, imagePerfil);
+        addProduct(formData, images);
     };
 
     const [row, setRow] = useState(1);
@@ -55,24 +54,16 @@ export function AgregarProducto({ navigation }) {
         }
     }
 
-    const pickImage = async (pic) => {
+
+    const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsMultipleSelection: true,
             quality: 1,
         });
+
         if (!result.canceled) {
-            switch (pic) {
-                case 'perfil':
-                    setimagePerfil(result.assets[0].uri);
-                    break;
-                case 'portada':
-                    setimagePortada(result.assets[0].uri);
-                    break;
-                default:
-                    console.warn('Tipo de imagen no soportado');
-            }
+            setImages(result.assets);
         }
     };
 
@@ -89,8 +80,8 @@ export function AgregarProducto({ navigation }) {
     }, [formData]);
 
     useEffect(() => {
-        handleInputChange('picture', imagePerfil);
-    }, [imagePerfil]);
+        handleInputChange('picture', images);
+    }, [images]);
 
 
 
@@ -188,15 +179,28 @@ export function AgregarProducto({ navigation }) {
 
                         <View className="flex-col my-4">
                             <Text className="text-main-blue text-md font-Excon_bold mb-2">Foto de producto</Text>
-                            <View className=" my-2 font-Excon_thin">
-                                <Pressable className="justify-center items-center" onPress={() => pickImage("perfil")}>
-                                    {imagePerfil ? (<Image className="rounded-full w-52 h-52" source={{ uri: imagePerfil }} />) : (
-                                        <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                            <Feather name="upload" size={24} color="#015DEC" />
-                                            <Text className="text-main-blue text-md font-Excon_thin">Haz click para subir una imagen</Text>
-                                        </View>)}
-                                </Pressable>
-                            </View>
+
+                            <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                            {images.length === 0 ? (
+                                <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                    <Feather name="upload" size={24} color="#015DEC" />
+                                    <Text className="text-main-blue text-md font-Excon_thin">
+                                        Haz click para subir imágenes
+                                    </Text>
+                                </View>
+                            ) : (
+                                <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                    {images.map((image, index) => (
+                                        <Image
+                                            key={index}
+                                            source={{ uri: image.uri }}
+                                            style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
+                                        />
+                                    ))}
+                                </ScrollView>
+                            )}
+                            </Pressable>
+                            
                         </View>
                     </View>
 

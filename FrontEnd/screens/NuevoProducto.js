@@ -46,24 +46,17 @@ export function NuevoProducto({ navigation }) {
         }
     }
 
-    const pickImage = async (pic) => {
+    const [images, setImages] = useState([]);
+
+    const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsMultipleSelection: true,
             quality: 1,
         });
+
         if (!result.canceled) {
-            switch (pic) {
-                case 'perfil':
-                    setimagePerfil(result.assets[0].uri);
-                    break;
-                case 'portada':
-                    setimagePortada(result.assets[0].uri);
-                    break;
-                default:
-                    console.warn('Tipo de imagen no soportado');
-            }
+            setImages(result.assets);
         }
     };
 
@@ -132,24 +125,24 @@ export function NuevoProducto({ navigation }) {
                     </View>
                 </View>
                 <View className="flex-col px-5 mt-4">
-                <View className="flex-row items-center">
-                    <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
-                        <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
-                    </TouchableOpacity>
-                    {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                    <View className="flex-row items-center">
+                        <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
+                            <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
+                        </TouchableOpacity>
+                        {/* corregir la ruta para mostrar los terminos y condiciones */}
+                        <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                    </View>
                 </View>
-            </View>
-            <TouchableOpacity
-                // className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                // onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                // disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
-                className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms ? '' : 'opacity-50'}`}
-                onPress={"createShop"}
-            >
-                <FontAwesome5 name="upload" size={24} color="white" />
-                <Text className="text-white font-Excon_bold text-lg ml-2">Guardar</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    // className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                    // onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
+                    // disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
+                    className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms ? '' : 'opacity-50'}`}
+                    onPress={"createShop"}
+                >
+                    <FontAwesome5 name="upload" size={24} color="white" />
+                    <Text className="text-white font-Excon_bold text-lg ml-2">Guardar</Text>
+                </TouchableOpacity>
             </View>
 
             {modalVisible && (
@@ -260,14 +253,26 @@ export function NuevoProducto({ navigation }) {
 
                                     <View className="flex-col my-4">
                                         <Text className="text-main-blue text-md font-Excon_bold mb-2">Foto de producto</Text>
-                                        <View className=" my-2 font-Excon_thin">
-                                            <Pressable className="justify-center items-center" onPress={() => pickImage("perfil")}>
-                                                {imagePerfil ? (<Image className="rounded-full w-52 h-52" source={{ uri: imagePerfil }} />) : (
-                                                    <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                                        <Feather name="upload" size={24} color="#015DEC" />
-                                                        <Text className="text-main-blue text-md font-Excon_thin">Haz click para subir una imagen</Text>
-                                                    </View>)}
+                                        <View className="flex-1 justify-center items-center">
+                                            <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                                                <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                                    <Feather name="upload" size={24} color="#015DEC" />
+                                                    <Text className="text-main-blue text-md font-Excon_thin">
+                                                        Haz click para subir imágenes
+                                                    </Text>
+                                                </View>
                                             </Pressable>
+                                            {images.length > 0 && (
+                                                <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                                    {images.map((image, index) => (
+                                                        <Image
+                                                            key={index}
+                                                            source={{ uri: image.uri }}
+                                                            style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
+                                                        />
+                                                    ))}
+                                                </ScrollView>
+                                            )}
                                         </View>
                                     </View>
                                 </View>
@@ -284,7 +289,7 @@ export function NuevoProducto({ navigation }) {
                                 </View>
                             </View>
                         </View>
-                        
+
                     </ScrollView>
                 </Modal>
             )
