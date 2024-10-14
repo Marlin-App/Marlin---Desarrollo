@@ -1,5 +1,6 @@
 import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Switch } from 'react-native';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { useColorScheme } from "nativewind";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,6 +15,8 @@ export function NuevoProducto({ navigation }) {
     const [imagePerfil, setimagePerfil] = useState(null);
     const [isEnabled2, setIsEnabled2] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const { colorScheme } = useColorScheme();
+
 
     // const [nombreProducto, setNombreProducto] = useState("");
     //const [descripcion, setDescripcion] = useState("");	
@@ -76,7 +79,7 @@ export function NuevoProducto({ navigation }) {
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-2xl font-Excon_bold w-[80vw]">
-                            ¡Mostranos tus maravillosos productos!
+                            ¡Muestrenos tus maravillosos productos!
                         </Text>
                     </View>
                 </View>
@@ -222,7 +225,7 @@ export function NuevoProducto({ navigation }) {
                                                 {/* Filas de la tabla */}
                                                 <View>
                                                     {Array.from({ length: row }).map((_, index) => (
-                                                        <View key={index} className="relative flex-row py-[10px] border-b-[0.5px] border-main-blue flex-row justify-between mb-2">
+                                                        <View key={index} className="relative py-[10px] border-b-[0.5px] border-main-blue flex-row justify-between mb-2">
                                                             <TextInput className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" editable={isEnabled} value={isEnabled ? undefined : ""} />
                                                             <TextInput className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" editable={isEnabled2} value={isEnabled2 ? undefined : ""} />
                                                             <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" />
@@ -245,12 +248,12 @@ export function NuevoProducto({ navigation }) {
                                                     </View>
                                                 </View>
                                             </ScrollView>) :
-                                        (<View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
+                                        (<View className="relative flex-row py-[10px]  justify-between items-center mb-2">
                                             <Text className="text-main-blue text-md font-Excon_bold">Cantidad en inventario</Text>
                                             <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" />
                                         </View>)}
 
-                                    <View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
+                                    <View className="relative flex-row py-[10px] justify-between items-center mb-2">
                                         <Text className="text-main-blue text-md font-Excon_bold">Precio</Text>
                                         <View className="flex-row items-center">
                                             <Text className="text-main-blue text-md font-Excon_regular">₡ </Text>
@@ -277,7 +280,7 @@ export function NuevoProducto({ navigation }) {
                                         <Feather name="check" size={24} color="white" />
                                         <Text className="text-white text-md font-Excon_bold">Agregar</Text>
                                     </Pressable>
-                                    <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2" onPress={""}>
+                                    <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-center flex-row gap-x-2" onPress={""}>
                                         <Entypo name="cross" size={24} color="black" />
                                         <Text className=" text-md font-Excon_thin">Cancelar</Text>
                                     </Pressable>

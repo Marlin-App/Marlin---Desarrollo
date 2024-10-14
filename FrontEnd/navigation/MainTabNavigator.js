@@ -57,8 +57,8 @@ export function MainTabNavigator() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
-                tabBarInactiveTintColor: colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
+                tabBarActiveTintColor: colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
+                tabBarInactiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
                 tabBarLabelStyle: {

@@ -177,10 +177,11 @@ export function NuevaTienda({ navigation }) {
 
             <View className="flex-col px-5">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Cómo se llama tu negocio?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin"
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin text-white"
                     value={formData.name}
                     onChangeText={(value) => handleInputChange('name', value)}
                     placeholder="Nombre de la tienda"
+                    placeholderTextColor={placeholderTextColor}
                 />
             </View>
 
@@ -190,13 +191,12 @@ export function NuevaTienda({ navigation }) {
                     <DropDown
                         title="Selecciona el cantón donde se ubica tu emprendimiento:"
                         place="Cantón"
-                        placeholder={placeholderTextColor}
                         options={cantones}
                         selectedValue={selectedValue}
                         onValueChange={(value) => setSelectedValue(value)}
                     />
                 </View>
-                <View className="border-[0.5px] px-4 py-2 rounded-lg my-2">
+                <View className="border-[0.5px] px-4 py-2 rounded-lg my-2 dark:border-main-blue">
                     <DropDown
                         title="Selecciona el distrito donde se ubica tu emprendimiento:"
                         place="Distrito"
@@ -207,10 +207,10 @@ export function NuevaTienda({ navigation }) {
                 </View>
                 <View className="flex-row justify-between items-center my-4">
                     {location ? (
-                        <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin" >{location.latitude.toString().slice(0, 8)},{location.longitude.toString().slice(0, 8)}</Text>
+                        <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin dark:border-main-blue dark:text-white" >{location.latitude.toString().slice(0, 8)},{location.longitude.toString().slice(0, 8)}</Text>
 
                     ) : (
-                        <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin">Coordenadas</Text>
+                        <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin dark:border-main-blue dark:text-white">Coordenadas</Text>
                     )}
                     <Pressable onPress={openLocationPicker}>
                         <Image className="" source={require('../assets/img/location.png')} />
@@ -220,10 +220,11 @@ export function NuevaTienda({ navigation }) {
             </View>
             <View className="flex-col px-5">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Referencias</Text>
-                <TextInput className="border-[0.5px] border-main-blue px-4 my-2 font-Excon_thin"
+                <TextInput className="border-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
                     multiline
                     numberOfLines={4}
                     maxLength={120}
+                    placeholderTextColor={placeholderTextColor}
                     placeholder="Brinda direcciones, calles, avenidas o puntos de referencia para que tu negocio pueda ser ubicado."
                     value={formData.description}
                     onChangeText={(value) => handleInputChange('description', value)}
@@ -232,16 +233,18 @@ export function NuevaTienda({ navigation }) {
 
             <View className="flex-col px-5 my-4">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Numero para recibir Sinpe Movil?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Número de teléfono"
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" placeholder="Número de teléfono" 
                     value={formData.sinpe}
+                    placeholderTextColor={placeholderTextColor}
                     onChangeText={(value) => handleInputChange('sinpe', value)}
                     keyboardType='numeric' />
             </View>
 
             <View className="flex-col px-5 my-4">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿A nombre de quien está el Sinpe Movil?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" placeholder="Digitale el nombre del titular de la cuenta"
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" placeholder="Digitale el nombre del titular de la cuenta"
                     value={formData.sinpe_name}
+                    placeholderTextColor={placeholderTextColor}
                     onChangeText={(value) => handleInputChange('sinpe_name', value)}
                 />
             </View>
@@ -310,7 +313,7 @@ export function NuevaTienda({ navigation }) {
                         <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
                     </TouchableOpacity>
                     {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("Pedido")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
                 </View>
             </View>
 

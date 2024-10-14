@@ -13,25 +13,25 @@ export function MisTiendas({ navigation }) {
     useEffect(() => {
         const fetchStores = async () => {
             await getUserStores();
-          
+
         };
         fetchStores();
     }, []);
-    
 
-   /*  useEffect(() => {
-        console.log(allStores);
-    }, [allStores]); */
+
+    /*  useEffect(() => {
+         console.log(allStores);
+     }, [allStores]); */
 
 
     const renderStoreItem = ({ item }) => (
-        <Pressable className="flex-row justify-center px-4 mb-5" 
-          onPress={() => navigation.navigate("NuevaTienda", { store: item, refreshStores: getUserStores })}
+        <Pressable className="flex-row justify-center px-4 mb-5"
+            onPress={() => navigation.navigate("NuevaTienda", { store: item, refreshStores: getUserStores })}
         >
             <View className="flex-col w-full">
-               <Image className="rounded-xl  h-[150] " source={{uri: item.banner }} style={{ resizeMode: "stretch" }} />
-                <Text className="text-black text-lg font-Excon_bold">{item.name}</Text>
-                <Text className="text-black text-md font-Excon_thin">{item.location}</Text> 
+                <Image className="rounded-xl  h-[150] " source={{ uri: item.banner }} style={{ resizeMode: "stretch" }} />
+                <Text className="text-black text-lg font-Excon_bold dark:text-white">{item.name}</Text>
+                <Text className="text-black text-md font-Excon_thin dark:text-white">{item.location}</Text>
             </View>
         </Pressable>
     );
@@ -56,12 +56,12 @@ export function MisTiendas({ navigation }) {
             <FlatList
                 data={allStores}
                 renderItem={renderStoreItem}
-                keyExtractor={(item) => item.id} 
+                keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 4, marginTop: 4 }}
             />
 
             <TouchableOpacity className="bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2" onPress={() => navigation.navigate("NuevaTienda")}>
-                <MaterialIcons name="store-mall-directory" size={30} color="white" />
+                <MaterialIcons name="store-mall-directory" size={30} color="white"/>
                 <Text className="text-white font-Excon_bold text-lg ml-2">Agregar nueva tienda</Text>
             </TouchableOpacity>
         </View>

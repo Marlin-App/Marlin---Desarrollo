@@ -16,7 +16,6 @@ import { MainTabNavigator } from './MainTabNavigator';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
-import { CardScreen } from '../screens/CardScreen';
 import { HomeComercianteScreen } from '../screens/HomeComerciante';
 import { ProfileStackScreen } from './ProfileStack';
 import { InformationScreen } from '../screens/Information';
@@ -131,18 +130,6 @@ export function HomeStackScreen({ navigation, route }) {
       />
 
 
-      <HomeStack.Screen
-        name="CardScreen"
-        component={CardScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
-          headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
-        }}
-      />
 
       <HomeStack.Screen
         name="DirectionScreen"
