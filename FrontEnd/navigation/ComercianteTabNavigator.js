@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home";
 import { Keyboard, Platform } from "react-native";
+import { useColorScheme } from "nativewind";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
@@ -17,6 +18,8 @@ const Tab = createBottomTabNavigator();
 
 export function ComercianteTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const {colorScheme} = useColorScheme();
+
 
     useEffect(() => {
         const keyboardShowListener =
@@ -71,8 +74,8 @@ export function ComercianteTabNavigator() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: "#AAC3F3",
-                tabBarInactiveTintColor: "white",
+                tabBarActiveTintColor:  colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
+                tabBarInactiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
                 tabBarLabelStyle: {
@@ -81,7 +84,7 @@ export function ComercianteTabNavigator() {
                     fontFamily: "Excon_regular",
                 },
                 tabBarStyle: {
-                    backgroundColor: "#015DEC",
+                    backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#015DEC',
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",

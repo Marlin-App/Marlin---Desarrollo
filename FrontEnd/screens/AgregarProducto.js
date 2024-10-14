@@ -1,6 +1,7 @@
 import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Switch } from 'react-native';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useColorScheme } from "nativewind";
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -18,22 +19,22 @@ export function AgregarProducto({ navigation }) {
     const { addProduct } = useCRUDProductos();
     const route = useRoute();
     const storeId = route.params || {};
-    console.log(route.params);
-
-
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
+    const { colorScheme } = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+    const [variations, setVariations] = useState([{stoke:0, atribute_value:{color: "", size: ""}}]);
     const [formData, setFormData] = useState({
+        variations: [{stoke:0, atribute_value:{color: "", size: ""}}],
         name: "",
         description: "",
         price: 0,
-        stock: 0,
         picture: "",
         store_id: storeId.store,
         item_type: 3
     });
 
 
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
 
 
     const AddProductos = () => {
@@ -45,12 +46,14 @@ export function AgregarProducto({ navigation }) {
     const addrow = () => {
 
         setRow(row + 1);
+        setVariations((prev) => [...prev, {stoke:0, atribute_value:{color: "", size: ""}}]);
     }
 
     const removeRow = () => {
         if (row > 1) {
 
             setRow(row - 1);
+            setVariations((prev) => prev.slice(0, -1));
         }
     }
 
@@ -73,6 +76,13 @@ export function AgregarProducto({ navigation }) {
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleVariationChange = (index, field, value) => {
+        const updatedVariations = [...variations];
+        updatedVariations[index][field] = value;
+        setVariations(updatedVariations);
+    };
+    
+
     useEffect(() => {
 
         console.log(formData);
@@ -83,29 +93,36 @@ export function AgregarProducto({ navigation }) {
         handleInputChange('picture', images);
     }, [images]);
 
+    useEffect(() => {
+        if (row > 0) {
+            setVariations(Array(row).fill({ color: '', size: '', quantity: 0 }));
+        }
+    }, [row]);
+
 
 
     return (
-        <ScrollView className="bg-white">
-            <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
-                <View className="bg-white p-5 w-full h-full">
+        <ScrollView className="bg-white dark:bg-neutral-950">
+            <View className="flex-1 justify-center items-center bg-opacity-50">
+                <View className=" p-5 w-full h-full">
                     <View className="flex-col px-5">
-                        <Text className="text-main-blue text-md font-Excon_bold">Nombre del producto</Text>
-                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" />
+                        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Nombre del producto</Text>
+                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-light-blue" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" placeholderTextColor={placeholderTextColor} />
                     </View>
                     <View className="flex-col px-5">
-                        <Text className="text-main-blue text-md font-Excon_bold">Descripción</Text>
+                        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Descripción</Text>
                         <TextInput className="border-[0.5px] border-main-blue rounded-lg px-4 my-2 font-Excon_thin"
                             value={formData.description} onChangeText={(value) => handleInputChange('description', value)}
                             multiline
                             numberOfLines={4}
                             maxLength={120}
                             placeholder="Brinda direcciones, calles, avenidas o puntos de referencia para que tu negocio pueda ser ubicado."
+                            placeholderTextColor={placeholderTextColor}
                         />
                     </View>
 
                     <View className="flex-row justify-between items-center px-5">
-                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir color?</Text>
+                        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Necesita añadir color?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
                             thumbColor={isEnabled ? '#015DEC' : '#f4f3f4'}
@@ -116,7 +133,7 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="flex-row justify-between items-center px-5 mb-2">
-                        <Text className="text-main-blue text-md font-Excon_bold">¿Necesita añadir Talla?</Text>
+                        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Necesita añadir Talla?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
                             thumbColor={isEnabled2 ? '#015DEC' : '#f4f3f4'}
@@ -130,22 +147,33 @@ export function AgregarProducto({ navigation }) {
 
                         {isEnabled || isEnabled2 ?
                             (
-                                <ScrollView className="">
-                                    {/* Header de la tabla */}
-                                    <View className="flex-row justify-between border-b-2 border-main-blue p-[10px]">
-                                        <Text className="text-main-blue text-md font-Excon_bold" >Color</Text>
-                                        <Text className="text-main-blue text-md font-Excon_bold" >Talla</Text>
-                                        <Text className="text-main-blue text-md font-Excon_bold" >Cantidad</Text>
+                                <ScrollView>
+                                    <View className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue p-[10px]">
+                                        <Text className="text-main-blue text-md font-Excon_bold dark:text-white">Color</Text>
+                                        <Text className="text-main-blue text-md font-Excon_bold dark:text-white">Talla</Text>
+                                        <Text className="text-main-blue text-md font-Excon_bold dark:text-white">Cantidad</Text>
                                     </View>
-
-                                    {/* Filas de la tabla */}
                                     <View>
-                                        {Array.from({ length: row }).map((_, index) => (
-                                            <View key={index} className="relative flex-row py-[10px] border-b-[0.5px] border-main-blue flex-row justify-between mb-2">
-                                                <TextInput className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" editable={isEnabled} value={isEnabled ? undefined : ""} />
-                                                <TextInput className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" editable={isEnabled2} value={isEnabled2 ? undefined : ""} />
-                                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" />
-
+                                        {variations.map((variation, index) => (
+                                            <View key={index} className="relative flex-row py-[10px] border-b-2 border-main-blue dark:border-light-blue justify-between mb-2">
+                                                <TextInput
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    editable={isEnabled}
+                                                    value={variation.color}
+                                                    onChangeText={(value) => handleVariationChange(index, 'color', value)}
+                                                />
+                                                <TextInput
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    editable={isEnabled2}
+                                                    value={variation.size}
+                                                    onChangeText={(value) => handleVariationChange(index, 'size', value)}
+                                                />
+                                                <TextInput
+                                                    keyboardType="numeric"
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    value={variation.quantity.toString()}
+                                                    onChangeText={(value) => handleVariationChange(index, 'quantity', value)}
+                                                />
                                             </View>
                                         ))}
                                         <View className="flex-row justify-between">
@@ -164,43 +192,43 @@ export function AgregarProducto({ navigation }) {
                                         </View>
                                     </View>
                                 </ScrollView>) :
-                            (<View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
-                                <Text className="text-main-blue text-md font-Excon_bold">Cantidad en inventario</Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
+                            (<View className="relative flex-row py-[10px] justify-between items-center mb-2">
+                                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Cantidad en inventario</Text>
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
                             </View>)}
 
-                        <View className="relative flex-row py-[10px] flex-row justify-between items-center mb-2">
-                            <Text className="text-main-blue text-md font-Excon_bold">Precio</Text>
+                        <View className="relative flex-row py-[10px] justify-between items-center mb-2">
+                            <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Precio</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-main-blue text-md font-Excon_regular">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
                             </View>
                         </View>
 
                         <View className="flex-col my-4">
-                            <Text className="text-main-blue text-md font-Excon_bold mb-2">Foto de producto</Text>
+                            <Text className="text-main-blue text-md font-Excon_bold mb-2 dark:text-light-blue">Foto de producto</Text>
 
                             <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
-                            {images.length === 0 ? (
-                                <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                    <Feather name="upload" size={24} color="#015DEC" />
-                                    <Text className="text-main-blue text-md font-Excon_thin">
-                                        Haz click para subir imágenes
-                                    </Text>
-                                </View>
-                            ) : (
-                                <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                    {images.map((image, index) => (
-                                        <Image
-                                            key={index}
-                                            source={{ uri: image.uri }}
-                                            style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
-                                        />
-                                    ))}
-                                </ScrollView>
-                            )}
+                                {images.length === 0 ? (
+                                    <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                        <Feather name="upload" size={24} color="#015DEC" />
+                                        <Text className="text-main-blue text-md font-Excon_thin">
+                                            Haz click para subir imágenes
+                                        </Text>
+                                    </View>
+                                ) : (
+                                    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                        {images.map((image, index) => (
+                                            <Image
+                                                key={index}
+                                                source={{ uri: image.uri }}
+                                                style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
+                                            />
+                                        ))}
+                                    </ScrollView>
+                                )}
                             </Pressable>
-                            
+
                         </View>
                     </View>
 
@@ -209,9 +237,9 @@ export function AgregarProducto({ navigation }) {
                             <Feather name="check" size={24} color="white" />
                             <Text className="text-white text-md font-Excon_bold">Agregar</Text>
                         </Pressable>
-                        <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2" onPress={""}>
-                            <Entypo name="cross" size={24} color="black" />
-                            <Text className=" text-md font-Excon_thin">Cancelar</Text>
+                        <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2 bg-red-500" onPress={""}>
+                            <Entypo name="cross" size={24} color="white" />
+                            <Text className=" text-md font-Excon_regular text-white">Cancelar</Text>
                         </Pressable>
                     </View>
                 </View>

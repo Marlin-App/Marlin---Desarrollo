@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useColorScheme } from "nativewind";
 import { ProfileScreen } from '../screens/Settings';
 import { LandingPage } from '../screens/landing';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
-import { CardScreen } from '../screens/CardScreen';
 import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
 import { NuevaTienda } from '../screens/NuevaTienda';
@@ -18,6 +18,8 @@ import { ComercianteInventario } from '../screens/ComercianteInventario';
 const ProfileStack = createNativeStackNavigator();
 
 export function ProfileStackScreen({ navigation, route }) {
+  const { colorScheme } = useColorScheme();
+
 
   return (
     <ProfileStack.Navigator>
@@ -34,7 +36,10 @@ export function ProfileStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -44,7 +49,10 @@ export function ProfileStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
       <ProfileStack.Screen
@@ -61,7 +69,10 @@ export function ProfileStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 
@@ -71,7 +82,10 @@ export function ProfileStackScreen({ navigation, route }) {
         options={{
           headerShown: true,
           headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
         }}
       />
 

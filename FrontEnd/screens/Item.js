@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, useColorScheme, Alert, ScrollView } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, Alert, ScrollView } from 'react-native';
+import { useColorScheme } from "nativewind";
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 
 export function ItemPage({ navigation }) {
     const { addToCart, isSameStore, clearCart, cart } = useCart();
-    const [modalVisible, setModalVisible] = useState(false);  
-    const [modalVisible2, setModalVisible2] = useState(false);  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible2, setModalVisible2] = useState(false);
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -47,59 +48,60 @@ export function ItemPage({ navigation }) {
             setQuantity(prevQuantity => prevQuantity - 1);
         }
     };
-   
+
     const vericarCarrito = () => {
 
         console.log(isSameStore(product.store_id));
-        if(isSameStore(product.store_id)){
+        if (isSameStore(product.store_id)) {
             handleAddToCart();
 
-        }else{
+        } else {
             setModalVisible2(!modalVisible2);
         }
-       
+
     }
 
-    const  handleAddToCart = () => { 
+    const handleAddToCart = () => {
         setModalVisible(!modalVisible);
-         addToCart({ ...product, cantidad: quantity }); 
+        addToCart({ ...product, cantidad: quantity });
     };
 
     // **1. Extraer el Valor Numérico del Precio**
     const unitPrice = Number(product.price.replace(/[^0-9]/g, ''));
-    
+
     // **2. Calcular el Precio Total**
     const totalPrice = unitPrice * quantity;
 
     // **3. Formatear el Precio Total**
-    const formattedTotalPrice = totalPrice.toLocaleString('es-CR', { 
-        style: 'currency', 
-        currency: 'CRC', 
-        maximumFractionDigits: 0 
+    const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
+        style: 'currency',
+        currency: 'CRC',
+        maximumFractionDigits: 0
     });
 
 
-    
+    const {colorScheme} = useColorScheme();
+
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
             <ScrollView className="mb-20">
 
-            <Modal
+                <Modal
                     animationType="slide"
                     transparent={true}
                     visible={modalVisible}
                 >
                     <View className="flex-1 justify-center items-center bg-black/50">
-                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw]">
+                        <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw] dark:bg-dk-main-bg">
                             <View className="justify-center items-center">
-                                <View className="border-b-[0.5px] w-full mb-4">
-                                    <Text className="text-lg text-center font-Excon_bold mb-2">Producto Agregado!</Text>
+                                <View className="border-b-[0.5px] dark:border-light-blue w-full mb-4">
+                                    <Text className="text-lg text-center font-Excon_bold mb-2 dark:text-white">Producto Agregado!</Text>
                                 </View>
-                                <Text className="text-md font-Excon_regular mb-4">Se agrego el {product.name} al carrito.</Text>
+                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agrego el {product.name} al carrito.</Text>
                             </View>
                             <View className="flex-row justify-center">
                                 <TouchableOpacity
-                                    className="bg-main-blue rounded-lg px-4 py-2"
+                                    className="bg-main-blue dark:bg-light-blue rounded-lg px-4 py-2"
                                     onPress={() => {
                                         setModalVisible(false);
                                         navigation.goBack();
@@ -110,8 +112,8 @@ export function ItemPage({ navigation }) {
                             </View>
                         </View>
                     </View>
-            </Modal>
-            <Modal
+                </Modal>
+                <Modal
                     animationType="fade"
                     transparent={true}
                     visible={modalVisible2}
@@ -128,7 +130,7 @@ export function ItemPage({ navigation }) {
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={async () => {
-                                        await clearCart();  
+                                        await clearCart();
                                         handleAddToCart();
                                         navigation.goBack();
                                     }}
@@ -139,7 +141,7 @@ export function ItemPage({ navigation }) {
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={() => {
-                                        setModalVisible2(!modalVisible2); 
+                                        setModalVisible2(!modalVisible2);
                                     }}
                                 >
                                     <Text className="text-white font-Excon_regular">Cancelar</Text>
@@ -147,8 +149,8 @@ export function ItemPage({ navigation }) {
                             </View>
                         </View>
                     </View>
-            </Modal>    
-                
+                </Modal>
+
                 <View className="px-8">
                     <Image
                         className="w-full h-[300] rounded-3xl bg-black mt-10 mb-3"
@@ -174,8 +176,8 @@ export function ItemPage({ navigation }) {
 
                 <View className="flex-row justify-between pb-3">
                     <View className="flex-row ">
-                        <TouchableOpacity 
-                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue" 
+                        <TouchableOpacity
+                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
                             onPress={decreaseQuantity}
                         >
                             <Text className="text-main-blue dark:text-white text-3xl">-</Text>
@@ -189,29 +191,30 @@ export function ItemPage({ navigation }) {
                                 setQuantity(isNaN(numericValue) || numericValue < 1 ? 1 : numericValue);
                             }}
                         />
-                        <TouchableOpacity 
-                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue" 
+                        <TouchableOpacity
+                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue"
                             onPress={increaseQuantity}
                         >
                             <Text className="text-main-blue dark:text-white text-lg">+</Text>
                         </TouchableOpacity>
                     </View>
-                    <Pressable 
+                    <Pressable
+                    className="bg-white dark:bg-[#1952BE]"
                         style={styles.carrito}
-                        onPress={() =>vericarCarrito()}
-                       
-                    > 
-                    <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
-                    </Pressable> 
+                        onPress={() => vericarCarrito()}
+
+                    >
+                        <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
+                    </Pressable>
                 </View>
             </View>
         </View>
     );
 }
 const styles = StyleSheet.create({
+    
 
     carrito: {
-        backgroundColor: 'white',
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',

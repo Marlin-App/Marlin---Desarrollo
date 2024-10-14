@@ -6,6 +6,8 @@ import { useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useColorScheme } from "nativewind";
+
 
 export function Store({ navigation }) {
     const route = useRoute();
@@ -22,6 +24,8 @@ export function Store({ navigation }) {
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
+    const { colorScheme } = useColorScheme();
+    const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
 
     useEffect(() => {
         async function prepare() {
@@ -68,7 +72,7 @@ export function Store({ navigation }) {
     };
 
     return (
-        <View className="bg-white flex-1 w-full" onLayout={onLayout}>
+        <View className="bg-white dark:bg-neutral-950 flex-1 w-full" onLayout={onLayout}>
 
             <View className="h-[200px] items-center justify-center">
 
@@ -88,8 +92,8 @@ export function Store({ navigation }) {
                         />
                     </View>
 
-                    <View className="flex-row text-center  bg-grey-light rounded-lg ">
-                        <Pressable className="bg-main-blue rounded-l-lg px-2 flex justify-center"
+                    <View className="flex-row text-center  bg-grey-light rounded-lg  dark:bg-dk-input ">
+                        <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                             onPress={() => {
                                 searchProduct(search);
                                 setIsSearch(true);
@@ -98,9 +102,9 @@ export function Store({ navigation }) {
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </Pressable>
                         <TextInput
-                            className="ml-2 py-2  text-md text-black font-Excon_regular w-[70%] "
+                            className="ml-2 py-2  text-md text-light-blue dark:text-white  font-Excon_regular w-[70%] "
                             placeholder='Buscar Productos'
-                            placeholderTextColor={'#3498db'}
+                            placeholderTextColor={placeholderTextColor}
                             value={search}
                             onChangeText={setSearch}
                             onSubmitEditing={() => {
@@ -117,7 +121,7 @@ export function Store({ navigation }) {
                                     setIsSearch(false);
                                 }}
                             >
-                                <Ionicons name="close-sharp" size={35} color="black" />
+                                <Ionicons name="close-sharp" size={35} color={placeholderTextColor} />
                             </Pressable>
                         ) : null}
                     </View>
@@ -126,7 +130,7 @@ export function Store({ navigation }) {
 
             {isSearch ? (
                 <View className="flex-row items-center justify-between px-4">
-                    <Text className="text-lg font-Excon_regular">Resultados de la búsqueda</Text>
+                    <Text className="text-lg mt-2 font-Excon_regular dark:text-white">Resultados de la búsqueda</Text>
                 </View>
             ) : null}
 
@@ -142,7 +146,7 @@ export function Store({ navigation }) {
                             className="mt-4"
                         >
                             <View className="items-center">
-                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px]">
+                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                                     <Image
                                         source={{ uri: item.picture }}
                                         className="rounded-lg w-full h-full"
@@ -150,13 +154,13 @@ export function Store({ navigation }) {
                                     />
                                 </View>
                                 <Text
-                                    className="text-lg text-light-blue w-40"
+                                    className="text-lg font-Excon_bold text-light-blue w-40 dark:text-white"
                                     numberOfLines={1}
                                     ellipsizeMode="tail"
                                 >
                                     {item.name}
                                 </Text>
-                                <Text className="text-lg text-light-blue text-start w-full">
+                                <Text className="text-base font-Erode_bold text-light-blue text-start w-full dark:text-white">
                                     {item.price}
                                 </Text>
                             </View>

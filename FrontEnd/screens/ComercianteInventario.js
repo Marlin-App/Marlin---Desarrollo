@@ -1,4 +1,5 @@
 import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal } from 'react-native';
+import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -10,7 +11,7 @@ export function ComercianteInventario({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const {deleteProduct, fetchStoresWithProducts, storesWithProducts } = useCRUDProductos();
     const [longPressProduct, setLongPressProduct] = useState(null);
-
+    const { colorScheme } = useColorScheme();
 
     useEffect(() => {
         fetchStoresWithProducts();
@@ -21,25 +22,25 @@ export function ComercianteInventario({ navigation }) {
         setModalVisible(true);
     }
     return (
-        <View className="bg-white h-full">
-            <View className="w-full flex-col px-4 bg-main-blue py-8 pt-16">
+        <View className="bg-white dark:bg-neutral-950 h-full">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8 pt-16">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white text-2xl font-Excon_bold w-[80vw]">
+                        <Text className="text-white text-2xl font-Excon_bold w-[80vw] dark:text-light-blue">
                             ¡Rellená tu inventario con más mercadería!
                         </Text>
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4 ">
-                        <Ionicons name="notifications-outline" size={24} color="white" />
+                    <View className="flex-row items-center justify-center gap-x-4 mr-2">
+                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                 </View>
             </View>
-            <Text className="text-2xl text-main-blue font-Excon_bold mt-4 ml-4">Productos de tus tiendas</Text>
+            <Text className="text-2xl text-main-blue font-Excon_bold mt-4 ml-4 dark:text-white">Productos de tus tiendas</Text>
             <ScrollView horizontal={true}>
                 {storesWithProducts.map((store, storeIndex) => (
                     <View key={storeIndex} className="flex-col p-4 w-[100vw]">
                         <Text className="text-lg text-main-blue font-Excon_bold">{store.name}</Text>
-                        <Text className="text-md font-Excon_thin text-main-blue">{store.canton}, {store.district}</Text>
+                        <Text className="text-md font-Excon_thin text-main-blue dark:text-light-blue">{store.canton}, {store.district}</Text>
                         <View className="flex-col">
                             <View className="items-end mb-4">
                                 <Pressable className="border-main-blue border-[1.5px] rounded-full w-7 h-7 justify-center items-center" onPress={() => navigation.navigate("AgregarProducto", { store: store.id })}>

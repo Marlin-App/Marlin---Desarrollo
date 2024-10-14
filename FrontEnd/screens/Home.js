@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback, useColorScheme} from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback} from 'react-native';
+import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +13,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
 
 export function HomeScreen({ navigation }) {
-    const colorScheme = useColorScheme();
+    const { colorScheme } = useColorScheme();
+
+    
     const {
         cart,
         increaseQuantity,
@@ -59,20 +62,20 @@ export function HomeScreen({ navigation }) {
                 <View className="flex-1 justify-start items-end p-4 bg-[#00000070]">
 
                     <TouchableWithoutFeedback>
-                        <View className="w-72 bg-white rounded-lg shadow-lg max-h-96">
-                            <Text className="text-xl font-Excon_bold px-4 py-2 border-b text-light-blue">Notificaciones</Text>
+                        <View className="w-72 bg-white rounded-lg shadow-lg max-h-96 dark:bg-black">
+                            <Text className="text-xl font-Excon_bold px-4 py-2 border-b text-main-blue dark:text-light-blue dark:border-main-blue">Notificaciones</Text>
                             <FlatList
                                 data={notifications}
                                 keyExtractor={(item) => item.id}
                                 renderItem={({ item }) => (
-                                    <View className="px-4 py-2 border-b border-gray-200">
+                                    <View className="px-4 py-2 border-b border-gray-200 dark:border-light-blue">
                                         <Text className="font-semibold text-gray-800">{item.title}</Text>
                                         <Text className="text-gray-400">{item.description}</Text>
                                     </View>
                                 )}
                                 ListEmptyComponent={
                                     <View className="px-4 py-4 items-center">
-                                        <Text className="text-gray-600">No tienes notificaciones nuevas.</Text>
+                                        <Text className="text-gray-600 dark:text-[#d6d6d6]">No tienes notificaciones nuevas.</Text>
                                     </View>
                                 }
                             />
@@ -167,7 +170,7 @@ export function HomeScreen({ navigation }) {
     const renderHorizontalItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
-                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px]">
+                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                     <Image
                         source={{ uri: item.picture }}
                         className="w-full h-full rounded-lg"
@@ -256,18 +259,18 @@ export function HomeScreen({ navigation }) {
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
-                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"}/>
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
                             )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
-                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "white" : "#5186EC"} />
+                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                             <Text
                                 className={`absolute left-4 w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? "bg-red-600" : "bg-transparent"

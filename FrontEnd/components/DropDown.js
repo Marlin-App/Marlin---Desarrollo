@@ -15,7 +15,7 @@ export function DropDown({options, selectedValue, onValueChange, place, title })
       <TouchableOpacity className="flex-row items-center justify-between"
         onPress={() => setModalVisible(true)}
         >
-        <Text className="font-Excon_thin">{selectedValue || place} </Text>
+        <Text className="font-Excon_thin dark:text-white">{selectedValue || place} </Text>
         <Text className="font-Excon_thin text-main-blue">{'▼'} </Text>
       </TouchableOpacity>
           </View>

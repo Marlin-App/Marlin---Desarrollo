@@ -14,8 +14,8 @@ const Tab = createBottomTabNavigator();
 
 export function MainTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-    const { toggleColorScheme } = useColorScheme();
-    const colorScheme = useColorScheme();
+    const {colorScheme} = useColorScheme();
+
 
     useEffect(() => {
         const keyboardShowListener =
@@ -57,8 +57,8 @@ export function MainTabNavigator() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: colorScheme ==='dark' ? "#FFFFF" : "#5186EC",
-                tabBarInactiveTintColor: colorScheme ==='dark' ? "#AAC3F3" : "#B0B0B0",
+                tabBarActiveTintColor: colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
+                tabBarInactiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
                 tabBarLabelStyle: {
@@ -67,7 +67,7 @@ export function MainTabNavigator() {
                     fontFamily: "Excon_regular",
                 },
                 tabBarStyle: {
-                    backgroundColor: colorScheme ==='dark' ? "#015DEC" : "#1C1C1C",
+                    backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#015DEC',
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",
