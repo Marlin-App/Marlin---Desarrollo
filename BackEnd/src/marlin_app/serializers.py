@@ -1,7 +1,7 @@
 import json
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation
+from .models import UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation, ItemImage
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -79,7 +79,36 @@ class StoreSerializer(serializers.ModelSerializer):
             representation['banner'] = representation['banner'].replace('image/upload/', '')
         return representation
 
+    
+class AtributeValueSerializer(serializers.ModelSerializer):
+    attribute_name = serializers.CharField(source='attribute.name')
+
+    class Meta:
+        model = AtributeValue
+        fields = ['attribute_name', 'value']
+
+
+class ItemVariationSerializer(serializers.ModelSerializer):
+    item_variations = AtributeValueSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ItemVariation
+        fields = ['id', 'stock', 'item_variations']
+
+class ItemImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemImage
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['picture'].startswith('image/upload/'):
+            representation['picture'] = representation['picture'].replace('image/upload/', '')
+        return representation
+
 class StoreItemSerializer(serializers.ModelSerializer):
+    variations = ItemVariationSerializer(many=True, read_only=True)
+    item_images = ItemImagesSerializer(many=True, read_only=True)
     class Meta:
         model = StoreItem
         fields = '__all__'        
@@ -91,9 +120,16 @@ class StoreItemSerializer(serializers.ModelSerializer):
             atributes_data = json.loads(atributes_data)
 
         #crear el item
+        pictures = self.context['request'].FILES.getlist('pictures')
         store_item = StoreItem.objects.create(**validated_data)
+
+# Guardar las imágenes
+        for picture in pictures:
+            ItemImage.objects.create(
+                item=store_item,
+                picture=picture  # Asumiendo que tu modelo ItemImage tiene un campo llamado 'image'
+            )
         
-        print(atributes_data)
         for variation_data in atributes_data:
             #por cada objeto dentro de atributes obtener los datos para crear la variacion
             attibute_value_list = variation_data.get('attribute_values')
@@ -106,63 +142,17 @@ class StoreItemSerializer(serializers.ModelSerializer):
             )
 
             # lista de atributos que llevara esa variacion
-            attribute_value_instances = []
             for attr_data in attibute_value_list:
-                attr_name = attr_data['name']
-                attr_value = attr_data['value']
-
                 #obtener la instancia del nombre del attribute
-                atribute, created = Atribute.objects.get_or_create(name=attr_name)
+                atribute, created = Atribute.objects.get_or_create(name=attr_data['name'])
 
                 #crear el attribute value
                 attribute_value, created = AtributeValue.objects.get_or_create(
+                    item_variation=item_variation,
                     attribute=atribute,
-                    value=attr_value
+                    value=attr_data['value']
                 )
-
-                # añadir a la lista de attributos que tendra la variacion 
-                attribute_value_instances.append(attribute_value)
-
-            # meterle los atributos a la variacion
-            item_variation.attribute_values.set(attribute_value_instances)
         return store_item
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if representation['picture'].startswith('image/upload/'):
-            representation['picture'] = representation['picture'].replace('image/upload/', '')
-        return representation
-    
-class AtributeValueSerializer(serializers.ModelSerializer):
-    attribute_name = serializers.CharField(source='attribute.name')
-
-    class Meta:
-        model = AtributeValue
-        fields = ['attribute_name', 'value']
-
-
-class ItemVariationSerializer(serializers.ModelSerializer):
-    attribute_values = AtributeValueSerializer(many=True)
-
-    class Meta:
-        model = ItemVariation
-        fields = ['id', 'stock', 'attribute_values']
-
-
-class ItemViewSerializer(serializers.ModelSerializer):
-    variations = ItemVariationSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = StoreItem
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        
-        if representation['picture'].startswith('image/upload/'):
-            representation['picture'] = representation['picture'].replace('image/upload/', '')
-
-        return representation
 
 class StoreTypeSerializer(serializers.ModelSerializer):
     class Meta:
