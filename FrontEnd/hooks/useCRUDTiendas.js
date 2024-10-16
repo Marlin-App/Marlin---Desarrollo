@@ -99,7 +99,7 @@ const useCRUDTiendas = (navigation) => {
         const userData = JSON.parse(jsonValue);
         const token = userData.access;
         const decodedToken = decodeJWT(token);
-        const user_id = decodedToken.payload.userprofile;
+        const user_id = decodedToken.payload.user_id;
 
         try {
             const response = await fetch(`https://marlin-backend.vercel.app/api/stores/?user_id=${user_id}`);

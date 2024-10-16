@@ -1,21 +1,130 @@
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Switch } from 'react-native';
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Text, View, TextInput, Pressable, Image, ScrollView, Switch } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useColorScheme } from "nativewind";
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useCRUDProductos } from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
 
 
 export function AgregarProducto({ navigation }) {
 
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [imagePerfil, setimagePerfil] = useState(null);
-    const [isEnabled2, setIsEnabled2] = useState(false);
-    const [images, setImages] = useState([]);
+    // const [isEnabled, setIsEnabled] = useState(false);
+    // const [isEnabled2, setIsEnabled2] = useState(false);
+    // const [images, setImages] = useState([]);
+    // const { addProduct } = useCRUDProductos();
+    // const route = useRoute();
+    // const storeId = route.params || {};
+    // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    // const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
+    // const { colorScheme } = useColorScheme();
+    // const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+    // const [row, setRow] = useState(1);
+    // const [variations, setVariations] = useState([]);
+    // const [atributes, setAtributes] = useState([]);
+    // const [atribute_values, setAtribute_values] = useState([]);
+    // // const [atribute_value, setAtribute_value] = useState([{ id: 0, stock: 0, atribute_value: [{ attribute_name: "", value: "" }] }]);
+    // const [formData, setFormData] = useState({
+    //     name: "",
+    //     description: "",
+    //     price: 0,
+    //     picture: "",
+    //     store_id: storeId.store,
+    //     item_type: 3,
+    //     variations: variations,
+    // });
+
+
+
+    // const AddProductos = () => {
+    //     addProduct(formData, images);
+    // };
+
+
+    // const addrow = () => {
+
+    //     setRow(row + 1);
+    //     setVariations((prev) => [...prev, { id: 0, stock: 0, atribute_value: [{ attribute_name: "", value: "" }] }]);
+    // }
+
+    // const removeRow = () => {
+    //     if (row > 1) {
+
+    //         setRow(row - 1);
+    //         setVariations((prev) => prev.slice(0, -1));
+    //     }
+    // }
+
+
+    // const pickImages = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsMultipleSelection: true,
+    //         quality: 1,
+    //     });
+
+    //     if (!result.canceled) {
+    //         setImages(result.assets);
+    //     }
+    // };
+
+
+
+    // const handleInputChange = (name, value) => {
+    //     if (isEnabled && isEnabled2) {
+    //         setVariations([]);
+    //     }
+    //     setFormData({ ...formData, [name]: value });
+    // };
+
+
+    // const handleInputChangeVar = (name,data) => {
+
+    //         setAtribute_values(...[{ attribute_name: name, value: data }]);
+
+    //     console.log("Variancion prueba: ",atribute_values);
+
+
+    // };
+
+    // const handleVariationChange = (index, field, value) => {
+    //     const updatedVariations = [...variations];
+    //     updatedVariations[index][field] = value;
+    //     setVariations(updatedVariations);
+    // };
+
+
+    // useEffect(() => {
+
+    //     console.log(formData);
+
+
+    // }, [formData]);
+
+    // useEffect(() => {
+    //     handleInputChange('picture', images);
+    // }, [images]);
+
+    // useEffect(() => {
+    //     if (row > 0) {
+    //         setVariations(Array(row).fill({ color: '', size: '', quantity: 0 }));
+    //     }
+    // }, [row]);
+
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        price: '',
+        stock: '',
+        picture: '',
+        store_id: 1, // Por ejemplo, un valor por defecto
+        item_type: 1, // Por ejemplo, un valor por defecto
+        variations: [],
+    });
+
+
     const { addProduct } = useCRUDProductos();
     const route = useRoute();
     const storeId = route.params || {};
@@ -23,40 +132,11 @@ export function AgregarProducto({ navigation }) {
     const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-    const [variations, setVariations] = useState([{stoke:0, atribute_value:{color: "", size: ""}}]);
-    const [formData, setFormData] = useState({
-        variations: [{stoke:0, atribute_value:{color: "", size: ""}}],
-        name: "",
-        description: "",
-        price: 0,
-        picture: "",
-        store_id: storeId.store,
-        item_type: 3
-    });
-
-
-
-
-    const AddProductos = () => {
-        addProduct(formData, images);
-    };
-
     const [row, setRow] = useState(1);
-
-    const addrow = () => {
-
-        setRow(row + 1);
-        setVariations((prev) => [...prev, {stoke:0, atribute_value:{color: "", size: ""}}]);
-    }
-
-    const removeRow = () => {
-        if (row > 1) {
-
-            setRow(row - 1);
-            setVariations((prev) => prev.slice(0, -1));
-        }
-    }
-
+    const [variations, setVariations] = useState([]);
+    const [images, setImages] = useState([]);
+    const [isEnabled, setIsEnabled] = useState(false);
+    const [isEnabled2, setIsEnabled2] = useState(false);
 
     const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -70,34 +150,80 @@ export function AgregarProducto({ navigation }) {
         }
     };
 
-    //fetch para agregar producto a la base de datos
-
-    const handleInputChange = (name, value) => {
-        setFormData({ ...formData, [name]: value });
+    const handleInputChange = (field, value) => {
+        setFormData(prevState => ({
+            ...prevState,
+            [field]: value,
+        }));
     };
 
     const handleVariationChange = (index, field, value) => {
         const updatedVariations = [...variations];
-        updatedVariations[index][field] = value;
+        updatedVariations[index] = {
+            ...updatedVariations[index],
+            [field]: value,
+        };
         setVariations(updatedVariations);
     };
-    
+
+    const addRow = () => {
+        setVariations(prevVariations => [
+            ...prevVariations,
+            { color: '', size: '', quantity: 0 },
+        ]);
+    };
+
+    const removeRow = () => {
+        setVariations(prevVariations => {
+            if (prevVariations.length > 1) {
+                return prevVariations.slice(0, -1);
+            }
+            return prevVariations;
+        });
+    };
 
     useEffect(() => {
-
-        console.log(formData);
-
-    }, [formData]);
-
-    useEffect(() => {
-        handleInputChange('picture', images);
-    }, [images]);
-
-    useEffect(() => {
-        if (row > 0) {
-            setVariations(Array(row).fill({ color: '', size: '', quantity: 0 }));
+        if (isEnabled || isEnabled2) {
+            if (variations.length === 0) {
+                setVariations([{ color: '', size: '', quantity: 0 }]);
+            }
+        } else {
+            setVariations([]);
         }
-    }, [row]);
+    }, [isEnabled, isEnabled2]);
+
+    const AddProductos = () => {
+        const productVariations = variations.map((variation, index) => {
+            const attributes = [];
+            
+            if (isEnabled) {
+                attributes.push({ attribute_name: 'Color', value: variation.color });
+            }
+    
+            if (isEnabled2) {
+                attributes.push({ attribute_name: 'Talla', value: variation.size });
+            }
+    
+            return {
+                stock: parseInt(variation.quantity, 10),
+                attribute_values: attributes
+            };
+        });
+    
+        const newProduct = {
+            variations: productVariations,
+            name: formData.name,
+            description: formData.description,
+            price: formData.price,
+            stock: productVariations.length > 0 ?productVariations.reduce((total, variation) => total + variation.stock, 0):formData.stock, // Suma de las cantidades de las variantes
+            picture: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
+            store_id: storeId.store,
+            item_type: 1,
+        };
+    
+        addProduct(newProduct);
+        navigation.goBack();
+    };
 
 
 
@@ -160,7 +286,7 @@ export function AgregarProducto({ navigation }) {
                                                     className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
                                                     editable={isEnabled}
                                                     value={variation.color}
-                                                    onChangeText={(value) => handleVariationChange(index, 'color', value)}
+                                                    onChangeText={(value) => handleVariationChange(index,'color', value)}
                                                 />
                                                 <TextInput
                                                     className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
@@ -183,7 +309,7 @@ export function AgregarProducto({ navigation }) {
                                                 </View>
                                                 <Text className="text-main-blue text-md font-Excon_bold">filas</Text>
                                             </Pressable>
-                                            <Pressable className="flex-row justify-center mb-1 gap-x-4 items-center" onPress={addrow}>
+                                            <Pressable className="flex-row justify-center mb-1 gap-x-4 items-center" onPress={addRow}>
                                                 <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center">
                                                     <Ionicons name="add" size={24} color="#015DEC" />
                                                 </View>

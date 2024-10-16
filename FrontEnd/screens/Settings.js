@@ -133,7 +133,18 @@ export function ProfileScreen({ navigation }) {
             </View>
             <View className="w-full mt-6">
               <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
+              
               <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.replace("Home")}
+              >
+                <View className="flex-row gap-2 mb-1">
+                  <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  <Text className="text-center font-Erode_regular dark:text-white">Continuar comprando</Text>
+                </View>
+                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+              </Pressable>
+
+              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
                 onPress={() => navigation.replace("secondScreen")}
               >
                 <View className="flex-row gap-2 mb-1">

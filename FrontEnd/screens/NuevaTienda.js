@@ -86,7 +86,7 @@ export function NuevaTienda({ navigation }) {
         district: store ? store.district : "Puntarenas",
         coodernates: store ? store.coodernates : "31231232312321",
         picture: store ? store.picture : "",
-        user_id: 5,
+        user_id: 4,
         sinpe: store ? store.num_sinpe : "1541561",
         banner: store ? store.banner : "",
         sinpe_name: store ? store.owner_sinpe : "5644654",
