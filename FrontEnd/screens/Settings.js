@@ -42,6 +42,7 @@ export function ProfileScreen({ navigation }) {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('@userToken');
+      navigation.replace('Home');
       setIsLogged(false);
     } catch (e) {
       console.error('Error al cerrar sesión:', e);
@@ -89,7 +90,10 @@ export function ProfileScreen({ navigation }) {
           </View>
         </ScrollView>
       ) : (
-        <ScrollView className="w-full h-full">
+        <ScrollView className="w-full h-full"
+          showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+        >
           <View className="w-full mt-14">
             <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
             <View className="flex flex-row justify-center items-center">

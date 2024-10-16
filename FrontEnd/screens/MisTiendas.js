@@ -8,37 +8,33 @@ import useCRUDTiendas from '../hooks/useCRUDTiendas';
 export function MisTiendas({ navigation }) {
     const { colorScheme } = useColorScheme();
 
-    const { allStores, loading, getUserStores, setAllStores } = useCRUDTiendas();
+    const { allStores, loading, getUserStores, setAllStores  } = useCRUDTiendas();
+
+  
 
     useEffect(() => {
         const fetchStores = async () => {
             await getUserStores();
-
         };
-        fetchStores();
-    }, []);
-
-
-    /*  useEffect(() => {
-         console.log(allStores);
-     }, [allStores]); */
+        const focusListener = navigation.addListener('focus', fetchStores);
+    }, [navigation]);
 
 
     const renderStoreItem = ({ item }) => (
         <Pressable className="flex-row justify-center px-4 mb-5"
-            onPress={() => navigation.navigate("NuevaTienda", { store: item, refreshStores: getUserStores })}
+            onPress={() => navigation.navigate("NuevaTienda", { store: item })}
         >
             <View className="flex-col w-full">
                 <Image className="rounded-xl  h-[150] " source={{ uri: item.banner }} style={{ resizeMode: "stretch" }} />
                 <Text className="text-black text-lg font-Excon_bold dark:text-white">{item.name}</Text>
-                <Text className="text-black text-md font-Excon_thin dark:text-white">{item.location}</Text>
+                <Text className="text-black text-md font-Excon_regular dark:text-white">{item.canton} {item.district} </Text>
             </View>
         </Pressable>
     );
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8 pt-16">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-2xl font-Excon_bold w-[80vw] dark:text-light-blue">

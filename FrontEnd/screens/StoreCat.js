@@ -8,6 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { useRoute } from '@react-navigation/native';
 
 import image from '../assets/img/fondoLanding.png';
 
@@ -19,6 +20,15 @@ export function StoreCat({ navigation }) {
     const [originalStoreSelected, setOriginalStoreSelected] = useState([]);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+
+
+    const route = useRoute();
+   
+    const id = route.params? route.params.id : null;
+    console.log(id);
+    /* const { item } = route.params || {};
+    console.log(item); */
+
 
     useEffect(() => {
         const selectedStore = () => {
@@ -52,7 +62,7 @@ export function StoreCat({ navigation }) {
         setStoreSelected(originalStoreSelected);  // Restablecer la lista original
     };
     useEffect(() => {
-        if (categoryId === null) {
+        if (categoryId === 0) {
             setStoreSelected(allStores);
             return;
         }
@@ -89,28 +99,36 @@ export function StoreCat({ navigation }) {
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
 
-    useEffect(() => {
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    }, []);
+   
 
-    const onLayout = useCallback(async () => {
-        if (fontsLoaded) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
-    if (!fontsLoaded) return null;
+   
 
     const sectionListRef = useRef(null);
 
-
+    useEffect(() => {
+        const scrollToItem = (sectionIndex, itemIndex) => {
+            if (sectionListRef.current) {
+                sectionListRef.current.scrollToLocation({
+                    sectionIndex,
+                    itemIndex,
+                    animated: true,
+                });
+                setCategoryId(itemIndex);
+                setSelectedCategoryId(itemIndex);
+            }
+        };
+    
+        if (allCategories.length > 0) {
+            setTimeout(() => {
+                scrollToItem(0, id? id : 0);    
+            }, 100); 
+        }
+    }, [allCategories, id]);
 
     return (
-        <View className="bg-white dark:bg-neutral-950 flex-1 " onLayout={onLayout}>
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
+        <View className="bg-white dark:bg-neutral-950 flex-1 " >
+             <Button title="Go to Section 2, Item 2" onPress={() => scrollToItem(0, 4)} />
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
@@ -133,8 +151,8 @@ export function StoreCat({ navigation }) {
             <View className="flex-row text-center mt-5 mb-5 bg-grey-light dark:bg-dk-input rounded-lg mx-2 ">
                 <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => {
-                        searchProduct(search);
-                        setIsSearch(true);
+                        searchStore(search);
+                       
                     }}
                 >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
@@ -146,16 +164,16 @@ export function StoreCat({ navigation }) {
                     value={search}
                     onChangeText={setSearch}
                     onSubmitEditing={() => {
-                        searchProduct(search);
-                        setIsSearch(!isSearch);
+                        searchStore(search);
+                       
                     }}
                 />
                 {search ? (
                     <Pressable className="flex-1 items-end mr-4 justify-center"
                         onPress={() => {
                             setSearch('');
-                            searchProduct('');
-                            setIsSearch(false);
+                            searchStore('');
+                          
                         }}
 
                     >
@@ -178,9 +196,9 @@ export function StoreCat({ navigation }) {
                     <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
 
                     <SectionList
+                        ref={sectionListRef}
                         sections={allCategories}
                         horizontal={true}
-                        ref={sectionListRef}
                         renderItem={({ item }) => (
                             <View>
                                 <Pressable onPress={() => handleCategorySelect(item.id)}>

@@ -19,8 +19,9 @@ export function NuevaTienda({ navigation }) {
     const sectionListRef = useRef(null);
     const { createShop, loading, deleteShop, updateShop } = useCRUDTiendas(navigation);
     const route = useRoute();
+   
+
     const { store } = route.params || {};
-    const { refreshStores } = route.params || {};
 
 
 
@@ -137,21 +138,20 @@ export function NuevaTienda({ navigation }) {
         await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
         if (createShop.ok) {
             navigation.navigate('Home');
-            refreshStores();
+             
         }
 
     };
 
     const handledeleteShop = async () => {
         await deleteShop(store.id);
-        refreshStores();
+         
 
     }
 
     const handleUpdateShop = async () => {
         await updateShop(formData, imagePerfil, imagePortada, store.id);
 
-        refreshStores();
     }
 
     return (

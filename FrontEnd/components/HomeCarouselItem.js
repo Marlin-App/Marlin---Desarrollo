@@ -3,6 +3,7 @@ import { View, Text, Image, useWindowDimensions, TouchableOpacity, StyleSheet } 
 
 const HomeCarouselItem = ({ item, navigation }) => {
   const { width, height } = useWindowDimensions();
+ 
 
   return (
     <View className="relative" style={{ width, height: height / 3.5 }}>
@@ -22,7 +23,7 @@ const HomeCarouselItem = ({ item, navigation }) => {
 
       <View className="absolute bottom-4 w-full flex items-center">
         <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded"
-        onPress={() => navigation.navigate('StoreCat', { categoryId: item.id })}
+        onPress={() => navigation.navigate('Tiendas', item )} 
         >
           <Text className="text-white text-lg font-semibold">Pescalo !!</Text>
         </TouchableOpacity>

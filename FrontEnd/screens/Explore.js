@@ -55,10 +55,11 @@ export function ExploreScreen({ navigation }) {
         description: item.description,
         price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
         stock: item.stock,
-        picture: item.picture,
+        picture: item.item_images.length >0 ? item.item_images[0].picture : 'https://via.placeholder.com/150',
         store_id: item.store_id,
         item_type: item.item_type
     }));
+    /* console.log(items[3].item_images[0].picture); */
 
     const handleSearch = debounce((text) => {
         if (items) {
@@ -112,7 +113,7 @@ export function ExploreScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">

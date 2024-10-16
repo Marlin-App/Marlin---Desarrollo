@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { Button, Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Feather from '@expo/vector-icons/Feather';
 import useGetUser from '../hooks/useGetUser';
@@ -63,26 +63,25 @@ export function InformationScreen() {
     };
 
     return (
-        <View className="h-full dark:bg-black">
-        <ScrollView className="w-full ">
+        <View className="h-full dark:bg-black bg-white ">
+        <ScrollView className="w-full "
+              showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingBottom: 20 }}
+        >
             <Text className="font-Excon_regular mt-4 text-main-blue dark:text-white text-[24px] text-center" >Mi perfil</Text>
             {loading ? (
-                <View className={`w-full h-full justify-center items-center  bg-grey-light `}>
-                    <Image
-                        source={require('../../FrontEnd/assets/img/loading.gif')}
-                        className="h-36 w-36 rounded-lg"
-                        resizeMode="center"
-                    />
+                <View className={`w-full h-full justify-center items-center `}>
+                    <ActivityIndicator size="large" color="#015DEC" />
 
                 </View>
             ) : null}
-            <View className="mt-4 items-center p-4">
+            <View className="mt-4 items-center p-4 ">
 
 
 
 
                 <Pressable
-                    className="mt-1 h-44 w-44 bg-[#C4C4C4]  rounded-full relative"
+                    className="mt-1 h-44 w-44 bg-[#C4C4C4]  p-1 rounded-full relative"
                     onPress={pickImage}
                 >
                     {image ? (<Image source={{ uri: image }} className="rounded-full w-full h-full" />) : (<Image
