@@ -7,7 +7,6 @@ import { LandingPage } from '../screens/landing';
 import { LoginPage } from '../screens/Login';
 import { RegisterPage } from '../screens/Register';
 import { DirectionScreen } from '../screens/DirectionScreen';
-import { CardScreen } from '../screens/CardScreen';
 import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
 import { NuevaTienda } from '../screens/NuevaTienda';
