@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from "react";
-import { View, Text, Pressable, FlatList, Image, Alert } from 'react-native';
+import React, { useEffect, useCallback, useState } from "react";
+import { View, Text, Pressable, FlatList, Image, Alert, Switch } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -38,7 +38,10 @@ export function CartScreen({ navigation }) {
 
     const deliveryFee = 250;
     const transportFee = 750;
-    const total = (deliveryFee + transportFee) + cartTotal;
+
+    const [isPickUp, setIsPickUp] = useState(false);
+
+    const total = isPickUp ? cartTotal : (deliveryFee + transportFee) + cartTotal;
 
     const formatCurrency = (value) => {
         return value.toLocaleString('es-CR', {
@@ -52,7 +55,7 @@ export function CartScreen({ navigation }) {
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2" onLayout={onLayoutRootView}>
                 <View className="items-end justify-end mt-2">
-                    <Entypo name="dots-three-vertical" size={15} color= {colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                    <Entypo name="dots-three-vertical" size={15} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                 </View>
                 <View className="flex-row">
                     <View className="rounded-lg shadow-lg p-[2px] bg-[#EDEEF3] dark:bg-neutral-900">
@@ -109,7 +112,7 @@ export function CartScreen({ navigation }) {
         <View className="flex-1 bg-white dark:bg-neutral-950" onLayout={onLayoutRootView}>
             <View className="flex-1 bg-white dark:bg-neutral-950">
                 <Text className="text-2xl font-Excon_regular text-main-blue dark:text-[#ededed] mt-4 text-center">Carrito</Text>
-                
+
                 {cart.length === 0 ? (
                     <View className="flex-1 items-center justify-center">
                         <Text className="text-[20px] font-Excon_regular text-main-blue dark:text-white">No hay productos en el carrito</Text>
@@ -119,7 +122,7 @@ export function CartScreen({ navigation }) {
                         <FlatList
                             data={cart}
                             renderItem={CartItem}
-                            keyExtractor={item => item.id}
+                            keyExtractor={item => item.id.toString()}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ paddingBottom: 50 }}
                         />
@@ -127,33 +130,48 @@ export function CartScreen({ navigation }) {
                         <View className="px-4 pt-2 rounded-lg mx-4 border-t-2 border-slate-200 dark:border-light-blue">
                             <Text className="text-[18px] font-Excon_regular text-main-blue mb-2 dark:text-white">Datos de entrega</Text>
 
-                            <View className="flex-row gap-x-6 items-center mb-4">
-                                <EvilIcons name="location" size={24} color="black" />
-                                <View className="flex-1">
-                                    <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Ubicación de entrega</Text>
-                                    <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">
-                                        Direccion ramdom, por puntarenas, Costa Rica
-                                    </Text>
-                                </View>
-                                <Pressable onPress={() => {
-                                    Alert.alert('Cambiar ubicación', 'Implementa la lógica para cambiar la ubicación.');
-                                }}>
-                                    <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
-                                </Pressable>
+                            <View className="flex-row items-center justify-between mb-4">
+                                <Text className="font-Excon_regular text-gray-800 dark:text-[#d2d2d2]">Recoger en el lugar</Text>
+                                <Switch
+                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                    thumbColor={isPickUp ? "#1952BE" : "#f4f3f4"}
+                                    ios_backgroundColor="#3e3e3e"
+                                    onValueChange={setIsPickUp}
+                                    value={isPickUp}
+                                />
                             </View>
 
-                            <View className="flex-row gap-x-6 items-center">
-                                <FontAwesome5 name="search-location" size={20} color="black" />
-                                <View className="flex-1">
-                                    <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Indicaciones para la entrega</Text>
-                                    <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
-                                </View>
-                                <Pressable onPress={() => {
-                                    Alert.alert('Cambiar indicaciones', 'Implementa la lógica para cambiar las indicaciones.');
-                                }}>
-                                    <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
-                                </Pressable>
-                            </View>
+                            {!isPickUp && (
+                                <>
+                                    <View className="flex-row gap-x-6 items-center mb-4">
+                                        <EvilIcons name="location" size={24} color="black" />
+                                        <View className="flex-1">
+                                            <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Ubicación de entrega</Text>
+                                            <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">
+                                                Direccion ramdom, por puntarenas, Costa Rica
+                                            </Text>
+                                        </View>
+                                        <Pressable onPress={() => {
+                                            Alert.alert('Cambiar ubicación', 'Implementa la lógica para cambiar la ubicación.');
+                                        }}>
+                                            <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
+                                        </Pressable>
+                                    </View>
+
+                                    <View className="flex-row gap-x-6 items-center">
+                                        <FontAwesome5 name="search-location" size={20} color="black" />
+                                        <View className="flex-1">
+                                            <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Indicaciones para la entrega</Text>
+                                            <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
+                                        </View>
+                                        <Pressable onPress={() => {
+                                            Alert.alert('Cambiar indicaciones', 'Implementa la lógica para cambiar las indicaciones.');
+                                        }}>
+                                            <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
+                                        </Pressable>
+                                    </View>
+                                </>
+                            )}
                         </View>
 
                         <View className="mt-6 p-4 bg-gray-100 dark:bg-dk-main-bg rounded-lg mx-4 mb-2">
@@ -162,14 +180,21 @@ export function CartScreen({ navigation }) {
                                 <Text className="font-Erode_bold text-gray-800 dark:text-white">Precio de productos:</Text>
                                 <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(cartTotal)}</Text>
                             </View>
-                            <View className="flex-row justify-between mb-2">
-                                <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de entrega:</Text>
-                                <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(deliveryFee)}</Text>
-                            </View>
-                            <View className="flex-row justify-between mb-2">
-                                <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de transporte:</Text>
-                                <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(transportFee)}</Text>
-                            </View>
+
+                            {!isPickUp && (
+                                <>
+                                    <View className="flex-row justify-between mb-2">
+                                        <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de entrega:</Text>
+                                        <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(deliveryFee)}</Text>
+                                    </View>
+
+                                    <View className="flex-row justify-between mb-2">
+                                        <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de transporte:</Text>
+                                        <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(transportFee)}</Text>
+                                    </View>
+                                </>
+
+                            )}
                         </View>
                     </>
                 )}
@@ -182,7 +207,7 @@ export function CartScreen({ navigation }) {
                         <Text className="font-Excon_regular text-[20px] text-white dark:text-light-blue">{formatCurrency(total)}</Text>
                     </View>
                     <Pressable
-                        onPress={() => navigation.navigate('Pay')}
+                        onPress={() => navigation.navigate('Pay', { totales: total })} // Pasar el total aquí
                         className="bg-white dark:bg-[#1952BE] p-4 rounded-md mb-2"
                         android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
                     >
