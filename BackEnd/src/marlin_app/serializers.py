@@ -122,24 +122,28 @@ class StoreItemSerializer(serializers.ModelSerializer):
         #crear el item
         pictures = self.context['request'].FILES.getlist('pictures')
         store_item = StoreItem.objects.create(**validated_data)
-
+        print(pictures)
+        item_variations = []
+        attribute_values = []
 # Guardar las imágenes
         for picture in pictures:
             ItemImage.objects.create(
                 item=store_item,
                 picture=picture  # Asumiendo que tu modelo ItemImage tiene un campo llamado 'image'
             )
-        
+
         for variation_data in atributes_data:
             #por cada objeto dentro de atributes obtener los datos para crear la variacion
             attibute_value_list = variation_data.get('attribute_values')
             stock = variation_data.get('stock')
 
             #Crear la variacion
-            item_variation = ItemVariation.objects.create(
+            item_variation = ItemVariation(
                 store_item = store_item,
                 stock = stock
             )
+
+            item_variations.append(item_variation)
 
             # lista de atributos que llevara esa variacion
             for attr_data in attibute_value_list:
@@ -147,11 +151,15 @@ class StoreItemSerializer(serializers.ModelSerializer):
                 atribute, created = Atribute.objects.get_or_create(name=attr_data['name'])
 
                 #crear el attribute value
-                attribute_value, created = AtributeValue.objects.get_or_create(
+                attribute_value = AtributeValue(
                     item_variation=item_variation,
                     attribute=atribute,
                     value=attr_data['value']
                 )
+                attribute_values.append(attribute_value)
+
+        ItemVariation.objects.bulk_create(item_variations)
+        AtributeValue.objects.bulk_create(attribute_values)
         return store_item
 
 class StoreTypeSerializer(serializers.ModelSerializer):
