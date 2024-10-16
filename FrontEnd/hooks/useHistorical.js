@@ -31,7 +31,7 @@ export const UseHistorical = [
         image: 'https://via.placeholder.com/150',
         tienda: 'Tienda 3',
         date: '2024-10-03',
-        estado: 'completed',
+        estado: 'pending',
         items: [
           { id: 'c1',image: 'https://via.placeholder.com/150', name: 'Producto 4', quantity: 1, price: 2000 },
         ],

@@ -177,7 +177,7 @@ export function NuevaTienda({ navigation }) {
 
             <View className="flex-col px-5">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Cómo se llama tu negocio?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin text-white"
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
                     value={formData.name}
                     onChangeText={(value) => handleInputChange('name', value)}
                     placeholder="Nombre de la tienda"
