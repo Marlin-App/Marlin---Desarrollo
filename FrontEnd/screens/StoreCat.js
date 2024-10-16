@@ -62,7 +62,7 @@ export function StoreCat({ navigation }) {
         setStoreSelected(originalStoreSelected);  // Restablecer la lista original
     };
     useEffect(() => {
-        if (categoryId === null) {
+        if (categoryId === 0) {
             setStoreSelected(allStores);
             return;
         }
