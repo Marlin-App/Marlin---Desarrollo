@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback} from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
@@ -15,7 +15,7 @@ import HomeCarousel from '../components/CarouselHome';
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
 
-    
+
     const {
         cart,
         increaseQuantity,
@@ -39,7 +39,12 @@ export function HomeScreen({ navigation }) {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
     const notifications = [
-        // aqui se tendrian que cargar las notificaciones xd
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+
     ];
 
 
@@ -134,6 +139,7 @@ export function HomeScreen({ navigation }) {
                 name: item.name,
                 description: item.description,
                 baseprice: item.price,
+                variation: item.variations,
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
                 stock: item.stock,
                 picture: item.picture,
@@ -263,7 +269,7 @@ export function HomeScreen({ navigation }) {
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
-                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"}/>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
                             )}
@@ -298,7 +304,7 @@ export function HomeScreen({ navigation }) {
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 20 }}
-                /> 
+                />
             </ScrollView>
         </View>
     );
