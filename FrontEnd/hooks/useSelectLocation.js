@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Modal, View, Button, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Modal, View, Button, StyleSheet, } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 const useSelectLocation = () => {
@@ -20,6 +20,8 @@ const useSelectLocation = () => {
     closeLocationPicker();
   };
 
+  
+
   const LocationPickerComponent = () => (
     <Modal visible={isModalVisible} animationType="slide" transparent={false}>
       <View style={styles.modalContainer}>
@@ -39,6 +41,8 @@ const useSelectLocation = () => {
       </View>
     </Modal>
   );
+
+  
 
   return {
     location,

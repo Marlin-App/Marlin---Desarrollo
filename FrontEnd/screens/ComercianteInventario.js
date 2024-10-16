@@ -23,7 +23,7 @@ export function ComercianteInventario({ navigation }) {
     }
     return (
         <View className="bg-white dark:bg-neutral-950 h-full">
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8 pt-16">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white text-2xl font-Excon_bold w-[80vw] dark:text-light-blue">

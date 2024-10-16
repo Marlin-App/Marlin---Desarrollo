@@ -253,7 +253,7 @@ export function HomeScreen({ navigation }) {
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
             <NotificationDropdown />
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 pt-16">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
@@ -289,7 +289,9 @@ export function HomeScreen({ navigation }) {
                 </View>
             ) : null}
 
-            <ScrollView>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
                 <HomeCarousel navigation={navigation} />
                 <FlatList
                     data={verticalData}

@@ -148,7 +148,7 @@ export function Store({ navigation }) {
                             <View className="items-center">
                                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                                     <Image
-                                        source={{ uri: item.picture }}
+                                        source={{ uri: item.item_images.length >0 ? item.item_images[0].picture : 'https://via.placeholder.com/150', }}
                                         className="rounded-lg w-full h-full"
                                         resizeMode="cover"
                                     />
