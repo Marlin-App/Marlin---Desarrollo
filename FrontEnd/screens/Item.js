@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Keyboard, Platform, Alert, ScrollView } from 'react-native';
-import { useColorScheme } from "nativewind";
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Alert, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function ItemPage({ navigation }) {
-    const { addToCart, isSameStore, clearCart, cart } = useCart();
+    const { addToCart, isSameStore, clearCart } = useCart();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [fontsLoaded] = useFonts({
@@ -18,7 +18,18 @@ export function ItemPage({ navigation }) {
         'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
     });
 
+    const [quantity, setQuantity] = useState(1);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const route = useRoute();
+    const { product } = route.params;
+
     useEffect(() => {
+        async function checkLoginStatus() {
+            const userToken = await AsyncStorage.getItem('@userToken');
+            setIsLoggedIn(userToken !== null);
+        }
+        checkLoginStatus();
+
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
         }
@@ -33,12 +44,6 @@ export function ItemPage({ navigation }) {
 
     if (!fontsLoaded) return null;
 
-    const [quantity, setQuantity] = useState(1);
-    const route = useRoute();
-    const { product } = route.params;
-
-
-
     const increaseQuantity = () => {
         setQuantity(prevQuantity => prevQuantity + 1);
     };
@@ -50,42 +55,38 @@ export function ItemPage({ navigation }) {
     };
 
     const vericarCarrito = () => {
+        console.log('isLoggedIn:', isLoggedIn); 
+        console.log('product:', product);
 
-        console.log(isSameStore(product.store_id));
-        if (isSameStore(product.store_id)) {
-            handleAddToCart();
-
-        } else {
-            setModalVisible2(!modalVisible2);
+        if (!isLoggedIn) {
+            Alert.alert('Error', 'Debes estar logueado para agregar productos al carrito.');
+            return;
         }
 
-    }
+        if (isSameStore(product.store_id)) {
+            handleAddToCart();
+        } else {
+            setModalVisible2(true);
+        }
+    };
 
     const handleAddToCart = () => {
-        setModalVisible(!modalVisible);
+        setModalVisible(true);
         addToCart({ ...product, cantidad: quantity });
     };
 
-    // **1. Extraer el Valor Numérico del Precio**
     const unitPrice = Number(product.price.replace(/[^0-9]/g, ''));
-
-    // **2. Calcular el Precio Total**
     const totalPrice = unitPrice * quantity;
 
-    // **3. Formatear el Precio Total**
     const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
         style: 'currency',
         currency: 'CRC',
         maximumFractionDigits: 0
     });
 
-
-    const {colorScheme} = useColorScheme();
-
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
             <ScrollView className="mb-20">
-
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -95,9 +96,9 @@ export function ItemPage({ navigation }) {
                         <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw] dark:bg-dk-main-bg">
                             <View className="justify-center items-center">
                                 <View className="border-b-[0.5px] dark:border-light-blue w-full mb-4">
-                                    <Text className="text-lg text-center font-Excon_bold mb-2 dark:text-white">Producto Agregado!</Text>
+                                    <Text className="text-lg text-center font-Excon_bold mb-2 dark:text-white">¡Producto Agregado!</Text>
                                 </View>
-                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agrego el {product.name} al carrito.</Text>
+                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agregó el {product.name} al carrito.</Text>
                             </View>
                             <View className="flex-row justify-center">
                                 <TouchableOpacity
@@ -122,9 +123,9 @@ export function ItemPage({ navigation }) {
                         <View className="bg-white rounded-lg p-6 shadow-lg w-[80vw]">
                             <View className="justify-center items-center">
                                 <View className="border-b-[0.5px] w-full mb-4">
-                                    <Text className="text-lg text-center font-Excon_bold mb-2">Atencion!</Text>
+                                    <Text className="text-lg text-center font-Excon_bold mb-2">¡Atención!</Text>
                                 </View>
-                                <Text className="text-md font-Excon_regular mb-4">Este producto pertenece a una tienda distinta. Si diceas crear un nuevo carrito perderas los productos guardados hasta ahora!</Text>
+                                <Text className="text-md font-Excon_regular mb-4">Este producto pertenece a una tienda distinta. Si decides crear un nuevo carrito, perderás los productos guardados hasta ahora!</Text>
                             </View>
                             <View className="flex-row justify-center">
                                 <TouchableOpacity
@@ -141,7 +142,7 @@ export function ItemPage({ navigation }) {
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={() => {
-                                        setModalVisible2(!modalVisible2);
+                                        setModalVisible2(false);
                                     }}
                                 >
                                     <Text className="text-white font-Excon_regular">Cancelar</Text>
@@ -171,7 +172,6 @@ export function ItemPage({ navigation }) {
             </ScrollView>
 
             <View className="absolute bg-main-blue dark:bg-dk-main-bg p-5 w-full bottom-0">
-                {/* **4. Mostrar el Precio Total Formateado** */}
                 <Text className="text-xl font-bold text-white mb-4">Precio: {formattedTotalPrice}</Text>
 
                 <View className="flex-row justify-between pb-3">
@@ -192,71 +192,21 @@ export function ItemPage({ navigation }) {
                             }}
                         />
                         <TouchableOpacity
-                            className="rounded-r-2xl bg-[#d7d7d7] py-2 px-3 dark:bg-dk-blue"
+                            className="rounded-r-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
                             onPress={increaseQuantity}
                         >
-                            <Text className="text-main-blue dark:text-white text-lg">+</Text>
+                            <Text className="text-main-blue dark:text-white text-3xl">+</Text>
                         </TouchableOpacity>
                     </View>
-                    <Pressable
-                    className="bg-white dark:bg-[#1952BE]"
-                        style={styles.carrito}
-                        onPress={() => vericarCarrito()}
 
+                    <TouchableOpacity
+                        className="bg-white rounded-3xl py-2 px-4"
+                        onPress={vericarCarrito}
                     >
-                        <Text className="text-lg font-bold text-main-blue dark:text-white">Agregar al carrito</Text>
-                    </Pressable>
+                        <Text className="text-main-blue text-lg font-bold">Agregar al carrito</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
     );
 }
-const styles = StyleSheet.create({
-    
-
-    carrito: {
-        borderRadius: 10,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-});

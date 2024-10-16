@@ -22,7 +22,7 @@ const HomeCarouselItem = ({ item, navigation }) => {
 
       <View className="absolute bottom-4 w-full flex items-center">
         <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded"
-        onPress={() => navigation.navigate('Tiendas')}
+        onPress={() => navigation.navigate('StoreCat', { categoryId: item.id })}
         >
           <Text className="text-white text-lg font-semibold">Pescalo !!</Text>
         </TouchableOpacity>
