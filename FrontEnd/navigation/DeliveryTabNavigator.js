@@ -124,10 +124,10 @@ export function DeliveryTabNavigator() {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                            <View style={{ backgroundColor: color == "#5186EC"  ? "#5186EC": "#B0B0B0" , borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
-                                <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC"  ? "#B0B0B0": "#5186EC"} />
+                            <View style={{ backgroundColor: color == "#5186EC"  ? "#5186EC": "#D8D8D8" , borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
+                                <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC"  ? "#D8D8D8": "#5186EC"} />
                             </View>
-                            <Text style={{color: color == "#5186EC"  ? "#B0B0B0": "#5186EC", fontSize: 18, fontWeight: "bold", backgroundColor: color == "#5186EC"  ? "#5186EC": "#", borderRadius: 10, position:"absolute", paddingHorizontal: 7, top:30}}>Pedidos</Text>
+                            <Text style={{color: color == "#5186EC"  ? "#D8D8D8": "#5186EC", fontSize: 18, fontWeight: "bold", backgroundColor: color == "#5186EC"  ? "#5186EC": "#D8D8D8", borderRadius: 10, position:"absolute", paddingHorizontal: 7, top:30}}>Pedidos</Text>
                         </View>
                     ),
                     tabBarLabelStyle: {
