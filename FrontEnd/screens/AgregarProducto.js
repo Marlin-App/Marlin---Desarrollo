@@ -11,114 +11,12 @@ import { useRoute } from '@react-navigation/native';
 
 export function AgregarProducto({ navigation }) {
 
-    // const [isEnabled, setIsEnabled] = useState(false);
-    // const [isEnabled2, setIsEnabled2] = useState(false);
-    // const [images, setImages] = useState([]);
-    // const { addProduct } = useCRUDProductos();
-    // const route = useRoute();
-    // const storeId = route.params || {};
-    // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    // const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
-    // const { colorScheme } = useColorScheme();
-    // const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-    // const [row, setRow] = useState(1);
-    // const [variations, setVariations] = useState([]);
-    // const [atributes, setAtributes] = useState([]);
-    // const [atribute_values, setAtribute_values] = useState([]);
-    // // const [atribute_value, setAtribute_value] = useState([{ id: 0, stock: 0, atribute_value: [{ attribute_name: "", value: "" }] }]);
-    // const [formData, setFormData] = useState({
-    //     name: "",
-    //     description: "",
-    //     price: 0,
-    //     picture: "",
-    //     store_id: storeId.store,
-    //     item_type: 3,
-    //     variations: variations,
-    // });
-
-
-
-    // const AddProductos = () => {
-    //     addProduct(formData, images);
-    // };
-
-
-    // const addrow = () => {
-
-    //     setRow(row + 1);
-    //     setVariations((prev) => [...prev, { id: 0, stock: 0, atribute_value: [{ attribute_name: "", value: "" }] }]);
-    // }
-
-    // const removeRow = () => {
-    //     if (row > 1) {
-
-    //         setRow(row - 1);
-    //         setVariations((prev) => prev.slice(0, -1));
-    //     }
-    // }
-
-
-    // const pickImages = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsMultipleSelection: true,
-    //         quality: 1,
-    //     });
-
-    //     if (!result.canceled) {
-    //         setImages(result.assets);
-    //     }
-    // };
-
-
-
-    // const handleInputChange = (name, value) => {
-    //     if (isEnabled && isEnabled2) {
-    //         setVariations([]);
-    //     }
-    //     setFormData({ ...formData, [name]: value });
-    // };
-
-
-    // const handleInputChangeVar = (name,data) => {
-
-    //         setAtribute_values(...[{ attribute_name: name, value: data }]);
-
-    //     console.log("Variancion prueba: ",atribute_values);
-
-
-    // };
-
-    // const handleVariationChange = (index, field, value) => {
-    //     const updatedVariations = [...variations];
-    //     updatedVariations[index][field] = value;
-    //     setVariations(updatedVariations);
-    // };
-
-
-    // useEffect(() => {
-
-    //     console.log(formData);
-
-
-    // }, [formData]);
-
-    // useEffect(() => {
-    //     handleInputChange('picture', images);
-    // }, [images]);
-
-    // useEffect(() => {
-    //     if (row > 0) {
-    //         setVariations(Array(row).fill({ color: '', size: '', quantity: 0 }));
-    //     }
-    // }, [row]);
-
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         price: '',
         stock: '',
-        picture: '',
+        pictures: '',
         store_id: 1, // Por ejemplo, un valor por defecto
         item_type: 1, // Por ejemplo, un valor por defecto
         variations: [],
@@ -220,7 +118,6 @@ export function AgregarProducto({ navigation }) {
             store_id: storeId.store,
             item_type: 1,
         };
-        console.log(newProduct);
         addProduct(newProduct);
         navigation.goBack();
     };
