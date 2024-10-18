@@ -59,17 +59,11 @@ export function DeliveryTabNavigator() {
                 tabBarInactiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,
-                tabBarLabelStyle: {
-                    fontSize: 15,
-                    marginTop: -20,
-                    fontFamily: "Excon_regular",
-                },
                 tabBarStyle: {
                     backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#1952BE',
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",
-
                     display: isKeyboardVisible ? "none" : "flex",
                 },
                 /*  */
@@ -81,7 +75,7 @@ export function DeliveryTabNavigator() {
                 options={{
                     tabBarIcon: ({ color }) => (
                         <View style={{ paddingBottom: 10 }}>
-                            <MaterialIcons name="home" size={28} color={color} />
+                            <MaterialIcons name="home" size={26} color={color} />
                         </View>
                     ),
                     tabBarLabelStyle: {
@@ -100,15 +94,11 @@ export function DeliveryTabNavigator() {
                 component={ExploreScreen}
                 
                 options={{
-                   
                     tabBarIcon: ({ color }) => (
-                        <View style={{ paddingBottom: 10 }}>
-                            <Feather name="search" size={28} color={color} />
+                        <View style={{ paddingBottom: 10}}>
+                            <Feather name="search" size={26} color={color} />
                         </View>
                     ),
-
-                    
-
                     tabBarLabelStyle: {
                         paddingBottom: 8,
                         fontSize: 15,
@@ -123,7 +113,7 @@ export function DeliveryTabNavigator() {
                 component={ExpressScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                        <View style={{display: "flex", justifyContent: "center", alignItems: "center"  }}>
                             <View style={{ backgroundColor: color == "#5186EC"  ? "#5186EC": "#D8D8D8" , borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
                                 <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC"  ? "#D8D8D8": "#5186EC"} />
                             </View>
@@ -134,14 +124,6 @@ export function DeliveryTabNavigator() {
                         display: "none"
                     }
 
-                    // tabBarLabelStyle: {
-                    //     fontSize: 18,
-                    //     position: "absolute",
-                    //     paddingHorizontal: 8,
-                    //     backgroundColor: "#BE2727",
-                    //     borderRadius: 10,
-
-                    // }
                 }}
             />
 
@@ -151,7 +133,7 @@ export function DeliveryTabNavigator() {
                 component={StoreCat}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="store-mall-directory" size={28} color={color} />
+                        <MaterialIcons name="store-mall-directory" size={26} color={color} />
                     ),
                     tabBarLabelStyle: {
                         paddingBottom: 8,
@@ -167,7 +149,7 @@ export function DeliveryTabNavigator() {
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <Feather name="user" size={28} color={color} />
+                        <Feather name="user" size={26} color={color} />
                     ),
                     tabBarLabelStyle: {
                         paddingBottom: 8,
