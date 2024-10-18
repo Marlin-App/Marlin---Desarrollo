@@ -1,20 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home";
-import { Keyboard, Platform, Text } from "react-native"
+import { Keyboard, Platform, Text, View } from "react-native"
 import { useColorScheme } from "nativewind";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
+import { ExpressScreen } from '../screens/ExpressScreen';
 const Tab = createBottomTabNavigator();
 
-export function MainTabNavigator() {
+export function DeliveryTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { colorScheme } = useColorScheme();
+    const backgroundPedidos  = colorScheme === 'dark' ? 'B0B0B0' : '#5186EC';
 
 
     useEffect(() => {
@@ -68,7 +69,6 @@ export function MainTabNavigator() {
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",
-                    paddingBottom: 10,
 
                     display: isKeyboardVisible ? "none" : "flex",
                 },
@@ -80,8 +80,16 @@ export function MainTabNavigator() {
                 component={HomeScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="home" size={30} color={color} />
-                    )
+                        <View style={{ paddingBottom: 10 }}>
+                            <MaterialIcons name="home" size={28} color={color} />
+                        </View>
+                    ),
+                    tabBarLabelStyle: {
+                        paddingBottom: 8,
+                        fontSize: 15,
+                        marginTop: -20,
+                        fontFamily: "Excon_regular",
+                    }
 
                 }}
 
@@ -90,10 +98,50 @@ export function MainTabNavigator() {
             <Tab.Screen
                 name="Explorar"
                 component={ExploreScreen}
+                
+                options={{
+                   
+                    tabBarIcon: ({ color }) => (
+                        <View style={{ paddingBottom: 10 }}>
+                            <Feather name="search" size={28} color={color} />
+                        </View>
+                    ),
+
+                    
+
+                    tabBarLabelStyle: {
+                        paddingBottom: 8,
+                        fontSize: 15,
+                        marginTop: -20,
+                        fontFamily: "Excon_regular",
+                    }
+                }}
+            />
+
+            <Tab.Screen
+                name="Pedidos"
+                component={ExpressScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <Feather name="search" size={30} color={color} />
+                        <View style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            <View style={{ backgroundColor: color == "#5186EC"  ? "#5186EC": "#B0B0B0" , borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
+                                <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC"  ? "#B0B0B0": "#5186EC"} />
+                            </View>
+                            <Text style={{color: color == "#5186EC"  ? "#B0B0B0": "#5186EC", fontSize: 18, fontWeight: "bold", backgroundColor: color == "#5186EC"  ? "#5186EC": "#", borderRadius: 10, position:"absolute", paddingHorizontal: 7, top:30}}>Pedidos</Text>
+                        </View>
                     ),
+                    tabBarLabelStyle: {
+                        display: "none"
+                    }
+
+                    // tabBarLabelStyle: {
+                    //     fontSize: 18,
+                    //     position: "absolute",
+                    //     paddingHorizontal: 8,
+                    //     backgroundColor: "#BE2727",
+                    //     borderRadius: 10,
+
+                    // }
                 }}
             />
 
@@ -103,8 +151,14 @@ export function MainTabNavigator() {
                 component={StoreCat}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="store-mall-directory" size={30} color={color} />
+                        <MaterialIcons name="store-mall-directory" size={28} color={color} />
                     ),
+                    tabBarLabelStyle: {
+                        paddingBottom: 8,
+                        fontSize: 15,
+                        marginTop: -20,
+                        fontFamily: "Excon_regular",
+                    }
                 }}
             />
 
@@ -113,8 +167,14 @@ export function MainTabNavigator() {
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <Feather name="user" size={30} color={color} />
+                        <Feather name="user" size={28} color={color} />
                     ),
+                    tabBarLabelStyle: {
+                        paddingBottom: 8,
+                        fontSize: 15,
+                        marginTop: -20,
+                        fontFamily: "Excon_regular",
+                    }
                 }}
             />
         </Tab.Navigator>

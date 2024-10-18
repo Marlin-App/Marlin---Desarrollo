@@ -23,7 +23,8 @@ import { HistoricalScreen } from '../screens/Historical';
 import { HistoricalDetailsScreen } from '../screens/HistoricalDetails';
 import { RestorePasswordScreen } from '../screens/RestorePassword';
 import { TerminosCondiciones } from '../screens/TerminosCondiciones';
-
+import { DeliveryStackScreen } from './DeliveryStack';
+import { DeliveryFormScreen } from '../screens/DeliveryForm';
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
@@ -149,6 +150,32 @@ export function HomeStackScreen({ navigation, route }) {
         component={ProfileStackScreen}
         options={{
           headerShown: false,
+          headerTitle: 'Regresar',
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
+        }}
+      />
+
+      <HomeStack.Screen
+        name="thirdScreen"
+        component={DeliveryStackScreen}
+        options={{
+          headerShown: false,
+          headerTitle: 'Regresar',
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
+        }}
+      />
+
+<HomeStack.Screen
+        name="DeliveryFormScreen"
+        component={DeliveryFormScreen}
+        options={{
+          headerShown: true,
           headerTitle: 'Regresar',
           headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerStyle: {

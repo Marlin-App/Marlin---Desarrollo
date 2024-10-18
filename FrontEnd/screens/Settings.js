@@ -110,19 +110,20 @@ export function ProfileScreen({ navigation }) {
                 <Text className="text-sm dark:text-white font-Erode_regular">{user.email}</Text>
               </View>
             </View>
+            
             <View className="w-full mt-4">
               <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Perfil</Text>
               <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.navigate("InformationScreen")}
-              >
-                <View className="flex-row gap-2 mb-1">
+                onPress={() => navigation.navigate("InformationScreen")}>
+                <View className="flex-row gap-2 mb-1 items-center">
                   <Feather name="user" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Información</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
+
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue" onPress={() => navigation.navigate("DirectionScreen")}>
-                <View className="flex-row gap-2 mb-1">
+                <View className="flex-row gap-2 mb-1 items-center">
                   <Feather name="map-pin" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Direcciones</Text>
                 </View>
@@ -130,53 +131,49 @@ export function ProfileScreen({ navigation }) {
               </Pressable>
 
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue" onPress={() => navigation.navigate("HistoricalScreen")}>
-                <View className="flex-row gap-2 mb-1">
+                <View className="flex-row gap-2 mb-1 items-center">
                   <MaterialIcons name="history" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Historial de compras</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
             </View>
+
             <View className="w-full mt-6">
               <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
 
               <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.replace("Home")}
-              >
-                <View className="flex-row gap-2 mb-1">
-                  <Feather name="shopping-cart" size={20} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
+                onPress={() => navigation.replace("Home")}>
+                <View className="flex-row gap-2 mb-1 items-center">
+                  <Ionicons name="refresh-outline" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Continuar comprando</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
 
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.replace("secondScreen")}
-              >
-                <View className="flex-row gap-2 mb-1">
-                  <FontAwesome5 name="store" size={15} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
+                onPress={() => navigation.replace("secondScreen")}>
+                <View className="flex-row gap-2 mb-1 items-center">
+                  <AntDesign name="tago" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Convertirte en comerciante</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
+
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.replace("secondScreen")}
-              >
-                <View className="flex-row gap-2 mb-1">
-                  <MaterialIcons name="delivery-dining" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
+                onPress={() => navigation.navigate("DeliveryFormScreen")}>
+                <View className="flex-row gap-2 mb-1 items-center">
+                  <Ionicons name="bicycle" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Convertirte en repartidor</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
+
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => toggleColorScheme()}
-              >
-                <View className="flex-row gap-2 mb-1">
+                onPress={() => toggleColorScheme()}>
+                <View className="flex-row gap-2 mb-1 items-center">
                   <Ionicons name="color-palette-outline" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Tema de la aplicación </Text>
+                  <Text className="text-center font-Erode_regular dark:text-white">Cambiar el tema de la aplicación </Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
