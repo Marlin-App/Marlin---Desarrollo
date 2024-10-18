@@ -96,46 +96,6 @@ export function ProfileStackScreen({ navigation, route }) {
           headerShown: false
         }}
       />
-
-      {/* <ProfileStack.Screen
-        name="Landing"
-        component={LandingPage}
-        options={{ headerShown: false }}
-      />
-
-      <ProfileStack.Screen
-        name="Login"
-        component={LoginPage}
-        options={{ headerShown: false }}
-      />
-
-      <ProfileStack.Screen
-        name="Register"
-        component={RegisterPage}
-        options={{ headerShown: false }}
-      />
-
-
-      <ProfileStack.Screen
-        name="CardScreen"
-        component={CardScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
-        }}
-      />
-
-      <ProfileStack.Screen
-        name="DirectionScreen"
-        component={DirectionScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: "#015DEC"
-        }}
-      /> */}
-
     </ProfileStack.Navigator>
   );
 }

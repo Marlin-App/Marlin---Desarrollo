@@ -84,7 +84,7 @@ export function ComercianteTabNavigator() {
                     fontFamily: "Excon_regular",
                 },
                 tabBarStyle: {
-                    backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#015DEC',
+                    backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#1952BE',
                     display: "flex",
                     height: 80,
                     justifyContent: "space-around",
