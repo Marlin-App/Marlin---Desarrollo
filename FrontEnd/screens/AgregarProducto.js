@@ -195,13 +195,13 @@ export function AgregarProducto({ navigation }) {
     const AddProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
-            
+    
             if (isEnabled) {
-                attributes.push({ attribute_name: 'Color', value: variation.color });
+                attributes.push({name: 'Color', value: variation.color });
             }
     
             if (isEnabled2) {
-                attributes.push({ attribute_name: 'Talla', value: variation.size });
+                attributes.push({name: 'Talla', value: variation.size });
             }
     
             return {
@@ -211,16 +211,16 @@ export function AgregarProducto({ navigation }) {
         });
     
         const newProduct = {
-            variations: productVariations,
+            attributes: productVariations,
             name: formData.name,
             description: formData.description,
             price: formData.price,
             stock: productVariations.length > 0 ?productVariations.reduce((total, variation) => total + variation.stock, 0):formData.stock, // Suma de las cantidades de las variantes
-            picture: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
+            pictures: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
             store_id: storeId.store,
             item_type: 1,
         };
-    
+        console.log(newProduct);
         addProduct(newProduct);
         navigation.goBack();
     };

@@ -86,6 +86,7 @@ export function useCRUDProductos() {
 
     const addProduct = async (formData) => {
 
+        
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
         formDataToSend.append('description', formData.description);
@@ -93,11 +94,11 @@ export function useCRUDProductos() {
         formDataToSend.append('stock', formData.stock);
         formDataToSend.append('store_id', formData.store_id);
         formDataToSend.append('item_type', formData.item_type);
-        formDataToSend.append('variations', JSON.stringify(formData.variations));
+        formDataToSend.append('attributes', JSON.stringify(formData.attributes));
 
-         //Agregar la imagen de perfil si existe
-         if (formData.picture && formData.picture.length > 0) {
-            formData.picture.forEach((image, index) => {
+
+        if (formData.pictures && formData.pictures.length > 0) {
+            formData.pictures.forEach((image, index) => {
                 const perfilFile = {
                     uri: image.uri,
                     type: 'image/jpeg',
@@ -107,40 +108,42 @@ export function useCRUDProductos() {
             });
         }
 
-         try {
-             const jsonValue = await AsyncStorage.getItem('@userToken');
 
-             if (!jsonValue) {
-                 setLoading(false);
-                 setIsLogged(false);
-                 return;
-             }
+          try {
+              const jsonValue = await AsyncStorage.getItem('@userToken');
 
-             const userData = JSON.parse(jsonValue);
-             const token = userData.access;
-             const response = await fetch(`https:marlin-backend.vercel.app/api/storeItems/`, {
-                 method: 'POST',
-                 headers: {
-                     'Authorization': `Bearer ${token}`
-                 },
-                 body: formDataToSend
-             });
+              if (!jsonValue) {
+                  setLoading(false);
+                  setIsLogged(false);
+                  return;
+              }
+
+              const userData = JSON.parse(jsonValue);
+              const token = userData.access;
+              const response = await fetch(`https:marlin-backend.vercel.app/api/storeItems/`, {
+                  method: 'POST',
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  },
+                  body: formDataToSend
+              });
 
 
-             if (!response.ok) {
-                  //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
-                 const errorText = await response.text();
-                 console.log('Error de respuesta:', errorText);
-                 throw new Error('Error agregando producto');
-             } else {
-                 console.log('Producto agregado con éxito');
-                 Alert.alert('Producto agregado', '¡Tu producto ha sido agregado con éxito!');
-             }
-         } catch (error) {
-             console.error('Error al crear el producto:', error);
-         } finally {
-             setLoading(false);
-         }
+              if (!response.ok) {
+                   //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
+                  const errorText = await response.text();
+                  console.log('Error de respuesta:', errorText);
+                  throw new Error('Error agregando producto');
+              } else {
+                  console.log('Producto agregado con éxito');
+                  Alert.alert('Producto agregado', '¡Tu producto ha sido agregado con éxito!');
+              }
+          } catch (error) {
+              console.error('Error al crear el producto:', error);
+              fetchStoresWithProducts();
+          } finally {
+              setLoading(false);
+          }
     };
 
 
@@ -179,7 +182,36 @@ export function useCRUDProductos() {
         }
     };
 
+    const getProduct = async (id) => {
 
-    return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct };
+        const jsonValue = await AsyncStorage.getItem('@userToken');
+        if (jsonValue == null) {
+            setLoading(false);
+            setIsLogged(false);
+            return;
+        }
+        const userData = JSON.parse(jsonValue);
+        const token = userData.access;
+
+        try {
+            const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}/`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.log('Error de respuesta:', errorData);
+                return;
+            }
+            const product = await response.json();
+            return product;
+        } catch (err) {
+            console.log('Error al obtener el producto:', err);
+        }
+    };
+
+
+    return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct, getProduct };
 
 }

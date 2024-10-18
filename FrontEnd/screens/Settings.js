@@ -12,6 +12,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { styled, useColorScheme } from "nativewind";
 import useDecodeJWT from '../hooks/useDecodeJWT';
 import useGetUser from '../hooks/useGetUser';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+
 
 
 export function ProfileScreen({ navigation }) {
@@ -92,7 +94,7 @@ export function ProfileScreen({ navigation }) {
       ) : (
         <ScrollView className="w-full h-full"
           showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 20 }}
         >
           <View className="w-full mt-14">
             <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
@@ -114,7 +116,7 @@ export function ProfileScreen({ navigation }) {
                 onPress={() => navigation.navigate("InformationScreen")}
               >
                 <View className="flex-row gap-2 mb-1">
-                  <Feather name="user" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'}  />
+                  <Feather name="user" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                   <Text className="text-center font-Erode_regular dark:text-white">Información</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
@@ -126,7 +128,7 @@ export function ProfileScreen({ navigation }) {
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
               </Pressable>
-              
+
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue" onPress={() => navigation.navigate("HistoricalScreen")}>
                 <View className="flex-row gap-2 mb-1">
                   <MaterialIcons name="history" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
@@ -137,12 +139,13 @@ export function ProfileScreen({ navigation }) {
             </View>
             <View className="w-full mt-6">
               <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
-              
+
               <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
                 onPress={() => navigation.replace("Home")}
               >
                 <View className="flex-row gap-2 mb-1">
-                  <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  <Feather name="shopping-cart" size={20} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
                   <Text className="text-center font-Erode_regular dark:text-white">Continuar comprando</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
@@ -152,7 +155,8 @@ export function ProfileScreen({ navigation }) {
                 onPress={() => navigation.replace("secondScreen")}
               >
                 <View className="flex-row gap-2 mb-1">
-                  <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  <FontAwesome5 name="store" size={15} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
                   <Text className="text-center font-Erode_regular dark:text-white">Convertirte en comerciante</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
@@ -161,7 +165,8 @@ export function ProfileScreen({ navigation }) {
                 onPress={() => navigation.replace("secondScreen")}
               >
                 <View className="flex-row gap-2 mb-1">
-                  <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  <MaterialIcons name="delivery-dining" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                  {/* <Entypo name="language" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} /> */}
                   <Text className="text-center font-Erode_regular dark:text-white">Convertirte en repartidor</Text>
                 </View>
                 <Text className="text-main-blue dark:text-light-blue">{">"}</Text>

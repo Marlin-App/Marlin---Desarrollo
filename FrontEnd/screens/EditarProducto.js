@@ -10,7 +10,8 @@ import { useRoute } from '@react-navigation/native';
 
 
 export function EditarProducto({ navigation }) {
-    
+
+
     const route = useRoute();
     const storeId = route.params || {};
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -20,48 +21,64 @@ export function EditarProducto({ navigation }) {
     const [row, setRow] = useState(1);
     const [variations, setVariations] = useState([]);
     const productId = storeId.product;
+
+    const { getProduct } = useCRUDProductos();
+    const [product, setProduct] = useState({});
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         price: '',
         stock: '',
+        picture: '',
+        store_id: 1,
+        item_type: 1, 
         variations: [],
     });
+    
     const [images, setImages] = useState([]);
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabled2, setIsEnabled2] = useState(false);
 
-
     useEffect(() => {
-        
-        try {
-          setFormData({
-            name: fetchData.name,
-            description: fetchData.description,
-            price: fetchData.price.toString(),
-            stock: fetchData.stock.toString(),
-            variations: fetchData.variations || [],
-          });
-          setImages(fetchData.images.map((image) => ({ uri: image })));
-        } catch (error) {
-          console.error('Error fetching product data:', error);
-        }
-  
-      //fetchProductData();
+        const fetchProductData = async () => {
+            try {
+                const valor = await getProduct(productId);
+                console.log('este es el producto seleccionado',valor);
+                setProduct(valor);
+                setFormData({
+                    name: valor.name,
+                    description: valor.description,
+                    price: valor.price,
+                    stock: valor.stock,
+                    store_id: valor.store_id,
+                    item_type: valor.item_type,
+                    variations: valor.variations,
+                });
+                setImages(valor.item_images);
+                console.log('estas son las imagenes del producto',images);
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+            }
+        };
+        fetchProductData();
     }, [productId]);
+
+    
+
 
 
     const handleInputChange = (field, value) => {
         setFormData((prevState) => ({ ...prevState, [field]: value }));
-      };
+    };
 
-      const handleVariationChange = (index, field, value) => {
+    const handleVariationChange = (index, field, value) => {
         const updatedVariations = [...formData.variations];
         updatedVariations[index][field] = value;
         setFormData((prevState) => ({ ...prevState, variations: updatedVariations }));
-      };
+    };
 
-      const pickImages = async () => {
+    const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsMultipleSelection: true,
@@ -76,36 +93,36 @@ export function EditarProducto({ navigation }) {
     const AddProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
-            
+
             if (isEnabled) {
                 attributes.push({ attribute_name: 'Color', value: variation.color });
             }
-    
+
             if (isEnabled2) {
                 attributes.push({ attribute_name: 'Talla', value: variation.size });
             }
-    
+
             return {
                 id: index + 1, // Ajusta el ID según tu lógica
                 stock: parseInt(variation.quantity, 10),
                 attribute_values: attributes
             };
         });
-    
+
         const newProduct = {
             // Ajusta el ID según sea necesario
             variations: productVariations,
             name: formData.name,
             description: formData.description,
             price: formData.price,
-            stock: productVariations.length > 0 ?productVariations.reduce((total, variation) => total + variation.stock, 0):formData.stock, // Suma de las cantidades de las variantes
+            stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock, // Suma de las cantidades de las variantes
             picture: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
             store_id: storeId,
             item_type: 1,
         };
-    
+
         console.log(newProduct);
-    
+
         // Aquí iría la lógica para enviar `newProduct` al backend o almacenarlo como sea necesario.
     };
 
