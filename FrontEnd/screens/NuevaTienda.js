@@ -87,7 +87,7 @@ export function NuevaTienda({ navigation }) {
         district: store ? store.district : "Puntarenas",
         coodernates: store ? store.coodernates : "31231232312321",
         picture: store ? store.picture : "",
-        user_id: 4,
+        user_id: 5,
         sinpe: store ? store.num_sinpe : "1541561",
         banner: store ? store.banner : "",
         sinpe_name: store ? store.owner_sinpe : "5644654",
@@ -119,9 +119,10 @@ export function NuevaTienda({ navigation }) {
         handleInputChange('coodernates', location);
     }, [location]);
 
-    /* useEffect(() => {
+    useEffect(() => {
         handleInputChange('store_type', selectedCategoryIds);
-    }, [selectedCategoryIds]); */
+        console.log(selectedCategoryIds);
+    }, [selectedCategoryIds]);
 
     useEffect(() => {
         handleInputChange('picture', imagePerfil);
@@ -151,8 +152,11 @@ export function NuevaTienda({ navigation }) {
 
     const handleUpdateShop = async () => {
         await updateShop(formData, imagePerfil, imagePortada, store.id);
-
     }
+
+    
+
+ 
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950 px-5">

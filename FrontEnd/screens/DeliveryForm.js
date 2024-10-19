@@ -72,7 +72,7 @@ export function DeliveryFormScreen({ navigation }) {
             <View className="h-full dark:bg-black bg-white ">
                 <ScrollView className="w-full "
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 80}}
+                    contentContainerStyle={{ paddingBottom: 80 }}
                 >
                     <Text className="font-Excon_regular mt-4 text-main-blue dark:text-white text-[24px] text-center" >Formulario de inscripción para repartidor</Text>
 
@@ -135,24 +135,23 @@ export function DeliveryFormScreen({ navigation }) {
                             onChangeText={handleTimeChange}
                             maxLength={5}
                         />
-
-
+                        <View className="flex-row w-full ml-2 mt-4 items-center">
+                            <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
+                                <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
+                            </TouchableOpacity>
+                            {/* corregir la ruta para mostrar los terminos y condiciones */}
+                            <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                        </View>
 
 
                         <TouchableOpacity className="bg-main-blue p-4 mt-6 rounded-lg w-full items-center justify-center"
-                        onPress={() => navigation.replace('thirdScreen')}>
+                            onPress={() => navigation.replace('thirdScreen')}>
                             <Text className="text-white font-bold ml-2">Continuar</Text>
                         </TouchableOpacity>
+
                     </View>
                 </ScrollView>
             </View>
-                <View className="flex-row items-center">
-                    <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
-                        <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
-                    </TouchableOpacity>
-                    {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
-                </View>
 
         </View>
     );

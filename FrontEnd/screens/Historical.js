@@ -6,6 +6,7 @@ import { UseHistorical } from '../hooks/useHistorical';
 
 export function HistoricalScreen({ navigation }) {
   const [filter, setFilter] = useState('all');
+  
 
   const HistoricalDetailsScreen = ({ item }) => (
     <TouchableOpacity

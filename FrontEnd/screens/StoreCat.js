@@ -127,7 +127,6 @@ export function StoreCat({ navigation }) {
 
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 " >
-             <Button title="Go to Section 2, Item 2" onPress={() => scrollToItem(0, 4)} />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
