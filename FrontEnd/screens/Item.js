@@ -21,7 +21,7 @@ export function ItemPage({ navigation }) {
     const [quantity, setQuantity] = useState(1);
     const [isLoggedIn, setIsLoggedIn] = useState(false); 
     const route = useRoute();
-    const { product } = route.params;
+    const { product, images } = route.params;
 
     useEffect(() => {
         async function checkLoginStatus() {
@@ -83,6 +83,7 @@ export function ItemPage({ navigation }) {
         currency: 'CRC',
         maximumFractionDigits: 0
     });
+    console.log(images.item_images);
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
