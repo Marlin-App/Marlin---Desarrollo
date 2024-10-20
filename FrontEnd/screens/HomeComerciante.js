@@ -139,7 +139,7 @@ export function HomeComercianteScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-main-bg py-8">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-light-blue text-2xl font-Excon_bold w-[80vw]">

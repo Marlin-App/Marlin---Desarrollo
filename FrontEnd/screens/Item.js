@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Modal, Alert, ScrollView, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { styled, useColorScheme } from "nativewind";
 import useCart from '../hooks/useCart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,6 +21,7 @@ export function ItemPage({ navigation }) {
         'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
     });
 
+    const { colorScheme } = useColorScheme();
     const [quantity, setQuantity] = useState(1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const route = useRoute();
@@ -249,10 +251,10 @@ export function ItemPage({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity
-                        className="bg-white dark:bg-light-blue rounded-xl px-4 py-2"
+                        className="bg-white  rounded-xl px-4 py-2 dark:bg-main-blue"
                         onPress={vericarCarrito}
                     >
-                        <Text className="text-main-blue text-lg font-Excon_regular">Agregar al Carrito</Text>
+                        <Text className="text-main-blue text-lg font-Excon_regular dark:text-white">Agregar al Carrito</Text>
                     </TouchableOpacity>
                 </View>
             </View>
