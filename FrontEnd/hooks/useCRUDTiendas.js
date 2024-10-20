@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {  Alert} from 'react-native';
+import { Alert } from 'react-native';
 import useDecodeJWT from './useDecodeJWT';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,7 +7,7 @@ const useCRUDTiendas = (navigation) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [allStores, setAllStores] = useState([]);
-;
+    ;
     const { decodeJWT, isTokenExpired, refreshToken } = useDecodeJWT();
 
     const createShop = async (formData, imagePerfil, imagePortada, acceptedTerms) => {
@@ -19,10 +19,12 @@ const useCRUDTiendas = (navigation) => {
         if (acceptedTerms) {
             setLoading(true);
             setError(null);
-            
+
             const jsonValue = await AsyncStorage.getItem('@userToken');
             const userData = JSON.parse(jsonValue);
             const token = userData.access;
+            const decodedToken = decodeJWT(token);
+            const user_id = decodedToken.payload.user_id;
 
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
@@ -30,14 +32,13 @@ const useCRUDTiendas = (navigation) => {
             formDataToSend.append('referencias', formData.referencias);
             formDataToSend.append('canton', formData.canton);
             formDataToSend.append('district', formData.district);
-            formDataToSend.append('coodernates', formData.coodernates.location+','+formData.coodernates.latitude);
-            formDataToSend.append('user_id', formData.user_id);
+            formDataToSend.append('coodernates', formData.coodernates.location + ',' + formData.coodernates.latitude);
+            formDataToSend.append('user_id', user_id);
             formDataToSend.append('num_sinpe', formData.sinpe);
             formDataToSend.append('owner_sinpe', formData.sinpe_name);
             formDataToSend.append('opening_hour', formData.opening_hour);
             formDataToSend.append('closing_hour', formData.closing_hour);
-            const type= 1;
-            formDataToSend.append('store_type', type);
+            formDataToSend.append('store_type', formData.store_type);
 
             if (imagePerfil) {
                 const perfilFile = {
@@ -48,7 +49,7 @@ const useCRUDTiendas = (navigation) => {
                 formDataToSend.append('picture', perfilFile);
             }
 
-            
+
             if (imagePortada) {
                 const portadaFile = {
                     uri: imagePortada,
@@ -91,7 +92,7 @@ const useCRUDTiendas = (navigation) => {
         setError(null);
 
         const jsonValue = await AsyncStorage.getItem('@userToken');
-        if (jsonValue==null) {
+        if (jsonValue == null) {
             setLoading(false);
             setIsLogged(false);
             return;
@@ -164,7 +165,8 @@ const useCRUDTiendas = (navigation) => {
         const jsonValue = await AsyncStorage.getItem('@userToken');
         const userData = JSON.parse(jsonValue);
         const token = userData.access;
-
+        const decodedToken = decodeJWT(token);
+        const user_id = decodedToken.payload.user_id;
 
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
@@ -172,14 +174,13 @@ const useCRUDTiendas = (navigation) => {
         formDataToSend.append('referencias', formData.referencias);
         formDataToSend.append('canton', formData.canton);
         formDataToSend.append('district', formData.district);
-        formDataToSend.append('coodernates', formData.coodernates.location+','+formData.coodernates.latitude);
-        formDataToSend.append('user_id', formData.user_id);
+        formDataToSend.append('coodernates', formData.coodernates.location + ',' + formData.coodernates.latitude);
+        formDataToSend.append('user_id', user_id);
         formDataToSend.append('num_sinpe', formData.sinpe);
         formDataToSend.append('owner_sinpe', formData.sinpe_name);
         formDataToSend.append('opening_hour', formData.opening_hour);
         formDataToSend.append('closing_hour', formData.closing_hour);
-        const type= 1;
-        formDataToSend.append('store_type', type);
+        formDataToSend.append('store_type', formData.store_type);
 
         // Agregar la imagen de perfil si existe
         if (imagePerfil) {
@@ -209,7 +210,7 @@ const useCRUDTiendas = (navigation) => {
                     'Authorization': `Bearer ${token}`,
                 },
                 body: formDataToSend
-                
+
             });
 
             if (!response.ok) {
@@ -228,8 +229,8 @@ const useCRUDTiendas = (navigation) => {
             setLoading(false);
         }
     };
-        
-        
+
+
 
     return { createShop, loading, error, getUserStores, allStores, getUserStores, setAllStores, deleteShop, updateShop };
 };
