@@ -143,6 +143,7 @@ export function HomeScreen({ navigation }) {
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
                 stock: item.stock,
                 picture: item.item_images[0]?.picture,
+                pictures: item.item_images,
                 store_id: item.store_id,
                 item_type: item.item_type
             }))
@@ -174,7 +175,7 @@ export function HomeScreen({ navigation }) {
 
 
     const renderHorizontalItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item, images: item.item_images })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item})}>
             <View className="my-2 mx-4 items-start">
                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                     <Image

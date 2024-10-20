@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { View, Text, Pressable, FlatList, Image, Alert, Switch } from 'react-native';
+import { View, Text, Pressable, FlatList, Image, Alert, Switch, ScrollView } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -7,11 +7,11 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import useCart from '../hooks/useCart';
 import { useColorScheme } from "nativewind";
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export function CartScreen({ navigation }) {
 
-    const { cart, increaseQuantity, decreaseQuantity, total: cartTotal } = useCart();
+    const { cart, removeFromCart, increaseQuantity, decreaseQuantity, total: cartTotal } = useCart();
 
     const { colorScheme } = useColorScheme();
 
@@ -52,10 +52,32 @@ export function CartScreen({ navigation }) {
     };
 
     const CartItem = ({ item }) => {
+
+        const handleDelete = () => {
+            Alert.alert(
+                'Eliminar producto',
+                `¿Estás seguro de que deseas eliminar ${item.name} del carrito?`,
+                [
+                    {
+                        text: 'Cancelar',
+                    },
+                    {
+                        text: 'Eliminar',
+                        onPress: () => {
+                            removeFromCart(item.id);
+                        },
+                    },
+                ],
+                { cancelable: false }
+            );
+        };
+    
         return (
-            <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2" onLayout={onLayoutRootView}>
+            <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
                 <View className="items-end justify-end mt-2">
-                    <Entypo name="dots-three-vertical" size={15} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                    <Pressable onPress={handleDelete}>
+                        <AntDesign name="delete" size={20} color={colorScheme === 'dark' ? 'red' : 'red'} />
+                    </Pressable>
                 </View>
                 <View className="flex-row">
                     <View className="rounded-lg shadow-lg p-[2px] bg-[#EDEEF3] dark:bg-neutral-900">
@@ -67,7 +89,7 @@ export function CartScreen({ navigation }) {
                     </View>
                     <View className="ml-2 flex-1">
                         <Text className="text-[16px] ml-2 font-Excon_regular">{item.name}</Text>
-                        <View className="flex-row justify-between mt-4 flex-1 ">
+                        <View className="flex-row justify-between mt-4 flex-1">
                             <View className="items-center">
                                 <View className="rounded-lg h-6 w-7 items-center">
                                     <View className="rounded-full h-4 w-4 bg-black dark:border dark:border-white "></View>
@@ -84,7 +106,11 @@ export function CartScreen({ navigation }) {
                                 <View className="rounded-md h-6 w-20 bg-main-blue items-center flex-row dark:bg-light-blue">
                                     <Pressable
                                         className="flex-1 items-center justify-center"
-                                        onPress={() => decreaseQuantity(item.id)}
+                                        onPress={() => {
+                                            if (item.cantidad > 1) {
+                                                decreaseQuantity(item.id);
+                                            }
+                                        }}
                                     >
                                         <Text className="text-white dark:text-[#171717]">-</Text>
                                     </Pressable>
@@ -102,15 +128,18 @@ export function CartScreen({ navigation }) {
                     </View>
                 </View>
                 <View className="items-end justify-end mt-2">
-                    <Text className="font-Excon_regular">{item.price} CRC</Text>
+                    <Text className="font-Excon_regular">{formatCurrency(cartTotal)} CRC</Text>
                 </View>
             </View>
         );
-    }
+    };
+    
+
+
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950" onLayout={onLayoutRootView}>
-            <View className="flex-1 bg-white dark:bg-neutral-950">
+            <ScrollView className="flex-1 bg-white dark:bg-neutral-950">
                 <Text className="text-2xl font-Excon_regular text-main-blue dark:text-[#ededed] mt-4 text-center">Carrito</Text>
 
                 {cart.length === 0 ? (
@@ -198,7 +227,7 @@ export function CartScreen({ navigation }) {
                         </View>
                     </>
                 )}
-            </View>
+            </ScrollView>
 
             {cart.length > 0 && (
                 <View className="bg-main-blue p-4 dark:bg-dk-tab">

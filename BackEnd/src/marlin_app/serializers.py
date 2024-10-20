@@ -1,7 +1,7 @@
 import json
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation, ItemImage
+from .models import Order, OrderItem, UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation, ItemImage
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -16,14 +16,17 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  
     class Meta:
         model = User
-        fields = ['username', 'password', 'email']
+        fields = ['username', 'password', 'email', 'first_name', 'last_name']
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        user = User(
             username=validated_data['username'],
             email=validated_data['email'],
-            password=validated_data['password']
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
         )
+        user.set_password(validated_data['password'])
+        user.save()
         UserProfile.objects.create(user = user)
         return user
 
@@ -185,6 +188,32 @@ class AtributeValueSerializer(serializers.ModelSerializer):
         model = AtributeValue
         fields = '__all__'
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    total_price = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = OrderItem
+        fields = ['item_id', 'quantity', 'total_price']
+
+class OrderSerializer(serializers.ModelSerializer):
+    products = OrderItemSerializer(many=True)
+    total_price = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        products = validated_data.pop('products')
+        order = Order.objects.create(**validated_data)
+
+        total_price = 0
+        for product in products:
+            order_product = OrderItem.objects.create(order_id=order, **product)
+            print(vars(order_product))
+            total_price += order_product.total_price
+
+        order.total_price = total_price
+        order.save()
+        return order
 
 #Proceso de cambio de contraseña
 class PasswordResetRequestSerializer(serializers.ModelSerializer):
