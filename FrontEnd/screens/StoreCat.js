@@ -35,13 +35,16 @@ export function StoreCat({ navigation }) {
             const formattedData = allStores.map(item => ({
                 id: item.id,
                 name: item.name,
-                location: item.location,
+                canton: item.canton,
+                district: item.district,
                 picture: item.picture,
+                num_sinpe: item.num_sinpe,
+                owner_sinpe: item.owner_sinpe,
                 type: item.store_type,
                 banner: item.banner,
             }));
 
-            setOriginalStoreSelected(formattedData);  // Guardar el estado inicial completo
+            setOriginalStoreSelected(formattedData);  
             setStoreSelected(formattedData);
         };
 

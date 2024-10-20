@@ -11,9 +11,9 @@ import { useColorScheme } from "nativewind";
 
 export function Store({ navigation }) {
     const route = useRoute();
+    console.log(route.params.store);
     const { data, loading, setData } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
-    console.log(route.params);
     const [formattedData, setFormattedData] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState('');
@@ -83,9 +83,16 @@ export function Store({ navigation }) {
                 <View className="absolute bg-black opacity-50 w-full h-full"></View>
                 <View className="mt-5">
                     <View className="flex-row mb-2 justify-between items-center">
-                        <Text className="text-[22px] font-Excon_bold text-white text-start w-[70%]">
-                            {route.params.store.name}
-                        </Text>
+                        <View className="w-[70%]">
+                            <Text className="text-[22px] font-Excon_bold text-white text-start w-full">
+                                {route.params.store.name}
+                            </Text>
+                            <Text className="text-[15px] font-Excon_bold text-white mt-2">
+                                Ubicacion: <Text className="font-Excon_regular">{route.params.store.canton} {route.params.store.district}</Text>
+                            </Text> 
+                            <Text className="text-[15px] font-Excon_bold text-white ">Numero sinpe:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
+                            <Text className="text-[15px] font-Excon_bold text-white ">Nombre sinpe: <Text className="font-Excon_regular"> { route.params.store.owner_sinpe}</Text></Text>
+                        </View>
                         <Image
                             source={{ uri: route.params.store.banner }}
                             className="h-20 w-20 rounded-lg"
@@ -106,7 +113,10 @@ export function Store({ navigation }) {
                             placeholder='Buscar Productos'
                             placeholderTextColor={placeholderTextColor}
                             value={search}
-                            onChangeText={setSearch}
+                            onChangeText={(text) => {
+                                setSearch(text);
+                                searchProduct(search);
+                            }}
                             onSubmitEditing={() => {
                                 searchProduct(search);
                                 setIsSearch(true);
