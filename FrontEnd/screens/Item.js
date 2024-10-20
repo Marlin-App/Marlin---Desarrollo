@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Pressable, Modal, Alert, ScrollView } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Modal, Alert, ScrollView, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,6 +10,8 @@ export function ItemPage({ navigation }) {
     const { addToCart, isSameStore, clearCart } = useCart();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -19,9 +21,9 @@ export function ItemPage({ navigation }) {
     });
 
     const [quantity, setQuantity] = useState(1);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const route = useRoute();
-    const { product } = route.params;
+    const { product } = route.params; // Recibir el producto desde la navegación
 
     useEffect(() => {
         async function checkLoginStatus() {
@@ -55,11 +57,13 @@ export function ItemPage({ navigation }) {
     };
 
     const vericarCarrito = () => {
-        console.log('isLoggedIn:', isLoggedIn); 
-        console.log('product:', product);
-
         if (!isLoggedIn) {
             Alert.alert('Error', 'Debes estar logueado para agregar productos al carrito.');
+            return;
+        }
+
+        if (!selectedColor || !selectedSize) {
+            Alert.alert('Error', 'Debes seleccionar un color y una talla.');
             return;
         }
 
@@ -72,7 +76,7 @@ export function ItemPage({ navigation }) {
 
     const handleAddToCart = () => {
         setModalVisible(true);
-        addToCart({ ...product, cantidad: quantity });
+        addToCart({ ...product, cantidad: quantity, formattedTotalPrice, selectedColor, selectedSize });
     };
 
     const unitPrice = Number(product.price.replace(/[^0-9]/g, ''));
@@ -83,6 +87,18 @@ export function ItemPage({ navigation }) {
         currency: 'CRC',
         maximumFractionDigits: 0
     });
+
+    const colors = product.variation
+      .map(variation => 
+        variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value)
+      )
+      .flat();
+
+    const sizes = product.variation
+      .map(variation => 
+        variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value)
+      )
+      .flat();
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
@@ -127,7 +143,7 @@ export function ItemPage({ navigation }) {
                                 </View>
                                 <Text className="text-md font-Excon_regular mb-4">Este producto pertenece a una tienda distinta. Si decides crear un nuevo carrito, perderás los productos guardados hasta ahora!</Text>
                             </View>
-                            <View className="flex-row justify-center">
+                            <View className="flex-row justify-center gap-2">
                                 <TouchableOpacity
                                     className="bg-main-blue rounded-lg px-4 py-2"
                                     onPress={async () => {
@@ -153,21 +169,58 @@ export function ItemPage({ navigation }) {
                 </Modal>
 
                 <View className="px-8">
-                    <Image
-                        className="w-full h-[300] rounded-3xl bg-black mt-10 mb-3"
-                        source={{ uri: product.picture }}
-                        resizeMode="cover"
-                        onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
+                    <FlatList
+                        data={product.pictures} 
+                        keyExtractor={(item) => item.id.toString()}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => (
+                            <Image
+                                className="w-[310] h-[310] rounded-3xl bg-black mt-10 mb-3 mr-3"
+                                source={{ uri: item.picture }}
+                                resizeMode="stretch"
+                                onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
+                            />
+                        )}
                     />
+
                     <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{product.name}</Text>
                     <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{product.description}</Text>
 
-                    <Text className="text-base font-bold pl-1 mt-3 dark:text-white">Color</Text>
-                    <View className="flex-row">
-                        <TouchableOpacity className="rounded-full w-6 h-6 bg-black mx-1 dark:border-2 border-white" />
-                        <TouchableOpacity className="rounded-full w-6 h-6 bg-red-600 mx-1" />
-                        <TouchableOpacity className="rounded-full w-6 h-6 bg-blue-700 mx-1" />
+                    <View className="pl-1 pr-1 mt-2">
+                        <Text className="text-lg font-Excon_bold dark:text-white">Color:</Text>
+                        <View className="flex-row flex-wrap mt-1">
+                            {colors.map((color, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => setSelectedColor(color)}
+                                    className={`mr-2 mb-2 py-2 px-4 rounded-full ${
+                                        selectedColor === color ? 'bg-light-blue dark:bg-main-blue' : 'bg-neutral-300 dark:bg-neutral-600'
+                                    }`}
+                                >
+                                    <Text className="text-main-blue dark:text-white font-Excon_bold">{color}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
                     </View>
+
+                    <View className="pl-1 pr-1 mt-2">
+                        <Text className="text-lg font-Excon_bold dark:text-white">Talla:</Text>
+                        <View className="flex-row flex-wrap mt-1">
+                            {sizes.map((size, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => setSelectedSize(size)}
+                                    className={`mr-2 mb-2 py-2 px-4 rounded-full ${
+                                        selectedSize === size ? 'bg-light-blue dark:bg-main-blue' : 'bg-neutral-300 dark:bg-neutral-600'
+                                    }`}
+                                >
+                                    <Text className="text-main-blue dark:text-white font-Excon_bold">{size}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                    
                 </View>
             </ScrollView>
 
@@ -185,11 +238,8 @@ export function ItemPage({ navigation }) {
                         <TextInput
                             className="w-16 text-center text-lg bg-white text-main-blue dark:bg-main-blue dark:text-white"
                             keyboardType="numeric"
-                            value={String(quantity)}
-                            onChangeText={(value) => {
-                                const numericValue = Number(value.replace(/[^0-9]/g, ''));
-                                setQuantity(isNaN(numericValue) || numericValue < 1 ? 1 : numericValue);
-                            }}
+                            value={quantity.toString()}
+                            editable={false}
                         />
                         <TouchableOpacity
                             className="rounded-r-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
@@ -198,12 +248,11 @@ export function ItemPage({ navigation }) {
                             <Text className="text-main-blue dark:text-white text-3xl">+</Text>
                         </TouchableOpacity>
                     </View>
-
                     <TouchableOpacity
-                        className="bg-white rounded-3xl py-2 px-4"
+                        className="bg-white dark:bg-light-blue rounded-xl px-4 py-2"
                         onPress={vericarCarrito}
                     >
-                        <Text className="text-main-blue text-lg font-bold">Agregar al carrito</Text>
+                        <Text className="text-main-blue text-lg font-Excon_regular">Agregar al Carrito</Text>
                     </TouchableOpacity>
                 </View>
             </View>
