@@ -289,8 +289,8 @@ export function NuevaTienda({ navigation }) {
                     <Pressable className="justify-center items-center" onPress={() => pickImage("perfil")}>
                         {imagePerfil ? (<Image className="rounded-full w-52 h-52" source={{ uri: imagePerfil }} />) : (
                             <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                <Feather name="upload" size={24} color="#015DEC" />
-                                <Text className="text-main-blue text-md font-Excon_thin">Haz click para subir una imagen</Text>
+                                <Feather name="upload" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                                <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">Haz click para subir una imagen</Text>
                             </View>)}
                     </Pressable>
                 </View>
@@ -302,8 +302,8 @@ export function NuevaTienda({ navigation }) {
                     <Pressable className="justify-center items-center" onPress={() => pickImage("portada")}>
                         {imagePortada ? (<Image className="rounded-lg w-full h-52" source={{ uri: imagePortada }} />) : (
                             <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                <Feather name="upload" size={24} color="#015DEC" />
-                                <Text className="text-main-blue text-md font-Excon_thin">Haz click para subir una imagen</Text>
+                                <Feather name="upload" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                                <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">Haz click para subir una imagen</Text>
                             </View>)}
                     </Pressable>
                 </View>
@@ -317,7 +317,7 @@ export function NuevaTienda({ navigation }) {
                         <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
                     </TouchableOpacity>
                     {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin dark:text-light-blue">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
                 </View>
             </View>
 

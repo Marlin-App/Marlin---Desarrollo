@@ -94,13 +94,13 @@ export function CartScreen({ navigation }) {
                                 <View className="rounded-lg h-6 w-7 items-center">
                                     <View className="rounded-full h-4 w-4 bg-black dark:border dark:border-white "></View>
                                 </View>
-                                <Text className="mt-2 font-Erode_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">Color</Text>
+                                <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">Color</Text>
                             </View>
                             <View className="items-center">
                                 <View className="rounded-md h-6 w-7 bg-main-blue items-center justify-center dark:bg-light-blue">
                                     <Text className="font-Excon_bold text-[12px] text-white dark:text-[#171717]">M</Text>
                                 </View>
-                                <Text className="mt-2 font-Erode_regular text-gray-600 dark:text-[#d2d2d2]">Talla</Text>
+                                <Text className="mt-2 font-Excon_regular text-gray-600 dark:text-[#d2d2d2]">Talla</Text>
                             </View>
                             <View className="items-center">
                                 <View className="rounded-md h-6 w-20 bg-main-blue items-center flex-row dark:bg-light-blue">
@@ -122,7 +122,7 @@ export function CartScreen({ navigation }) {
                                         <Text className="text-white dark:text-[#171717]">+</Text>
                                     </Pressable>
                                 </View>
-                                <Text className="mt-2 font-Erode_regular text-gray-600 dark:text-[#d2d2d2]">Cantidad</Text>
+                                <Text className="mt-2 font-Excon_regular text-gray-600 dark:text-[#d2d2d2]">Cantidad</Text>
                             </View>
                         </View>
                     </View>
@@ -183,7 +183,7 @@ export function CartScreen({ navigation }) {
                                         <Pressable onPress={() => {
                                             Alert.alert('Cambiar ubicación', 'Implementa la lógica para cambiar la ubicación.');
                                         }}>
-                                            <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
+                                            <Text className="font-Excon_regular text-main-blue dark:text-light-blue">Cambiar</Text>
                                         </Pressable>
                                     </View>
 
@@ -191,12 +191,12 @@ export function CartScreen({ navigation }) {
                                         <FontAwesome5 name="search-location" size={20} color="black" />
                                         <View className="flex-1">
                                             <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Indicaciones para la entrega</Text>
-                                            <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
+                                            <Text className="font-Excon_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
                                         </View>
                                         <Pressable onPress={() => {
                                             Alert.alert('Cambiar indicaciones', 'Implementa la lógica para cambiar las indicaciones.');
                                         }}>
-                                            <Text className="font-Erode_regular text-main-blue dark:text-light-blue">Cambiar</Text>
+                                            <Text className="font-Excon_regular text-main-blue dark:text-light-blue">Cambiar</Text>
                                         </Pressable>
                                     </View>
                                 </>
@@ -206,20 +206,20 @@ export function CartScreen({ navigation }) {
                         <View className="mt-6 p-4 bg-gray-100 dark:bg-dk-main-bg rounded-lg mx-4 mb-2">
                             <Text className="text-[18px] font-Excon_bold text-main-blue mb-4 dark:text-white">Resumen</Text>
                             <View className="flex-row justify-between mb-2">
-                                <Text className="font-Erode_bold text-gray-800 dark:text-white">Precio de productos:</Text>
-                                <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(cartTotal)}</Text>
+                                <Text className="font-Excon_bold text-gray-800 dark:text-white">Precio de productos:</Text>
+                                <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(cartTotal)}</Text>
                             </View>
 
                             {!isPickUp && (
                                 <>
                                     <View className="flex-row justify-between mb-2">
-                                        <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de entrega:</Text>
-                                        <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(deliveryFee)}</Text>
+                                        <Text className="font-Excon_bold text-gray-800 dark:text-white">Tarifa de entrega:</Text>
+                                        <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(deliveryFee)}</Text>
                                     </View>
 
                                     <View className="flex-row justify-between mb-2">
-                                        <Text className="font-Erode_bold text-gray-800 dark:text-white">Tarifa de transporte:</Text>
-                                        <Text className="font-Erode_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(transportFee)}</Text>
+                                        <Text className="font-Excon_bold text-gray-800 dark:text-white">Tarifa de transporte:</Text>
+                                        <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">{formatCurrency(transportFee)}</Text>
                                     </View>
                                 </>
 

@@ -35,6 +35,11 @@ export function DeliveryFormScreen({ navigation }) {
         phone: ''
     });
 
+
+    const handleInputChange = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+    };
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -69,7 +74,7 @@ export function DeliveryFormScreen({ navigation }) {
         <View>
 
 
-            <View className="h-full dark:bg-black bg-white ">
+            <View className="h-full bg-white dark:bg-neutral-950">
                 <ScrollView className="w-full "
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 80 }}
@@ -90,7 +95,7 @@ export function DeliveryFormScreen({ navigation }) {
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-4">Nombre</Text>
                         <TextInput
-                            className="w-full border-2 border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
                             value={formData.firstName}
                             onChangeText={(value) => handleInputChange('firstName', value)}
                             placeholder="Digita tu nombre"
@@ -98,43 +103,34 @@ export function DeliveryFormScreen({ navigation }) {
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Apellidos</Text>
                         <TextInput
-                            className="w-full border-2 border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
 
                             placeholder="Digita tus apellidos"
                         />
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Número de teléfono</Text>
                         <TextInput
-                            className="w-full border-2 border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             keyboardType="numeric"
                             placeholder="Digita tu número de teléfono"
                         />
 
-                        <Text className="font-Excon_regular text-main-blue dark:text-white text-[20px] w-full  mt-8">Área y horario de reparto</Text>
+                        <Text className="font-Excon_regular text-main-blue dark:text-white text-[20px] w-full  mt-8">Datos del vehículo</Text>
 
-
-                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Canton a repartir</Text>
-
-                        <View className="border-2 px-2 py-2 rounded-lg my-2 w-full border-light-blue dark:border-main-blue">
-                            <DropDown
-                                title="Selecciona el cantón donde se ubica tu emprendimiento:"
-                                place="Cantón"
-                                options={cantones}
-                                // selectedValue={selectedValue}
-                                onValueChange={(value) => setSelectedValue(value)}
-                            />
-                        </View>
-
-                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Horario de trabajo</Text>
-
+                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Cédula de identidad o pasaporte:</Text>
                         <TextInput
-                            className="w-full border-2 px-2 border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md  py-1"
-                            keyboardType="numeric"
-                            placeholder="HH:MM"
-                            value={time}
-                            onChangeText={handleTimeChange}
-                            maxLength={5}
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
+
+                            placeholder="Digita tus apellidos"
                         />
+
+                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">Licencia de conducir</Text>
+                        <TextInput
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
+
+                            placeholder="Digita tus apellidos"
+                        />
+
                         <View className="flex-row w-full ml-2 mt-4 items-center">
                             <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
                                 <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />

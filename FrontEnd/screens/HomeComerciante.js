@@ -152,15 +152,15 @@ export function HomeComercianteScreen({ navigation }) {
                 </View>
             </View>
             <Text className="text-2xl font-Excon_bold text-main-blue mt-8 ml-4 dark:text-light-blue">Tus pedidos</Text>
-            <View className="flex-row justify-center gap-x-5 p-4 mt-4">
+            <View className="flex-row justify-center gap-x-2 p-4 mt-4 ">
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Completado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Completado")} >
-                    <Text className="font-Erode_regular text-sm dark:text-white">Completados</Text>
+                    <Text className="font-Excon_thin text-sm dark:text-white">Completados</Text>
                 </Pressable>
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Pendiente" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Pendiente")}>
-                    <Text className="font-Erode_regular text-sm dark:text-white">Pendientes</Text>
+                    <Text className="font-Excon_thin text-sm dark:text-white">Pendientes</Text>
                 </Pressable>
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Cancelado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Cancelado")}>
-                    <Text className="font-Erode_regular text-sm dark:text-white">Cancelados</Text>
+                    <Text className="font-Excon_thin text-sm dark:text-white">Cancelados</Text>
                 </Pressable>
             </View>
 

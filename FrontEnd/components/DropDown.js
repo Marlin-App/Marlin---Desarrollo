@@ -26,17 +26,17 @@ export function DropDown({options, selectedValue, onValueChange, place, title })
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
       >
-        <View className="flex-col justify-center items-center bg-black/50">
-          <View className="my-48 bg-white px-5 py-20 rounded-lg">
-          <Text className="font-Excon_bold text-xl text-main-blue mb-8">{title}</Text>
+        <View className="flex-col justify-center items-center bg-black/50 ">
+          <View className="my-60 bg-white px-5 py-20 rounded-lg  dark:bg-neutral-900">
+          <Text className="font-Excon_bold text-xl text-main-blue mb-8 dark:text-light-blue">{title}</Text>
             <FlatList className=""
               data={options}
               keyExtractor={(item) => item.value}
               renderItem={({ item }) => (
-                <TouchableOpacity className=" p-2 border-[1px] rounded-xl border-main-blue mb-4"
+                <TouchableOpacity className=" p-2 border-[1px] rounded-xl border-main-blue dark:border-light-blue mb-4"
                   onPress={() => handleSelect(item.value)}
                 >
-                  <Text className="text-center">{item.label}</Text>
+                  <Text className="text-center dark:text-white">{item.label}</Text>
                 </TouchableOpacity>
               )}
             />

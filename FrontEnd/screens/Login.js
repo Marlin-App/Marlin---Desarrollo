@@ -62,7 +62,7 @@ export function LoginPage({ navigation }) {
       <Text  className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4  ">¡Bienvenido de vuelta!    </Text>
 
       <View className="px-8">
-        <Text className="text-[24px] font-Excon_regular  text-[#1952BE]">Nombre de usuario</Text>
+        <Text className="text-[24px] font-Excon_regular  text-main-blue">Nombre de usuario</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2 ">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
@@ -77,7 +77,7 @@ export function LoginPage({ navigation }) {
           />
         </View>
 
-        <Text className="text-[24px] font-Excon_regular text-[#1952BE] ">Contraseña</Text>
+        <Text className="text-[24px] font-Excon_regular text-main-blue ">Contraseña</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 ">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
@@ -98,7 +98,7 @@ export function LoginPage({ navigation }) {
           onPress={handleLogin}
           style={({ pressed }) => [
             {
-              backgroundColor: pressed ? 'rgba(0,0,0,0.2)' : '#3765AE',
+              backgroundColor: pressed ? 'rgba(0,0,0,0.2)' : '#1952BE',
             },
             styles.button
           ]}
