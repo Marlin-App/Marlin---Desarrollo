@@ -25,6 +25,7 @@ export function ProfileScreen({ navigation }) {
 
   let formatePicture = "";
 
+  
 
   useEffect(() => {
     const loadUser = async () => {
@@ -84,9 +85,9 @@ export function ProfileScreen({ navigation }) {
               </Pressable>
             </View>
             <View className='w-full mt-6'>
-              <Pressable className='flex-row items-center py-4 flex gap-3'>
+              <Pressable className='flex-row items-center py-4 flex gap-3'  onPress={() => navigation.navigate("TerminosCondiciones")}>
                 <AntDesign name="questioncircleo" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                <Text className="dark:text-white">FAQs</Text>
+                <Text className="dark:text-white">Terminos y condiciones</Text>
               </Pressable>
             </View>
           </View>
@@ -99,10 +100,10 @@ export function ProfileScreen({ navigation }) {
           <View className="w-full mt-14">
             <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
             <View className="flex flex-row justify-center items-center">
-              <View className="flex justify-center items-center w-28 h-28 rounded-full">
+              <View className="flex justify-center items-center w-28 h-28 rounded-full bg-light-blue dark:bg-main-blue">
                 <Image
                   source={{ uri: user.picture ? user.picture.replace("image/upload/", "") : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
-                  style={{ width: 100, height: 100, borderRadius: 100 }}
+                  style={{ width: 105, height: 105, borderRadius: 100 }}
                 />
               </View>
               <View className="ml-6">
@@ -180,9 +181,9 @@ export function ProfileScreen({ navigation }) {
 
             </View>
             <View className='w-full mt-6'>
-              <Pressable className='flex-row items-center py-4 flex gap-3'>
+              <Pressable className='flex-row items-center py-4 flex gap-3'  onPress={() => navigation.navigate("TerminosCondiciones")}>
                 <AntDesign name="questioncircleo" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                <Text className="dark:text-white">FAQs</Text>
+                <Text className="dark:text-white">Terminos y condiciones</Text>
               </Pressable>
               <Pressable className='flex-row flex gap-3 items-center'
                 onPress={handleLogout}

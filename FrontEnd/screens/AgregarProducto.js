@@ -130,11 +130,11 @@ export function AgregarProducto({ navigation }) {
                 <View className=" p-5 w-full h-full">
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Nombre del producto</Text>
-                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-light-blue" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" placeholderTextColor={placeholderTextColor} />
+                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" placeholderTextColor={placeholderTextColor} />
                     </View>
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Descripción</Text>
-                        <TextInput className="border-[0.5px] border-main-blue rounded-lg px-4 my-2 font-Excon_thin"
+                        <TextInput className="border-[0.5px] border-main-blue rounded-lg px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                             value={formData.description} onChangeText={(value) => handleInputChange('description', value)}
                             multiline
                             numberOfLines={4}
@@ -180,20 +180,20 @@ export function AgregarProducto({ navigation }) {
                                         {variations.map((variation, index) => (
                                             <View key={index} className="relative flex-row py-[10px] border-b-2 border-main-blue dark:border-light-blue justify-between mb-2">
                                                 <TextInput
-                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                                                     editable={isEnabled}
                                                     value={variation.color}
                                                     onChangeText={(value) => handleVariationChange(index,'color', value)}
                                                 />
                                                 <TextInput
-                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                                                     editable={isEnabled2}
                                                     value={variation.size}
                                                     onChangeText={(value) => handleVariationChange(index, 'size', value)}
                                                 />
                                                 <TextInput
                                                     keyboardType="numeric"
-                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                                                     value={variation.quantity.toString()}
                                                     onChangeText={(value) => handleVariationChange(index, 'quantity', value)}
                                                 />
@@ -201,30 +201,30 @@ export function AgregarProducto({ navigation }) {
                                         ))}
                                         <View className="flex-row justify-between">
                                             <Pressable className="flex-row justify-center mb-1 gap-x-4 items-center" onPress={removeRow}>
-                                                <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center">
-                                                    <Ionicons name="remove-sharp" size={24} color="#015DEC" />
+                                                <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center dark:border-light-blue">
+                                                    <Ionicons name="remove-sharp" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                                                 </View>
-                                                <Text className="text-main-blue text-md font-Excon_bold">filas</Text>
+                                                <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">filas</Text>
                                             </Pressable>
                                             <Pressable className="flex-row justify-center mb-1 gap-x-4 items-center" onPress={addRow}>
-                                                <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center">
-                                                    <Ionicons name="add" size={24} color="#015DEC" />
+                                                <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center dark:border-light-blue">
+                                                    <Ionicons name="add" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
                                                 </View>
-                                                <Text className="text-main-blue text-md font-Excon_bold">filas</Text>
+                                                <Text className="text-main-blue text-md font-Excon_boldb dark:text-light-blue">filas</Text>
                                             </Pressable>
                                         </View>
                                     </View>
                                 </ScrollView>) :
                             (<View className="relative flex-row py-[10px] justify-between items-center mb-2">
                                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Cantidad en inventario</Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
                             </View>)}
 
                         <View className="relative flex-row py-[10px] justify-between items-center mb-2">
                             <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Precio</Text>
                             <View className="flex-row items-center">
-                                <Text className="text-main-blue text-md font-Excon_regular">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
+                                <Text className="text-main-blue text-md font-Excon_regular dark:text-light-blue">₡ </Text>
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue dark:border-light-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
                             </View>
                         </View>
 
@@ -233,9 +233,9 @@ export function AgregarProducto({ navigation }) {
 
                             <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
                                 {images.length === 0 ? (
-                                    <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
-                                        <Feather name="upload" size={24} color="#015DEC" />
-                                        <Text className="text-main-blue text-md font-Excon_thin">
+                                    <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full dark:border-light-blue">
+                                        <Feather name="upload" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+                                        <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">
                                             Haz click para subir imágenes
                                         </Text>
                                     </View>

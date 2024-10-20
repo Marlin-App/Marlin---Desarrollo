@@ -202,10 +202,10 @@ export function StoreCat({ navigation }) {
                             <View>
                                 <Pressable onPress={() => handleCategorySelect(item.id)}>
                                     <View className="my-4 mx-2 items-center">
-                                        <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
+                                        <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
                                             {selectedCategoryId == item.id ? (
 
-                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
+                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full " resizeMode="cover" />
                                             ):(
                                                 
                                                 <Image source={{ uri: item.image.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />

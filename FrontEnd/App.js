@@ -22,6 +22,7 @@ export default function App() {
     'Erode_regular': require('./assets/fonts/Erode/Erode-Regular.otf'),
     'Erode_bold': require('./assets/fonts/Erode/Erode-Bold.otf'),
     'Erode-Medium': require('./assets/fonts/Erode/Erode-Medium.otf')
+    
   });
 
   const onLayoutRootView = useCallback(async () => {
