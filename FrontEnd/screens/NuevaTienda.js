@@ -47,14 +47,37 @@ export function NuevaTienda({ navigation }) {
     const cantones = [
         { label: 'Puntarenas', value: 'Puntarenas' },
         { label: 'Esparza', value: 'Esparza' },
-        { label: 'Miramar', value: 'Miramar' },
+        { label: 'Montes de Oro', value: 'Montes de Oro' },
     ];
 
-    const options2 = [
-        { label: 'Puntarenas', value: 'Puntarenas' },
-        { label: 'Esparza', value: 'Esparza' },
-        { label: 'Miramar', value: 'Miramar' },
-    ];
+    const getDistrictsByCanton = (canton) => {
+        switch (canton) {
+            case 'Puntarenas':
+                return [
+                    { label: 'Puntarenas', value: 'Puntarenas' },
+                    { label: 'Chacarita', value: 'Chacarita' },
+                    { label: 'El Roble', value: 'El Roble' },
+                    { label: 'Barranca', value: 'Barranca' },
+                ];
+            case 'Esparza':
+                return [
+                    { label: 'Espíritu Santo', value: 'Espítiru Santo' },
+                    { label: 'Macacona', value: 'Macacona' },
+                    { label: 'San Jerónimo', value: 'San Jerónimo' },
+                ];
+            case 'Montes de Oro':
+                return [
+                    { label: 'La Unión', value: 'La Unión' },
+                    { label: 'San Isidro', value: 'San Isidro' },
+                    { label: 'Miramar', value: 'Miramar' },
+                ];
+            default:
+                return [];
+        }
+    };
+
+    
+
 
 
     const pickImage = async (pic) => {
@@ -81,16 +104,16 @@ export function NuevaTienda({ navigation }) {
 
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [formData, setFormData] = useState({
-        name: store ? store.name : "Name",
-        description: store ? store.description : "Cruddasdsad",
-        canton: store ? store.canton : "Puntarenas",
-        district: store ? store.district : "Puntarenas",
-        coodernates: store ? store.coodernates : "31231232312321",
+        name: store ? store.name : "",
+        description: store ? store.description : "",
+        canton: store ? store.canton : "",
+        district: store ? store.district : "",
+        coodernates: store ? store.coodernates : "",
         picture: store ? store.picture : "",
-        user_id: 5,
-        sinpe: store ? store.num_sinpe : "1541561",
+        user_id: "",
+        sinpe: store ? store.num_sinpe : "",
         banner: store ? store.banner : "",
-        sinpe_name: store ? store.owner_sinpe : "5644654",
+        sinpe_name: store ? store.owner_sinpe : "",
         opening_hour: "09:00:00",
         closing_hour: "18:00:00",
         store_type: store ? store.store_type : [],
@@ -154,6 +177,14 @@ export function NuevaTienda({ navigation }) {
         await updateShop(formData, imagePerfil, imagePortada, store.id);
     }
 
+
+    const [districts, setDistricts] = useState([]);
+
+    useEffect(() => {
+
+        setDistricts(getDistrictsByCanton(selectedValue));
+
+    }, [selectedValue]);
     
 
  
@@ -194,6 +225,7 @@ export function NuevaTienda({ navigation }) {
                 <View className="border-[0.5px] px-4 py-2 rounded-lg my-2 dark:border-main-blue">
                     <DropDown
                         title="Selecciona el cantón donde se ubica tu emprendimiento:"
+                        active={true}
                         place="Cantón"
                         options={cantones}
                         selectedValue={selectedValue}
@@ -204,7 +236,8 @@ export function NuevaTienda({ navigation }) {
                     <DropDown
                         title="Selecciona el distrito donde se ubica tu emprendimiento:"
                         place="Distrito"
-                        options={cantones}
+                        active={selectedValue ? true:false}
+                        options={districts}
                         selectedValue={selectedValue2}
                         onValueChange={(value) => setSelectedValue2(value)}
                     />
