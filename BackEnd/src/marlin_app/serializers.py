@@ -1,7 +1,7 @@
 import json
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation, ItemImage
+from .models import Order, OrderItem, UserProfile, Store, StoreItem, StoreType, ItemTag, AtributeValue, Atribute, ItemVariation, ItemImage
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -185,6 +185,32 @@ class AtributeValueSerializer(serializers.ModelSerializer):
         model = AtributeValue
         fields = '__all__'
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    total_price = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = OrderItem
+        fields = ['item_id', 'quantity', 'total_price']
+
+class OrderSerializer(serializers.ModelSerializer):
+    products = OrderItemSerializer(many=True)
+    total_price = serializers.IntegerField(read_only=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def create(self, validated_data):
+        products = validated_data.pop('products')
+        order = Order.objects.create(**validated_data)
+
+        total_price = 0
+        for product in products:
+            order_product = OrderItem.objects.create(order_id=order, **product)
+            print(vars(order_product))
+            total_price += order_product.total_price
+
+        order.total_price = total_price
+        order.save()
+        return order
 
 #Proceso de cambio de contraseña
 class PasswordResetRequestSerializer(serializers.ModelSerializer):
