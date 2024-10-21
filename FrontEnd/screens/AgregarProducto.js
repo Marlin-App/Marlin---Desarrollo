@@ -44,7 +44,11 @@ export function AgregarProducto({ navigation }) {
         });
 
         if (!result.canceled) {
-            setImages(result.assets);
+            const uniqueImages = result.assets.map(asset => ({
+            uri: asset.uri,
+            id: asset.assetId || asset.uri // Ensure each image has a unique identifier
+            }));
+            setImages(uniqueImages);
         }
     };
 
@@ -118,6 +122,7 @@ export function AgregarProducto({ navigation }) {
             store_id: storeId.store,
             item_type: 1,
         };
+        console.log(newProduct.pictures);
         addProduct(newProduct);
         navigation.goBack();
     };

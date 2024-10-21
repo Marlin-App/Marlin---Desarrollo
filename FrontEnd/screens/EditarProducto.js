@@ -17,8 +17,8 @@ export function EditarProducto({ navigation }) {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        price: '',
-        stock: '',
+        price: 0,
+        stock: 0,
         pictures: [],
         store_id: 1, // Por ejemplo, un valor por defecto
         item_type: 1, // Por ejemplo, un valor por defecto
@@ -48,38 +48,61 @@ export function EditarProducto({ navigation }) {
             setProduct(fetchedProduct);
             // Enable switches based on fetched product attributes //revisar que no viene la informacion
             setImages(fetchedProduct.item_images);
-            const hasColorAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Color');
-            const hasSizeAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Talla');
-            setFormData({
-                name: fetchedProduct.name,
-                description: fetchedProduct.description,
-                price: fetchedProduct.price,
-                stock: fetchedProduct.stock,
-                pictures: fetchedProduct.item_images,
-                store_id: fetchedProduct.store_id,
-                item_type: fetchedProduct.item_type,
-                variations: fetchedProduct.variations,
-            });
 
-
-            setIsEnabled(hasColorAttribute);
-            setIsEnabled2(hasSizeAttribute);
-
-            // Populate variations with fetched product attributes
-            const populatedVariations = fetchedProduct.variations.map(attr => {
-                const variation = { color: '', size: '', quantity: 0 };
-                attr.item_variations.forEach(value => {
-                    if (value.attribute_name === 'Color') {
-                        variation.color = value.value;
-                    } else if (value.attribute_name === 'Talla') {
-                        variation.size = value.value;
-                    }
+            if (fetchedProduct.variations.length > 0) {
+                const hasColorAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Color');
+                const hasSizeAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Talla');
+                setFormData({
+                    name: fetchedProduct.name,
+                    description: fetchedProduct.description,
+                    price: fetchedProduct.price,
+                    stock: fetchedProduct.stock,
+                    pictures: fetchedProduct.item_images,
+                    store_id: fetchedProduct.store_id,
+                    item_type: fetchedProduct.item_type,
+                    variations: fetchedProduct.variations,
                 });
-                variation.quantity = attr.stock;
-                return variation;
-            });
 
-            setVariations(populatedVariations);
+
+
+                if (hasColorAttribute || hasSizeAttribute) {
+                    // Populate variations with fetched product attributes
+                    const populatedVariations = fetchedProduct.variations.map(attr => {
+                        const variation = { color: '', size: '', quantity: 0 };
+                        attr.item_variations.forEach(value => {
+                            if (value.attribute_name === 'Color') {
+                                variation.color = value.value;
+                            } else if (value.attribute_name === 'Talla') {
+                                variation.size = value.value;
+                            }
+                        });
+                        variation.quantity = attr.stock;
+                        return variation;
+                    });
+
+                    setVariations(populatedVariations);
+                    setIsEnabled(hasColorAttribute);
+                    setIsEnabled2(hasSizeAttribute);
+                } else {
+
+                }
+
+            } else {
+                setFormData({
+                    name: fetchedProduct.name,
+                    description: fetchedProduct.description,
+                    price: fetchedProduct.price,
+                    stock: fetchedProduct.stock,
+                    pictures: fetchedProduct.item_images,
+                    store_id: fetchedProduct.store_id,
+                    item_type: fetchedProduct.item_type,
+                    variations: fetchedProduct.variations,
+                });
+            }
+
+
+
+
         };
 
         fetchProduct();
@@ -285,7 +308,7 @@ export function EditarProducto({ navigation }) {
                                     </ScrollView>) :
                                 (<View className="relative flex-row py-[10px] justify-between items-center mb-2">
                                     <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Cantidad en inventario</Text>
-                                    <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
+                                    <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.stock.toString()} onChangeText={(value) => handleInputChange('stock', value)} />
                                 </View>)}
 
                             <View className="relative flex-row py-[10px] justify-between items-center mb-2">
@@ -312,7 +335,7 @@ export function EditarProducto({ navigation }) {
                                             {images.map((image, index) => (
                                                 <Image
                                                     key={index}
-                                                    source={{ uri: image.uri ? image.uri:image.picture }}
+                                                    source={{ uri: image.uri ? image.uri : image.picture }}
                                                     style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
                                                 />
                                             ))}
@@ -328,7 +351,7 @@ export function EditarProducto({ navigation }) {
                                 <Feather name="check" size={24} color="white" />
                                 <Text className="text-white text-md font-Excon_bold">Actualizar</Text>
                             </Pressable>
-                            <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2 bg-red-500" onPress={()=>DeleteProduct()}>
+                            <Pressable className="border-[0.5px] w-[45%] rounded-lg py-2 justify-center items-cente flex-row gap-x-2 bg-red-500" onPress={() => DeleteProduct()}>
                                 <Entypo name="cross" size={24} color="white" />
                                 <Text className=" text-md font-Excon_regular text-white">Eliminar</Text>
                             </Pressable>
