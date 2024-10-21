@@ -122,7 +122,7 @@ export function NuevaTienda({ navigation }) {
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
     const [selectedValue, setSelectedValue] = useState(formData.canton);
     const [selectedValue2, setSelectedValue2] = useState(formData.district);
-    const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();
+    const { location, setModalVisible , LocationPickerComponent, isModalVisible } = useSelectLocation();
     const [imagePerfil, setimagePerfil] = useState(formData.picture);
     const [imagePortada, setimagePortada] = useState(formData.banner);
 
@@ -249,10 +249,11 @@ export function NuevaTienda({ navigation }) {
                     ) : (
                         <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin dark:border-main-blue dark:text-white">Coordenadas</Text>
                     )}
-                    <Pressable onPress={openLocationPicker}>
+                    <Pressable onPress={()=>setModalVisible(true) }>
                         <Image className="" source={require('../assets/img/location.png')} />
                     </Pressable>
-                    <LocationPickerComponent />
+                    {isModalVisible && <LocationPickerComponent />}
+                    
                 </View>
             </View>
             <View className="flex-col px-5">

@@ -77,12 +77,12 @@ export function Store({ navigation }) {
             <View className="h-[200px] items-center justify-center">
 
                 <Image
-                    source={{ uri: route.params.store.picture }}
+                    source={{ uri: route.params.store.banner }}
                     className="w-full h-full absolute "
                 />
                 <View className="absolute bg-black opacity-50 w-full h-full"></View>
                 <View className="mt-5">
-                    <View className="flex-row mb-2 justify-between items-center">
+                    <View className="flex-row justify-between items-center mb-2">
                         <View className="w-[70%]">
                             <Text className="text-[22px] font-Excon_bold text-white text-start w-full">
                                 {route.params.store.name}
@@ -94,12 +94,12 @@ export function Store({ navigation }) {
                             <Text className="text-[15px] font-Excon_bold text-white ">Nombre sinpe: <Text className="font-Excon_regular"> { route.params.store.owner_sinpe}</Text></Text>
                         </View>
                         <Image
-                            source={{ uri: route.params.store.banner }}
+                            source={{ uri: route.params.store.picture }}
                             className="h-20 w-20 rounded-lg"
                         />
                     </View>
 
-                    <View className="flex-row text-center  bg-grey-light rounded-lg  dark:bg-dk-input ">
+                    <View className="flex-row text-center  bg-grey-light rounded-lg  dark:bg-dk-input mt-2  ">
                         <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                             onPress={() => {
                                 searchProduct(search);

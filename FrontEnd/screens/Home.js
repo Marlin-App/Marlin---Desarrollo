@@ -11,10 +11,22 @@ import useItems from '../hooks/useItems';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
-
+    const isFocused = useIsFocused();
+    const [isLogged, setIsLogged] = useState(null);
+  
+    useEffect(() => {
+      const fetchUserToken = async () => {
+          const token = await AsyncStorage.getItem('@userToken');
+          setIsLogged(token);
+      };
+      fetchUserToken();
+  }, [navigation, isFocused]);
+   
 
     const {
         cart,
@@ -276,7 +288,9 @@ export function HomeScreen({ navigation }) {
                             )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
-                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                            <Pressable onPress={
+                                isLogged ? () => navigation.navigate("Cart") : () => navigation.navigate("Landing")
+                            }>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                             <Text
