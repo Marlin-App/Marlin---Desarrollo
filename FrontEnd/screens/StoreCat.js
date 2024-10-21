@@ -25,7 +25,6 @@ export function StoreCat({ navigation }) {
     const route = useRoute();
    
     const id = route.params? route.params.id : null;
-    console.log(id);
     /* const { item } = route.params || {};
     console.log(item); */
 

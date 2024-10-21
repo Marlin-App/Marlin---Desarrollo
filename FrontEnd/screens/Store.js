@@ -9,11 +9,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useColorScheme } from "nativewind";
 
 
+
 export function Store({ navigation }) {
     const route = useRoute();
+   // const { data: items, loadings, error, refetch } = useItems();
     const { data, loading, setData } = useStoreItem(route.params.id);
     const dataArray = Array.isArray(data) ? data : [data];
-    console.log(route.params);
     const [formattedData, setFormattedData] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
     const [search, setSearch] = useState('');
@@ -42,19 +43,38 @@ export function Store({ navigation }) {
 
     if (!fontsLoaded) return null;
 
+    // useEffect(() => {
+    //     if (data && data.length > 0) {
+    //         const recontar = data.map(item => ({
+    //             ...item,
+    //             price: Number(item.price).toLocaleString('es-CR', { 
+    //                 style: 'currency', 
+    //                 currency: 'CRC', 
+    //                 maximumFractionDigits: 0 
+    //             })
+    //         }));
+    //         setFormattedData(recontar);
+    //     }
+    // }, [data]);
     useEffect(() => {
-        if (data && data.length > 0) {
-            const recontar = data.map(item => ({
-                ...item,
-                price: Number(item.price).toLocaleString('es-CR', { 
-                    style: 'currency', 
-                    currency: 'CRC', 
-                    maximumFractionDigits: 0 
-                })
-            }));
-            setFormattedData(recontar);
+        if (data) {
+            setFormattedData(formatItems(data));
         }
     }, [data]);
+
+    const formatItems = (data) => data.map(item => ({
+        id: item.id.toString(),
+                name: item.name,
+                description: item.description,
+                baseprice: item.price,
+                variation: item.variations,
+                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
+                stock: item.stock,
+                picture: item.item_images[0]?.picture,
+                pictures: item.item_images,
+                store_id: item.store_id,
+                item_type: item.item_type
+    }));
 
     const searchProduct = (text) => {
         const filteredData = data.filter(item =>
@@ -70,6 +90,7 @@ export function Store({ navigation }) {
         }));
         setFormattedData(recontarFilteredData);
     };
+
 
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 w-full" onLayout={onLayout}>
@@ -148,7 +169,7 @@ export function Store({ navigation }) {
                             <View className="items-center">
                                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                                     <Image
-                                        source={{ uri: item.item_images.length >0 ? item.item_images[0].picture : 'https://via.placeholder.com/150', }}
+                                        source={{ uri: item.picture }}
                                         className="rounded-lg w-full h-full"
                                         resizeMode="cover"
                                     />

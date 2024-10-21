@@ -51,13 +51,16 @@ export function ExploreScreen({ navigation }) {
 
     const formatItems = (data) => data.map(item => ({
         id: item.id.toString(),
-        name: item.name,
-        description: item.description,
-        price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
-        stock: item.stock,
-        picture: item.item_images.length >0 ? item.item_images[0].picture : 'https://via.placeholder.com/150',
-        store_id: item.store_id,
-        item_type: item.item_type
+                name: item.name,
+                description: item.description,
+                baseprice: item.price,
+                variation: item.variations,
+                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
+                stock: item.stock,
+                picture: item.item_images[0]?.picture,
+                pictures: item.item_images,
+                store_id: item.store_id,
+                item_type: item.item_type
     }));
     /* console.log(items[3].item_images[0].picture); */
 
