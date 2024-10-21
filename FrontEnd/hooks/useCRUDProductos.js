@@ -102,7 +102,7 @@ export function useCRUDProductos() {
                 const perfilFile = {
                     uri: image.uri,
                     type: 'image/jpeg',
-                    name: `${formData.name}_${index}.jpg`, // Asegúrate de que el nombre sea único
+                    name: `${formData.name}_${image.id}.jpg`, // Asegúrate de que el nombre sea único
                 };
                 formDataToSend.append('pictures', perfilFile);
             });
