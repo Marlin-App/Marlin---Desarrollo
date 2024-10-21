@@ -7,8 +7,8 @@ const useSelectLocation = () => {
   const [location, setLocation] = useState(null); // Guardar la ubicación actual
   const [isModalVisible, setModalVisible] = useState(false);
   const mapRef = useRef(null); // Crear una referencia para el MapView
-
-  // Obtener permisos de ubicación y la ubicación actual
+  const [selectedLocation, setSelectedLocation] = useState(null); // Guardar la ubicación seleccionada (solo del marcador)
+  
   useEffect(() => {
     const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -16,60 +16,53 @@ const useSelectLocation = () => {
         console.log('Permiso de ubicación denegado');
         return;
       }
-
+      
       const currentLocation = await Location.getCurrentPositionAsync({});
       setLocation({
         latitude: currentLocation.coords.latitude,
         longitude: currentLocation.coords.longitude,
       });
+      setSelectedLocation({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      });
     };
-
-    if (isModalVisible) {
-      getLocation();
-    }
-  }, [isModalVisible]);
-
-  const openLocationPicker = () => {
-    setModalVisible(true);
-  };
-
+    
+    getLocation();
+  }, []);
+  
   const closeLocationPicker = () => {
     setModalVisible(false);
   };
 
-  const handleMapPress = (event) => {
+  const handleMarkerDragEnd = (event) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLocation({ latitude, longitude });
-
-    // Animar el mapa para que se centre en la ubicación seleccionada
-    if (mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude,
-        longitude,
-        latitudeDelta: 0.01, // Zoom más cercano a la ubicación seleccionada
-        longitudeDelta: 0.01,
-      });
-    }
   };
 
   const LocationPickerComponent = () => (
-    <Modal visible={isModalVisible} animationType="slide" transparent={false}>
+    <Modal
+      visible={isModalVisible}
+      animationType="slide"
+    >
       <View style={styles.modalContainer}>
-        {location && (
+       
           <MapView
-            ref={mapRef} // Asociar la referencia al MapView
+            ref={mapRef} 
             style={styles.map}
             initialRegion={{
-              latitude: location.latitude, // Usar la ubicación actual del dispositivo
+              latitude: location.latitude, 
               longitude: location.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
-            onPress={handleMapPress} // Manejar el evento de tocar en el mapa
           >
-            <Marker coordinate={location} />
+            <Marker 
+              draggable
+              coordinate={location} 
+              onDragEnd={handleMarkerDragEnd} 
+            />
           </MapView>
-        )}
         <Button title="Cerrar" onPress={closeLocationPicker} />
       </View>
     </Modal>
@@ -77,8 +70,9 @@ const useSelectLocation = () => {
 
   return {
     location,
-    openLocationPicker,
     LocationPickerComponent,
+    setModalVisible,
+    isModalVisible,
   };
 };
 

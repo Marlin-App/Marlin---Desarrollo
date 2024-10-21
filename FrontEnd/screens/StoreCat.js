@@ -10,6 +10,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useRoute } from '@react-navigation/native';
 import NotificationDropdown from '../components/NotificationDropdown';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import image from '../assets/img/fondoLanding.png';
 
@@ -21,6 +23,16 @@ export function StoreCat({ navigation }) {
     const [originalStoreSelected, setOriginalStoreSelected] = useState([]);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+    const [isLogged, setIsLogged] = useState(null);
+    const isFocused = useIsFocused();
+  
+    useEffect(() => {
+      const fetchUserToken = async () => {
+          const token = await AsyncStorage.getItem('@userToken');
+          setIsLogged(token);
+      };
+      fetchUserToken();
+  }, [navigation, isFocused]);
 
 
     const route = useRoute();
@@ -52,13 +64,16 @@ export function StoreCat({ navigation }) {
             const formattedData = allStores.map(item => ({
                 id: item.id,
                 name: item.name,
-                location: item.location,
+                canton: item.canton,
+                district: item.district,
                 picture: item.picture,
+                num_sinpe: item.num_sinpe,
+                owner_sinpe: item.owner_sinpe,
                 type: item.store_type,
                 banner: item.banner,
             }));
 
-            setOriginalStoreSelected(formattedData);  // Guardar el estado inicial completo
+            setOriginalStoreSelected(formattedData);  
             setStoreSelected(formattedData);
         };
 
@@ -91,8 +106,10 @@ export function StoreCat({ navigation }) {
                 canton: item.canton,
                 district: item.district,
                 picture: item.picture,
-                banner: item.banner,
+                num_sinpe: item.num_sinpe,
+                owner_sinpe: item.owner_sinpe,
                 type: item.store_type,
+                banner: item.banner,
             }));
             clearSearch();
             setStoreSelected(formattedData2);
@@ -166,7 +183,15 @@ export function StoreCat({ navigation }) {
                             )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
-                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                            <Pressable onPress={
+                                () => {
+                                    if (isLogged) {
+                                        navigation.navigate('Cart');
+                                    } else {
+                                        navigation.navigate('Landing');
+                                    }
+                                }
+                            }>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                         </View>
@@ -221,30 +246,41 @@ export function StoreCat({ navigation }) {
 
                 <View className="">
                     <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
+                               
 
                     <SectionList
                         ref={sectionListRef}
                         sections={allCategories}
                         horizontal={true}
                         renderItem={({ item }) => (
-                            <View>
-                                <Pressable onPress={() => handleCategorySelect(item.id)}>
+                            <>
+                                {item.id == 0 ? (
+                                    <View key={0}>
+                                         <Pressable onPress={() => handleCategorySelect(0)}>
                                     <View className="my-4 mx-2 items-center">
-                                        <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
-                                            {selectedCategoryId == item.id ? (
-
-                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "") }} className="w-full h-full " resizeMode="cover" />
-                                            ) : (
-
-                                                <Image source={{ uri: item.image.replace("image/upload/", "") }} className="w-full h-full" resizeMode="cover" />
-                                            )
-                                            }
-
+                                        <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
+                                            <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "black"} />
                                         </View>
-                                        <Text className="text-lg text-center text-light-blue">{item.name}</Text>
+                                        <Text className="text-lg text-center text-light-blue">Todas</Text>
                                     </View>
                                 </Pressable>
-                            </View>
+                                    </View>
+                                ) : null}
+                                <View key={item.id}>
+                                    <Pressable onPress={() => handleCategorySelect(item.id)}>
+                                        <View className="my-4 mx-2 items-center">
+                                            <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
+                                                {selectedCategoryId == item.id ? (
+                                                    <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full " resizeMode="cover" />
+                                                ) : (
+                                                    <Image source={{ uri: item.image.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
+                                                )}
+                                            </View>
+                                            <Text className="text-lg text-center text-light-blue">{item.name}</Text>
+                                        </View>
+                                    </Pressable>
+                                </View>
+                            </>
                         )}
                     />
                 </View>

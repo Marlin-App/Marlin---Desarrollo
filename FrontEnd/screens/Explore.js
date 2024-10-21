@@ -11,7 +11,8 @@ import useCart from '../hooks/useCart';
 import useItems from '../hooks/useItems';
 import debounce from 'lodash.debounce';
 import NotificationDropdown from '../components/NotificationDropdown';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export function ExploreScreen({ navigation }) {
     const { cart, addToCart } = useCart();
@@ -23,27 +24,17 @@ export function ExploreScreen({ navigation }) {
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [refreshing, setRefreshing] = useState(false);  // for pull-to-refresh
-
-    /*   const [fontsLoaded] = useFonts({
-          Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
-          Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
-          Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
-          Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
-          Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
-      });
+    const [isLogged, setIsLogged] = useState(null);
+    const isFocused = useIsFocused();
   
-      useEffect(() => {
-          async function prepare() {
-              await SplashScreen.preventAutoHideAsync();
-          }
-          prepare();
-      }, []);
-  
-      useEffect(() => {
-          if (fontsLoaded) {
-              SplashScreen.hideAsync();
-          }
-      }, [fontsLoaded]); */
+    useEffect(() => {
+      const fetchUserToken = async () => {
+          const token = await AsyncStorage.getItem('@userToken');
+          setIsLogged(token);
+      };
+      fetchUserToken();
+  }, [navigation, isFocused]);
+   
 
       const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -158,7 +149,15 @@ export function ExploreScreen({ navigation }) {
                             )} 
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
-                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                            <Pressable onPress={
+                                () => {
+                                    if (isLogged) {
+                                        navigation.navigate('Cart');
+                                    } else {
+                                        navigation.navigate('Landing');
+                                    }
+                                }
+                            }>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                         </View>

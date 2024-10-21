@@ -45,6 +45,7 @@ export function ProfileScreen({ navigation }) {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('@userToken');
+      await AsyncStorage.removeItem('@cart');
       navigation.replace('Home');
       setIsLogged(false);
     } catch (e) {

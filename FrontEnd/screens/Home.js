@@ -11,12 +11,24 @@ import useItems from '../hooks/useItems';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import useStores from '../hooks/useStores';
 import NotificationDropdown from '../components/NotificationDropdown';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
-
+    const isFocused = useIsFocused();
+    const [isLogged, setIsLogged] = useState(null);
+  
+    useEffect(() => {
+      const fetchUserToken = async () => {
+          const token = await AsyncStorage.getItem('@userToken');
+          setIsLogged(token);
+      };
+      fetchUserToken();
+  }, [navigation, isFocused]);
+   
 
     const {
         cart,
@@ -120,6 +132,15 @@ export function HomeScreen({ navigation }) {
                 id: store.id.toString(),
                 title: store.name,
                 image: store.picture,
+                name: store.name,
+                canton: store.canton,
+                district: store.district,
+                picture: store.picture,
+                num_sinpe: store.num_sinpe,
+                owner_sinpe: store.owner_sinpe,
+                type: store.store_type,
+                banner: store.banner,
+                
             })),
         },
     ];
@@ -148,7 +169,7 @@ export function HomeScreen({ navigation }) {
     );
 
     const renderStoreItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Store', { store: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Store', { id: item.id, store: item })}>
             <View className="my-2 mx-4 items-center">
                 <View className="bg-white rounded-lg shadow-lg w-40 h-40 p-2">
                     <Image
@@ -232,7 +253,9 @@ export function HomeScreen({ navigation }) {
                             )} 
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
-                            <Pressable onPress={() => navigation.navigate("Cart")}>
+                            <Pressable onPress={
+                                isLogged ? () => navigation.navigate("Cart") : () => navigation.navigate("Landing")
+                            }>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
                             <Text

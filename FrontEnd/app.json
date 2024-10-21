@@ -15,9 +15,10 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon2.png",
-        "backgroundColor": "#015DEC"
+        "foregroundImage": "./assets/iconMobile.png",
+        "backgroundColor": "#1952BE"
       },
       "package": "com.luisda1828.marlinapp"
     },

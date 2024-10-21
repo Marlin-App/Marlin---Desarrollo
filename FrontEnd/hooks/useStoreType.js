@@ -20,7 +20,6 @@ const useStoreType = () => {
                     }))
                 }
             ];
-            formattedData1[0].data.unshift({id: 0, name: 'Todas', image:"http://res.cloudinary.com/dgpqi6ukf/image/upload/v1728176023/categories/Zapateria_image.webp", image_selected:"https://res.cloudinary.com/dgpqi6ukf/image/upload/v1728176024/categories/Zapateria_selected_image.webp"});
             setAllCategories(formattedData1);
 
             const response2 = await fetch("https://marlin-backend.vercel.app/api/stores/");
