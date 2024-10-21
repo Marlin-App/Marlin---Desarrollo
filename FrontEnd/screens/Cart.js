@@ -8,6 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import useCart from '../hooks/useCart';
 import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export function CartScreen({ navigation }) {
 
@@ -76,7 +77,7 @@ export function CartScreen({ navigation }) {
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
                 <View className="items-end justify-end mt-2">
                     <Pressable onPress={handleDelete}>
-                        <AntDesign name="delete" size={20} color={colorScheme === 'dark' ? 'red' : 'red'} />
+                    <MaterialIcons name="delete-outline" size={20} color={colorScheme === 'dark' ? '#BB2626' : '#DB2B2B'} />
                     </Pressable>
                 </View>
                 <View className="flex-row">

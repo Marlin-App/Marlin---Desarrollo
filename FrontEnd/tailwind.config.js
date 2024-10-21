@@ -16,6 +16,9 @@ module.exports = {
         'dk-tab': '#1C1C1C',
         'dk-blue': '#5186EC',
         'dk-input': '#2A2A2A',
+        'main-red': '#DB2B2B',
+        'dk-red': '#BB2626',
+ 
 
         
       },
