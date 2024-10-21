@@ -170,6 +170,15 @@ export function HomeScreen({ navigation }) {
                 id: store.id.toString(),
                 title: store.name,
                 image: store.picture,
+                name: store.name,
+                canton: store.canton,
+                district: store.district,
+                picture: store.picture,
+                num_sinpe: store.num_sinpe,
+                owner_sinpe: store.owner_sinpe,
+                type: store.store_type,
+                banner: store.banner,
+                
             })),
         },
     ];
@@ -198,7 +207,7 @@ export function HomeScreen({ navigation }) {
     );
 
     const renderStoreItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Store', { store: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Store', { id: item.id, store: item })}>
             <View className="my-2 mx-4 items-center">
                 <View className="bg-white rounded-lg shadow-lg w-40 h-40 p-2">
                     <Image
