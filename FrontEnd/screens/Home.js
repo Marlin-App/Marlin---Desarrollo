@@ -13,6 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import useStores from '../hooks/useStores';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -39,6 +40,7 @@ export function HomeScreen({ navigation }) {
     } = useCart();
 
     const { data: items, loading, error } = useItems();
+    const { data:stores, load, err } = useStores();
 
     /*  const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
@@ -161,27 +163,14 @@ export function HomeScreen({ navigation }) {
             }))
         },
         {
-
             id: "3",
             title: "Tiendas destacadas",
             type: "store",
-            horizontalData: [
-                {
-                    id: "3a",
-                    title: "Tienda 1",
-                    image: require("../../FrontEnd/assets/img/marlin.png"),
-                },
-                {
-                    id: "3b",
-                    title: "Tienda 2",
-                    image: require("../../FrontEnd/assets/img/marlin.png"),
-                },
-                {
-                    id: "3c",
-                    title: "Tienda 3",
-                    image: require("../../FrontEnd/assets/img/marlin.png"),
-                },
-            ],
+            horizontalData: stores.slice(0, 3).map(store => ({
+                id: store.id.toString(),
+                title: store.name,
+                image: store.picture,
+            })),
         },
     ];
 
@@ -213,7 +202,7 @@ export function HomeScreen({ navigation }) {
             <View className="my-2 mx-4 items-center">
                 <View className="bg-white rounded-lg shadow-lg w-40 h-40 p-2">
                     <Image
-                        source={item.image}
+                        source={{ uri: item.image }}
                         className="w-full h-full rounded-lg"
                         resizeMode="cover"
                     />

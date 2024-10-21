@@ -102,6 +102,7 @@ export function ItemPage({ navigation }) {
       )
       .flat();
 
+
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
             <ScrollView className="mb-20">
