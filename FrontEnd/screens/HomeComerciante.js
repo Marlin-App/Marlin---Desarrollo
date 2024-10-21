@@ -1,11 +1,12 @@
 
-import { Text, View, FlatList, Pressable, Image, ScrollView } from 'react-native';
+import { Text, View, FlatList, Pressable, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from '@expo/vector-icons/Feather';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -124,6 +125,23 @@ export function HomeComercianteScreen({ navigation }) {
         }
     ]);
     
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    const notifications = [
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+    ];
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownVisible(false);
+    };
     const [orderFiler, setOrderFilter] = useState(orders);
 
 
@@ -139,6 +157,12 @@ export function HomeComercianteScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
+            <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
@@ -147,7 +171,12 @@ export function HomeComercianteScreen({ navigation }) {
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                    <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            {notifications.length > 0 && (
+                                <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
+                            )} 
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

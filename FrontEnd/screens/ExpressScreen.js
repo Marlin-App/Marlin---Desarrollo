@@ -18,7 +18,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Animated, Modal, Dimensions } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCRUDProductos } from "../hooks/useCRUDProductos";
-
+import NotificationDropdown from '../components/NotificationDropdown';
 import React, { useEffect, useCallback, useState, useRef } from "react";
 
 export function ExpressScreen({ navigation }) {
@@ -169,6 +169,24 @@ export function ExpressScreen({ navigation }) {
   // const [prueba, setprueba]=useState([{title:"Pendientes",pedidos:[1,2,3]},{title:"En Progreso",pedidos:[{tienda:"Bazar marta",destinatario:"Jeremy Guzman", detalle:[informacion del pedido de la api de Jere]}]},{title:"Completados",pedidos:[1,2,3,4,5]}])
   console.log("storeWithproducts:", prueba);
 
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    const notifications = [
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+    ];
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownVisible(false);
+    };
+
   useEffect(() => {
     const fetchStores = async () => {
       await fetchStoresWithProducts();
@@ -196,6 +214,12 @@ export function ExpressScreen({ navigation }) {
   };
   return (
     <View className="bg-white dark:bg-neutral-950 h-full">
+      <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
       <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
         <View className="flex-row justify-between w-full">
           <View className="flex-row items-center">
@@ -204,11 +228,12 @@ export function ExpressScreen({ navigation }) {
             </Text>
           </View>
           <View className="flex-row items-center justify-center gap-x-4 mr-2">
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color={colorScheme === "dark" ? "#5186EC" : "white"}
-            />
+          <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            {notifications.length > 0 && (
+                                <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
+                            )} 
+                        </TouchableOpacity>
           </View>
         </View>
       </View>

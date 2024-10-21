@@ -1,16 +1,33 @@
 import { Text, View, Pressable, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import useCRUDTiendas from '../hooks/useCRUDTiendas';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 export function MisTiendas({ navigation }) {
     const { colorScheme } = useColorScheme();
 
-    const { allStores, loading, getUserStores, setAllStores  } = useCRUDTiendas();
+    const { allStores, loading, getUserStores, setAllStores } = useCRUDTiendas();
 
-  
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    const notifications = [
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+    ];
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownVisible(false);
+    };
 
     useEffect(() => {
         const fetchStores = async () => {
@@ -34,6 +51,12 @@ export function MisTiendas({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
+            <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
@@ -42,7 +65,12 @@ export function MisTiendas({ navigation }) {
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                        <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            {notifications.length > 0 && (
+                                <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
+                            )}
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -57,7 +85,7 @@ export function MisTiendas({ navigation }) {
             />
 
             <TouchableOpacity className="bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2" onPress={() => navigation.navigate("NuevaTienda")}>
-                <MaterialIcons name="store-mall-directory" size={30} color="white"/>
+                <MaterialIcons name="store-mall-directory" size={30} color="white" />
                 <Text className="text-white font-Excon_bold text-lg ml-2">Agregar nueva tienda</Text>
             </TouchableOpacity>
         </View>

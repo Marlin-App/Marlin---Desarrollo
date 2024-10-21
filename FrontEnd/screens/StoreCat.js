@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useCallback, useRef } from 'react';
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator} from 'react-native';
+import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
 import useStoreType from '../hooks/useStoreType';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useRoute } from '@react-navigation/native';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 import image from '../assets/img/fondoLanding.png';
 
@@ -23,11 +24,28 @@ export function StoreCat({ navigation }) {
 
 
     const route = useRoute();
-   
-    const id = route.params? route.params.id : null;
+
+    const id = route.params ? route.params.id : null;
     /* const { item } = route.params || {};
     console.log(item); */
 
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    const notifications = [
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+    ];
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownVisible(false);
+    };
 
     useEffect(() => {
         const selectedStore = () => {
@@ -98,9 +116,9 @@ export function StoreCat({ navigation }) {
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
 
-   
 
-   
+
+
 
     const sectionListRef = useRef(null);
 
@@ -116,26 +134,37 @@ export function StoreCat({ navigation }) {
                 setSelectedCategoryId(itemIndex);
             }
         };
-    
+
         if (allCategories.length > 0) {
             setTimeout(() => {
-                scrollToItem(0, id? id : 0);    
-            }, 100); 
+                scrollToItem(0, id ? id : 0);
+            }, 100);
         }
     }, [allCategories, id]);
 
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 " >
+            <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
                             Carr. Interamericana Norte
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"}  />
+                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 ">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                        <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            {notifications.length > 0 && (
+                                <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
+                            )}
+                        </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
@@ -150,7 +179,7 @@ export function StoreCat({ navigation }) {
                 <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => {
                         searchStore(search);
-                       
+
                     }}
                 >
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
@@ -163,7 +192,7 @@ export function StoreCat({ navigation }) {
                     onChangeText={setSearch}
                     onSubmitEditing={() => {
                         searchStore(search);
-                       
+
                     }}
                 />
                 {search ? (
@@ -171,7 +200,7 @@ export function StoreCat({ navigation }) {
                         onPress={() => {
                             setSearch('');
                             searchStore('');
-                          
+
                         }}
 
                     >
@@ -204,13 +233,13 @@ export function StoreCat({ navigation }) {
                                         <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
                                             {selectedCategoryId == item.id ? (
 
-                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full " resizeMode="cover" />
-                                            ):(
-                                                
-                                                <Image source={{ uri: item.image.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
+                                                <Image source={{ uri: item.image_selected.replace("image/upload/", "") }} className="w-full h-full " resizeMode="cover" />
+                                            ) : (
+
+                                                <Image source={{ uri: item.image.replace("image/upload/", "") }} className="w-full h-full" resizeMode="cover" />
                                             )
                                             }
-                                            
+
                                         </View>
                                         <Text className="text-lg text-center text-light-blue">{item.name}</Text>
                                     </View>

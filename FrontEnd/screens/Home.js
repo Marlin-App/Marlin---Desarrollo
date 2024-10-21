@@ -12,6 +12,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import HomeCarousel from '../components/CarouselHome';
 import useStores from '../hooks/useStores';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -28,7 +29,7 @@ export function HomeScreen({ navigation }) {
     } = useCart();
 
     const { data: items, loading, error } = useItems();
-    const { data:stores, load, err } = useStores();
+    const { data: stores, load, err } = useStores();
 
     /*  const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
@@ -46,9 +47,7 @@ export function HomeScreen({ navigation }) {
             title: "Notificación 1",
             description: "Descripción de la notificación 1",
         }
-
     ];
-
 
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
@@ -57,44 +56,7 @@ export function HomeScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
-
-    const NotificationDropdown = () => (
-        <Modal
-            transparent={true}
-            visible={isDropdownVisible}
-            animationType="fade"
-            onRequestClose={closeDropdown}
-        >
-            <TouchableWithoutFeedback onPress={closeDropdown}>
-                <View className="flex-1 justify-start items-end p-4 bg-[#00000070]">
-
-                    <TouchableWithoutFeedback>
-                        <View className="w-72 bg-white rounded-lg shadow-lg max-h-96 dark:bg-black">
-                            <Text className="text-xl font-Excon_bold px-4 py-2 border-b text-main-blue dark:text-light-blue dark:border-main-blue">Notificaciones</Text>
-                            <FlatList
-                                data={notifications}
-                                keyExtractor={(item) => item.id}
-                                renderItem={({ item }) => (
-                                    <View className="px-4 py-2 border-b border-gray-200 dark:border-light-blue">
-                                        <Text className="font-semibold text-gray-800">{item.title}</Text>
-                                        <Text className="text-gray-400">{item.description}</Text>
-                                    </View>
-                                )}
-                                ListEmptyComponent={
-                                    <View className="px-4 py-4 items-center">
-                                        <Text className="text-gray-600 dark:text-[#d6d6d6]">No tienes notificaciones nuevas.</Text>
-                                    </View>
-                                }
-                            />
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                </View>
-            </TouchableWithoutFeedback>
-        </Modal>
-    );
-
-
+    
     const division = (array, divisionSize) => {
         const parte = [];
         for (let i = 0; i < array.length; i += divisionSize) {
@@ -164,7 +126,7 @@ export function HomeScreen({ navigation }) {
 
 
     const renderHorizontalItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item})}>
+        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
             <View className="my-2 mx-4 items-start">
                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                     <Image
@@ -248,7 +210,12 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
-            <NotificationDropdown />
+            <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
@@ -262,7 +229,7 @@ export function HomeScreen({ navigation }) {
                             <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
-                            )}
+                            )} 
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={() => navigation.navigate("Cart")}>

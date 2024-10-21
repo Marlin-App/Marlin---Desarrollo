@@ -4,6 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect, useRef } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useCRUDProductos } from '../hooks/useCRUDProductos';
+import NotificationDropdown from '../components/NotificationDropdown';
 
 
 export function ComercianteInventario({ navigation }) {
@@ -27,6 +28,23 @@ export function ComercianteInventario({ navigation }) {
     }, [navigation]);
 
 
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+    const notifications = [
+        {
+            id: 1,
+            title: "Notificación 1",
+            description: "Descripción de la notificación 1",
+        }
+    ];
+
+    const toggleDropdown = () => {
+        setIsDropdownVisible(!isDropdownVisible);
+    };
+
+    const closeDropdown = () => {
+        setIsDropdownVisible(false);
+    };
 
     const longpress = (id) => {
         setLongPressProduct(id);
@@ -47,6 +65,12 @@ export function ComercianteInventario({ navigation }) {
     };
     return (
         <View className="bg-white dark:bg-neutral-950 h-full">
+            <NotificationDropdown
+                notifications={notifications}
+                isDropdownVisible={isDropdownVisible}
+                toggleDropdown={toggleDropdown}
+                closeDropdown={closeDropdown}
+            />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
@@ -55,7 +79,12 @@ export function ComercianteInventario({ navigation }) {
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
-                        <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                    <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            {notifications.length > 0 && (
+                                <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
+                            )} 
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
