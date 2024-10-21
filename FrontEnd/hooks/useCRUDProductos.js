@@ -135,9 +135,9 @@ export function useCRUDProductos() {
                   console.log('Error de respuesta:', errorText);
                   throw new Error('Error agregando producto');
               } else {
-                  fetchStoresWithProducts();
                   console.log('Producto agregado con éxito');
                   Alert.alert('Producto agregado', '¡Tu producto ha sido agregado con éxito!');
+                  fetchStoresWithProducts();
               }
           } catch (error) {
               console.error('Error al crear el producto:', error);

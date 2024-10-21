@@ -239,86 +239,99 @@ export function ExpressScreen({ navigation }) {
       </View>
 
       <Animated.ScrollView
-        ref={scrollViewRef}
-        horizontal
-        pagingEnabled
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false, listener: handleScroll }
-        )}
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={false}
-      >
-        {prueba.map((store, storeIndex) => (
-          <View
-            key={storeIndex}
-            style={{ width: screenWidth }}
-            className="flex-col p-4"
-          >
-            <Text className="text-2xl text-main-blue font-Excon_bold mt-2 dark:text-white">
-              {store.title}
-            </Text>
-            <View className="flex-col">
-              <FlatList
-                className="h-[40vh]"
-                data={store.pedidos}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                  <ScrollView className="flex-col p-4 rounded-lg mb-4">
-                    <View className="flex-row justify-center mb-1">
-                      <View className="flex-row justify-center mt-2 py-4 border-[0.5px] border-main-blue dark:border-light-blue w-full items-center rounded-md ">
-                        <View>
-                          <View className="flex-row">
-                            <View className=" justify-center item-center bg-blue-800 rounded-lg dark:bg-neutral-900">
-                              <Image
-                                style={{
-                                  width: 100,
-                                  height: 100,
-                                  resizeMode: "stretch",
-                                }}
-                              />
-                            </View>
-                            <View className="ml-2">
-                              <Text className="font-Excon_bold text-base dark:text-white">
-                                Nombre de la tienda
-                              </Text>
-                              <Text className="font-Excon_regular text-sm dark:text-white">
-                                Usuario: Nombre Cliente
-                              </Text>
-                              <Text className="font-Excon_regular text-sm dark:text-white underline">
-                                Más información
-                              </Text>
-                            </View>
-                          </View>
-                          <View className="flex-row justify-center gap-x-4 mt-3">
-                            <TouchableOpacity
-                              className=""
-                              onPress={() =>
-                                navigation.navigate("TerminosCondiciones")
-                              }
-                            >
-                              <Text className="font-Excon_regular text-sm text-white dark:text-white bg-main-blue px-4 py-1 rounded-xl mr-2 ">
-                                Aceptar
-                              </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity classsName="">
-                              <Text className="font-Excon_regular text-sm text-white dark:text-white bg-main-red px-2 py-1 rounded-xl">
-                                No Aceptar
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
+  ref={scrollViewRef}
+  horizontal
+  pagingEnabled
+  onScroll={Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: false, listener: handleScroll }
+  )}
+  scrollEventThrottle={16}
+  showsHorizontalScrollIndicator={false}
+>
+  {prueba.map((store, storeIndex) => (
+    <View
+      key={storeIndex}
+      style={{ width: screenWidth }}
+      className="flex-col p-4"
+    >
+      <Text className="text-2xl text-main-blue font-Excon_bold mt-2 dark:text-white">
+        {store.title}
+      </Text>
+      <View className="flex-col">
+        <FlatList
+          className="h-[40vh]"
+          data={store.pedidos}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <ScrollView className="flex-col p-4 rounded-lg mb-4">
+              <View className="flex-row justify-center mb-1">
+                <View className="flex-row justify-center mt-2 py-4 border-[0.5px] border-main-blue dark:border-light-blue w-full items-center rounded-md ">
+                  <View>
+                    <View className="flex-row">
+                      <View className=" justify-center item-center bg-blue-800 rounded-lg dark:bg-neutral-900">
+                        <Image
+                          style={{
+                            width: 100,
+                            height: 100,
+                            resizeMode: "stretch",
+                          }}
+                        />
+                      </View>
+                      <View className="ml-2">
+                        <Text className="font-Excon_bold text-base dark:text-white">
+                          Nombre de la tienda
+                        </Text>
+                        <Text className="font-Excon_regular text-sm dark:text-white">
+                          Usuario: Nombre Cliente
+                        </Text>
+                        <Text className="font-Excon_regular text-sm dark:text-white underline">
+                          Más información
+                        </Text>
                       </View>
                     </View>
-                  </ScrollView>
-                )}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 40 }}
-              />
-            </View>
-          </View>
-        ))}
-      </Animated.ScrollView>
+                    <View className="flex-row justify-center gap-x-4 mt-3">
+                      {/* Botones de Aceptar / No Aceptar para la primera vista y basados en scroll para las demás */}
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("TerminosCondiciones")
+                        }
+                      >
+                        <Text
+                          className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${
+                            storeIndex === 0 || scrollX._value / screenWidth === storeIndex
+                              ? "bg-main-blue"
+                              : "bg-main-gray"
+                          }`}
+                        >
+                          Aceptar
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity>
+                        <Text
+                          className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${
+                            storeIndex === 0 || scrollX._value / screenWidth === storeIndex
+                              ? "bg-main-red"
+                              : "bg-main-gray"
+                          }`}
+                        >
+                          No Aceptar
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          )}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 40 }}
+        />
+      </View>
+    </View>
+  ))}
+</Animated.ScrollView>
+
       <View className="flex-row justify-center mt-4">
         {prueba.map((_, index) => {
           // Animación del tamaño del punto
