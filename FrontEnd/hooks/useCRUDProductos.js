@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDecodeJWT from './useDecodeJWT';
 
 
-export function useCRUDProductos() {
+const useCRUDProductos= (navigation) => {
 
     //funcion para devolver todas las tiendas con sus productos
 
@@ -135,9 +135,10 @@ export function useCRUDProductos() {
                   console.log('Error de respuesta:', errorText);
                   throw new Error('Error agregando producto');
               } else {
+                  navigation.navigate('Inventario');
                   console.log('Producto agregado con éxito');
                   Alert.alert('Producto agregado', '¡Tu producto ha sido agregado con éxito!');
-                  fetchStoresWithProducts();
+                //   fetchStoresWithProducts();
               }
           } catch (error) {
               console.error('Error al crear el producto:', error);
@@ -214,4 +215,5 @@ export function useCRUDProductos() {
 
     return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct, getProduct };
 
-}
+};
+export default useCRUDProductos;

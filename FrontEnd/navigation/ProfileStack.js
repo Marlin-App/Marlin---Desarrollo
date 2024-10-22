@@ -88,14 +88,6 @@ export function ProfileStackScreen({ navigation, route }) {
           }
         }}
       />
-
-      <ProfileStack.Screen
-        name="Inventario"
-        component={ComercianteInventario}
-        options={{
-          headerShown: false
-        }}
-      />
     </ProfileStack.Navigator>
   );
 }

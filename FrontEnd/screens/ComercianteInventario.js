@@ -3,7 +3,7 @@ import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect, useRef } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useCRUDProductos } from '../hooks/useCRUDProductos';
+import useCRUDProductos  from '../hooks/useCRUDProductos';
 import NotificationDropdown from '../components/NotificationDropdown';
 
 
@@ -23,7 +23,7 @@ export function ComercianteInventario({ navigation }) {
             await fetchStoresWithProducts();
         };
 
-        fetchStores();
+        const focusListener = navigation.addListener('focus', fetchStores);
 
     }, [navigation]);
 

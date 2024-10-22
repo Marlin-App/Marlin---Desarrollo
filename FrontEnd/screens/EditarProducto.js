@@ -5,7 +5,7 @@ import { useColorScheme } from "nativewind";
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useCRUDProductos } from '../hooks/useCRUDProductos';
+import useCRUDProductos from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
 import loaderGif from '../assets/loader.gif';
 

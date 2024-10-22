@@ -5,7 +5,7 @@ import { useColorScheme } from "nativewind";
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useCRUDProductos } from '../hooks/useCRUDProductos';
+import useCRUDProductos from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
 
 
@@ -23,7 +23,7 @@ export function AgregarProducto({ navigation }) {
     });
 
 
-    const { addProduct } = useCRUDProductos();
+    const { addProduct } = useCRUDProductos(navigation);
     const route = useRoute();
     const storeId = route.params || {};
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -122,9 +122,7 @@ export function AgregarProducto({ navigation }) {
             store_id: storeId.store,
             item_type: 1,
         };
-        console.log(newProduct.pictures);
         addProduct(newProduct);
-        navigation.goBack();
     };
 
 
@@ -135,7 +133,7 @@ export function AgregarProducto({ navigation }) {
                 <View className=" p-5 w-full h-full">
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Nombre del producto</Text>
-                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="Nombre de la tienda" placeholderTextColor={placeholderTextColor} />
+                        <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.name} onChangeText={(value) => handleInputChange('name', value)} placeholder="¿Cómo se llama tu producto?" placeholderTextColor={placeholderTextColor} />
                     </View>
                     <View className="flex-col px-5">
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Descripción</Text>
@@ -144,7 +142,7 @@ export function AgregarProducto({ navigation }) {
                             multiline
                             numberOfLines={4}
                             maxLength={120}
-                            placeholder="Brinda direcciones, calles, avenidas o puntos de referencia para que tu negocio pueda ser ubicado."
+                            placeholder="Brinda una descripción con caracteristicas que hagan destacar tu producto."
                             placeholderTextColor={placeholderTextColor}
                         />
                     </View>
