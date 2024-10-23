@@ -246,6 +246,20 @@ class StoreItemSerializer(serializers.ModelSerializer):
         ItemVariation.objects.bulk_create(new_variations)
         AtributeValue.objects.bulk_create(new_attributes_values)
         return instance
+    
+class StoreWithItemsSerializer(serializers.ModelSerializer):
+    items = StoreItemSerializer(many=True, read_only=True)
+    class Meta:
+        model = Store
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if representation['picture'].startswith('image/upload/'):
+            representation['picture'] = representation['picture'].replace('image/upload/', '')
+        if representation['banner'].startswith('image/upload/'):
+            representation['banner'] = representation['banner'].replace('image/upload/', '')
+        return representation
 
 class StoreTypeSerializer(serializers.ModelSerializer):
     class Meta:
