@@ -56,7 +56,8 @@ class PasswordResetRequestView(APIView):
             uid = urlsafe_base64_encode(str(user.pk).encode('utf-8'))
 
             # reset_url = f"marlin-app://reset-password/{uid}/{token}/"
-            reset_url = f"http://127.0.0.1:8000/api/redirect/{uid}/{token}/"
+            # reset_url = f"http://127.0.0.1:8000/api/redirect/{uid}/{token}/"
+            reset_url = f"https://marlin-desarrollo.vercel.app/api/redirect/{uid}/{token}/"
 
             html_message = render_to_string('reset_password_email.html', {
                 'user': user,
