@@ -1,34 +1,30 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
 import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import Ionicons from "@expo/vector-icons/Ionicons";
 import useCart from '../hooks/useCart';
 import useItems from '../hooks/useItems';
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import useStores from '../hooks/useStores';
 import HomeCarousel from '../components/CarouselHome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
-import useStores from '../hooks/useStores';
 import NotificationDropdown from '../components/NotificationDropdown';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const isFocused = useIsFocused();
     const [isLogged, setIsLogged] = useState(null);
-  
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
     useEffect(() => {
-      const fetchUserToken = async () => {
-          const token = await AsyncStorage.getItem('@userToken');
-          setIsLogged(token);
-      };
-      fetchUserToken();
-  }, [navigation, isFocused]);
-   
+        const fetchUserToken = async () => {
+            const token = await AsyncStorage.getItem('@userToken');
+            setIsLogged(token);
+        };
+        fetchUserToken();
+    }, [navigation, isFocused]);
 
     const {
         cart,
@@ -41,17 +37,7 @@ export function HomeScreen({ navigation }) {
     } = useCart();
 
     const { data: items, loading, error } = useItems();
-    const { data: stores, load, err } = useStores();
-
-    /*  const [fontsLoaded] = useFonts({
-        Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
-        Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
-        Excon_thin: require("../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf"),
-        Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
-        Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
-    });  */
-
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const { data: stores } = useStores();
 
     const notifications = [
         {
@@ -68,7 +54,7 @@ export function HomeScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
-    
+
     const division = (array, divisionSize) => {
         const parte = [];
         for (let i = 0; i < array.length; i += divisionSize) {
@@ -76,7 +62,6 @@ export function HomeScreen({ navigation }) {
         }
         return parte;
     };
-
 
     const verticalData = [
         {
@@ -115,13 +100,9 @@ export function HomeScreen({ navigation }) {
                 name: item.name,
                 description: item.description,
                 baseprice: item.price,
-                variation: item.variations,
                 price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
-                stock: item.stock,
                 picture: item.item_images[0]?.picture,
                 pictures: item.item_images,
-                store_id: item.store_id,
-                item_type: item.item_type
             }))
         },
         {
@@ -145,9 +126,8 @@ export function HomeScreen({ navigation }) {
         },
     ];
 
-
     const renderHorizontalItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Item', { product: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('Item', { id: item.id })}>
             <View className="my-2 mx-4 items-start">
                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] dark:bg-neutral-900 p-[2px]">
                     <Image
@@ -157,7 +137,7 @@ export function HomeScreen({ navigation }) {
                     />
                 </View>
                 <Text
-                    className="text-lg font-Excon_bold  text-left text-light-blue dark:text-white w-40"
+                    className="text-lg font-Excon_bold text-left text-light-blue dark:text-white w-40"
                     numberOfLines={1}
                     ellipsizeMode='tail'
                 >
@@ -188,7 +168,7 @@ export function HomeScreen({ navigation }) {
             const largo = division(item.horizontalData, 10);
 
             return (
-                <View className="p-2 my-2" /*onLayout={onLayout}*/>
+                <View className="p-2 my-2">
                     <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue dark:text-dk-blue">{item.title}</Text>
                     {largo.map((largo, index) => (
                         <FlatList
@@ -205,7 +185,7 @@ export function HomeScreen({ navigation }) {
             );
         } else if (item.type === "store") {
             return (
-                <View className="p-2 my-2" /* onLayout={onLayout} */>
+                <View className="p-2 my-2">
                     <Text className="ml-4 mt-2 mb-4 text-2xl font-Excon_bold text-main-blue dark:text-dk-blue">{item.title}</Text>
                     <FlatList
                         data={item.horizontalData}
@@ -237,7 +217,7 @@ export function HomeScreen({ navigation }) {
                 toggleDropdown={toggleDropdown}
                 closeDropdown={closeDropdown}
             />
-            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
+            <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
@@ -250,7 +230,7 @@ export function HomeScreen({ navigation }) {
                             <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
-                            )} 
+                            )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={
@@ -258,38 +238,25 @@ export function HomeScreen({ navigation }) {
                             }>
                                 <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
-                            <Text
-                                className={`absolute left-4 w-3 h-3 rounded-full mb-5 text-white ${cart.length > 1 ? "bg-red-600" : "bg-transparent"
-                                    }`}
-                            >
-                                {" "}
-                            </Text>
+                            <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
+                                <Text className="text-white text-xs font-bold">{cart.length}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
+            
             </View>
-
-            {loading ? (
-                <View className="w-full h-full justify-center items-center bg-white">
-                    <ActivityIndicator size="large" color="#3498db" />
-                </View>
-            ) : null}
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-            >
-                <HomeCarousel navigation={navigation} />
+            <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
+                <HomeCarousel />
                 <FlatList
                     data={verticalData}
-                    scrollEnabled={false}
                     renderItem={renderVerticalItem}
                     keyExtractor={(item) => item.id}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 20 }}
+                    contentContainerStyle={{ paddingBottom: 16 }}
                 />
             </ScrollView>
         </View>
     );
-
-
 }
+
+export default HomeScreen;

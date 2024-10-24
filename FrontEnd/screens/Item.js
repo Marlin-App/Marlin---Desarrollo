@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Modal, Alert, ScrollView, FlatList } from 'react-native';
+import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Modal, Alert, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { styled, useColorScheme } from "nativewind";
 import useCart from '../hooks/useCart';
@@ -13,19 +13,14 @@ export function ItemPage({ navigation }) {
     const [modalVisible2, setModalVisible2] = useState(false);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
-    const [fontsLoaded] = useFonts({
-        'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
-        'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
-        'Excon_thin': require('../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf'),
-        'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
-        'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
-    });
-
-    const { colorScheme } = useColorScheme();
     const [quantity, setQuantity] = useState(1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [item, setItem] = useState(null);
+
     const route = useRoute();
-    const { product } = route.params; // Recibir el producto desde la navegación
+    const { id } = route.params; // Recibir el ID del ítem desde la navegación
 
     useEffect(() => {
         async function checkLoginStatus() {
@@ -34,11 +29,24 @@ export function ItemPage({ navigation }) {
         }
         checkLoginStatus();
 
+        const fetchItem = async () => {
+            try {
+                const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}`);
+                const result = await response.json();
+                setItem(result);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchItem();
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
         }
         prepare();
-    }, []);
+    }, [id]);
 
     const onLayout = useCallback(async () => {
         if (fontsLoaded) {
@@ -46,7 +54,37 @@ export function ItemPage({ navigation }) {
         }
     }, [fontsLoaded]);
 
-    if (!fontsLoaded) return null;
+    const [fontsLoaded] = useFonts({
+        'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
+        'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
+        'Excon_thin': require('../../FrontEnd/assets/fonts/Excon/Excon-Thin.otf'),
+        'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
+        'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
+    });
+
+    if (loading) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <Text className="text-red-500">Error: {error.message}</Text>
+            </View>
+        );
+    }
+
+    if (!item) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <Text>No se encontró el ítem</Text>
+            </View>
+        );
+    }
 
     const increaseQuantity = () => {
         setQuantity(prevQuantity => prevQuantity + 1);
@@ -58,18 +96,33 @@ export function ItemPage({ navigation }) {
         }
     };
 
-    const vericarCarrito = () => {
+    const verifyCart = () => {
+        if (!item.variations.length) {
+            handleAddToCart();
+            return;
+        }
+
         if (!isLoggedIn) {
             Alert.alert('Error', 'Debes estar logueado para agregar productos al carrito.');
             return;
         }
 
-        if (!selectedColor || !selectedSize) {
-            Alert.alert('Error', 'Debes seleccionar un color y una talla.');
-            return;
+        if (item.variations.length > 0) {
+            const hasColorVariants = colors.length > 0;
+            const hasSizeVariants = sizes.length > 0;
+
+            if (hasColorVariants && !selectedColor) {
+                Alert.alert('Error', 'Debes seleccionar un color.');
+                return;
+            }
+
+            if (hasSizeVariants && !selectedSize) {
+                Alert.alert('Error', 'Debes seleccionar una talla.');
+                return;
+            }
         }
 
-        if (isSameStore(product.store_id)) {
+        if (isSameStore(item.store_id)) {
             handleAddToCart();
         } else {
             setModalVisible2(true);
@@ -78,10 +131,10 @@ export function ItemPage({ navigation }) {
 
     const handleAddToCart = () => {
         setModalVisible(true);
-        addToCart({ ...product, cantidad: quantity, formattedTotalPrice, selectedColor, selectedSize });
+        addToCart({ ...item, cantidad: quantity, selectedColor, selectedSize });
     };
 
-    const unitPrice = Number(product.price.replace(/[^0-9]/g, ''));
+    const unitPrice = Number(item.price.toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 }));
     const totalPrice = unitPrice * quantity;
 
     const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
@@ -90,22 +143,19 @@ export function ItemPage({ navigation }) {
         maximumFractionDigits: 0
     });
 
-    const colors = product.variation
-      .map(variation => 
-        variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value)
-      )
-      .flat();
+    const colors = item.variations
+        .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value));
 
-    const sizes = product.variation
-      .map(variation => 
-        variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value)
-      )
-      .flat();
+    const sizes = item.variations
+        .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value));
+
+    const hasColors = colors.length > 0;
+    const hasSizes = sizes.length > 0;
 
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
-            <ScrollView className="mb-20">
+            <ScrollView className="">
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -117,7 +167,7 @@ export function ItemPage({ navigation }) {
                                 <View className="border-b-[0.5px] dark:border-light-blue w-full mb-4">
                                     <Text className="text-lg text-center font-Excon_bold mb-2 dark:text-white">¡Producto Agregado!</Text>
                                 </View>
-                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agregó el {product.name} al carrito.</Text>
+                                <Text className="text-md font-Excon_regular mb-4 dark:text-white">Se agregó el {item.name} al carrito.</Text>
                             </View>
                             <View className="flex-row justify-center">
                                 <TouchableOpacity
@@ -173,8 +223,8 @@ export function ItemPage({ navigation }) {
 
                 <View className="px-8">
                     <FlatList
-                        data={product.pictures} 
-                        keyExtractor={(item) => item.id.toString()}
+                        data={item.item_images}
+                        keyExtractor={(item) => item.picture}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => (
@@ -187,78 +237,79 @@ export function ItemPage({ navigation }) {
                         )}
                     />
 
-                    <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{product.name}</Text>
-                    <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{product.description}</Text>
+                    <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{item.name}</Text>
+                    <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{item.description}</Text>
 
-                    <View className="pl-1 pr-1 mt-2">
-                        <Text className="text-lg font-Excon_bold dark:text-white">Color:</Text>
-                        <View className="flex-row flex-wrap mt-1">
-                            {colors.map((color, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    onPress={() => setSelectedColor(color)}
-                                    className={`mr-2 mb-2 py-2 px-4 rounded-full ${
-                                        selectedColor === color ? 'bg-light-blue dark:bg-main-blue' : 'bg-neutral-300 dark:bg-neutral-600'
-                                    }`}
-                                >
-                                    <Text className="text-main-blue dark:text-white font-Excon_bold">{color}</Text>
-                                </TouchableOpacity>
-                            ))}
+                    {hasColors && (
+                        <View className="pl-1 pr-1 mt-2">
+                            <Text className="text-lg font-Excon_bold dark:text-white">Color:</Text>
+                            <View className="flex-row flex-wrap mt-1">
+                                {colors.map((color, index) => (
+                                    <TouchableOpacity
+                                        key={index}
+                                        className={`border-2 rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedColor === color ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        style={{ backgroundColor: color }}
+                                        onPress={() => setSelectedColor(color)}
+                                    >
+                                        <Text className={`font-Excon_regular ${selectedColor === color ? 'text-main-blue' : 'dark:text-white'}`}>{color}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
                         </View>
-                    </View>
+                    )}
 
-                    <View className="pl-1 pr-1 mt-2">
-                        <Text className="text-lg font-Excon_bold dark:text-white">Talla:</Text>
-                        <View className="flex-row flex-wrap mt-1">
-                            {sizes.map((size, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    onPress={() => setSelectedSize(size)}
-                                    className={`mr-2 mb-2 py-2 px-4 rounded-full ${
-                                        selectedSize === size ? 'bg-light-blue dark:bg-main-blue' : 'bg-neutral-300 dark:bg-neutral-600'
-                                    }`}
-                                >
-                                    <Text className="text-main-blue dark:text-white font-Excon_bold">{size}</Text>
-                                </TouchableOpacity>
-                            ))}
+                    {hasSizes && (
+                        <View className="pl-1 pr-1 mt-2">
+                            <Text className="text-lg font-Excon_bold dark:text-white">Talla:</Text>
+                            <View className="flex-row flex-wrap mt-1">
+                                {sizes.map((size, index) => (
+                                    <TouchableOpacity
+                                        key={index}
+                                        className={`border-2 rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedSize === size ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        onPress={() => setSelectedSize(size)}
+                                    >
+                                        <Text className={`font-Excon_regular ${selectedSize === size ? 'text-main-blue' : 'dark:text-white'}`}>{size}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
                         </View>
-                    </View>
-                    
+                    )}
                 </View>
+
             </ScrollView>
-
             <View className="absolute bg-main-blue dark:bg-dk-main-bg p-5 w-full bottom-0">
-                <Text className="text-xl font-bold text-white mb-4">Precio: {formattedTotalPrice}</Text>
-
-                <View className="flex-row justify-between pb-3">
-                    <View className="flex-row ">
+                <View className="flex-row mt-2 justify-between items-center">
+                    <Text className="text-xl font-Excon_bold text-white">{formattedTotalPrice}</Text>
+                    <View className="flex-row items-center bg-gray-100 rounded-lg p-1">
                         <TouchableOpacity
-                            className="rounded-l-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
                             onPress={decreaseQuantity}
+                            className="bg-main-blue rounded-full w-8 h-8 flex items-center justify-center"
                         >
-                            <Text className="text-main-blue dark:text-white text-3xl">-</Text>
+                            <Text className="text-white font-Excon_bold text-lg">-</Text>
                         </TouchableOpacity>
                         <TextInput
-                            className="w-16 text-center text-lg bg-white text-main-blue dark:bg-main-blue dark:text-white"
+                            value={String(quantity)}
+                            onChangeText={text => setQuantity(Number(text))}
                             keyboardType="numeric"
-                            value={quantity.toString()}
-                            editable={false}
+                            className="w-12 text-center mx-2 font-Excon_regular"
                         />
                         <TouchableOpacity
-                            className="rounded-r-2xl bg-[#d7d7d7] py-1 px-3 dark:bg-dk-blue"
                             onPress={increaseQuantity}
+                            className="bg-main-blue rounded-full w-8 h-8 flex items-center justify-center"
                         >
-                            <Text className="text-main-blue dark:text-white text-3xl">+</Text>
+                            <Text className="text-white font-Excon_bold text-lg">+</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                        className="bg-white  rounded-xl px-4 py-2 dark:bg-main-blue"
-                        onPress={vericarCarrito}
-                    >
-                        <Text className="text-main-blue text-lg font-Excon_regular dark:text-white">Agregar al Carrito</Text>
-                    </TouchableOpacity>
                 </View>
+
+                <TouchableOpacity
+                    onPress={verifyCart}
+                    className="bg-white rounded-lg mt-4 py-2"
+                >
+                    <Text className="text-main-blue text-center font-Excon_bold">Agregar al carrito</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
 }
+
