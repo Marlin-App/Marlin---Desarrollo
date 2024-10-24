@@ -34,7 +34,7 @@ const useCRUDProductos= (navigation) => {
             const user_id = decodedToken.payload.user_id;
 
             // Fetch para obtener las tiendas del usuario
-            const response = await fetch(`https://marlin-backend.vercel.app/api/stores/?user_id=${user_id}`, {
+            const response = await fetch(`https://marlin-backend.vercel.app/api/storesWithItems/?user_id=${user_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -44,34 +44,7 @@ const useCRUDProductos= (navigation) => {
                 throw new Error('Error fetching stores');
             }
 
-            const stores = await response.json();
-
-            // Mapeamos las tiendas para agregar sus productos
-            const storesWithProductsPromises = stores.map(async (store) => {
-                try {
-                    const productsResponse = await fetch(`https://marlin-backend.vercel.app/api/storeItems/?store_id=${store.id}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    if (!productsResponse.ok) {
-                        console.error(`Error fetching products for store ${store.id}`);
-                        return { ...store, products: [] }; // Si falla, se asigna un array vacío
-                    }
-
-                    const products = await productsResponse.json();
-                    return { ...store, products: Array.isArray(products) ? products : [] };
-
-                } catch (error) {
-                    console.error(`Error fetching products for store ${store.id}:`, error);
-                    return { ...store, products: [] }; // En caso de error, asignar un array vacío
-                }
-            });
-
-            const storesWithProducts = await Promise.all(storesWithProductsPromises);
-
-            // Establecemos las tiendas con sus productos en el estado
+            const storesWithProducts = await response.json();
             setStoresWithProducts(storesWithProducts);
 
         } catch (err) {

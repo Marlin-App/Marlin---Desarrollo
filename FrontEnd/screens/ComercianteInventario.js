@@ -22,9 +22,7 @@ export function ComercianteInventario({ navigation }) {
         const fetchStores = async () => {
             await fetchStoresWithProducts();
         };
-
         const focusListener = navigation.addListener('focus', fetchStores);
-
     }, [navigation]);
 
 
@@ -110,7 +108,7 @@ export function ComercianteInventario({ navigation }) {
                             <View className="items-end mb-4">
                                 <Pressable
                                     className="border-main-blue border-[1.5px] rounded-full w-7 h-7 justify-center items-center"
-                                    onPress={() => navigation.navigate("AgregarProducto", { store: store.id })}
+                                    onPress={() => store.status === 'Aceptado' ? navigation.navigate("AgregarProducto", { store: store.id }) : alert(`${store.name} esta siendo validada por nuestro equipo, pronto estará disponible para añadir productos.`)}
                                 >
                                     <Ionicons name="add" size={24} color="#015DEC" />
                                 </Pressable>
@@ -118,7 +116,7 @@ export function ComercianteInventario({ navigation }) {
                             <View className="border-[0.5px] border-main-blue rounded-lg px-4 py-2 dark:border-light-blue">
                                 <FlatList
                                     className="h-[40vh]"
-                                    data={store.products}
+                                    data={store.items}
                                     keyExtractor={(item, index) => index.toString()}
                                     renderItem={({ item, index }) => (
                                         <Pressable
