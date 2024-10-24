@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
 export function RestorePasswordScreen({ navigation }) {
@@ -9,7 +9,30 @@ export function RestorePasswordScreen({ navigation }) {
         setModalVisible(true);
     }
 
-    //logica para mandar el correo
+    const sendEmail = () => {
+        
+        fetch('https://marlin-backend.vercel.app/api/password-reset/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: correo }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.message != '') {
+                    openModal();
+                } else {
+                    alert('Error al enviar el correo. Por favor, inténtelo de nuevo.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al enviar el correo. Por favor, inténtelo de nuevo.');
+            });
+        
+    }
 
 
     return (
@@ -28,7 +51,7 @@ export function RestorePasswordScreen({ navigation }) {
                 <View className="flex-col px-5 mb-10">
                     <TextInput className="text-center border-b-[1px] border-main-blue px-4 my-2 font-Excon_regular" placeholder="ejem: marlinpescador@gmail.com" value={correo} onChangeText={(value) => setCorreo(value)} />
                 </View>
-                <TouchableOpacity className="bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2" onPress={() => openModal()}>
+                <TouchableOpacity className="bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2" onPress={() => sendEmail()}>
                     <Text className="text-white font-Excon_bold text-lg ml-2">Enviar</Text>
                 </TouchableOpacity>
             </View>

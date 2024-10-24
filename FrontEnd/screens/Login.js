@@ -93,7 +93,7 @@ export function LoginPage({ navigation }) {
         </View>
         <Text  className="text-red-500 text-center w-full">{error} </Text>
         <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
-
+      
         <Pressable
           onPress={handleLogin}
           style={({ pressed }) => [

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import useCRUDTiendas from '../hooks/useCRUDTiendas';
 import NotificationDropdown from '../components/NotificationDropdown';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export function MisTiendas({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -12,6 +13,7 @@ export function MisTiendas({ navigation }) {
     const { allStores, loading, getUserStores, setAllStores } = useCRUDTiendas();
 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
 
     const notifications = [
         {
@@ -38,15 +40,21 @@ export function MisTiendas({ navigation }) {
 
 
     const renderStoreItem = ({ item }) => (
-        <Pressable className="flex-row justify-center px-4 mb-5"
-            onPress={() => navigation.navigate("NuevaTienda", { store: item })}
-        >
-            <View className="flex-col w-full">
-                <Image className="rounded-xl  h-[150] " source={{ uri: item.banner }} style={{ resizeMode: "stretch" }} />
-                <Text className="text-black text-lg font-Excon_bold dark:text-white">{item.name}</Text>
-                <Text className="text-black text-md font-Excon_regular dark:text-white">{item.canton} {item.district} </Text>
+        <View className="relative">
+            <View className="absolute h-[150] w-[425] items-center justify-center">
+                <Text className={`text-black text-2xl font-Excon_bold dark:text-white ${item.status === 'Aceptado' ? 'hidden' : ''}`}>Tienda en espera...</Text>
             </View>
-        </Pressable>
+            <Pressable
+                className={`flex-row justify-center px-4 mb-5 ${item.status === 'Aceptado' ? 'opacity-100' : 'opacity-30'}`}
+                onPress={() => item.status === 'Aceptado' ? navigation.navigate("NuevaTienda", { store: item }) : alert(`${item.name} esta siendo validada por nuestro equipo, pronto estará disponible.`)}
+            >
+                <View className="flex-col w-full">
+                    <Image className="rounded-xl h-[150]" source={{ uri: item.banner }} style={{ resizeMode: "stretch" }} />
+                    <Text className="text-black text-lg font-Excon_bold dark:text-white">{item.name}</Text>
+                    <Text className="text-black text-md font-Excon_regular dark:text-white">{item.canton} {item.district}</Text>
+                </View>
+            </Pressable>
+        </View>
     );
 
     return (

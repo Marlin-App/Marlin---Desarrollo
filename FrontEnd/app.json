@@ -2,6 +2,7 @@
   "expo": {
     "name": "marlin-app",
     "slug": "marlin-app",
+    "scheme": "marlin-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon2.png",

@@ -147,6 +147,72 @@ const useCRUDProductos= (navigation) => {
           }
     };
 
+    const editProduct = async (formData, productId) => {
+
+        console.log('formData:', formData);
+        console.log('productId:', productId);
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', formData.name);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('price', formData.price);
+        formDataToSend.append('stock', formData.stock);
+        formDataToSend.append('store_id', formData.store_id);
+        formDataToSend.append('item_type', formData.item_type);
+        formDataToSend.append('attributes', JSON.stringify(formData.attributes));
+
+
+        if (formData.pictures && formData.pictures.length > 0) {
+            formData.pictures.forEach((image, index) => {
+                const perfilFile = {
+                    uri: image.uri,
+                    type: 'image/jpeg',
+                    name: `${formData.name}_${image.id}.jpg`, // Asegúrate de que el nombre sea único
+                };
+                formDataToSend.append('pictures', perfilFile);
+            });
+        }
+
+        try {
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+
+            if (!jsonValue) {
+                setLoading(false);
+                setIsLogged(false);
+                return;
+            }
+
+            const userData = JSON.parse(jsonValue);
+            const token = userData.access;
+            const response = await fetch(`https:marlin-backend.vercel.app/api/storeItems/${productId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formDataToSend
+            });
+
+
+            if (!response.ok) {
+                 //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
+                const errorText = await response.text();
+                console.log('Error de respuesta:', errorText);
+                throw new Error('Error agregando producto');
+            } else {
+                navigation.navigate('Inventario');
+                console.log('Producto agregado con éxito');
+                Alert.alert('Producto agregado', '¡Tu producto ha sido agregado con éxito!');
+              //   fetchStoresWithProducts();
+            }
+        } catch (error) {
+            console.error('Error al crear el producto:', error);
+        } finally {
+            setLoading(false);
+        }
+
+
+    };
+
 
 
 
@@ -213,7 +279,7 @@ const useCRUDProductos= (navigation) => {
     };
 
 
-    return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct, getProduct };
+    return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct, getProduct, editProduct };
 
 };
 export default useCRUDProductos;

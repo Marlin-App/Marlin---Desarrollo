@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Linking from 'expo-linking';
 import { useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
@@ -12,6 +13,15 @@ SplashScreen.preventAutoHideAsync();
 /* NativeWindStyleSheet.setOutput({
   default: "native",
 }); */
+
+const linking = {
+  prefixes: ['marlin-app://'],
+  config: {
+    screens: {
+      NewPasswordScreen: 'NewPasswordScreen',
+    },
+  },
+};
 
 export default function App() {
   const { colorScheme } = useColorScheme();
@@ -36,7 +46,7 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
+    <NavigationContainer linking={linking} onReady={onLayoutRootView}>
       <StatusBar barStyle="light-content" backgroundColor={colorScheme === 'dark' ? "#1C1C1C" : "#1952BE"} />
       <HomeStackScreen />
     </NavigationContainer>

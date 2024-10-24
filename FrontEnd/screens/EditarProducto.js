@@ -26,7 +26,7 @@ export function EditarProducto({ navigation }) {
     });
 
 
-    const { addProduct, getProduct, deleteProduct } = useCRUDProductos();
+    const { addProduct, getProduct, deleteProduct, editProduct } = useCRUDProductos();
     const route = useRoute();
     const storeId = route.params || {};
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -108,12 +108,6 @@ export function EditarProducto({ navigation }) {
         fetchProduct();
     }, [storeId.product]);
 
-    useEffect(() => {
-        if (product) {
-            console.log(product);
-        }
-    }, [product]);
-
     const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -168,7 +162,7 @@ export function EditarProducto({ navigation }) {
         }
     }, [isEnabled, isEnabled2]);
 
-    const AddProductos = () => {
+    const EditarProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
 
@@ -196,8 +190,8 @@ export function EditarProducto({ navigation }) {
             store_id: storeId.store,
             item_type: 1,
         };
-        addProduct(newProduct);
-        navigation.goBack();
+        editProduct(newProduct, storeId.product);
+        //navigation.goBack();
     };
 
     const DeleteProduct = () => {
@@ -347,7 +341,7 @@ export function EditarProducto({ navigation }) {
                         </View>
 
                         <View className="flex-row justify-center gap-x-2 px-5">
-                            <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={() => AddProductos()}>
+                            <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={() => EditarProductos()}>
                                 <Feather name="check" size={24} color="white" />
                                 <Text className="text-white text-md font-Excon_bold">Actualizar</Text>
                             </Pressable>

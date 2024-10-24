@@ -25,6 +25,8 @@ import { RestorePasswordScreen } from '../screens/RestorePassword';
 import { TerminosCondiciones } from '../screens/TerminosCondiciones';
 import { DeliveryStackScreen } from './DeliveryStack';
 import { DeliveryFormScreen } from '../screens/DeliveryForm';
+import { NewPasswordScreen } from '../screens/NewPasswordScreen';
+
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
@@ -171,7 +173,7 @@ export function HomeStackScreen({ navigation, route }) {
         }}
       />
 
-<HomeStack.Screen
+      <HomeStack.Screen
         name="DeliveryFormScreen"
         component={DeliveryFormScreen}
         options={{
@@ -226,7 +228,20 @@ export function HomeStackScreen({ navigation, route }) {
         name="RestorePasswordScreen"
         component={RestorePasswordScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
+          headerTitle: 'Regresar',
+          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerStyle: {
+            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
+          }
+        }}
+      />
+
+      <HomeStack.Screen
+        name="NewPasswordScreen"
+        component={NewPasswordScreen}
+        options={{
+          headerShown: false,
           headerTitle: 'Regresar',
           headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
           headerStyle: {
