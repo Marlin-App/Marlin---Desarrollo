@@ -4,80 +4,80 @@ import {
     Image,
     View,
     Text,
+    Alert,
     Pressable,
     TextInput,
     ScrollView,
     TouchableOpacity,
     ActivityIndicator,
 } from "react-native";
+
 import * as ImagePicker from "expo-image-picker";
 import { useColorScheme } from "nativewind";
 import { DropDown } from "../components/DropDown";
 import Feather from "@expo/vector-icons/Feather";
-import useGetUser from "../hooks/useGetUser";
+import { Settings } from "../screens/Settings";
 
 export function DeliveryFormScreen({ navigation }) {
     const [image, setImage] = useState(null);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === "dark" ? "white" : "#60a5fa";
 
-    const cantones = [
-        { label: "Puntarenas", value: "Puntarenas" },
-        { label: "Esparza", value: "Esparza" },
-        { label: "Miramar", value: "Miramar" },
-    ];
-
     const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-    // const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
-    // const [selectedValue, setSelectedValue] = useState(formData.canton);
-    // const [selectedValue2, setSelectedValue2] = useState(formData.district);
-    // const { location, openLocationPicker, LocationPickerComponent } = useSelectLocation();
-    // const [imagePerfil, setimagePerfil] = useState(formData.picture);
-    // const [imagePortada, setimagePortada] = useState(formData.banner);
 
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
-        username: "",
-        email: "",
-        phone: "",
+        phoneNumber: "",
     });
 
-    const [imagePerfil, setimagePerfil] = useState(formData.picture);
+    const [imageDelivery, setimageDelivery] = useState(null);
+    const [imageLicense, setimageLicense] = useState(null);
+    const [imageID, setimageID] = useState(null);
 
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: false,
-            aspect: [4, 3],
-            quality: 1,
-        });
+    const handleSubmitForm = () => {
+        if (formData.firstName && formData.lastName && formData.phoneNumber && acceptedTerms && imageDelivery && imageLicense && imageID) {
+            Alert.alert(
+                "Solicitud enviada",
+                "Tu solicitud está siendo verificada por los administradores."
+            );
 
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            // navigation.navigate("Mi perfil");
+            navigation.navigate("thirdScreen");
+        } else {
+            Alert.alert(
+                "Formulario incompleto",
+                "Por favor, completa todos los campos obligatorios."
+            );
         }
     };
 
-    const [time, setTime] = useState("");
-
-    const handleTimeChange = (text) => {
-        // Remover cualquier carácter que no sea un número
-        const cleaned = text.replace(/[^0-9]/g, "");
-
-        // Formatear la entrada como HH:MM
-        let formatted = cleaned;
-        if (cleaned.length >= 3) {
-            formatted = `${cleaned.slice(0, 2)}:${cleaned.slice(2, 4)}`;
-        } else if (cleaned.length >= 1) {
-            formatted = `${cleaned.slice(0, 2)}`;
+    const pickImage = async (pic) => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.canceled) {
+            switch (pic) {
+                case "perfil":
+                    setimageDelivery(result.assets[0].uri);
+                    break;
+                case "licencia":
+                    setimageLicense(result.assets[0].uri);
+                    break;
+                case "cedula":
+                    setimageID(result.assets[0].uri);
+                    break;
+                default:
+                    console.warn("Tipo de imagen no soportado");
+            }
         }
-
-        setTime(formatted);
     };
 
     return (
@@ -94,9 +94,19 @@ export function DeliveryFormScreen({ navigation }) {
 
                     <View className="mt-4 items-center p-4 ">
                         <Pressable
-                            className="mt-1 h-44 w-44 bg-[#C4C4C4]  p-1 rounded-full relative"
-                            onPress={pickImage}
+                            className="mt-1 h-44 w-44 bg-[#C4C4C4]  rounded-full relative"
+                            onPress={() => pickImage("perfil")}
                         >
+                            {imageDelivery ? (
+                                <Image
+                                    className="rounded-full w-44 h-44"
+                                    source={{ uri: imageDelivery }}
+                                />
+                            ) : (
+                                <View className="absolute h-14 w-14 rounded-full bg-[#D9D9D9] dark:bg-dk-main-bg bottom-0 right-0 items-center justify-center">
+                                    <Feather name="camera" size={28} color="#015DEC" />
+                                </View>
+                            )}
                             <View className="absolute h-14 w-14 rounded-full bg-[#D9D9D9] dark:bg-dk-main-bg bottom-0 right-0 items-center justify-center">
                                 <Feather name="camera" size={28} color="#015DEC" />
                             </View>
@@ -125,7 +135,9 @@ export function DeliveryFormScreen({ navigation }) {
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
                             placeholderTextColor={placeholderTextColor}
-                            placeholder="Digita tus apellidos"
+                            onChangeText={(value) => handleInputChange("lastName", value)}
+                            placeholder="Digita tus dos apellidos"
+                            value={formData.lastName}
                         />
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
@@ -134,7 +146,9 @@ export function DeliveryFormScreen({ navigation }) {
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             placeholderTextColor={placeholderTextColor}
+                            value={formData.phoneNumber}
                             keyboardType="numeric"
+                            onChangeText={(value) => handleInputChange("phoneNumber", value)}
                             placeholder="Digita tu número de teléfono"
                         />
 
@@ -148,12 +162,12 @@ export function DeliveryFormScreen({ navigation }) {
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
-                                onPress={() => pickImage("perfil")}
+                                onPress={() => pickImage("cedula")}
                             >
-                                {imagePerfil ? (
+                                {imageID ? (
                                     <Image
-                                        className="rounded-full w-52 h-52"
-                                        source={{ uri: imagePerfil }}
+                                        className="rounded-lg w-full h-32"
+                                        source={{ uri: imageID }}
                                     />
                                 ) : (
                                     <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
@@ -176,12 +190,12 @@ export function DeliveryFormScreen({ navigation }) {
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
-                                onPress={() => pickImage("perfil")}
+                                onPress={() => pickImage("licencia")}
                             >
-                                {imagePerfil ? (
+                                {imageLicense ? (
                                     <Image
-                                        className="rounded-full w-52 h-52"
-                                        source={{ uri: imagePerfil }}
+                                        className="rounded-lg w-full h-32"
+                                        source={{ uri: imageLicense }}
                                     />
                                 ) : (
                                     <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
@@ -207,7 +221,6 @@ export function DeliveryFormScreen({ navigation }) {
                                         }`}
                                 />
                             </TouchableOpacity>
-                            {/* corregir la ruta para mostrar los terminos y condiciones */}
                             <Text className="ml-2 text-main-blue text-xs font-Excon_thin">
                                 He leído y acepto los{" "}
                                 <Text
@@ -221,9 +234,12 @@ export function DeliveryFormScreen({ navigation }) {
 
                         <TouchableOpacity
                             className="bg-main-blue p-4 mt-6 rounded-lg w-full items-center justify-center"
-                            onPress={() => navigation.replace("thirdScreen")}
+                            // onPress={() => navigation.replace("thirdScreen")}
+                            onPress={handleSubmitForm}
                         >
-                            <Text className="text-white font-bold ml-2">Continuar</Text>
+                            <Text className="text-white font-bold ml-2">
+                                Enviar solicitud
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

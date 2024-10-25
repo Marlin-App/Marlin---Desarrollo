@@ -108,10 +108,9 @@ export function Store({ navigation }) {
                                 {route.params.store.name}
                             </Text>
                             <Text className="text-[15px] font-Excon_bold text-white mt-2">
-                                Ubicacion: <Text className="font-Excon_regular">{route.params.store.canton} {route.params.store.district}</Text>
+                                Ubicacion: <Text className="font-Excon_regular">{route.params.store.canton}, {route.params.store.district}</Text>
                             </Text> 
-                            <Text className="text-[15px] font-Excon_bold text-white ">Numero sinpe:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
-                            <Text className="text-[15px] font-Excon_bold text-white ">Nombre sinpe: <Text className="font-Excon_regular"> { route.params.store.owner_sinpe}</Text></Text>
+                            <Text className="text-[15px] font-Excon_bold text-white ">Numero de WhatsApp:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
                         </View>
                         <Image
                             source={{ uri: route.params.store.picture }}

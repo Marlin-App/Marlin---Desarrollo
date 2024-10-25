@@ -109,7 +109,7 @@ export function MainTabNavigator() {
             />
 
             <Tab.Screen
-                name="Profile"
+                name="Mi perfil"
                 component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
