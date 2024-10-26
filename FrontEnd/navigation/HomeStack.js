@@ -1,36 +1,37 @@
 // navigation/HomeStack.js
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../screens/Home';
-import { StoreCat } from '../screens/StoreCat';
-import { Store } from '../screens/Store';
-import { ItemPage } from '../screens/Item';
-import { CartScreen } from '../screens/Cart';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HomeScreen } from "../screens/Home";
+import { StoreCat } from "../screens/StoreCat";
+import { Store } from "../screens/Store";
+import { ItemPage } from "../screens/Item";
+import { CartScreen } from "../screens/Cart";
 import * as React from "react";
 import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
+import { Alert } from "react-native";
+import { useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { LandingPage } from '../screens/landing';
-import { PayScreen } from '../screens/Pay';
+import { LandingPage } from "../screens/landing";
+import { PayScreen } from "../screens/Pay";
 import { useColorScheme } from "nativewind";
-import { MainTabNavigator } from './MainTabNavigator';
-import { LoginPage } from '../screens/Login';
-import { RegisterPage } from '../screens/Register';
-import { DirectionScreen } from '../screens/DirectionScreen';
-import { HomeComercianteScreen } from '../screens/HomeComerciante';
-import { ProfileStackScreen } from './ProfileStack';
-import { InformationScreen } from '../screens/Information';
-import { HistoricalScreen } from '../screens/Historical';
-import { HistoricalDetailsScreen } from '../screens/HistoricalDetails';
-import { RestorePasswordScreen } from '../screens/RestorePassword';
-import { TerminosCondiciones } from '../screens/TerminosCondiciones';
-import { DeliveryStackScreen } from './DeliveryStack';
-import { DeliveryFormScreen } from '../screens/DeliveryForm';
-import { NewPasswordScreen } from '../screens/NewPasswordScreen';
+import { MainTabNavigator } from "./MainTabNavigator";
+import { LoginPage } from "../screens/Login";
+import { RegisterPage } from "../screens/Register";
+import { DirectionScreen } from "../screens/DirectionScreen";
+import { HomeComercianteScreen } from "../screens/HomeComerciante";
+import { ProfileStackScreen } from "./ProfileStack";
+import { InformationScreen } from "../screens/Information";
+import { HistoricalScreen } from "../screens/Historical";
+import { HistoricalDetailsScreen } from "../screens/HistoricalDetails";
+import { RestorePasswordScreen } from "../screens/RestorePassword";
+import { TerminosCondiciones } from "../screens/TerminosCondiciones";
+import { DeliveryStackScreen } from "./DeliveryStack";
+import { DeliveryFormScreen } from "../screens/DeliveryForm";
+import { NewPasswordScreen } from "../screens/NewPasswordScreen";
 
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
-
   const [fontsLoaded] = useFonts({
     Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
     Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -41,12 +42,34 @@ export function HomeStackScreen({ navigation, route }) {
 
   const { colorScheme } = useColorScheme();
 
+  const [isVerified, setIsVerified] = useState(false);
+  const [formCompleted, setFormCompleted] = useState(false);
+
+  // const handleSubmitForm = () => {
+  //   if (formCompleted) {
+  //     setFormCompleted(true);
+  //     Alert.alert(
+  //       "Solicitud enviada",
+  //       "Tu solicitud está siendo verificada por los administradores."
+  //     );
+
+  //     setIsVerified(true);
+
+  //     navigation.navigate("ProfileScreen");
+  //   } else {
+  //     Alert.alert(
+  //       "Formulario incompleto",
+  //       "Por favor, completa todos los campos obligatorios."
+  //     );
+  //   }
+  // };
+  
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home"
         component={MainTabNavigator}
-        initialParams={{ data: 'dad' }}
+        initialParams={{ data: "dad" }}
         options={{ headerShown: false }}
       />
 
@@ -61,14 +84,14 @@ export function HomeStackScreen({ navigation, route }) {
         component={ItemPage}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerTitleStyle: {
-            fontFamily: 'Excon_regular',
+            fontFamily: "Excon_regular",
           },
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -77,14 +100,14 @@ export function HomeStackScreen({ navigation, route }) {
         component={CartScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerTitleStyle: {
-            fontFamily: 'Excon_regular',
+            fontFamily: "Excon_regular",
           },
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -93,14 +116,14 @@ export function HomeStackScreen({ navigation, route }) {
         component={PayScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerTitleStyle: {
-            fontFamily: 'Excon_regular',
+            fontFamily: "Excon_regular",
           },
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -109,14 +132,14 @@ export function HomeStackScreen({ navigation, route }) {
         component={Store}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerTitleStyle: {
-            fontFamily: 'Excon_regular',
+            fontFamily: "Excon_regular",
           },
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -132,18 +155,16 @@ export function HomeStackScreen({ navigation, route }) {
         options={{ headerShown: false }}
       />
 
-
-
       <HomeStack.Screen
         name="DirectionScreen"
         component={DirectionScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -152,11 +173,11 @@ export function HomeStackScreen({ navigation, route }) {
         component={ProfileStackScreen}
         options={{
           headerShown: false,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -165,15 +186,44 @@ export function HomeStackScreen({ navigation, route }) {
         component={DeliveryStackScreen}
         options={{
           headerShown: false,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
-      <HomeStack.Screen
+      {!isVerified && (
+        <HomeStack.Screen
+          name="DeliveryFormScreen"
+          component={DeliveryFormScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Regresar",
+            headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
+            headerStyle: {
+              backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+            },
+          }}
+        />
+      )}
+
+      {isVerified && (
+        <HomeStack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Perfil",
+            headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
+            headerStyle: {
+              backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+            },
+          }}
+        />
+      )}
+      {/* <HomeStack.Screen
         name="DeliveryFormScreen"
         component={DeliveryFormScreen}
         options={{
@@ -184,18 +234,18 @@ export function HomeStackScreen({ navigation, route }) {
             backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
           }
         }}
-      />
+      /> */}
 
       <HomeStack.Screen
         name="InformationScreen"
         component={InformationScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
       <HomeStack.Screen
@@ -203,11 +253,11 @@ export function HomeStackScreen({ navigation, route }) {
         component={HistoricalScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -216,11 +266,11 @@ export function HomeStackScreen({ navigation, route }) {
         component={HistoricalDetailsScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -229,11 +279,11 @@ export function HomeStackScreen({ navigation, route }) {
         component={RestorePasswordScreen}
         options={{
           headerShown: false,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -242,11 +292,11 @@ export function HomeStackScreen({ navigation, route }) {
         component={NewPasswordScreen}
         options={{
           headerShown: false,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
 
@@ -255,14 +305,13 @@ export function HomeStackScreen({ navigation, route }) {
         component={TerminosCondiciones}
         options={{
           headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
         }}
       />
-
     </HomeStack.Navigator>
   );
 }
