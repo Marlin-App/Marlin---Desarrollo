@@ -18,7 +18,7 @@ const linking = {
   prefixes: ['marlin-app://'],
   config: {
     screens: {
-      NewPasswordScreen: 'NewPasswordScreen',
+      NewPasswordScreen: 'reset-password/:uid/:token',
     },
   },
 };

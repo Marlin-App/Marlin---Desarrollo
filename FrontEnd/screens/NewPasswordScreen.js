@@ -8,7 +8,6 @@ export function NewPasswordScreen({navigation }) {
     const { uid, token } = route.params;
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    //const { token } = route.params;
 
     const changePassword = async () => {
          if(password === confirmPassword) {
@@ -19,15 +18,13 @@ export function NewPasswordScreen({navigation }) {
                          'Content-Type': 'application/json',
                      },
                      body: JSON.stringify({
-                         token: token,
-                         password: password,
-                         //informacion del arreglo para cambiar la contraseña
+                         new_password: password
                      }),
                  });
      
                  if (response.ok) {
                      navigation.navigate('Login');
-                     Alert.alert('La contraseña ha sido cambiada exitosamente');
+                     Alert.alert('Perfecto','La contraseña ha sido cambiada exitosamente');
                  } else {
                      console.log('Error al restablecer la contraseña');
                  }
@@ -36,7 +33,7 @@ export function NewPasswordScreen({navigation }) {
              }
 
          } else {
-             Alert.alert('La contraseña y la confirmación de la contraseña no coinciden');
+             Alert.alert('Atención','La contraseña y su confirmación no coinciden.');
          }
 
     }
