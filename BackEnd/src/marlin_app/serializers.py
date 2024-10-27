@@ -184,7 +184,7 @@ class StoreItemSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         instance.name = validated_data.get('name')
-        instance.name = validated_data.get('description')
+        instance.description = validated_data.get('description')
         instance.price = validated_data.get('price')
         instance.stock = validated_data.get('stock')
         instance.save()
