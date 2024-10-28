@@ -28,7 +28,7 @@ import { TerminosCondiciones } from "../screens/TerminosCondiciones";
 import { DeliveryStackScreen } from "./DeliveryStack";
 import { DeliveryFormScreen } from "../screens/DeliveryForm";
 import { NewPasswordScreen } from "../screens/NewPasswordScreen";
-
+import { AddDirectionScreen } from "../screens/AddDirection";
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
@@ -303,6 +303,19 @@ export function HomeStackScreen({ navigation, route }) {
       <HomeStack.Screen
         name="TerminosCondiciones"
         component={TerminosCondiciones}
+        options={{
+          headerShown: true,
+          headerTitle: "Regresar",
+          headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
+          headerStyle: {
+            backgroundColor: colorScheme === "dark" ? "#1C1C1C" : "#ffffff",
+          },
+        }}
+      />
+
+<HomeStack.Screen
+        name="AddDirectionScreen"
+        component={AddDirectionScreen}
         options={{
           headerShown: true,
           headerTitle: "Regresar",

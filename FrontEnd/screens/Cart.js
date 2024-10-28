@@ -154,6 +154,7 @@ export function CartScreen({ navigation }) {
                             keyExtractor={item => item.id.toString()}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ paddingBottom: 50 }}
+                            scrollEnabled={false}
                         />
 
                         <View className="px-4 pt-2 rounded-lg mx-4 border-t-2 border-slate-200 dark:border-light-blue">
