@@ -20,7 +20,7 @@ export function ItemPage({ navigation }) {
     const [item, setItem] = useState(null);
 
     const route = useRoute();
-    const { id } = route.params; // Recibir el ID del ítem desde la navegación
+    const { id } = route.params;
 
     useEffect(() => {
         async function checkLoginStatus() {
@@ -131,7 +131,16 @@ export function ItemPage({ navigation }) {
 
     const handleAddToCart = () => {
         setModalVisible(true);
-        addToCart({ ...item, cantidad: quantity, selectedColor, selectedSize });
+        
+        const itemWithImage = {
+            ...item,
+            cantidad: quantity,
+            image: item.item_images?.[0]?.picture,
+            ...(selectedColor && { selectedColor }),
+            ...(selectedSize && { selectedSize })
+        };
+    
+        addToCart(itemWithImage);
     };
 
     const unitPrice = Number(item.price.toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 }));
@@ -143,11 +152,15 @@ export function ItemPage({ navigation }) {
         maximumFractionDigits: 0
     });
 
-    const colors = item.variations
-        .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value));
+    const colors = Array.from(new Set(
+        item.variations
+            .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value))
+    ));
 
-    const sizes = item.variations
-        .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value));
+    const sizes = Array.from(new Set(
+        item.variations
+            .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value))
+    ));
 
     const hasColors = colors.length > 0;
     const hasSizes = sizes.length > 0;
