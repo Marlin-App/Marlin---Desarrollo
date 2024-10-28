@@ -65,7 +65,7 @@ export function CartScreen({ navigation }) {
             );
         };
     
-        const selectedVariations = item.variations || []; 
+        const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : [];
     
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
@@ -87,8 +87,9 @@ export function CartScreen({ navigation }) {
                     <View className="ml-2 flex-1">
                         <Text className="text-[16px] ml-2 font-Excon_regular">{item.name}</Text>
                         <View className="flex-row justify-between mt-4 flex-1">
-                            {selectedVariations.map((variation, index) => (
-                                <View key={index} className="items-center pt-2">
+                            {/* Mostrar las variaciones seleccionadas (color y talla) */}
+                            {selectedVariation.map((variation, index) => (
+                                <View key={index} className="items-center">
                                     <View className="rounded-md items-center justify-center dark:bg-light-blue">
                                         <Text className="font-Excon_bold text-[12px] text-black dark:text-[#171717]">{variation.attribute_name}</Text>
                                     </View>
@@ -126,6 +127,7 @@ export function CartScreen({ navigation }) {
             </View>
         );
     };
+    
     
     
     

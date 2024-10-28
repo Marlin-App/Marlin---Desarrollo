@@ -247,7 +247,7 @@ export function HomeScreen({ navigation }) {
             
             </View>
             <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
-                <HomeCarousel />
+                <HomeCarousel navigation={navigation} />
                 <FlatList
                     data={verticalData}
                     renderItem={renderVerticalItem}
