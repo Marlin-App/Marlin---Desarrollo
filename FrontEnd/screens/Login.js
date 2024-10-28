@@ -31,7 +31,7 @@ export function LoginPage({ navigation }) {
         
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
-        navigation.navigate('Profile'); 
+        navigation.navigate('Mi perfil'); 
       } else {
        
       setError("Nombre de usuario o contraseña incorrectos!");  

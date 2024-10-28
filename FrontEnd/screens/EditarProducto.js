@@ -15,6 +15,7 @@ export function EditarProducto({ navigation }) {
 
 
     const [formData, setFormData] = useState({
+        id:0,
         name: '',
         description: '',
         price: 0,
@@ -26,7 +27,7 @@ export function EditarProducto({ navigation }) {
     });
 
 
-    const { addProduct, getProduct, deleteProduct, editProduct } = useCRUDProductos();
+    const {getProduct, deleteProduct, editProduct } = useCRUDProductos(navigation);
     const route = useRoute();
     const storeId = route.params || {};
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -48,11 +49,12 @@ export function EditarProducto({ navigation }) {
             setProduct(fetchedProduct);
             // Enable switches based on fetched product attributes //revisar que no viene la informacion
             setImages(fetchedProduct.item_images);
-
+            
             if (fetchedProduct.variations.length > 0) {
                 const hasColorAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Color');
                 const hasSizeAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Talla');
                 setFormData({
+                    id: fetchedProduct.id,
                     name: fetchedProduct.name,
                     description: fetchedProduct.description,
                     price: fetchedProduct.price,
@@ -63,10 +65,7 @@ export function EditarProducto({ navigation }) {
                     variations: fetchedProduct.variations,
                 });
 
-
-
                 if (hasColorAttribute || hasSizeAttribute) {
-                    // Populate variations with fetched product attributes
                     const populatedVariations = fetchedProduct.variations.map(attr => {
                         const variation = { color: '', size: '', quantity: 0 };
                         attr.item_variations.forEach(value => {
@@ -89,6 +88,7 @@ export function EditarProducto({ navigation }) {
 
             } else {
                 setFormData({
+                    id: fetchedProduct.id,
                     name: fetchedProduct.name,
                     description: fetchedProduct.description,
                     price: fetchedProduct.price,
@@ -181,25 +181,24 @@ export function EditarProducto({ navigation }) {
         });
 
         const newProduct = {
+            id: formData.id,
             attributes: productVariations,
             name: formData.name,
             description: formData.description,
             price: formData.price,
             stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock, // Suma de las cantidades de las variantes
-            pictures: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
+            //pictures: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
+            pictures:[],
             store_id: storeId.store,
             item_type: 1,
         };
         editProduct(newProduct, storeId.product);
-        //navigation.goBack();
     };
 
     const DeleteProduct = () => {
         deleteProduct(storeId.product);
         navigation.goBack();
     }
-
-    //renderizar contenido
 
     if (isloading) {
         return (
