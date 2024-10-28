@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from "react-native";
-
+import useGetDeliveryForm from "../hooks/useGetDeliveryForm";
 import * as ImagePicker from "expo-image-picker";
 import { useColorScheme } from "nativewind";
 import { DropDown } from "../components/DropDown";
@@ -22,39 +22,72 @@ export function DeliveryFormScreen({ navigation }) {
     const [image, setImage] = useState(null);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === "dark" ? "white" : "#60a5fa";
+    const { handleDeliveryForm } = useGetDeliveryForm(navigation);
 
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
+        brand: "",
+        model: "",
+        plate: "",
     });
 
     const [imageDelivery, setimageDelivery] = useState(null);
+    const [imageVehicle, setimageVehicle] = useState(null);
     const [imageLicense, setimageLicense] = useState(null);
-    const [imageID, setimageID] = useState(null);
+    const [imageIDFront, setimageIDFront] = useState(null);
+    const [imageIDBack, setimageIDBack] = useState(null);
+
+    const allPictures = [
+        imageDelivery,
+        imageVehicle,
+        imageLicense,
+        imageIDFront,
+        imageIDBack,
+    ];
 
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmitForm = () => {
-        if (formData.firstName && formData.lastName && formData.phoneNumber && acceptedTerms && imageDelivery && imageLicense && imageID) {
-            Alert.alert(
-                "Solicitud enviada",
-                "Tu solicitud está siendo verificada por los administradores."
-            );
 
-            // navigation.navigate("Mi perfil");
-            navigation.navigate("thirdScreen");
-        } else {
-            Alert.alert(
-                "Formulario incompleto",
-                "Por favor, completa todos los campos obligatorios."
-            );
-        }
-    };
+    // const handleSubmitForm = () => {
+    // if (
+    //     formData.brand &&
+    //     formData.model &&
+    //     formData.plate &&
+    //     acceptedTerms &&
+    //     imageDelivery &&
+    //     imageLicense &&
+    //     imageIDFront &&
+    //     imageIDBack &&
+    //     imageVehicle
+    // ) {
+    //         Alert.alert(
+    //             "Solicitud enviada",
+    //             "Tu solicitud está siendo verificada por los administradores."
+    //         );
+
+    //         // navigation.navigate("Mi perfil");
+    //         navigation.navigate("thirdScreen");
+    //     } else {
+    //         Alert.alert(
+    //             "Formulario incompleto",
+    //             "Por favor, completa todos los campos obligatorios."
+    //         );
+    //     }
+    // };
+
+    const [selectedValue, setSelectedValue] = useState(formData.TipoVehículo);
+
+    const tipoVehículo = [
+        { label: "Carga Liviana", value: "Carga Liviana" },
+        { label: "Liviano", value: "Liviano" },
+        { label: "Bicicleta", value: "Bicicleta" },
+        { label: "Motocicleta", value: "Motocicleta" },
+    ];
+
+
 
     const pickImage = async (pic) => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -71,14 +104,53 @@ export function DeliveryFormScreen({ navigation }) {
                 case "licencia":
                     setimageLicense(result.assets[0].uri);
                     break;
-                case "cedula":
-                    setimageID(result.assets[0].uri);
+                case "cedulaDelante":
+                    setimageIDFront(result.assets[0].uri);
+                    break;
+                case "cedulaDetras":
+                    setimageIDBack(result.assets[0].uri);
+                    break;
+                case "vehiculo":
+                    setimageVehicle(result.assets[0].uri);
                     break;
                 default:
                     console.warn("Tipo de imagen no soportado");
             }
         }
     };
+
+    const deliveryRequest = () => {
+
+        if (
+            formData.brand &&
+            formData.model &&
+            formData.plate &&
+            acceptedTerms &&
+            imageDelivery &&
+            imageLicense &&
+            imageIDFront &&
+            imageIDBack &&
+            imageVehicle
+        ) {
+            const newRequest = {
+                brand: formData.brand,
+                model: formData.model,
+                plate: formData.plate,
+                pictures: allPictures,
+                vehicle: selectedValue,
+            };
+
+            handleDeliveryForm(newRequest);
+        } else {
+
+            Alert.alert(
+                "Formulario incompleto",
+                "Por favor, completa todos los campos obligatorios."
+            );
+        }
+    };
+
+
 
     return (
         <View>
@@ -89,7 +161,7 @@ export function DeliveryFormScreen({ navigation }) {
                     contentContainerStyle={{ paddingBottom: 80 }}
                 >
                     <Text className="font-Excon_regular mt-4 text-main-blue dark:text-white text-[24px] text-center">
-                        Formulario de inscripción para repartidor
+                        Formulario de inscripción para covertirte en repartidor
                     </Text>
 
                     <View className="mt-4 items-center p-4 ">
@@ -115,59 +187,74 @@ export function DeliveryFormScreen({ navigation }) {
                             Ingresa una foto clara de tu rostro para tu perfil
                         </Text>
                         <Text className="font-Excon_regular text-main-blue dark:text-white text-[20px] w-full  mt-8">
-                            Datos personales
+                            Datos del vehículo
                         </Text>
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-4">
-                            Nombre:
+                            Marca del vehículo:
                         </Text>
                         <TextInput
-                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
-                            value={formData.firstName}
-                            onChangeText={(value) => handleInputChange("firstName", value)}
-                            placeholder="Digita tu nombre"
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
+                            value={formData.brand}
+                            onChangeText={(value) => handleInputChange('brand', value)}
+                            placeholder="Digita la marca de tu vehículo"
                             placeholderTextColor={placeholderTextColor}
                         />
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
-                            Apellidos:
+                            Tipo de vehículo:
                         </Text>
-                        <TextInput
-                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2"
-                            placeholderTextColor={placeholderTextColor}
-                            onChangeText={(value) => handleInputChange("lastName", value)}
-                            placeholder="Digita tus dos apellidos"
-                            value={formData.lastName}
-                        />
+                        <View className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-[9px]">
+                            <DropDown
+                                title="Selecciona el tipo de vehículo que conduces para realizar entregas:"
+                                active={true}
+                                placeholderTextColor={placeholderTextColor}
+                                place="Selecciona el tipo de vehículo"
+                                options={tipoVehículo}
+                                selectedValue={selectedValue}
+                                onValueChange={(value) => setSelectedValue(value)}
+                            />
+                        </View>
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
-                            Número de teléfono:
+                            Modelo del vehículo:
                         </Text>
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             placeholderTextColor={placeholderTextColor}
-                            value={formData.phoneNumber}
+                            value={formData.model}
+                            onChangeText={(value) => handleInputChange('model', value)}
+                            placeholder="Digita el modelo de tu vehículo"
+                        />
+
+                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
+                            Placa del vehículo:
+                        </Text>
+                        <TextInput
+                            className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
+                            placeholderTextColor={placeholderTextColor}
+                            value={formData.plate}
                             keyboardType="numeric"
-                            onChangeText={(value) => handleInputChange("phoneNumber", value)}
-                            placeholder="Digita tu número de teléfono"
+                            onChangeText={(value) => handleInputChange('plate', value)}
+                            placeholder="Digita la placa de tu vehículo"
                         />
 
                         <Text className="font-Excon_regular text-main-blue dark:text-white text-[20px] w-full  mt-8">
-                            Datos del vehículo
+                            Imagenes:
                         </Text>
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
-                            Cédula de identidad:
+                            Fotos del vehículo:
                         </Text>
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
-                                onPress={() => pickImage("cedula")}
+                                onPress={() => pickImage("vehiculo")}
                             >
-                                {imageID ? (
+                                {imageVehicle ? (
                                     <Image
                                         className="rounded-lg w-full h-32"
-                                        source={{ uri: imageID }}
+                                        source={{ uri: imageVehicle }}
                                     />
                                 ) : (
                                     <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
@@ -185,7 +272,63 @@ export function DeliveryFormScreen({ navigation }) {
                         </View>
 
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
-                            Licencia de conducir:
+                            Foto de la cédula de identidad por delante:
+                        </Text>
+                        <View className=" my-2 font-Excon_thin w-full">
+                            <Pressable
+                                className="justify-center items-center"
+                                onPress={() => pickImage("cedulaDelante")}
+                            >
+                                {imageIDFront ? (
+                                    <Image
+                                        className="rounded-lg w-full h-32"
+                                        source={{ uri: imageIDFront }}
+                                    />
+                                ) : (
+                                    <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                        <Feather
+                                            name="upload"
+                                            size={24}
+                                            color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                                        />
+                                        <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">
+                                            Haz click para subir una imagen
+                                        </Text>
+                                    </View>
+                                )}
+                            </Pressable>
+                        </View>
+
+                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
+                            Foto de la cédula de identidad por detras:
+                        </Text>
+                        <View className=" my-2 font-Excon_thin w-full">
+                            <Pressable
+                                className="justify-center items-center"
+                                onPress={() => pickImage("cedulaDetras")}
+                            >
+                                {imageIDBack ? (
+                                    <Image
+                                        className="rounded-lg w-full h-32"
+                                        source={{ uri: imageIDBack }}
+                                    />
+                                ) : (
+                                    <View className="Justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                        <Feather
+                                            name="upload"
+                                            size={24}
+                                            color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                                        />
+                                        <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">
+                                            Haz click para subir una imagen
+                                        </Text>
+                                    </View>
+                                )}
+                            </Pressable>
+                        </View>
+
+                        <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
+                            Foto de la licencia de conducir:
                         </Text>
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
@@ -235,7 +378,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <TouchableOpacity
                             className="bg-main-blue p-4 mt-6 rounded-lg w-full items-center justify-center"
                             // onPress={() => navigation.replace("thirdScreen")}
-                            onPress={handleSubmitForm}
+                            onPress={deliveryRequest}
                         >
                             <Text className="text-white font-bold ml-2">
                                 Enviar solicitud
