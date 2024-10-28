@@ -25,8 +25,6 @@ export function ProfileScreen({ navigation }) {
 
   let formatePicture = "";
 
-  
-
   useEffect(() => {
     const loadUser = async () => {
       const jsonValue = await AsyncStorage.getItem('@userToken');

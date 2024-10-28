@@ -19,17 +19,19 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCRUDProductos } from "../hooks/useCRUDProductos";
 import NotificationDropdown from "../components/NotificationDropdown";
 import React, { useEffect, useCallback, useState, useRef } from "react";
+import useOrders from '../hooks/useOrders'; 
+
 
 export function ExpressScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  // const { deleteProduct, fetchStoresWithProducts, storesWithProducts } =
-  //   useCRUDProductos();
   const [longPressProduct, setLongPressProduct] = useState(null);
   const { colorScheme } = useColorScheme();
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get("window").width;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentPage, setCurrentPage] = useState(0);
+  const { orders } = useOrders(); 
+  
 
   const [prueba, setprueba] = useState([
     { title: "Pendientes", pedidos: [1] },

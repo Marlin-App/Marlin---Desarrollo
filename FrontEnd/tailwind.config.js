@@ -11,7 +11,7 @@ module.exports = {
         'main-blue': '#1952BE',
         'light-blue': '#60a5fa',
         'gray-tab': '#AAC3F3',
-        'grey-light': '#EDEEF3',
+        'gray-light': '#e5e7eb',
         'dk-main-bg': '#121212',
         'dk-tab': '#1C1C1C',
         'dk-blue': '#5186EC',

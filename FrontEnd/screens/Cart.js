@@ -85,8 +85,8 @@ export function CartScreen({ navigation }) {
                         )}
                     </View>
                     <View className="ml-2 flex-1">
-                        <Text className="text-[16px] ml-2 font-Excon_regular">{item.name}</Text>
-                        <View className="flex-row justify-between mt-4 flex-1">
+                        <Text className="text-[16px] ml-2 font-Excon_regular dark:text-white">{item.name}</Text>
+                        <View className="flex-row justify-between mt-4 flex-1 dark:text-white">
                             {/* Mostrar las variaciones seleccionadas (color y talla) */}
                             {selectedVariation.map((variation, index) => (
                                 <View key={index} className="items-center">

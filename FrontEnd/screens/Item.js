@@ -260,7 +260,7 @@ export function ItemPage({ navigation }) {
                                 {colors.map((color, index) => (
                                     <TouchableOpacity
                                         key={index}
-                                        className={`border-2 rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedColor === color ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        className={`border rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedColor === color ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
                                         style={{ backgroundColor: color }}
                                         onPress={() => setSelectedColor(color)}
                                     >
@@ -278,7 +278,7 @@ export function ItemPage({ navigation }) {
                                 {sizes.map((size, index) => (
                                     <TouchableOpacity
                                         key={index}
-                                        className={`border-2 rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedSize === size ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        className={`border rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedSize === size ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
                                         onPress={() => setSelectedSize(size)}
                                     >
                                         <Text className={`font-Excon_regular ${selectedSize === size ? 'text-main-blue' : 'dark:text-white'}`}>{size}</Text>
@@ -291,35 +291,35 @@ export function ItemPage({ navigation }) {
 
             </ScrollView>
             <View className="absolute bg-main-blue dark:bg-dk-main-bg p-5 w-full bottom-0">
-                <View className="flex-row mt-2 justify-between items-center">
+                <View className="flex-row mt-2 justify-between ">
                     <Text className="text-xl font-Excon_bold text-white">{formattedTotalPrice}</Text>
-                    <View className="flex-row items-center bg-gray-100 rounded-lg p-1">
+                    <View className="flex-row items-center bg-gray-100 dark:bg-dk-blue rounded-lg">
                         <TouchableOpacity
                             onPress={decreaseQuantity}
-                            className="bg-main-blue rounded-full w-8 h-8 flex items-center justify-center"
+                            className="bg-gray-200 dark:bg-main-blue rounded-l-lg w-8 h-8 flex items-center justify-center"
                         >
-                            <Text className="text-white font-Excon_bold text-lg">-</Text>
+                            <Text className="text-main-blue dark:text-white font-Excon_bold text-lg">-</Text>
                         </TouchableOpacity>
                         <TextInput
                             value={String(quantity)}
                             onChangeText={text => setQuantity(Number(text))}
                             keyboardType="numeric"
-                            className="w-12 text-center mx-2 font-Excon_regular"
+                            className="w-12 text-center mx-2 font-Excon_regular text-main-blue dark:text-white"
                         />
                         <TouchableOpacity
                             onPress={increaseQuantity}
-                            className="bg-main-blue rounded-full w-8 h-8 flex items-center justify-center"
+                            className=" bg-gray-200 dark:bg-main-blue rounded-r-lg  w-8 h-8 flex items-center justify-center"
                         >
-                            <Text className="text-white font-Excon_bold text-lg">+</Text>
+                            <Text className="text-main-blue dark:text-white font-Excon_bold text-lg">+</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 <TouchableOpacity
                     onPress={verifyCart}
-                    className="bg-white rounded-lg mt-4 py-2"
+                    className="bg-white dark:bg-dk-blue rounded-lg mt-4 py-2"
                 >
-                    <Text className="text-main-blue text-center font-Excon_bold">Agregar al carrito</Text>
+                    <Text className="text-main-blue text-center dark:text-white font-Excon_bold">Agregar al carrito</Text>
                 </TouchableOpacity>
             </View>
         </View>
