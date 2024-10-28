@@ -53,56 +53,48 @@ export function CartScreen({ navigation }) {
     };
 
     const CartItem = ({ item }) => {
-
         const handleDelete = () => {
             Alert.alert(
                 'Eliminar producto',
                 `¿Estás seguro de que deseas eliminar ${item.name} del carrito?`,
                 [
-                    {
-                        text: 'Cancelar',
-                    },
-                    {
-                        text: 'Eliminar',
-                        onPress: () => {
-                            removeFromCart(item.id);
-                        },
-                    },
+                    { text: 'Cancelar' },
+                    { text: 'Eliminar', onPress: () => removeFromCart(item.id) },
                 ],
                 { cancelable: false }
             );
         };
     
+        const selectedVariations = item.variations || []; 
+    
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
                 <View className="items-end justify-end mt-2">
                     <Pressable onPress={handleDelete}>
-                    <MaterialIcons name="delete-outline" size={20} color={colorScheme === 'dark' ? '#BB2626' : '#DB2B2B'} />
+                        <MaterialIcons name="delete-outline" size={20} color={colorScheme === 'dark' ? '#BB2626' : '#DB2B2B'} />
                     </Pressable>
                 </View>
                 <View className="flex-row">
-                    <View className="rounded-lg shadow-lg p-[2px] bg-[#EDEEF3] dark:bg-neutral-900">
-                        <Image
-                            source={{ uri: item.picture }}
-                            className="rounded-lg"
-                            style={{ width: 100, height: 100 }}
-                        />
+                    <View className="rounded-lg shadow-lg p-[2px] dark:bg-neutral-900">
+                        {item.item_images && (
+                            <Image
+                                source={{ uri: item.item_images[0].picture }}
+                                style={{ width: 90, height: 90 }}
+                                className="w-full h-full rounded-lg"
+                            />
+                        )}
                     </View>
                     <View className="ml-2 flex-1">
                         <Text className="text-[16px] ml-2 font-Excon_regular">{item.name}</Text>
                         <View className="flex-row justify-between mt-4 flex-1">
-                            <View className="items-center">
-                                <View className="rounded-lg h-6 w-7 items-center">
-                                    <View className="rounded-full h-4 w-4 bg-black dark:border dark:border-white "></View>
+                            {selectedVariations.map((variation, index) => (
+                                <View key={index} className="items-center pt-2">
+                                    <View className="rounded-md items-center justify-center dark:bg-light-blue">
+                                        <Text className="font-Excon_bold text-[12px] text-black dark:text-[#171717]">{variation.attribute_name}</Text>
+                                    </View>
+                                    <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">{variation.value}</Text>
                                 </View>
-                                <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">Color</Text>
-                            </View>
-                            <View className="items-center">
-                                <View className="rounded-md h-6 w-7 bg-main-blue items-center justify-center dark:bg-light-blue">
-                                    <Text className="font-Excon_bold text-[12px] text-white dark:text-[#171717]">M</Text>
-                                </View>
-                                <Text className="mt-2 font-Excon_regular text-gray-600 dark:text-[#d2d2d2]">Talla</Text>
-                            </View>
+                            ))}
                             <View className="items-center">
                                 <View className="rounded-md h-6 w-20 bg-main-blue items-center flex-row dark:bg-light-blue">
                                     <Pressable
@@ -135,6 +127,11 @@ export function CartScreen({ navigation }) {
         );
     };
     
+    
+    
+      
+    
+
 
 
 

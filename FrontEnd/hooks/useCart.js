@@ -3,10 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useCart = () => {
   const [cart, setCart] = useState([]);
-
   const [total, setTotal] = useState(0);
 
-  
   useEffect(() => {
     calcularTotal();
   }, [cart]);
@@ -25,7 +23,6 @@ const useCart = () => {
     };
   
     loadCart();
-
   }, []);
 
   useEffect(() => {
@@ -44,14 +41,18 @@ const useCart = () => {
   }, [cart]);
 
   const addToCart = (product) => {
+    const imageUrl = product.item_images && product.item_images.length > 0 ? product.item_images[0].picture : null;
+
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
+      const existingProduct = prevCart.find((item) => item.id === product.id && item.selectedColor === product.selectedColor && item.selectedSize === product.selectedSize);
       if (existingProduct) {
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
+          item.id === product.id && item.selectedColor === product.selectedColor && item.selectedSize === product.selectedSize 
+            ? { ...item, cantidad: item.cantidad + 1 } 
+            : item
         );
       }
-      return [...prevCart, { ...product, cantidad: product.cantidad  }];
+      return [...prevCart, { ...product, cantidad: product.cantidad, picture: imageUrl, selectedColor: product.selectedColor, selectedSize: product.selectedSize }];
     });
   };
 
@@ -75,7 +76,6 @@ const useCart = () => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
-
   const clearCart = async () => {
     try {
       await AsyncStorage.removeItem('@cart');
@@ -90,20 +90,11 @@ const useCart = () => {
     setTotal(totalAmount);
   };
 
-
   const isSameStore = (store_id) => {
-    
-    if(cart.length == 0){
+    if (cart.length === 0) {
       return true;
     }
-
-    if(cart[0].store_id == store_id){
-      return true;
-    }
-      return false;
-      
-
-
+    return cart[0].store_id === store_id;
   };
 
   return {
