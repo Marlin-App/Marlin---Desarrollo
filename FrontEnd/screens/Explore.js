@@ -95,7 +95,7 @@ export function ExploreScreen({ navigation }) {
     };
 
     const renderHorizontalItem = useCallback(({ item }) => (
-        <Pressable onPress={() => navigation.navigate('Item', { product: item })}>
+        <Pressable onPress={() => navigation.navigate('Item', { id: item.id })}>
             <View className="mt-4 items-center">
                 <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
                     <Image

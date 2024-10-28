@@ -171,7 +171,7 @@ export function Store({ navigation }) {
                     numColumns={2}
                     renderItem={({ item }) => (
                         <Pressable
-                            onPress={() => navigation.navigate('Item', { product: item })}
+                            onPress={() => navigation.navigate('Item', { id: item.id })}
                             className="mt-4"
                         >
                             <View className="items-center">
