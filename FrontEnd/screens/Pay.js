@@ -11,11 +11,33 @@ import { useEffect } from 'react';
 import { useColorScheme } from "nativewind";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRoute } from '@react-navigation/native';
+import useDirections from '../hooks/useDirection';
+
 
 export function PayScreen({ navigation }) {
 
     const route = useRoute(); 
     const { totales } = route.params;
+    const { addToCart, isSameStore, cart } = useCart();
+    const {direction}= useDirections(navigation);
+    const directionSelected= direction.find(item => item.isSelected === true);
+ 
+
+  const [infoStore, setInfoStore] = useState(null);
+    useEffect(() => {
+        async function prepare() {
+           response = await fetch(`https://marlin-backend.vercel.app/api/stores/${route.params.idTienda}/`)
+           .then((response) => response.json());
+            setInfoStore({
+                sinpeNumber: response.num_sinpe,
+                storeName: response.name,
+            }
+            );
+        }
+        prepare();
+    }, []);
+
+
 
     const { colorScheme } = useColorScheme();
 
@@ -61,12 +83,36 @@ export function PayScreen({ navigation }) {
     const deliveryFee = 250;
     const transportFee = 750;
 
-    const storeName = "Nombre de la tienda";
-    const sinpeNumber = "8888-8888";
-
     const generateRandomCode = () => {
         return Math.random().toString(36).substring(7).toUpperCase();
     };
+
+    const postOrder = async () => {
+        const order = {
+            products: cart.map((product) => ({
+                item_id: product.id,
+                quantity: product.cantidad,
+            })),
+            status: "Pendiente",
+            direction: "San jose "  ,
+            user_id: 1
+        }
+
+        console.log(order);
+       
+    
+        const response = await fetch('https://marlin-backend.vercel.app/api/orders/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        }); 
+       
+
+    }
+
+
 
     const handleFinalize = () => {
         if (selectedMethod === null) {
@@ -76,7 +122,7 @@ export function PayScreen({ navigation }) {
             );
             return;
         }
-
+        postOrder();
         Alert.alert(
             'Compra Exitosa',
             'La compra se ha realizado con éxito.',
@@ -180,12 +226,12 @@ export function PayScreen({ navigation }) {
                         <Text 
                             className="font-Erode_regular text-gray-800 dark:text-white text-lg"
                         >
-                            Nombre: {storeName}
+                            Nombre: {infoStore.storeName}
                         </Text>
                         <Text 
                             className="font-Erode_regular text-gray-800 dark:text-white text-lg"
                         >
-                            Número: {sinpeNumber}
+                            Número: {infoStore.sinpeNumber}
                         </Text>
                         <Text 
                             className="font-Erode_regular text-gray-800 dark:text-white text-lg"

@@ -254,12 +254,12 @@ export function StoreCat({ navigation }) {
                         horizontal={true}
                         renderItem={({ item }) => (
                             <>
-                                {item.id == 0 ? (
+                                {item.id == 1 ? (
                                     <View key={0}>
                                          <Pressable onPress={() => handleCategorySelect(0)}>
                                     <View className="my-4 mx-2 items-center">
                                         <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
-                                            <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "black"} />
+                                            <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "#1952BE"} />
                                         </View>
                                         <Text className="text-lg text-center text-light-blue">Todas</Text>
                                     </View>

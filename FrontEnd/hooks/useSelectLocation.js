@@ -4,7 +4,10 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 const useSelectLocation = () => {
-  const [location, setLocation] = useState(null); // Guardar la ubicación actual
+  const [location, setLocation] = useState({
+    latitude: 313,
+    longitude: 3123,
+  }); // Guardar la ubicación actual
   const [isModalVisible, setModalVisible] = useState(false);
   const mapRef = useRef(null); // Crear una referencia para el MapView
   const [selectedLocation, setSelectedLocation] = useState(null); // Guardar la ubicación seleccionada (solo del marcador)
@@ -16,16 +19,19 @@ const useSelectLocation = () => {
         console.log('Permiso de ubicación denegado');
         return;
       }
-      
-      const currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
-      setSelectedLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
+      try {
+        const currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+        });
+        setSelectedLocation({
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+        });  
+      } catch (error) {
+        
+      }
     };
     
     getLocation();

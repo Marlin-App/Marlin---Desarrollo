@@ -236,7 +236,7 @@ export function CartScreen({ navigation }) {
                         <Text className="font-Excon_regular text-[20px] text-white dark:text-light-blue">{formatCurrency(total)}</Text>
                     </View>
                     <Pressable
-                        onPress={() => navigation.navigate('Pay', { totales: total })} // Pasar el total aquí
+                          onPress={() => navigation.navigate('Pay', { totales: total, idTienda: cart[0].store_id}, )}  // Pasar el total aquí
                         className="bg-white dark:bg-[#1952BE] p-4 rounded-md mb-2"
                         android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
                     >
