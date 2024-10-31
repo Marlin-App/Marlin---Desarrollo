@@ -132,12 +132,20 @@ export function ItemPage({ navigation }) {
     const handleAddToCart = () => {
         setModalVisible(true);
         
-        const itemWithImage = {
+      /*   const itemWithImage = {
             ...item,
             cantidad: quantity,
             image: item.item_images?.[0]?.picture,
             ...(selectedColor && { selectedColor }),
             ...(selectedSize && { selectedSize })
+        }; */
+
+        const itemWithImage = {
+            ...item,
+            cantidad: quantity,
+            image: item.item_images?.[0]?.picture,
+            color: selectedColor,
+            size: selectedSize
         };
     
         addToCart(itemWithImage);

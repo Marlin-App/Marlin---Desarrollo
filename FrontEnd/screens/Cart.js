@@ -59,13 +59,13 @@ export function CartScreen({ navigation }) {
                 `¿Estás seguro de que deseas eliminar ${item.name} del carrito?`,
                 [
                     { text: 'Cancelar' },
-                    { text: 'Eliminar', onPress: () => removeFromCart(item.id) },
+                    { text: 'Eliminar', onPress: () => removeFromCart(item.id, item.color, item.size) },
                 ],
                 { cancelable: false }
             );
         };
     
-        const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : [];
+    /*     const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
     
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
@@ -87,15 +87,21 @@ export function CartScreen({ navigation }) {
                     <View className="ml-2 flex-1">
                         <Text className="text-[16px] ml-2 font-Excon_regular dark:text-white">{item.name}</Text>
                         <View className="flex-row justify-between mt-4 flex-1 dark:text-white">
-                            {/* Mostrar las variaciones seleccionadas (color y talla) */}
-                            {selectedVariation.map((variation, index) => (
-                                <View key={index} className="items-center">
+                    
+                                <View  className="items-center">
                                     <View className="rounded-md items-center justify-center dark:bg-light-blue">
-                                        <Text className="font-Excon_bold text-[12px] text-black dark:text-[#171717]">{variation.attribute_name}</Text>
+                                        <Text className="font-Excon_bold text-[12px] text-black dark:text-[#171717]">Color</Text>
                                     </View>
-                                    <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">{variation.value}</Text>
+                                    <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">{item.color ? item.color : "N/T"}</Text>
                                 </View>
-                            ))}
+
+                                <View  className="items-center">
+                                    <View className="rounded-md items-center justify-center dark:bg-light-blue">
+                                        <Text className="font-Excon_bold text-[12px] text-black dark:text-[#171717]">Talla</Text>
+                                    </View>
+                                    <Text className="mt-2 font-Excon_regular text-gray-600 ml-2 dark:text-[#d2d2d2]">{item.size ? item.size: "N/T"}</Text>
+                                </View>
+                          
                             <View className="items-center">
                                 <View className="rounded-md h-6 w-20 bg-main-blue items-center flex-row dark:bg-light-blue">
                                     <Pressable
@@ -151,7 +157,7 @@ export function CartScreen({ navigation }) {
                         <FlatList
                             data={cart}
                             renderItem={CartItem}
-                            keyExtractor={item => item.id.toString()}
+                            keyExtractor={item => `${item.id}-${item.color}-${item.size}`}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ paddingBottom: 50 }}
                             scrollEnabled={false}

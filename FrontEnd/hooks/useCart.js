@@ -12,6 +12,7 @@ const useCart = () => {
   useEffect(() => {
     const loadCart = async () => {
       try {
+      /*   await clearCart(); */
         const jsonValue = await AsyncStorage.getItem('@cart');
         if (jsonValue != null) {
           setCart(JSON.parse(jsonValue));
@@ -44,15 +45,15 @@ const useCart = () => {
     const imageUrl = product.item_images && product.item_images.length > 0 ? product.item_images[0].picture : null;
 
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id && item.selectedColor === product.selectedColor && item.selectedSize === product.selectedSize);
+      const existingProduct = prevCart.find((item) => item.id === product.id && item.color === product.color && item.size === product.size);
       if (existingProduct) {
         return prevCart.map((item) =>
-          item.id === product.id && item.selectedColor === product.selectedColor && item.selectedSize === product.selectedSize 
+          item.id === product.id && item.color === product.color && item.size === product.size 
             ? { ...item, cantidad: item.cantidad + 1 } 
             : item
         );
       }
-      return [...prevCart, { ...product, cantidad: product.cantidad, picture: imageUrl, selectedColor: product.selectedColor, selectedSize: product.selectedSize }];
+      return [...prevCart, { ...product, cantidad: product.cantidad, picture: imageUrl, color: product.color, size: product.size }];
     });
   };
 
@@ -72,8 +73,17 @@ const useCart = () => {
     );
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  const removeFromCart = async (productId, color, size) => {
+    if(cart.length==1){
+      await clearCart();
+      return;
+    }
+      setCart((prevCart) => 
+      prevCart.filter((item) => 
+        !(item.id === productId && item.color === color && item.size === size)
+      )
+    );
+
   };
 
   const clearCart = async () => {

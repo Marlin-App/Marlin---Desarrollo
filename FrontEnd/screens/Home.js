@@ -253,6 +253,7 @@ export function HomeScreen({ navigation }) {
                     renderItem={renderVerticalItem}
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ paddingBottom: 16 }}
+                    scrollEnabled={false}
                 />
             </ScrollView>
         </View>
