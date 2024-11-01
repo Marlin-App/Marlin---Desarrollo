@@ -10,20 +10,24 @@ const useGetUser = () => {
     const [error, setError] = useState(null);
     const { decodeJWT, getToken, isTokenExpired, refreshToken } = useDecodeJWT();
     const [isLogged, setIsLogged] = useState(true);
+    const [token, setToken] = useState(null);
 
 
 
     const fetchData = async () => {
         const jsonValue = await AsyncStorage.getItem('@userToken');
+        if (await isTokenExpired()) {
+            await refreshToken();
+        }
         if (jsonValue == null) {
             setLoading(false);
             setIsLogged(false);
             return;
         }
         const userData = JSON.parse(jsonValue);
-        const token = userData.access;
-        const decodedToken = decodeJWT(token);
+        const decodedToken = decodeJWT(userData.access);
         const user_id = decodedToken.payload.userprofile;
+        setToken(userData.access);
 
         try {
             const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}`);
@@ -115,7 +119,7 @@ const useGetUser = () => {
 
 
 
-    return { user, loading, isLogged, setIsLogged, fetchData, updateUser };
+    return { user, loading, isLogged, setIsLogged, fetchData, updateUser, token };
 };
 
 export default useGetUser; 

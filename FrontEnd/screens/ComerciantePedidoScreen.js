@@ -48,11 +48,11 @@ export function ComerciantePedidoScreen() {
                             <Pressable onPress={() =>{setModalVisible(true); setModalProduct(product)}
                                 
                             }>
-                            <Text className="text-md font-Excon_thin dark:text-white">{product.productName}</Text>
+                            <Text className="text-md font-Excon_thin dark:text-white">{product.item_id}</Text>
                             </Pressable>
-                            <Text className="text-md font-Excon_thin dark:text-white">₡{product.price}</Text>
+                            <Text className="text-md font-Excon_thin dark:text-white">₡{total_price}</Text>
                             <Text className="text-md font-Excon_thin dark:text-white">{product.quantity}</Text>
-                            <Text className="text-md font-Excon_thin dark:text-white">₡{product.price * product.quantity}</Text>
+                            <Text className="text-md font-Excon_thin dark:text-white">₡{total_price}</Text>
                             </View>
                             ))
                             
