@@ -15,7 +15,7 @@ export function EditarProducto({ navigation }) {
 
 
     const [formData, setFormData] = useState({
-        id:0,
+        id: 0,
         name: '',
         description: '',
         price: 0,
@@ -27,7 +27,7 @@ export function EditarProducto({ navigation }) {
     });
 
 
-    const {getProduct, deleteProduct, editProduct } = useCRUDProductos(navigation);
+    const { getProduct, deleteProduct, editProduct } = useCRUDProductos(navigation);
     const route = useRoute();
     const storeId = route.params || {};
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -37,6 +37,8 @@ export function EditarProducto({ navigation }) {
     const [row, setRow] = useState(1);
     const [variations, setVariations] = useState([]);
     const [images, setImages] = useState([]);
+    const [oldPictures, setOldPictures] = useState([]);
+    const [newPictures, setNewPictures] = useState([]);
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabled2, setIsEnabled2] = useState(false);
     const [product, setProduct] = useState(null);
@@ -49,7 +51,7 @@ export function EditarProducto({ navigation }) {
             setProduct(fetchedProduct);
             // Enable switches based on fetched product attributes //revisar que no viene la informacion
             setImages(fetchedProduct.item_images);
-            
+
             if (fetchedProduct.variations.length > 0) {
                 const hasColorAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Color');
                 const hasSizeAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Talla');
@@ -106,18 +108,49 @@ export function EditarProducto({ navigation }) {
         };
 
         fetchProduct();
+        console.log(formData);
     }, [storeId.product]);
 
-    const pickImages = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsMultipleSelection: true,
-            quality: 1,
-        });
+    // const pickImages = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsMultipleSelection: true,
+    //         quality: 1,
+    //     });
 
-        if (!result.canceled) {
-            setImages(result.assets);
+    //     if (!result.canceled) {
+    //         setImages(result.assets);
+    //     }
+    // };
+
+    const pickImages = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsMultipleSelection: true, // Activa selección múltiple
+                quality: 1,
+            });
+
+            if (!result.canceled) {
+                // Si permite selección múltiple, toma assets; si no, usa directamente el resultado
+                const newImages = result.assets ? result.assets.map((asset) => ({
+                    uri: asset.uri,
+                    id: Math.random().toString(36).substring(7), // Genera un ID único
+                })) : [{
+                    uri: result.uri,
+                    id: Math.random().toString(36).substring(7),
+                }];
+
+                setImages((prevImages) => [...prevImages, ...newImages]);
+            }
+        } catch (error) {
+            console.log("Error al seleccionar imágenes: ", error);
         }
+
+    };
+
+    const removeImage = (id) => {
+        setImages((prevImages) => prevImages.filter((image) => image.id !== id));
     };
 
     const handleInputChange = (field, value) => {
@@ -162,6 +195,22 @@ export function EditarProducto({ navigation }) {
         }
     }, [isEnabled, isEnabled2]);
 
+    useEffect(() => {
+        const { newPictures, oldPictures } = images.reduce(
+            (acc, image) => {
+                if (typeof image.id === "number") {
+                    acc.oldPictures.push(image);
+                } else {
+                    acc.newPictures.push(image);
+                }
+                return acc;
+            },
+            { newPictures: [], oldPictures: [] }
+        );
+        setNewPictures(newPictures);
+        setOldPictures(oldPictures);
+    }, [images]);
+
     const EditarProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
@@ -186,9 +235,9 @@ export function EditarProducto({ navigation }) {
             name: formData.name,
             description: formData.description,
             price: formData.price,
-            stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock, // Suma de las cantidades de las variantes
-            //pictures: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
-            pictures:[],
+            stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock,
+            pictures: oldPictures.length > 0 ? oldPictures : [],
+            new_pictures: newPictures.length > 0 ? newPictures : [],
             store_id: storeId.store,
             item_type: 1,
         };
@@ -208,7 +257,6 @@ export function EditarProducto({ navigation }) {
         );
     } else {
         return (
-
             <ScrollView className="bg-white dark:bg-neutral-950">
                 <View className="flex-1 justify-center items-center bg-opacity-50">
                     <View className=" p-5 w-full h-full">
@@ -283,6 +331,7 @@ export function EditarProducto({ navigation }) {
                                                     />
                                                 </View>
                                             ))}
+                                            <View className="flex-row justify-between"></View>
                                             <View className="flex-row justify-between">
                                                 <Pressable className="flex-row justify-center mb-1 gap-x-4 items-center" onPress={removeRow}>
                                                     <View className="rounded-full border-[1.5px] border-main-blue w-8 h-8 justify-center items-center dark:border-light-blue">
@@ -315,7 +364,7 @@ export function EditarProducto({ navigation }) {
                             <View className="flex-col my-4">
                                 <Text className="text-main-blue text-md font-Excon_bold mb-2 dark:text-light-blue">Foto de producto</Text>
 
-                                <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                                {/* <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
                                     {images.length === 0 ? (
                                         <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full dark:border-light-blue">
                                             <Feather name="upload" size={24} color="#015DEC" />
@@ -331,6 +380,41 @@ export function EditarProducto({ navigation }) {
                                                     source={{ uri: image.uri ? image.uri : image.picture }}
                                                     style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
                                                 />
+                                            ))}
+                                        </ScrollView>
+                                    )}
+                                </Pressable> */}
+
+                                <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                                    {images.length === 0 ? (
+                                        <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                            <Feather name="upload" size={24} color="#015DEC" />
+                                            <Text className="text-main-blue text-md font-Excon_thin">
+                                                Haz click para subir imágenes
+                                            </Text>
+                                        </View>
+                                    ) : (
+                                        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                            {images.map((image, index) => (
+                                                <View key={index} style={{ position: 'relative', margin: 5 }}>
+                                                    <Image
+                                                        source={{ uri: image.picture ? image.picture : image.uri }}
+                                                        style={{ width: 80, height: 80, borderRadius: 8 }}
+                                                    />
+                                                    <Pressable
+                                                        onPress={() => removeImage(image.id)}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: -5,
+                                                            right: -5,
+                                                            backgroundColor: 'red',
+                                                            borderRadius: 12,
+                                                            padding: 2,
+                                                        }}
+                                                    >
+                                                        <Feather name="x" size={16} color="white" />
+                                                    </Pressable>
+                                                </View>
                                             ))}
                                         </ScrollView>
                                     )}

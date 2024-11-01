@@ -36,21 +36,52 @@ export function AgregarProducto({ navigation }) {
     const [isEnabled, setIsEnabled] = useState(false);
     const [isEnabled2, setIsEnabled2] = useState(false);
 
-    const pickImages = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsMultipleSelection: true,
-            quality: 1,
-        });
+    // const pickImages = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsMultipleSelection: true,
+    //         quality: 1,
+    //     });
 
-        if (!result.canceled) {
-            const uniqueImages = result.assets.map(asset => ({
-            uri: asset.uri,
-            id: asset.assetId || asset.uri // Ensure each image has a unique identifier
-            }));
-            setImages(uniqueImages);
+    //     if (!result.canceled) {
+    //         const uniqueImages = result.assets.map(asset => ({
+    //         uri: asset.uri,
+    //         id: asset.assetId || asset.uri // Ensure each image has a unique identifier
+    //         }));
+    //         setImages(uniqueImages);
+    //     }
+    // };
+
+    const pickImages = async () => {
+        try {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsMultipleSelection: true, // Activa selección múltiple
+                quality: 1,
+            });
+    
+            if (!result.canceled) {
+                // Si permite selección múltiple, toma assets; si no, usa directamente el resultado
+                const newImages = result.assets ? result.assets.map((asset) => ({
+                    uri: asset.uri,
+                    id: Math.random().toString(36).substring(7), // Genera un ID único
+                })) : [{
+                    uri: result.uri,
+                    id: Math.random().toString(36).substring(7),
+                }];
+                
+                setImages((prevImages) => [...prevImages, ...newImages]);
+            }
+        } catch (error) {
+            console.log("Error al seleccionar imágenes: ", error);
         }
+        
     };
+
+    const removeImage = (id) => {
+        setImages((prevImages) => prevImages.filter((image) => image.id !== id));
+    };
+
 
     const handleInputChange = (field, value) => {
         setFormData(prevState => ({
@@ -97,28 +128,28 @@ export function AgregarProducto({ navigation }) {
     const AddProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
-    
+
             if (isEnabled) {
-                attributes.push({name: 'Color', value: variation.color });
+                attributes.push({ name: 'Color', value: variation.color });
             }
-    
+
             if (isEnabled2) {
-                attributes.push({name: 'Talla', value: variation.size });
+                attributes.push({ name: 'Talla', value: variation.size });
             }
-    
+
             return {
                 stock: parseInt(variation.quantity, 10),
                 attribute_values: attributes
             };
         });
-    
+
         const newProduct = {
             attributes: productVariations,
             name: formData.name,
             description: formData.description,
             price: formData.price,
-            stock: productVariations.length > 0 ?productVariations.reduce((total, variation) => total + variation.stock, 0):formData.stock, // Suma de las cantidades de las variantes
-            pictures: images.length > 0 ? images : '', // Ajusta según cómo manejas las imágenes
+            stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock,
+            pictures: images.length > 0 ? images : '', 
             store_id: storeId.store,
             item_type: 1,
         };
@@ -186,7 +217,7 @@ export function AgregarProducto({ navigation }) {
                                                     className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                                                     editable={isEnabled}
                                                     value={variation.color}
-                                                    onChangeText={(value) => handleVariationChange(index,'color', value)}
+                                                    onChangeText={(value) => handleVariationChange(index, 'color', value)}
                                                 />
                                                 <TextInput
                                                     className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
@@ -234,7 +265,7 @@ export function AgregarProducto({ navigation }) {
                         <View className="flex-col my-4">
                             <Text className="text-main-blue text-md font-Excon_bold mb-2 dark:text-light-blue">Foto de producto</Text>
 
-                            <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                            {/* <Pressable className="justify-center items-center mb-4" onPress={pickImages}> 
                                 {images.length === 0 ? (
                                     <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full dark:border-light-blue">
                                         <Feather name="upload" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
@@ -250,6 +281,41 @@ export function AgregarProducto({ navigation }) {
                                                 source={{ uri: image.uri }}
                                                 style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
                                             />
+                                        ))}
+                                    </ScrollView>
+                                )}
+                            </Pressable>*/}
+
+                            <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
+                                {images.length === 0 ? (
+                                    <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
+                                        <Feather name="upload" size={24} color="#015DEC" />
+                                        <Text className="text-main-blue text-md font-Excon_thin">
+                                            Haz click para subir imágenes
+                                        </Text>
+                                    </View>
+                                ) : (
+                                    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                        {images.map((image, index) => (
+                                            <View key={index} style={{ position: 'relative', margin: 5 }}>
+                                                <Image
+                                                    source={{ uri: image.uri }}
+                                                    style={{ width: 80, height: 80, borderRadius: 8 }}
+                                                />
+                                                <Pressable
+                                                    onPress={() => removeImage(image.id)}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: -5,
+                                                        right: -5,
+                                                        backgroundColor: 'red',
+                                                        borderRadius: 12,
+                                                        padding: 2,
+                                                    }}
+                                                >
+                                                    <Feather name="x" size={16} color="white" />
+                                                </Pressable>
+                                            </View>
                                         ))}
                                     </ScrollView>
                                 )}

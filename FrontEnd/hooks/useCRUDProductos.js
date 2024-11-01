@@ -116,11 +116,11 @@ const useCRUDProductos = (navigation) => {
     };
 
     const editProduct = async (formData, productId) => {
-        console.log('formData:', formData);
+        console.log('formData:', formData.pictures);
 
         const formDataToSend = new FormData();
         formDataToSend.append('attributes', JSON.stringify(formData.attributes));
-        formDataToSend.append('item_images', []);
+        formDataToSend.append('images', JSON.stringify(formData.pictures));
         formDataToSend.append('name', formData.name);
         formDataToSend.append('description', formData.description);
         formDataToSend.append('price', formData.price);
@@ -128,8 +128,19 @@ const useCRUDProductos = (navigation) => {
         formDataToSend.append('store_id', formData.store_id);
         formDataToSend.append('item_type', formData.item_type);
 
-        console.log('formDataToSend:', formDataToSend);
+        if (formData.new_pictures && formData.new_pictures.length > 0) {
+            formData.new_pictures.forEach((image, index) => {
+                const perfilFile = {
+                    uri: image.uri,
+                    type: 'image/jpeg',
+                    name: `${formData.name}_${image.id}.jpg`, // Asegúrate de que el nombre sea único
+                };
+                formDataToSend.append('new_images', perfilFile);
+            });
+        }
+        
 
+        console.log('formDataToSend:', formDataToSend);
         try {
             const jsonValue = await AsyncStorage.getItem('@userToken');
 
