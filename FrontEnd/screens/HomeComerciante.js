@@ -7,12 +7,12 @@ import React, { useEffect, useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from '@expo/vector-icons/Feather';
 import NotificationDropdown from '../components/NotificationDropdown';
-
+import useOrders from '../hooks/useOrders';
 export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const [filter, setFilter] = useState("Completado");
-
-    const [orders, setOrders] = useState([
+    const {orders} = useOrders([]);
+   /*  const [orders, setOrders] = useState([
         {
             id: 1,
             logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB8W02HdwwjvQtQl1b2-86cJnh6td58ShJdQ&s",
@@ -123,7 +123,9 @@ export function HomeComercianteScreen({ navigation }) {
                 references: "Instrucciones especiales de entrega.",
             }
         }
-    ]);
+    ]); */
+
+
     
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -146,7 +148,6 @@ export function HomeComercianteScreen({ navigation }) {
 
 
     useEffect(() => {
-       
             const filteredOrders = orders.filter(order => order.status === filter);
             setOrderFilter(filteredOrders);
         
@@ -207,7 +208,7 @@ export function HomeComercianteScreen({ navigation }) {
                             </View>
                         }
                         renderItem={({ item }) => (
-                            <Pressable className="flex-row justify-center mb-1" onPress={() => navigation.navigate("Pedido", { order: item })}>
+                            <Pressable className="flex-row justify-center mb-1"/*  onPress={() => navigation.navigate("Pedido", { order: item })} */>
                                 <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-[#D6D6D6] dark:border-light-blue w-full items-center rounded-md ">
                                     <View className="flex-row">
                                         <View className=" justify-center item-center bg-red-600 rounded-lg dark:bg-neutral-900">
@@ -217,7 +218,7 @@ export function HomeComercianteScreen({ navigation }) {
                                             <Text className="font-Excon_bold text-sm dark:text-white">Entregado: <Text className="font-Excon_thin text-sm">{item.deliveredDate} </Text></Text>
                                             <Text className="font-Excon_bold text-sm dark:text-white">Estado: <Text className="font-Excon_thin text-sm">{item.status} </Text></Text>
                                             <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.receipt} </Text></Text>
-                                            <Text className="font-Excon_thin text-sm dark:text-white">₡{item.price} - {item.orderDetails.length} productos</Text>
+                                            <Text className="font-Excon_thin text-sm dark:text-white">₡{item.total_price} - {item.products.length} productos</Text>
                                         </View>
                                     </View>
 

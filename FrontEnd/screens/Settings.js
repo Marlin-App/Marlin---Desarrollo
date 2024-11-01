@@ -102,7 +102,7 @@ export function ProfileScreen({ navigation }) {
               <View className="flex justify-center items-center w-28 h-28 rounded-full bg-light-blue dark:bg-main-blue">
                 <Image
                   source={{ uri: user.picture ? user.picture.replace("image/upload/", "") : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
-                  style={{ width: 105, height: 105, borderRadius: 100 }}
+                  style={{ width: 108, height: 108, borderRadius: 100 }}
                 />
               </View>
               <View className="ml-6">

@@ -12,15 +12,15 @@ import { useColorScheme } from "nativewind";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRoute } from '@react-navigation/native';
 import useDirections from '../hooks/useDirection';
-
+import useGetUser from '../hooks/useGetUser';
 
 export function PayScreen({ navigation }) {
 
     const route = useRoute(); 
     const { totales } = route.params;
     const { addToCart, isSameStore, cart } = useCart();
-    const {direction}= useDirections(navigation);
-    const directionSelected= direction.find(item => item.isSelected === true);
+    const  {fetchData, user, token} = useGetUser();
+   
  
 
   const [infoStore, setInfoStore] = useState(null);
@@ -33,6 +33,8 @@ export function PayScreen({ navigation }) {
                 storeName: response.name,
             }
             );
+
+           await fetchData();
         }
         prepare();
     }, []);
@@ -86,29 +88,62 @@ export function PayScreen({ navigation }) {
     const generateRandomCode = () => {
         return Math.random().toString(36).substring(7).toUpperCase();
     };
-
+    
+    
     const postOrder = async () => {
+       
         const order = {
             products: cart.map((product) => ({
                 item_id: product.id,
                 quantity: product.cantidad,
             })),
             status: "Pendiente",
-            direction: "San jose "  ,
-            user_id: 1
+            direction: `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`, 
+            user_id: user.id,
         }
 
-        console.log(order);
-       
-    
-        const response = await fetch('https://marlin-backend.vercel.app/api/orders/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-        }); 
-       
+      
+        try {
+            const response = await fetch('https://marlin-backend.vercel.app/api/orders/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                },
+                body: JSON.stringify(order),
+            });
+        
+           
+            if (!response.ok) {
+             
+                const errorText = await response.text();
+                console.error(`Error ${response.status}: ${errorText}`);
+                return;
+            }
+        
+            
+            const data = await response.json();
+            console.log('Order created successfully:', data);
+
+              Alert.alert(
+            'Compra Exitosa',
+            'La compra se ha realizado con éxito.',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        clearCart(); 
+                        navigation.navigate('Home'); 
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
+        
+        } catch (error) {
+           
+            console.error('Network or other error:', error);
+        }
 
     }
 
@@ -123,20 +158,6 @@ export function PayScreen({ navigation }) {
             return;
         }
         postOrder();
-        Alert.alert(
-            'Compra Exitosa',
-            'La compra se ha realizado con éxito.',
-            [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        clearCart(); 
-                        navigation.navigate('Home'); 
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
     };
 
     const pickImage = async () => {

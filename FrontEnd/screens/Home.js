@@ -11,6 +11,7 @@ import HomeCarousel from '../components/CarouselHome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import NotificationDropdown from '../components/NotificationDropdown';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -28,6 +29,7 @@ export function HomeScreen({ navigation }) {
 
     const {
         cart,
+        cartLength,
         increaseQuantity,
         decreaseQuantity,
         removeFromCart,
@@ -220,14 +222,14 @@ export function HomeScreen({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
-                            Carr. Interamericana Norte
+                        <Text className="text-white dark:text-dk-blue text-xl font-Erode_bold">
+                            Marlin
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                        <MaterialIcons name="delivery-dining" size={24} color="white" />
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4 relative">
+                    <View className="flex-row items-center justify-center gap-x-6 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
-                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                            <Ionicons name="notifications-outline" size={25} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
                             )}
@@ -236,11 +238,13 @@ export function HomeScreen({ navigation }) {
                             <Pressable onPress={
                                 isLogged ? () => navigation.navigate("Cart") : () => navigation.navigate("Landing")
                             }>
-                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                                <Feather name="shopping-cart" size={26} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
-                            <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
-                                <Text className="text-white text-xs font-bold">{cart.length}</Text>
-                            </View>
+                            {cartLength > 0 && (
+                                <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
+                                    <Text className="text-white text-xs font-bold">{cartLength}</Text>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </View>

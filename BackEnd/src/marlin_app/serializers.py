@@ -64,6 +64,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['email'] = user.email
         token['userprofile'] = user.userprofile.id
+        token['usertype'] = user.userprofile.user_type.name
         
         # Devuelve el token
         return token
@@ -194,6 +195,13 @@ class StoreItemSerializer(serializers.ModelSerializer):
 
         #extraer los attibutes
         variations_data = self.context['request'].data.get('attributes')
+        if variations_data:
+    # Si es un string, convierte a JSON
+            if isinstance(variations_data, str):
+                variations_data = json.loads(variations_data)
+        else:
+            raise ValueError("El campo 'attributes' es requerido")
+        
         request_images = self.context['request'].data.get('images')
         new_images = self.context['request'].FILES.getlist('new_images')
     
