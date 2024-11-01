@@ -74,7 +74,7 @@ export function DirectionScreen({ navigation }) {
                   <Feather name="map-pin" size={24} color="#015DEC" />
                   <View className="ml-4 ">
                     <Text className="font-Erode_regular text-base dark:text-white">{item.name} </Text>
-                    <Text className="font-Erode_regular dark:text-white">{item.id} </Text>
+                    <Text className="font-Erode_regular dark:text-white">{item.referencias} </Text>
                   </View>
                 </View>
                 {item.isSelected ? (

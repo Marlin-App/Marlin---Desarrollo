@@ -9,10 +9,21 @@ import useCart from '../hooks/useCart';
 import { useColorScheme } from "nativewind";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import useDirections from '../hooks/useDirection';
 
 export function CartScreen({ navigation }) {
 
     const { cart, removeFromCart, increaseQuantity, decreaseQuantity, total: cartTotal } = useCart();
+    const {direction, reLoadDirections }= useDirections(navigation);
+    const directionSelected= direction.find(item => item.isSelected === true);
+
+    useEffect(() => {
+        const reload = async () => {
+          await reLoadDirections();
+        };
+        const focusListener = navigation.addListener('focus', reload);
+      }, [navigation]);
+
 
     const { colorScheme } = useColorScheme();
 
@@ -30,6 +41,8 @@ export function CartScreen({ navigation }) {
         }
         prepare();
     }, []);
+
+    
 
     const onLayoutRootView = useCallback(async () => {
         if (fontsLoaded) {
@@ -65,7 +78,7 @@ export function CartScreen({ navigation }) {
             );
         };
     
-    /*     const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
+    /*const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
     
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
@@ -134,15 +147,6 @@ export function CartScreen({ navigation }) {
         );
     };
     
-    
-    
-    
-      
-    
-
-
-
-
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950" onLayout={onLayoutRootView}>
             <ScrollView className="flex-1 bg-white dark:bg-neutral-950">
@@ -183,14 +187,12 @@ export function CartScreen({ navigation }) {
                                         <EvilIcons name="location" size={24} color="black" />
                                         <View className="flex-1">
                                             <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Ubicación de entrega</Text>
-                                            <Text className="font-Erode_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">
-                                                Direccion ramdom, por puntarenas, Costa Rica
+                                            <Text className="font-Excon_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">
+                                               {directionSelected ? directionSelected.name : "Debe seleccionar una dirección"}
                                             </Text>
                                         </View>
-                                        <Pressable onPress={() => {
-                                            Alert.alert('Cambiar ubicación', 'Implementa la lógica para cambiar la ubicación.');
-                                        }}>
-                                            <Text className="font-Excon_regular text-main-blue dark:text-light-blue">Cambiar</Text>
+                                        <Pressable onPress={() => navigation.navigate('DirectionScreen') }>
+                                            <Text className="font-Excon_regular text-main-blue dark:text-light-blue">Selecionar</Text>
                                         </Pressable>
                                     </View>
 
@@ -198,13 +200,9 @@ export function CartScreen({ navigation }) {
                                         <FontAwesome5 name="search-location" size={20} color="black" />
                                         <View className="flex-1">
                                             <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">Indicaciones para la entrega</Text>
-                                            <Text className="font-Excon_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]">Casa de latas de zinc color rosado, junto a un palo de mango</Text>
+                                            <Text className="font-Excon_regular text-gray-800 text-[13px] dark:text-[#e1e1e1]"> {directionSelected ? directionSelected.referencias : "Debe seleccionar una dirección"}</Text>
                                         </View>
-                                        <Pressable onPress={() => {
-                                            Alert.alert('Cambiar indicaciones', 'Implementa la lógica para cambiar las indicaciones.');
-                                        }}>
-                                            <Text className="font-Excon_regular text-main-blue dark:text-light-blue">Cambiar</Text>
-                                        </Pressable>
+                                       
                                     </View>
                                 </>
                             )}
@@ -243,7 +241,13 @@ export function CartScreen({ navigation }) {
                         <Text className="font-Excon_regular text-[20px] text-white dark:text-light-blue">{formatCurrency(total)}</Text>
                     </View>
                     <Pressable
-                          onPress={() => navigation.navigate('Pay', { totales: total, idTienda: cart[0].store_id}, )}  // Pasar el total aquí
+                          onPress={() => {
+                            if (directionSelected) {
+                                navigation.navigate('Pay', { totales: total, idTienda: cart[0].store_id, direction: directionSelected}, )
+                            } else {
+                                Alert.alert('Atencion!', 'Debe seleccionar una dirección de entrega');
+                            }
+                          }} 
                         className="bg-white dark:bg-[#1952BE] p-4 rounded-md mb-2"
                         android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
                     >
