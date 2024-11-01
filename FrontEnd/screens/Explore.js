@@ -15,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
 export function ExploreScreen({ navigation }) {
-    const { cart, addToCart } = useCart();
     const { data: items, loading, error, refetch } = useItems();  // refetch for pull-to-refresh
     const [verticalData, setVerticalData] = useState([]);
     const { colorScheme } = useColorScheme();
@@ -26,17 +25,28 @@ export function ExploreScreen({ navigation }) {
     const [refreshing, setRefreshing] = useState(false);  // for pull-to-refresh
     const [isLogged, setIsLogged] = useState(null);
     const isFocused = useIsFocused();
-  
-    useEffect(() => {
-      const fetchUserToken = async () => {
-          const token = await AsyncStorage.getItem('@userToken');
-          setIsLogged(token);
-      };
-      fetchUserToken();
-  }, [navigation, isFocused]);
-   
 
-      const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const {
+        cart,
+        cartLength,
+        increaseQuantity,
+        decreaseQuantity,
+        removeFromCart,
+        clearCart,
+        addToCart,
+        total,
+    } = useCart();
+
+    useEffect(() => {
+        const fetchUserToken = async () => {
+            const token = await AsyncStorage.getItem('@userToken');
+            setIsLogged(token);
+        };
+        fetchUserToken();
+    }, [navigation, isFocused]);
+
+
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
     const notifications = [
         {
@@ -62,16 +72,16 @@ export function ExploreScreen({ navigation }) {
 
     const formatItems = (data) => data.map(item => ({
         id: item.id.toString(),
-                name: item.name,
-                description: item.description,
-                baseprice: item.price,
-                variation: item.variations,
-                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
-                stock: item.stock,
-                picture: item.item_images[0]?.picture,
-                pictures: item.item_images,
-                store_id: item.store_id,
-                item_type: item.item_type
+        name: item.name,
+        description: item.description,
+        baseprice: item.price,
+        variation: item.variations,
+        price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
+        stock: item.stock,
+        picture: item.item_images[0]?.picture,
+        pictures: item.item_images,
+        store_id: item.store_id,
+        item_type: item.item_type
     }));
     /* console.log(items[3].item_images[0].picture); */
 
@@ -136,30 +146,29 @@ export function ExploreScreen({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white dark:text-dk-blue text-lg font-Excon_regular">
-                            Carr. Interamericana Norte
+                        <Text className="text-white dark:text-dk-blue text-xl font-Erode_bold">
+                            Marlin
                         </Text>
                         <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
-                    <View className="flex-row items-center justify-center gap-x-4 ">
-                    <TouchableOpacity onPress={toggleDropdown}>
-                            <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                    <View className="flex-row items-center justify-center gap-x-6 relative">
+                        <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="notifications-outline" size={25} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
-                            )} 
+                            )}
                         </TouchableOpacity>
                         <View className="flex-row items-center justify-center relative">
                             <Pressable onPress={
-                                () => {
-                                    if (isLogged) {
-                                        navigation.navigate('Cart');
-                                    } else {
-                                        navigation.navigate('Landing');
-                                    }
-                                }
+                                isLogged ? () => navigation.navigate("Cart") : () => navigation.navigate("Landing")
                             }>
-                                <Feather name="shopping-cart" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
+                                <Feather name="shopping-cart" size={26} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
+                            {cartLength > 0 && (
+                                <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
+                                    <Text className="text-white text-xs font-bold">{cartLength}</Text>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </View>
