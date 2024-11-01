@@ -219,4 +219,46 @@ class Invoice(models.Model):
 
     def __str__(self):
         return self.issue_date
+    
+class DeliveryProfile(models.Model):
+    VEHICLE_CHOICES = [
+        ('Carga Liviana', 'Carga Liviana'),
+        ('Liviano', 'Liviano'),
+        ('Bicicleta', 'Bicicleta'),
+        ('Motocicleta', 'Motocicleta'),
+    ]
+    STATUS_CHOICES = [
+        ('Pendiente', 'Pendiente'),
+        ('Bloqueado', 'Bloqueado'),
+        ('Aprobado', 'Aprobado'),
+    ]
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    plate = models.CharField(max_length=10)
+    vehicle = models.CharField(choices=VEHICLE_CHOICES, max_length=20)
+    selfie = CloudinaryField('image')
+    vehicle_picture = CloudinaryField('image')
+    iD_front_picture = CloudinaryField('image')
+    iD_back_picture = CloudinaryField('image')
+    license_picture = CloudinaryField('image')
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pendiente')
+
+    def save(self, *args, **kwargs):
+        cloudinary_fields = ['selfie', 'vehicle_picture', 'iD_front_picture', 'iD_back_picture', 'license_picture']
+        
+        for field in cloudinary_fields:
+            image_field = getattr(self, field, None)
+            if image_field and hasattr(image_field, 'name'):
+                ext = os.path.splitext(image_field.name)[1]
+                public_id = f'{self.user_id}_{field}'
+                uploaded_image = upload(
+                    image_field,
+                    folder="stores",
+                    public_id=public_id,
+                    format="webp"
+                )
+                setattr(self, field, uploaded_image.get('secure_url', uploaded_image.get('url', '')))
+        
+        super().save(*args, **kwargs)
    
