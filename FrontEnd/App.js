@@ -31,7 +31,8 @@ export default function App() {
     'Excon_thin': require('./assets/fonts/Excon/Excon-Thin.otf'),
     'Erode_regular': require('./assets/fonts/Erode/Erode-Regular.otf'),
     'Erode_bold': require('./assets/fonts/Erode/Erode-Bold.otf'),
-    'Erode-Medium': require('./assets/fonts/Erode/Erode-Medium.otf')
+    'Erode-Medium': require('./assets/fonts/Erode/Erode-Medium.otf'),
+    'Outfit-medium': require('./assets/fonts/Outfit/Outfit-Medium.ttf')
     
   });
 

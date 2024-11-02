@@ -30,6 +30,7 @@ module.exports = {
         'Erode_regular': ['Erode_regular', 'sans-serif'],
         'Erode_medium': ['Erode_medium', 'sans-serif'],
         'Erode_bold': ['Erode_bold', 'sans-serif'],
+        'Outfit-medium': ['Outfit-medium', 'sans-serif'],
         
       },
     },

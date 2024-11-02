@@ -26,6 +26,8 @@ export function StoreCat({ navigation }) {
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
     const [isLogged, setIsLogged] = useState(null);
     const isFocused = useIsFocused();
+    const logo = colorScheme === 'dark' ? require('../assets/logoDark.png') : require('../assets/LogoLight.png');
+
 
     const {
         cart,
@@ -182,10 +184,10 @@ export function StoreCat({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                    <Text className="text-white dark:text-dk-blue text-xl font-Erode_bold">
+                    <Image className="w-12 h-10 ml-2" source={logo} />
+                        <Text className="text-white dark:text-dk-blue text-2xl font-Outfit-medium">
                             Marlin
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-6 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
@@ -250,7 +252,7 @@ export function StoreCat({ navigation }) {
 
             <View className="px-2 flex-1">
                 {loading ? (
-                    <View className={`w-full h-full justify-center items-center  bg-white ${loading ? 'blur-sm' : 'blur-0'}`}>
+                    <View className={`w-full h-full justify-center items-center ${loading ? 'blur-sm' : 'blur-0'}`}>
                         <ActivityIndicator size="large" color="#3498db" />
                     </View>
                 ) : null}
@@ -269,7 +271,7 @@ export function StoreCat({ navigation }) {
                                     <View key={0}>
                                          <Pressable onPress={() => handleCategorySelect(0)}>
                                     <View className="my-4 mx-2 items-center">
-                                        <View className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
+                                        <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
                                             <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "#1952BE"} />
                                         </View>
                                         <Text className="text-lg text-center text-light-blue">Todas</Text>

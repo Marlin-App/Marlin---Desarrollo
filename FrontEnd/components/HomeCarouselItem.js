@@ -17,11 +17,11 @@ const HomeCarouselItem = ({ item, navigation }) => {
       {/* <View style={styles.overlay} className="items-center justify-center"/> */}
 
       <View className="absolute flex items-center m-auto top-4 bottom-0 left-0 right-0">
-        <Text className="text-white text-3xl font-bold text-center">{item.title}</Text>
-        <Text className="text-white text-base leading-5 mx-6 text-center pb-6">{item.description}</Text>
+        <Text className="text-white text-3xl font-bold text-center mt-6">{item.title}</Text>
+        <Text className="text-white text-base leading-5 mx-6 text-center">{item.description}</Text>
       </View>
 
-      <View className="absolute bottom-4 w-full flex items-center">
+      <View className="absolute bottom-10 w-full flex items-center">
         <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded"
         onPress={() => navigation.navigate('Tiendas', item )} 
         >

@@ -19,6 +19,7 @@ export function ExploreScreen({ navigation }) {
     const [verticalData, setVerticalData] = useState([]);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+    const logo = colorScheme === 'dark' ? require('../assets/logoDark.png') : require('../assets/LogoLight.png');
 
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
@@ -146,10 +147,10 @@ export function ExploreScreen({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white dark:text-dk-blue text-xl font-Erode_bold">
+                    <Image className="w-12 h-10 ml-2" source={logo} />
+                        <Text className="text-white dark:text-dk-blue text-2xl font-Outfit-medium">
                             Marlin
                         </Text>
-                        <AntDesign name="down" size={18} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-6 relative">
                         <TouchableOpacity onPress={toggleDropdown}>

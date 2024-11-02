@@ -18,6 +18,7 @@ export function HomeScreen({ navigation }) {
     const isFocused = useIsFocused();
     const [isLogged, setIsLogged] = useState(null);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const logo = colorScheme === 'dark' ? require('../assets/logoDark.png') : require('../assets/LogoLight.png');
 
     useEffect(() => {
         const fetchUserToken = async () => {
@@ -123,7 +124,7 @@ export function HomeScreen({ navigation }) {
                 owner_sinpe: store.owner_sinpe,
                 type: store.store_type,
                 banner: store.banner,
-                
+
             })),
         },
     ];
@@ -222,10 +223,10 @@ export function HomeScreen({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                        <Text className="text-white dark:text-dk-blue text-xl font-Erode_bold">
+                        <Image className="w-12 h-10 ml-2" source={logo} />
+                        <Text className="text-white dark:text-dk-blue text-2xl font-Outfit-medium">
                             Marlin
                         </Text>
-                        <MaterialIcons name="delivery-dining" size={24} color="white" />
                     </View>
                     <View className="flex-row items-center justify-center gap-x-6 relative">
                         <TouchableOpacity onPress={toggleDropdown}>
@@ -248,7 +249,7 @@ export function HomeScreen({ navigation }) {
                         </View>
                     </View>
                 </View>
-            
+
             </View>
             <ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
                 <HomeCarousel navigation={navigation} />
