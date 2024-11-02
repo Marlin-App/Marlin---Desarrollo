@@ -1,4 +1,3 @@
-// screens/PurchaseDetails.js
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';

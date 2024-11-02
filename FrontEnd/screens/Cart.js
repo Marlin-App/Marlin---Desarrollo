@@ -241,13 +241,14 @@ export function CartScreen({ navigation }) {
                         <Text className="font-Excon_regular text-[20px] text-white dark:text-light-blue">{formatCurrency(total)}</Text>
                     </View>
                     <Pressable
-                          onPress={() => {
-                            if (directionSelected) {
-                                navigation.navigate('Pay', { totales: total, idTienda: cart[0].store_id, direction: directionSelected}, )
+                        onPress={() => {                      
+                            if (isPickUp || directionSelected) {
+                                navigation.navigate('Pay', {totales: total, idTienda: cart[0].store_id, direction: isPickUp ? null : directionSelected
+                                });
                             } else {
-                                Alert.alert('Atencion!', 'Debe seleccionar una dirección de entrega');
+                                Alert.alert('Atención!', 'Debe seleccionar una dirección de entrega');
                             }
-                          }} 
+                        }}
                         className="bg-white dark:bg-[#1952BE] p-4 rounded-md mb-2"
                         android_ripple={{ color: 'rgba(0,0,0,0.1)' }}
                     >
