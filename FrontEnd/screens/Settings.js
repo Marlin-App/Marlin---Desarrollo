@@ -70,7 +70,7 @@ export function ProfileScreen({ navigation }) {
                 onPress={() => navigation.navigate('Landing')}
               >
                 <MaterialIcons name="logout" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                <Text className='dark:text-white'>iniciar Sesion / Registrarse</Text>
+                <Text className='dark:text-white'>iniciar Sesion o Registrarse</Text>
               </Pressable>
               <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
               <Pressable className="flex-row justify-between mt-5 border-b-2 border-light-blue dark:border-main-blue "
