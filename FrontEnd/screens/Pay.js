@@ -20,7 +20,7 @@ export function PayScreen({ navigation }) {
     const { totales } = route.params;
     const { addToCart, isSameStore, cart } = useCart();
     const  {fetchData, user, token} = useGetUser();
-   
+   const [randomCode, setRandomCode] = useState();
  
 
   const [infoStore, setInfoStore] = useState(null);
@@ -35,6 +35,7 @@ export function PayScreen({ navigation }) {
             );
 
            await fetchData();
+           setRandomCode(generateRandomCode());
         }
         prepare();
     }, []);
@@ -42,7 +43,6 @@ export function PayScreen({ navigation }) {
 
 
     const { colorScheme } = useColorScheme();
-
     const { clearCart, total } = useCart();
 
     const [fontsLoaded] = useFonts({
@@ -97,6 +97,8 @@ export function PayScreen({ navigation }) {
                 item_id: product.id,
                 quantity: product.cantidad,
             })),
+            store_id: route.params.idTienda,    
+            order_num: randomCode,
             status: "Pendiente",
             direction: `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`, 
             user_id: user.id,
