@@ -39,7 +39,7 @@ export function RegisterPage({ navigation }) {
       if (response.ok) {
         console.log('Registro exitoso:', data);
         Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
-        navigation.navigate('Profile'); 
+        navigation.navigate('Mi perfil'); 
         
         await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
       } else {

@@ -176,7 +176,7 @@ export function ItemPage({ navigation }) {
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
-            <ScrollView className="">
+            <ScrollView className="mb-32">
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -257,7 +257,6 @@ export function ItemPage({ navigation }) {
                             />
                         )}
                     />
-
                     <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{item.name}</Text>
                     <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{item.description}</Text>
 
@@ -268,7 +267,7 @@ export function ItemPage({ navigation }) {
                                 {colors.map((color, index) => (
                                     <TouchableOpacity
                                         key={index}
-                                        className={`border rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedColor === color ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        className={`border rounded-lg h-8 w-20 mb-2 flex items-center justify-center mr-2 ${selectedColor === color ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
                                         style={{ backgroundColor: color }}
                                         onPress={() => setSelectedColor(color)}
                                     >
@@ -286,7 +285,7 @@ export function ItemPage({ navigation }) {
                                 {sizes.map((size, index) => (
                                     <TouchableOpacity
                                         key={index}
-                                        className={`border rounded-lg h-8 w-20 flex items-center justify-center mr-2 ${selectedSize === size ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
+                                        className={`border rounded-lg h-8 w-20 mb-2 flex items-center justify-center mr-2 ${selectedSize === size ? 'border-main-blue' : 'border-black dark:border-light-blue'}`}
                                         onPress={() => setSelectedSize(size)}
                                     >
                                         <Text className={`font-Excon_regular ${selectedSize === size ? 'text-main-blue' : 'dark:text-white'}`}>{size}</Text>

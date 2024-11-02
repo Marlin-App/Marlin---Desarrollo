@@ -168,7 +168,7 @@ export function HomeComercianteScreen({ navigation }) {
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
                         <Text className="text-white dark:text-light-blue text-2xl font-Excon_bold w-[80vw]">
-                            ¡Bienvenido a Marlin comerciante Luis!
+                            ¡Bienvenido a Marlin emprendedor!
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
