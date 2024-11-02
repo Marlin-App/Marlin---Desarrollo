@@ -191,16 +191,29 @@ class Order(models.Model):
         ('Cancelada', 'Cancelada'),
     ]
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    store_id = models.ForeignKey(Store, on_delete=models.CASCADE)
     total_price = models.IntegerField(null=True, blank=True)
     order_date = models.DateTimeField(auto_now_add=True)
+    order_num = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(default='Pendiente', choices=STATUS_CHOICES,  max_length=100)
     direction = models.TextField()
+    voucher = CloudinaryField('image', blank=True, null=True)
     def __str__(self):
         return f"Precio: {self.total_price}"
+    
+    def save(self, *args, **kwargs):
+        if self.voucher and hasattr(self.voucher, 'name'):
+            ext = os.path.splitext(self.voucher.name)[1]
+            public_id_picture = f'{self.name}_voucher'
+            image_uploaded = upload(self.voucher, folder="vouchers", public_id=public_id_picture, format="webp")
+            self.voucher = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
+
+        super(Order, self).save(*args, **kwargs)
     
 class OrderItem(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')
     item_id = models.ForeignKey(StoreItem, on_delete=models.CASCADE)
+    item_variation_id = models.ForeignKey(ItemVariation, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.IntegerField()
     total_price = models.IntegerField()
     #delivery = models.ForeignKey(User, on_delete=models.CASCADE) ver si se puede incluir un atributo mas la tabla de user para identificar un user, delivery o store owner

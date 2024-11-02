@@ -315,18 +315,25 @@ class AtributeValueSerializer(serializers.ModelSerializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
     total_price = serializers.IntegerField(read_only=True)
+    item_name = serializers.CharField(source='item_id.name', read_only=True)
+    item_image = serializers.ImageField(source='item_id.item_images.first.picture', read_only=True)
+
     class Meta:
         model = OrderItem
-        fields = ['item_id', 'quantity', 'total_price']
+        fields = ['item_id', 'quantity', 'total_price', 'item_variation_id', 'item_name','item_image']
 
 class OrderSerializer(serializers.ModelSerializer):
     products = OrderItemSerializer(many=True)
     total_price = serializers.IntegerField(read_only=True)
+    user_name = serializers.CharField(source='user_id.first_name', read_only=True)
+    user_picture = serializers.ImageField(source='user_id.userprofile.picture', read_only=True)
+
     class Meta:
         model = Order
         fields = '__all__'
 
     def create(self, validated_data):
+        print(validated_data)
         products = validated_data.pop('products')
         order = Order.objects.create(**validated_data)
 
