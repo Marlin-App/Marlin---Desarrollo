@@ -19,13 +19,11 @@ export function LandingPage({ navigation }) {
       <Text style={styles.subtitle}>
         Conéctate con el puerto, compra local y apoya a lo nuestro
       </Text>
-      <TouchableOpacity style={styles.buttonA} onPress={() => alert('Botón presionado')}>
-      <AntDesign name="google" size={22} color="#0038A2" />
-        <Text style={styles.buttonTextA}>Ingresa mediante google</Text>
+      <TouchableOpacity style={styles.buttonA} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.buttonTextA}>Iniciar Sesión</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.buttonB} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.buttonTextB}>Ingresa mediante otra cuenta</Text>
+      <TouchableOpacity style={styles.buttonB} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.buttonTextB}>Crear una cuenta</Text>
       </TouchableOpacity>
 
       </ImageBackground>
@@ -41,6 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0038A2',
     opacity: 0.9,
   },
+
   image: {
     marginBottom: 20,
     resizeMode: 'contain',
@@ -48,12 +47,14 @@ const styles = StyleSheet.create({
     height: 180,
     
   },
+
   title: {
     fontSize: 30,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
   },
+
   subtitle: {
     fontSize: 16,
     color: '#fff',
@@ -61,14 +62,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,	
   },
+
   buttonA: {
     backgroundColor: '#fff',
     paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingHorizontal: 58,
     borderRadius: 10,
     marginTop: 15,
     flexDirection: 'row',
   },
+
   buttonTextA: {
     color: '#0038A2',
     fontSize: 16,
@@ -82,21 +85,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#fff',
     paddingVertical: 15,
-    paddingHorizontal: 30,
+    paddingHorizontal: 51,
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: 20,
   },
+
   buttonTextB: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'normal',
-    textAlign: 'center',
-  },
-
-  google: {
-    color: '#194599',
-    fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'center',
   },
 
