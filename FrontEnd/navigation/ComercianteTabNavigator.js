@@ -107,7 +107,7 @@ export function ComercianteTabNavigator() {
             />
 
             <Tab.Screen
-                name="Mi tiendas"
+                name="Mis tiendas"
                 component={MisTiendas}
                 options={{
                     tabBarIcon: ({ color }) => (

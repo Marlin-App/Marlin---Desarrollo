@@ -83,7 +83,7 @@ export function MisTiendas({ navigation }) {
                 </View>
             </View>
 
-            <Text className="text-2xl font-Excon_bold text-main-blue mt-8 ml-4 dark:text-white">Tus tiendas</Text>
+            <Text className="text-2xl font-Excon_bold text-main-blue mt-8 ml-4 dark:text-white">Mis tiendas</Text>
 
             <FlatList
                 data={allStores}
