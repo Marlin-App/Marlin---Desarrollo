@@ -161,18 +161,18 @@ export function ExpressScreen({ navigation }) {
                               <Text className="font-Excon_regular text-sm dark:text-white">
                                 Usuario: Nombre Cliente
                               </Text>
+                              <TouchableOpacity onPress={() =>
+                                navigation.navigate("OrderInfo")
+                              }>
                               <Text className="font-Excon_regular text-sm dark:text-white underline">
                                 Más información
                               </Text>
+                              </TouchableOpacity>
                             </View>
                           </View>
                           <View className="flex-row justify-center gap-x-4 mt-3">
                             {/* Botones de Aceptar / No Aceptar para la primera vista y basados en scroll para las demás */}
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("TerminosCondiciones")
-                              }
-                            >
+                            <TouchableOpacity>
                               <Text
                                 className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${
                                   storeIndex === 0 ||
