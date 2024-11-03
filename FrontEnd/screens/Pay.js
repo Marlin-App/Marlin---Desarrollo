@@ -1,46 +1,49 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import useCart from '../hooks/useCart';
+import React, { useState, useCallback } from "react";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    ScrollView,
+    Alert,
+    Image,
+} from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import useCart from "../hooks/useCart";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useColorScheme } from "nativewind";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useRoute } from '@react-navigation/native';
-import useDirections from '../hooks/useDirection';
-import useGetUser from '../hooks/useGetUser';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useRoute } from "@react-navigation/native";
+import useDirections from "../hooks/useDirection";
+import useGetUser from "../hooks/useGetUser";
 
 export function PayScreen({ navigation }) {
-
-    const route = useRoute(); 
+    const route = useRoute();
     const { totales } = route.params;
     const { addToCart, isSameStore, cart } = useCart();
-    const  {fetchData, user, token} = useGetUser();
-   const [randomCode, setRandomCode] = useState();
- 
+    const { fetchData, user, token } = useGetUser();
+    const [randomCode, setRandomCode] = useState();
 
-  const [infoStore, setInfoStore] = useState(null);
+    const [infoStore, setInfoStore] = useState(null);
     useEffect(() => {
         async function prepare() {
-           response = await fetch(`https://marlin-backend.vercel.app/api/stores/${route.params.idTienda}/`)
-           .then((response) => response.json());
+            response = await fetch(
+                `https://marlin-backend.vercel.app/api/stores/${route.params.idTienda}/`
+            ).then((response) => response.json());
             setInfoStore({
                 sinpeNumber: response.num_sinpe,
                 storeName: response.name,
-            }
-            );
+            });
 
-           await fetchData();
-           setRandomCode(generateRandomCode());
+            await fetchData();
+            setRandomCode(generateRandomCode());
         }
         prepare();
     }, []);
-
-
 
     const { colorScheme } = useColorScheme();
     const { clearCart, total } = useCart();
@@ -70,15 +73,15 @@ export function PayScreen({ navigation }) {
     const [paymentReceipt, setPaymentReceipt] = useState(null);
 
     const methods = [
-        { id: 1, type: 'SinpeMovil' },
-        { id: 2, type: 'PayPal' },
+        { id: 1, type: "SinpeMovil" },
+        { id: 2, type: "PayPal" },
     ];
 
     const formatCurrency = (value) => {
-        return value.toLocaleString('es-CR', {
-            style: 'currency',
-            currency: 'CRC',
-            maximumFractionDigits: 0
+        return value.toLocaleString("es-CR", {
+            style: "currency",
+            currency: "CRC",
+            maximumFractionDigits: 0,
         });
     };
 
@@ -88,74 +91,66 @@ export function PayScreen({ navigation }) {
     const generateRandomCode = () => {
         return Math.random().toString(36).substring(7).toUpperCase();
     };
-    
-    
+
     const postOrder = async () => {
-       
         const order = {
             products: cart.map((product) => ({
                 item_id: product.id,
                 quantity: product.cantidad,
             })),
-            store_id: route.params.idTienda,    
+            store_id: route.params.idTienda,
             order_num: randomCode,
             status: "Pendiente",
-            direction: `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`, 
+            direction: `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`,
             user_id: user.id,
-        }
+        };
 
-      
         try {
-            const response = await fetch('https://marlin-backend.vercel.app/api/orders/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, 
-                },
-                body: JSON.stringify(order),
-            });
-        
-           
+            const response = await fetch(
+                "https://marlin-backend.vercel.app/api/orders/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(order),
+                }
+            );
+
             if (!response.ok) {
-             
                 const errorText = await response.text();
                 console.error(`Error ${response.status}: ${errorText}`);
                 return;
             }
-        
-            
+
             const data = await response.json();
-            console.log('Order created successfully:', data);
+            console.log("Order created successfully:", data);
 
-              Alert.alert(
-            'Compra Exitosa',
-            'La compra se ha realizado con éxito.',
-            [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        clearCart(); 
-                        navigation.navigate('Home'); 
+            Alert.alert(
+                "Compra Exitosa",
+                "La compra se ha realizado con éxito.",
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                            clearCart();
+                            navigation.navigate("Home");
+                        },
                     },
-                },
-            ],
-            { cancelable: false }
-        );
-        
+                ],
+                { cancelable: false }
+            );
         } catch (error) {
-           
-            console.error('Network or other error:', error);
+            console.error("Network or other error:", error);
         }
-
-    }
-
-
+    };
 
     const handleFinalize = () => {
         if (selectedMethod === null) {
             Alert.alert(
-                'Selecciona un método de pago',
-                'Por favor, selecciona un método de pago antes de finalizar.'
+                "Selecciona un método de pago",
+                "Por favor, selecciona un método de pago antes de finalizar."
             );
             return;
         }
@@ -163,10 +158,11 @@ export function PayScreen({ navigation }) {
     };
 
     const pickImage = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const permissionResult =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (permissionResult.granted === false) {
-            Alert.alert('Permiso de acceso a la galería requerido');
+            Alert.alert("Permiso de acceso a la galería requerido");
             return;
         }
 
@@ -178,13 +174,11 @@ export function PayScreen({ navigation }) {
     };
 
     return (
-        <View 
-            className="flex-1 bg-white dark:bg-neutral-950 p-4" 
+        <View
+            className="flex-1 bg-white dark:bg-neutral-950 p-4"
             onLayout={onLayoutRootView}
         >
-            <Text 
-                className="text-2xl mb-6 text-center font-Excon_bold text-main-blue dark:text-white"
-            >
+            <Text className="text-2xl mb-6 text-center font-Excon_bold text-main-blue dark:text-white">
                 Métodos de pago
             </Text>
             <ScrollView className="space-y-4">
@@ -192,19 +186,17 @@ export function PayScreen({ navigation }) {
                     <TouchableOpacity
                         key={method.id}
                         onPress={() => setSelectedMethod(method.id)}
-                        className={`flex-row items-center justify-between p-4 border rounded-lg ${
-                            selectedMethod === method.id 
-                                ? 'border-main-blue dark:border-light-blue' 
-                                : 'border-gray-300 dark:border-white'
-                        }`}
+                        className={`flex-row items-center justify-between p-4 border rounded-lg ${selectedMethod === method.id
+                                ? "border-main-blue dark:border-light-blue"
+                                : "border-gray-300 dark:border-white"
+                            }`}
                     >
                         <View className="flex-row items-center">
                             <View
-                                className={`w-4 h-4 mr-4 rounded-full border justify-center items-center ${
-                                    selectedMethod === method.id 
-                                        ? 'bg-main-blue border-0 dark:bg-light-blue' 
-                                        : 'border-gray-300 dark:border-white'
-                                }`}
+                                className={`w-4 h-4 mr-4 rounded-full border justify-center items-center ${selectedMethod === method.id
+                                        ? "bg-main-blue border-0 dark:bg-light-blue"
+                                        : "border-gray-300 dark:border-white"
+                                    }`}
                             >
                                 {selectedMethod === method.id && (
                                     <View className="w-2 h-2 bg-white rounded-full" />
@@ -212,84 +204,70 @@ export function PayScreen({ navigation }) {
                             </View>
 
                             <View className="flex-row items-center gap-2">
-                                {method.type === 'SinpeMovil' ? (
-                                    <MaterialCommunityIcons 
-                                        name="cellphone-wireless" 
-                                        size={24} 
-                                        color="#25D366" 
+                                {method.type === "SinpeMovil" ? (
+                                    <MaterialCommunityIcons
+                                        name="cellphone-wireless"
+                                        size={24}
+                                        color="#25D366"
                                     />
                                 ) : (
-                                    <FontAwesome5 
-                                        name="paypal" 
-                                        size={24} 
-                                        color="#003087" 
-                                        className="mr-2" 
+                                    <FontAwesome5
+                                        name="paypal"
+                                        size={24}
+                                        color="#003087"
+                                        className="mr-2"
                                     />
                                 )}
-                                <Text 
-                                    className="font-Erode_regular text-gray-800 dark:text-white text-lg"
-                                >
-                                    {method.type === 'SinpeMovil' ? 'Sinpe Móvil' : 'PayPal'}
+                                <Text className="font-Erode_regular text-gray-800 dark:text-white text-lg">
+                                    {method.type === "SinpeMovil" ? "Sinpe Móvil" : "PayPal"}
                                 </Text>
                             </View>
                         </View>
 
-                        <Feather 
-                            name="check-circle" 
-                            size={24} 
-                            color={selectedMethod === method.id ? '#015DEC' : 'gray'} 
+                        <Feather
+                            name="check-circle"
+                            size={24}
+                            color={selectedMethod === method.id ? "#015DEC" : "gray"}
                         />
                     </TouchableOpacity>
                 ))}
 
                 {selectedMethod === 1 && (
-                    <View 
-                        className="p-4 mt-4 border rounded-lg border-gray-300 dark:border-light-blue"
-                    >
-                        <Text 
-                            className="font-Erode_regular text-gray-800 dark:text-white text-lg"
-                        >
+                    <View className="p-4 mt-4 border rounded-lg border-gray-300 dark:border-light-blue">
+                        <Text className="font-Erode_bold text-gray-800 dark:text-white text-xl">
                             Nombre: {infoStore.storeName}
                         </Text>
-                        <Text 
-                            className="font-Erode_regular text-gray-800 dark:text-white text-lg"
-                        >
-                            Número: {infoStore.sinpeNumber}
+                        <Text className="font-Erode_bold text-gray-800 dark:text-white text-xl">
+                            Número: <Text className="font-Erode_regular text-lg">{infoStore.sinpeNumber}{" "}</Text>
                         </Text>
-                        <Text 
-                            className="font-Erode_regular text-gray-800 dark:text-white text-lg"
-                        >
-                            Detalle de compra: {generateRandomCode()}
+                        <Text className="font-Erode_bold text-gray-800 dark:text-white text-xl">
+                            Detalle de compra: <Text className="font-Erode_regular text-lg">{generateRandomCode()}</Text>
                         </Text>
-                        <Text 
-                            className="font-Erode_regular text-gray-800 dark:text-white text-lg"
-                        >
-                            Total a pagar: {formatCurrency((totales ))}
+                        <Text className="font-Erode_bold text-gray-800 dark:text-white text-xl">
+                            Total a pagar: <Text className="font-Erode_regular text-lg">{formatCurrency(totales)}</Text>
                         </Text>
                     </View>
                 )}
 
                 {selectedMethod === 1 && (
-                    <View 
-                        className="mt-4 p-4 border rounded-lg border-gray-300 dark:border-light-blue"
-                    >
-                        <Text 
-                            className="font-Erode_regular text-gray-800 text-lg dark:text-white"
-                        >
+                    <View className="mt-4 p-4 border rounded-lg border-gray-300 dark:border-light-blue">
+                        <Text className="font-Erode_regular text-gray-800 text-lg dark:text-white">
                             Cargar el comprobante de pago:
                         </Text>
-                        <TouchableOpacity 
-                            onPress={pickImage} 
+                        <View className="justify-center items-center">
+                            {paymentReceipt && (
+                                <Image
+                                    className="w-full h-[20vh] my-4 object-cover rounded-lg"
+                                    source={{ uri: paymentReceipt }}
+                                />
+                            )}
+                        </View>
+                        <TouchableOpacity
+                            onPress={pickImage}
                             className="bg-main-blue p-2 mt-2 rounded-lg"
                         >
                             <Text className="text-white text-center">Seleccionar imagen</Text>
                         </TouchableOpacity>
-                        {paymentReceipt && (
-                            <Image 
-                                source={{ uri: paymentReceipt }} 
-                                style={{ width: 100, height: 100, marginTop: 10 }} 
-                            />
-                        )}
                     </View>
                 )}
             </ScrollView>
@@ -298,13 +276,9 @@ export function PayScreen({ navigation }) {
                 onPress={handleFinalize}
                 className="bg-main-blue p-4 mt-6 rounded-lg flex-row items-center justify-center"
             >
-                <MaterialIcons 
-                    name="check-circle" 
-                    size={30} 
-                    color="white" 
-                />
+                <MaterialIcons name="check-circle" size={30} color="white" />
                 <Text className="text-white font-bold ml-2 text-lg">Finalizar</Text>
             </TouchableOpacity>
         </View>
     );
-};
+}
