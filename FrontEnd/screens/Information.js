@@ -135,19 +135,23 @@ export function InformationScreen() {
                         keyboardType="numeric"
                         placeholder="Digita tu número de teléfono"
                     />
-                    <TouchableOpacity className="bg-main-blue py-4 w-full my-6 rounded-lg items-center mx-2"
+                </View>
+                    <View className="flex-row items-center justify-center mt-2 gap-x-4">
+
+                    {/* <TouchableOpacity className="bg-main-blue py-4  rounded-lg items-center mx-2" */}
+                    <TouchableOpacity className="bg-main-blue  border-2 border-main-blue px-14 py-2 rounded-lg items-center "
                         onPress={handleSave}
-                    >
+                        >
                         <Text className="text-white font-Excon_bold text-lg">Guardar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className=" border-2 border-red-600 py-1 w-full rounded-lg items-center mx-2"
+                    <TouchableOpacity className="border-2 px-4 border-red-600 py-2 rounded-lg items-center "
                         onPress={handleSave}
-                    >
+                        >
                         <Text className="text-red-600 font-Excon_bold text-lg">Eliminar cuenta</Text>
                     </TouchableOpacity>
                     
-                </View>
+                        </View>
             </ScrollView>
         </View>
 
