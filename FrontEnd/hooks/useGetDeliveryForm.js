@@ -5,11 +5,16 @@ import useDecodeJWT from './useDecodeJWT';
 
 const useGetDeliveryForm = (navigation) => {
 
-    const [storesWithProducts, setStoresWithProducts] = useState([]);
     const { decodeJWT, refreshToken, isTokenExpired } = useDecodeJWT();
     const [loading, setLoading] = useState(true);
 
     const handleDeliveryForm = async (deliveryForm) => {
+
+        if (await isTokenExpired()) {
+            await refreshToken();
+        } else {
+            console.log('Token no expirado');
+        }
         const jsonValue = await AsyncStorage.getItem('@userToken');
 
         if (!jsonValue) {
@@ -23,7 +28,7 @@ const useGetDeliveryForm = (navigation) => {
         const decodedToken = decodeJWT(token);
         const user_id = decodedToken.payload.user_id;
 
-        console.log("usuario", user_id);
+        console.log("usuario", deliveryForm);
 
         const formDataToSend = new FormData();
         formDataToSend.append("user_id", user_id);
@@ -36,7 +41,8 @@ const useGetDeliveryForm = (navigation) => {
             deliveryForm.pictures.forEach((image, index) => {
                 const perfilFile = {
                     uri: image.uri,
-                    type: "image/jpeg",
+                    type: 'image/jpeg',
+                    name: `${deliveryForm.brand}_${image.id}.jpg`,
                 };
                 switch (index) {
                     case 0:
@@ -61,34 +67,50 @@ const useGetDeliveryForm = (navigation) => {
             });
         }
 
-        //revision con Jeremy, error 401, unauthorized
+        console.log("Formulario de repartidor", formDataToSend._parts[5]);
 
+        //revision con Jeremy, error 401, unauthorized
+        
         try {
+
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+
+            if (!jsonValue) {
+                setLoading(false);
+                setIsLogged(false);
+                return;
+            }
+
+            const userData = JSON.parse(jsonValue);
+            const token = userData.access;
             const response = await fetch(`https://marlin-backend.vercel.app/api/delivery-profiles/`, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
                 body: formDataToSend
             });
-
-
-            if (!response.ok) {
-                //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
-                const errorText = await response.text();
-                console.log('Error en registro de repartidor', errorText);
-                throw new Error('Error en registro de repartidor');
-            } else {
-                navigation.navigate('thirdScreen');
-                console.log('Producto actualizado con éxito');
-                Alert.alert('Solicitud enviada', '¡Tu solicitud está siendo verificada por los administradores!');
-                
-            }
-        } catch (error) {
-            console.error('Error en registro de repartidor ', error);
+        
+        console.log('Estoy aqui',response);
+        
+        
+        if (!response.ok) {
+            //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
+            const errorText = await response.text();
+            console.log('Error en registro de repartidor', errorText);
+            throw new Error('Error en registro de repartidor');
+        } else {
+            navigation.navigate('thirdScreen');
+            console.log('Producto actualizado con éxito');
+            Alert.alert('Solicitud enviada', '¡Tu solicitud está siendo verificada por los administradores!');
+            
+        }
+    } catch (error) {
+            console.error('Error en registro de repartidorbbbb ', error);
         } finally {
             setLoading(false);
         }
+
     };
 
     return {

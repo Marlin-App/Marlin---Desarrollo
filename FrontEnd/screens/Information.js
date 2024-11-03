@@ -140,6 +140,12 @@ export function InformationScreen() {
                     >
                         <Text className="text-white font-Excon_bold text-lg">Guardar</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity className=" border-2 border-red-600 py-1 w-full rounded-lg items-center mx-2"
+                        onPress={handleSave}
+                    >
+                        <Text className="text-red-600 font-Excon_bold text-lg">Eliminar cuenta</Text>
+                    </TouchableOpacity>
                     
                 </View>
             </ScrollView>

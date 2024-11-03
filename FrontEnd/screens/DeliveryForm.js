@@ -39,11 +39,11 @@ export function DeliveryFormScreen({ navigation }) {
     const [imageIDBack, setimageIDBack] = useState(null);
 
     const allPictures = [
-        imageDelivery,
-        imageVehicle,
-        imageLicense,
-        imageIDFront,
-        imageIDBack,
+        { uri: imageDelivery},
+        { uri: imageVehicle},
+        { uri: imageLicense},
+        { uri: imageIDFront},
+        { uri: imageIDBack },
     ];
 
     const handleInputChange = (name, value) => {
