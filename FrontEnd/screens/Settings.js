@@ -21,7 +21,7 @@ export function ProfileScreen({ navigation }) {
   const isFocused = useIsFocused();
   const { toggleColorScheme } = useColorScheme();
   const { colorScheme } = useColorScheme();
-  const { isDelivery } = useCRUDDelivery();
+  const { isDelivery, esRepartidor } = useCRUDDelivery();
   const siEsRepartidor=false;
 
   let formatePicture = "";
@@ -40,18 +40,18 @@ export function ProfileScreen({ navigation }) {
     loadUser();
   }, [isFocused, navigation]);
 
-  // useEffect(() => {
-  //   const search = async () => {
-  //     const jsonValue = await AsyncStorage.getItem("@userToken");
-  //     const userData = JSON.parse(jsonValue);
-  //     const token = userData.access;
-  //     const decodedToken = decodeJWT(token);
-  //     const user_id = decodedToken.payload.user_id;
-  //     const repartidor=isDelivery(user_id);
-  //   };
-  //   search();
-  //   console.log("buscar usuario: ");
-  // }, []);
+  useEffect(() => {
+    const search = async () => {
+      const jsonValue = await AsyncStorage.getItem("@userToken");
+      const userData = JSON.parse(jsonValue);
+      const token = userData.access;
+      const decodedToken = decodeJWT(token);
+      const user_id = decodedToken.payload.user_id;
+      isDelivery(user_id);
+    };
+    search();
+    console.log("buscar usuario: ");
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -272,7 +272,7 @@ export function ProfileScreen({ navigation }) {
 
               <Pressable
                 className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() =>navigation.navigate(siEsRepartidor ? "thirdScreen" : "DeliveryFormScreen")}
+                onPress={() =>navigation.navigate(esRepartidor!="" ? "thirdScreen" : "DeliveryFormScreen")}
               >
                 
                 <View className="flex-row gap-2 mb-1 items-center">
