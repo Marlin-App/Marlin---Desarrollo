@@ -1,20 +1,19 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { View, Text, Pressable, ScrollView, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Feather from '@expo/vector-icons/Feather';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Entypo from '@expo/vector-icons/Entypo';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useFonts } from 'expo-font';
-import { useIsFocused } from '@react-navigation/native';
-import * as SplashScreen from 'expo-splash-screen';
+import React, { useEffect, useCallback, useState } from "react";
+import { View, Text, Pressable, ScrollView, Image } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Entypo from "@expo/vector-icons/Entypo";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useFonts } from "expo-font";
+import { useIsFocused } from "@react-navigation/native";
+import * as SplashScreen from "expo-splash-screen";
 import { styled, useColorScheme } from "nativewind";
-import useDecodeJWT from '../hooks/useDecodeJWT';
-import useGetUser from '../hooks/useGetUser';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
-
+import useDecodeJWT from "../hooks/useDecodeJWT";
+import useGetUser from "../hooks/useGetUser";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import useCRUDDelivery from "../hooks/useCRUDDelivery";
 
 export function ProfileScreen({ navigation }) {
   const { fetchData, user, isLogged, setIsLogged } = useGetUser();
@@ -22,173 +21,316 @@ export function ProfileScreen({ navigation }) {
   const isFocused = useIsFocused();
   const { toggleColorScheme } = useColorScheme();
   const { colorScheme } = useColorScheme();
+  const { isDelivery } = useCRUDDelivery();
+  const siEsRepartidor=false;
 
   let formatePicture = "";
 
   useEffect(() => {
     const loadUser = async () => {
-      const jsonValue = await AsyncStorage.getItem('@userToken');
+      const jsonValue = await AsyncStorage.getItem("@userToken");
       if (jsonValue == null) {
         setIsLogged(false);
       } else {
         setIsLogged(true);
         await fetchData();
-        /* console.log(user); */
       }
     };
 
     loadUser();
   }, [isFocused, navigation]);
 
+  // useEffect(() => {
+  //   const search = async () => {
+  //     const jsonValue = await AsyncStorage.getItem("@userToken");
+  //     const userData = JSON.parse(jsonValue);
+  //     const token = userData.access;
+  //     const decodedToken = decodeJWT(token);
+  //     const user_id = decodedToken.payload.user_id;
+  //     const repartidor=isDelivery(user_id);
+  //   };
+  //   search();
+  //   console.log("buscar usuario: ");
+  // }, []);
+
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('@userToken');
-      await AsyncStorage.removeItem('@cart');
-      navigation.replace('Home');
+      await AsyncStorage.removeItem("@userToken");
+      await AsyncStorage.removeItem("@cart");
+      navigation.replace("Home");
       setIsLogged(false);
     } catch (e) {
-      console.error('Error al cerrar sesión:', e);
+      console.error("Error al cerrar sesión:", e);
     }
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center" }} className="px-8 bg-white dark:bg-black">
+    <View
+      style={{ flex: 1, alignItems: "center" }}
+      className="px-8 bg-white dark:bg-black"
+    >
       {isLogged == false ? (
         <ScrollView className="w-full h-full">
           <View className="w-full mt-14">
             <View className="flex justify-center items-center">
               <View className="flex justify-center items-center bg-main-blue p-4 rounded-3xl">
                 <Image
-                  source={require('../assets/img/marlin.png')}
-                  style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                  source={require("../assets/img/marlin.png")}
+                  style={{ width: 100, height: 100, resizeMode: "contain" }}
                 />
               </View>
-              <Text className="font-Excon_bold text-center bottom-4 text-2xl text-main-blue dark:text-white mt-8">Bienvenido a Marlin</Text>
+              <Text className="font-Excon_bold text-center bottom-4 text-2xl text-main-blue dark:text-white mt-8">
+                Bienvenido a Marlin
+              </Text>
             </View>
             <View className="w-full mt-6">
-              <Pressable className='flex-row flex gap-3 items-center mb-6'
-                onPress={() => navigation.navigate('Landing')}
+              <Pressable
+                className="flex-row flex gap-3 items-center mb-6"
+                onPress={() => navigation.navigate("Landing")}
               >
-                <MaterialIcons name="logout" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                <Text className='dark:text-white'>iniciar Sesion o Registrarse</Text>
+                <MaterialIcons
+                  name="logout"
+                  size={24}
+                  color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                />
+                <Text className="dark:text-white">
+                  iniciar Sesion o Registrarse
+                </Text>
               </Pressable>
-              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-light-blue dark:border-main-blue "
+              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">
+                Ajustes de la aplicación
+              </Text>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-light-blue dark:border-main-blue "
                 onPress={() => toggleColorScheme()}
               >
                 <View className="flex-row gap-2 mb-1">
-                  <Ionicons name="color-palette-outline" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Tema de la aplicación </Text>
+                  <Ionicons
+                    name="color-palette-outline"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Tema de la aplicación{" "}
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
             </View>
-            <View className='w-full mt-6'>
-              <Pressable className='flex-row items-center py-4 flex gap-3'  onPress={() => navigation.navigate("TerminosCondiciones")}>
-                <AntDesign name="questioncircleo" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+            <View className="w-full mt-6">
+              <Pressable
+                className="flex-row items-center py-4 flex gap-3"
+                onPress={() => navigation.navigate("TerminosCondiciones")}
+              >
+                <AntDesign
+                  name="questioncircleo"
+                  size={24}
+                  color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                />
                 <Text className="dark:text-white">Terminos y condiciones</Text>
               </Pressable>
             </View>
           </View>
         </ScrollView>
       ) : (
-        <ScrollView className="w-full h-full"
+        <ScrollView
+          className="w-full h-full"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         >
           <View className="w-full mt-14">
-            <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">Configuración de Usuario</Text>
+            <Text className="font-Excon_bold text-center bottom-4 text-xl dark:text-white mt-4">
+              Configuración de Usuario
+            </Text>
             <View className="flex flex-row justify-center items-center">
               <View className="flex justify-center items-center w-28 h-28 rounded-full bg-light-blue dark:bg-main-blue">
                 <Image
-                  source={{ uri: user.picture ? user.picture.replace("image/upload/", "") : `https://ui-avatars.com/api/?name=${user.username}&background=random` }}
+                  source={{
+                    uri: user.picture
+                      ? user.picture.replace("image/upload/", "")
+                      : `https://ui-avatars.com/api/?name=${user.username}&background=random`,
+                  }}
                   style={{ width: 108, height: 108, borderRadius: 100 }}
                 />
               </View>
               <View className="ml-6">
-                <Text className="text-lg dark:text-white font-Erode_regular">{user.username}</Text>
-                <Text className="text-sm dark:text-white font-Erode_regular">{user.email}</Text>
+                <Text className="text-lg dark:text-white font-Erode_regular">
+                  {user.username}
+                </Text>
+                <Text className="text-sm dark:text-white font-Erode_regular">
+                  {user.email}
+                </Text>
               </View>
             </View>
-            
+
             <View className="w-full mt-4">
-              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Perfil</Text>
-              <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.navigate("InformationScreen")}>
+              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">
+                Perfil
+              </Text>
+              <Pressable
+                className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.navigate("InformationScreen")}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <Feather name="user" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Información</Text>
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Información
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
 
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue" onPress={() => navigation.navigate("DirectionScreen")}>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.navigate("DirectionScreen")}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <Feather name="map-pin" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Direcciones</Text>
+                  <Feather
+                    name="map-pin"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Direcciones
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
 
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue" onPress={() => navigation.navigate("HistoricalScreen")}>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.navigate("HistoricalScreen")}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <MaterialIcons name="history" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Historial de compras</Text>
+                  <MaterialIcons
+                    name="history"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Historial de compras
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
             </View>
 
             <View className="w-full mt-6">
-              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">Ajustes de la aplicación</Text>
+              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">
+                Ajustes de la aplicación
+              </Text>
 
-              <Pressable className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.replace("Home")}>
+              <Pressable
+                className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.replace("Home")}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <Ionicons name="refresh-outline" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Continuar comprando</Text>
+                  <Ionicons
+                    name="refresh-outline"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Continuar comprando
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
 
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.replace("secondScreen")}>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => navigation.replace("secondScreen")}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <AntDesign name="tago" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Convertirte en comerciante</Text>
+                  <AntDesign
+                    name="tago"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Convertirte en comerciante
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
 
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => navigation.navigate("DeliveryFormScreen")}>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() =>navigation.navigate(siEsRepartidor ? "thirdScreen" : "DeliveryFormScreen")}
+              >
+                
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <Ionicons name="bicycle" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Convertirte en repartidor</Text>
+                  <Ionicons
+                    name="bicycle"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Convertirte en repartidor
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
 
-              <Pressable className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() => toggleColorScheme()}>
+              <Pressable
+                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                onPress={() => toggleColorScheme()}
+              >
                 <View className="flex-row gap-2 mb-1 items-center">
-                  <Ionicons name="color-palette-outline" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                  <Text className="text-center font-Erode_regular dark:text-white">Cambiar el tema de la aplicación </Text>
+                  <Ionicons
+                    name="color-palette-outline"
+                    size={24}
+                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                  />
+                  <Text className="text-center font-Erode_regular dark:text-white">
+                    Cambiar el tema de la aplicación{" "}
+                  </Text>
                 </View>
-                <Text className="text-main-blue dark:text-light-blue">{">"}</Text>
+                <Text className="text-main-blue dark:text-light-blue">
+                  {">"}
+                </Text>
               </Pressable>
-
             </View>
-            <View className='w-full mt-6'>
-              <Pressable className='flex-row items-center py-4 flex gap-3'  onPress={() => navigation.navigate("TerminosCondiciones")}>
-                <AntDesign name="questioncircleo" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
+            <View className="w-full mt-6">
+              <Pressable
+                className="flex-row items-center py-4 flex gap-3"
+                onPress={() => navigation.navigate("TerminosCondiciones")}
+              >
+                <AntDesign
+                  name="questioncircleo"
+                  size={24}
+                  color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                />
                 <Text className="dark:text-white">Terminos y condiciones</Text>
               </Pressable>
-              <Pressable className='flex-row flex gap-3 items-center'
+              <Pressable
+                className="flex-row flex gap-3 items-center"
                 onPress={handleLogout}
               >
-                <MaterialIcons name="logout" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                <Text className='dark:text-white'>Cerrar Sesión</Text>
+                <MaterialIcons
+                  name="logout"
+                  size={24}
+                  color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                />
+                <Text className="dark:text-white">Cerrar Sesión</Text>
               </Pressable>
             </View>
           </View>
