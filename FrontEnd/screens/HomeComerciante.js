@@ -12,119 +12,7 @@ export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const [filter, setFilter] = useState("Completado");
     const {orders} = useOrders([]);
-   /*  const [orders, setOrders] = useState([
-        {
-            id: 1,
-            logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB8W02HdwwjvQtQl1b2-86cJnh6td58ShJdQ&s",
-            deliveredDate: "02/10/24",
-            status: "Completado",
-            receipt: "12454",
-            price: 12000,
-            productsCount: 2,
-            total: 215415,
-            customer: {
-                name: "Jorge Lopez Fernandez",
-                date: "05/10/24",
-                receiptNumber: "215415",
-            },
-            orderDetails: [
-                { productName: "Producto 1", price: 100, quantity: 2, subtotal: 200, productPicture:"https://res.cloudinary.com/dgpqi6ukf/v1729140750/items/Tenis%20converse_picture.webp", description: "Un artículo versátil y práctico, perfecto para cualquier ocasión. Con su excelente relación calidad-precio, este producto se destaca por su durabilidad y diseño atractivo." },
-                { productName: "Producto 2", price: 150, quantity: 1, subtotal: 150, productPicture:"https://res.cloudinary.com/dgpqi6ukf/v1729140750/items/Tenis%20converse_picture.webp", description: "Este producto combina calidad y estilo. Ideal para quienes buscan algo especial, ofrece una experiencia premium con una excelente atención al detalle." }
-            ],
-            deliveryInfo: {
-                references: "Esta en la refencia de la orden numero 1.",
-            }
-        },
-        {
-            id: 2,
-            logo: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB8W02HdwwjvQtQl1b2-86cJnh6td58ShJdQ&s`,
-            deliveredDate: "03/10/24",
-            status: "Pendiente",
-            receipt: "12455",
-            price: 14000,
-            productsCount: 3,
-            total: 240415,
-            customer: {
-                name: "Jose Alvarado",
-                date: "06/10/24",
-                receiptNumber: "215416",
-            },
-            orderDetails: [
-                { productName: "Producto 3", price: 200, quantity: 1, subtotal: 200, productPicture: "https://res.cloudinary.com/dgpqi6ukf/v1729140750/items/Tenis%20converse_picture.webp", description: "Una opción confiable y duradera para quienes buscan productos de alta calidad. Diseñado para durar, este artículo es una inversión segura." },
-                { productName: "Producto 4", price: 300, quantity: 2, subtotal: 600, productPicture:"https://www.gollo.com/media/catalog/product/5/0/5001111143_rpsoi9usgtfb3wmr.jpg?optimize=medium&bg-color=255,255,255&fit=bounds&height=&width=&canvas=:", description: "Con un diseño moderno y características avanzadas, este producto ofrece un rendimiento excepcional, ideal para los más exigentes." }
-            ],
-            deliveryInfo: {
-                references: "Referencias de entrega de la ordern numero 2",
-            }
-        },
-        {
-            id: 3,
-            logo: "https://pbs.twimg.com/media/DaXUEfcX0AEx2iY.jpg",
-            deliveredDate: "04/10/24",
-            status: "Completado",
-            receipt: "12456",
-            price: 8000,
-            productsCount: 2,
-            total: 150215,
-            customer: {
-                name: "Carlos Jimenez",
-                date: "07/10/24",
-                receiptNumber: "215417",
-            },
-            orderDetails: [
-                { productName: "Producto 5", price: 50, quantity: 4, subtotal: 200, productPicture: "https://www.gollo.com/media/catalog/product/5/0/5001111143_rpsoi9usgtfb3wmr.jpg?optimize=medium&bg-color=255,255,255&fit=bounds&height=&width=&canvas=:", description: "Este producto ofrece una excelente relación calidad-precio, siendo una opción popular entre los compradores que buscan fiabilidad a un buen precio." },
-                { productName: "Producto 6", price: 100, quantity: 2, subtotal: 200, productPicture: "https://www.gollo.com/media/catalog/product/i/p/iphone_13_blanco_askezpgrxnmn6mey.jpg?optimize=medium&bg-color=255,255,255&fit=bounds&height=1040&width=1040&canvas=1040:1040", description: "Elegante y funcional, este producto es la combinación perfecta de diseño atractivo y alto rendimiento, ideal para quienes valoran tanto el estilo como la utilidad." }
-            ],
-            deliveryInfo: {
-                references: "Detalles adicionales de entrega del pedido 3.",
-            }
-        },
-        {
-            id: 4,
-            logo: "https://pbs.twimg.com/media/DaXUEfcX0AEx2iY.jpg",
-            deliveredDate: "05/10/24",
-            status: "Cancelado",
-            receipt: "12457",
-            price: 16000,
-            productsCount: 4,
-            total: 260415,
-            customer: {
-                name: "Paulo Jimenez Fernandez",
-                date: "08/10/24",
-                receiptNumber: "215418",
-            },
-            orderDetails: [
-                { productName: "Producto 7", price: 400, quantity: 1, subtotal: 400, productPicture: "https://www.gollo.com/media/catalog/product/i/p/iphone_13_blanco_askezpgrxnmn6mey.jpg?optimize=medium&bg-color=255,255,255&fit=bounds&height=1040&width=1040&canvas=1040:1040", description: "Un producto de gama alta, diseñado para ofrecer una experiencia única. Perfecto para aquellos que buscan calidad superior y un rendimiento impecable." },
-                { productName: "Producto 8", price: 350, quantity: 2, subtotal: 700, productPicture: "https://res.cloudinary.com/dgpqi6ukf/v1729140750/items", description: "Este artículo ofrece una combinación perfecta de diseño y tecnología. Ideal para los usuarios más exigentes que buscan rendimiento y estética en un solo producto." }
-            ],
-            deliveryInfo: {
-                references: "Referencias de entrega actualizadas.",
-            }
-        },
-        {
-            id: 5,
-            logo: "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/35af6a41332353.57a1ce913e889.jpg",
-            deliveredDate: "06/10/24",
-            status: "Completado",
-            receipt: "12458",
-            price: 11000,
-            productsCount: 1,
-            total: 170215,
-            customer: {
-                name: "Jose Alvarado",
-                date: "09/10/24",
-                receiptNumber: "215419",
-            },
-            orderDetails: [
-                { productName: "Producto 9", price: 200, quantity: 1, subtotal: 200, productPicture: "https://res.cloudinary.com/dgpqi6ukf/v1729140750/items", description: "Sencillo pero eficiente, este producto es una opción fiable para el uso diario. Su diseño compacto lo hace fácil de usar y transportar." },
-                { productName: "Producto 10", price: 150, quantity: 3, subtotal: 450, productPicture: "https://res.cloudinary.com/dgpqi6ukf/v1729140750/items/Tenis%20con", description: "Con un diseño moderno y funcional, este artículo es la elección ideal para aquellos que buscan un equilibrio entre calidad y precio, con un enfoque en la durabilidad." }
-            ],
-            deliveryInfo: {
-                references: "Instrucciones especiales de entrega.",
-            }
-        }
-    ]); */
-
+ 
 
     
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -153,7 +41,16 @@ export function HomeComercianteScreen({ navigation }) {
         
     }, [filter]);
 
+    const dateForm = (order_date) => {    
+        const date = new Date(order_date);
 
+        // Opciones de formato para mostrar mes, día y hora
+        const options = { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+        
+        // Formatear la fecha
+      const formattedDate = date.toLocaleString('es-ES', options);
+      return `${formattedDate.slice(0, 15)}...`;
+    }
 
 
     return (
@@ -208,16 +105,16 @@ export function HomeComercianteScreen({ navigation }) {
                             </View>
                         }
                         renderItem={({ item }) => (
-                            <Pressable className="flex-row justify-center mb-1"/*  onPress={() => navigation.navigate("Pedido", { order: item })} */>
+                            <Pressable className="flex-row justify-center mb-1" onPress={() => navigation.navigate("Pedido", { order: item })}>
                                 <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-[#D6D6D6] dark:border-light-blue w-full items-center rounded-md ">
                                     <View className="flex-row">
-                                        <View className=" justify-center item-center bg-red-600 rounded-lg dark:bg-neutral-900">
-                                            <Image source={{uri: item.logo }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
+                                        <View className=" justify-center item-center dark:bg-neutral-900">
+                                            <Image source={{uri: item.user_picture }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
                                         </View>
                                         <View className="px-6">
-                                            <Text className="font-Excon_bold text-sm dark:text-white">Entregado: <Text className="font-Excon_thin text-sm">{item.deliveredDate} </Text></Text>
+                                            <Text className="font-Excon_bold text-sm dark:text-white">Fecha: <Text className="font-Excon_thin text-sm">{dateForm(item.order_date)} </Text></Text>
                                             <Text className="font-Excon_bold text-sm dark:text-white">Estado: <Text className="font-Excon_thin text-sm">{item.status} </Text></Text>
-                                            <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.receipt} </Text></Text>
+                                            <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.order_num} </Text></Text>
                                             <Text className="font-Excon_thin text-sm dark:text-white">₡{item.total_price} - {item.products.length} productos</Text>
                                         </View>
                                     </View>
