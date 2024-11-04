@@ -1,42 +1,28 @@
+import { useEffect, useState } from 'react';
 
-export const UseHistorical = [
-    {
-      id: '1',
-      image: 'https://via.placeholder.com/150',
-      tienda: 'Tienda 1',
-      date: '2024-10-01',
-      estado: 'completed',
-      items: [
-        { id: 'a1',image: 'https://via.placeholder.com/150', name: 'Producto 1', quantity: 2, price: 1500 },
-        { id: 'a2',image: 'https://via.placeholder.com/150', name: 'Producto 2', quantity: 1, price: 2500 },
-      ],
-      quantity: 2,
-      total: 5500,
-    },
-    {
-      id: '2',
-      image: 'https://via.placeholder.com/150',
-      tienda: 'Tienda 2',
-      date: '2024-10-02',
-      estado: 'completed',
-      items: [
-        { id: 'b1',image: 'https://via.placeholder.com/150', name: 'Producto 3', quantity: 3, price: 1000 },
-      ],
-      quantity: 1,
-      total: 3000,
-    },
+export const useHistorical = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    {
-        id: '3',
-        image: 'https://via.placeholder.com/150',
-        tienda: 'Tienda 3',
-        date: '2024-10-03',
-        estado: 'in process',
-        items: [
-          { id: 'c1',image: 'https://via.placeholder.com/150', name: 'Producto 4', quantity: 1, price: 2000 },
-        ],
-        quantity: 1,
-        total: 4000,
-      },
-  ];
-  
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('https://marlin-backend.vercel.app/api/orders/');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  return { orders, loading, error };
+};
