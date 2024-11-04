@@ -114,9 +114,9 @@ export function HistoricalDetailsScreen({ route }) {
       {compra.products.map((item, index) => (
         <View key={index} className="flex-row justify-between mb-3">
           <Text className="font-Erode_regular w-1/3 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{item.item_name}</Text>
-          <Text className="font-Erode_regular w-1/5 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price)}</Text>
+          <Text className="font-Erode_regular w-1/5 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price/item.quantity)}</Text>
           <Text className="font-Erode_regular w-1/6 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{item.quantity}</Text>
-          <Text className="font-Erode_regular w-1/7 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.quantity * item.total_price)}</Text>
+          <Text className="font-Erode_regular w-1/7 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price)}</Text>
         </View>
       ))}
 
