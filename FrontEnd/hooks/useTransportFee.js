@@ -1,5 +1,5 @@
 export const useTransportFee = async (startCoords, endCoords) => {
-    const apiKey = 'AIzaSyB0fbhtl6sU-fzxajDD1-e5uD0f0XYrVpI';
+    const apiKey = '';
     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startCoords.latitude},${startCoords.longitude}&destination=${endCoords.latitude},${endCoords.longitude}&key=${apiKey}`;
   
     try {
