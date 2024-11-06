@@ -95,6 +95,7 @@ export function CartScreen({ navigation }) {
             );
         };
 
+        const itemTotal = item.price * item.cantidad;
         /*const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
 
         return (
@@ -176,7 +177,7 @@ export function CartScreen({ navigation }) {
                 </View>
                 <View className="items-end justify-end mt-2">
                     <Text className="font-Excon_regular">
-                        {formatCurrency(cartTotal)} CRC
+                        {formatCurrency(itemTotal)} CRC
                     </Text>
                 </View>
             </View>
@@ -252,7 +253,7 @@ export function CartScreen({ navigation }) {
                                     </View>
 
                                     <View className="flex-row gap-x-6 items-center">
-                                    <MaterialCommunityIcons name="map-marker-question-outline" size={22} color="black" />
+                                        <MaterialCommunityIcons name="map-marker-question-outline" size={22} color="black" />
                                         <View className="flex-1">
                                             <Text className="font-Excon_bold text-gray-800 text-[14px] dark:text-[#e1e1e1]">
                                                 Indicaciones para la entrega
