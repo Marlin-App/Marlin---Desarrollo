@@ -11,14 +11,38 @@ export function TerminosCondiciones({ navigation }) {
 
         <View>
           <Text className=" dark:text-white text-xl font-Excon_bold my-2">GENERAL</Text>
-          <Text className=" dark:text-white text-md font-Excon_regular text-justify">NEXTGEN DEVS COSTA RICA LIMITADA (en adelante “Marlin”) y sus sociedades vinculadas prestan servicios a los usuarios, según los siguientes términos y condiciones (en adelante los “Términos y Condiciones”). Los Términos y Condiciones constituyen el contrato entre el Usuario y Marlin, que rige el uso o aprovechamiento por parte del Usuario de los servicios de Marlin. Estos Términos y Condiciones establecen y regulan los derechos y obligaciones del Usuario respecto del uso de los servicios de Marlin, que pueden afectar sus intereses, por lo que el Usuario debe leerlos con detenimiento.
-            Al utilizar cualquier servicio actual o futuro de Marlin, el Usuario estará sujeto a los lineamientos y condiciones aplicables a dicho Servicio o negocio.
-            Cualquier Usuario que desee acceder y/o usar el Portal o los Servicios podrá hacerlo sujetándose a estos Términos y Condiciones, junto con todas las demás políticas y principios que rigen en Marlin, incluyendo las Políticas de Privacidad de Marlin y que son incorporadas al presente por referencia o están disponibles en [sitio web]. El desconocimiento de los Términos y Condiciones no justifica su incumplimiento ni faculta a los Usuarios para tomar medidas particulares o legales que desconozcan lo planteado en los mismos.
-            Con su registro y utilización del Portal, los Usuarios manifiestan su aceptación expresa e inequívoca de los Términos y Condiciones. Respecto de menores de 18 años que quieran hacer uso del Portal, Marlin informa que deben contar con autorización de sus padres, tutores o representantes legales, quienes serán los responsables de los menores que utilicen el Portal. Marlin se reserva el derecho de negarse a prestar el servicio, cerrar cuentas o eliminar o editar contenido a su entera discreción en caso de que menores de 18 años no cuenten con dicha autorización.
-            Marlin podrá modificar los Términos y Condiciones cuando lo considere oportuno, siendo efectivas dichas modificaciones una vez publicadas en el Portal. El Usuario, al acceder al Portal después de dicha modificación, consiente expresamente vincularse por los Términos y Condiciones modificados.
-            CUALQUIER PERSONA QUE NO ACEPTE ESTOS TÉRMINOS Y CONDICIONES GENERALES Y/O CUALQUIERA DE LAS POLÍTICAS, TÉRMINOS PARTICULARES O PRINCIPIOS QUE RIGEN EN MARLIN, INCLUYENDO LA POLÍTICA DE PRIVACIDAD, DEBERÁ ABSTENERSE DE UTILIZAR EL PORTAL Y/O LOS SERVICIOS.
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">NEXTGEN DEVS COSTA RICA LIMITADA (en adelante “Marlin”) y sus sociedades vinculadas prestan servicios a los usuarios, según los siguientes términos y condiciones (en adelante los “Términos y Condiciones”).
+          </Text>
 
-            Si los Usuarios tienen dudas respecto a estos Términos y Condiciones, pueden comunicarse con nuestro equipo de Atención al Cliente a través del chat disponible en nuestro Portal o al correo electrónico contacto@marlin.com.
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">Los Términos y Condiciones constituyen el contrato entre el Usuario y Marlin, que rige el uso o aprovechamiento por parte del Usuario de los servicios de Marlin. Estos Términos y Condiciones establecen y regulan los derechos y obligaciones del Usuario respecto del uso de los servicios de Marlin, que pueden afectar sus intereses, por lo que el Usuario debe leerlos con detenimiento.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          Al utilizar cualquier servicio actual o futuro de Marlin, el Usuario estará sujeto a los lineamientos y condiciones aplicables a dicho Servicio o negocio.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          Cualquier Usuario que desee acceder y/o usar el Portal o los Servicios podrá hacerlo sujetándose a estos Términos y Condiciones, junto con todas las demás políticas y principios que rigen en Marlin, incluyendo las Políticas de Privacidad de Marlin y que son incorporadas al presente por referencia.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          El desconocimiento de los Términos y Condiciones no justifica su incumplimiento ni faculta a los Usuarios para tomar medidas particulares o legales que desconozcan lo planteado en los mismos.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          Con su registro y utilización del Portal, los Usuarios manifiestan su aceptación expresa e inequívoca de los Términos y Condiciones. Respecto de menores de 18 años que quieran hacer uso del Portal, Marlin informa que deben contar con autorización de sus padres, tutores o representantes legales, quienes serán los responsables de los menores que utilicen el Portal. 
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          Marlin se reserva el derecho de negarse a prestar el servicio, cerrar cuentas o eliminar o editar contenido a su entera discreción en caso de que menores de 18 años no cuenten con dicha autorización. Marlin podrá modificar los Términos y Condiciones cuando lo considere oportuno, siendo efectivas dichas modificaciones una vez publicadas en el Portal. 
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          El Usuario, al acceder al Portal después de dicha modificación, consiente expresamente vincularse por los Términos y Condiciones modificados. CUALQUIER PERSONA QUE NO ACEPTE ESTOS TÉRMINOS Y CONDICIONES GENERALES Y/O CUALQUIERA DE LAS POLÍTICAS, TÉRMINOS PARTICULARES O PRINCIPIOS QUE RIGEN EN MARLIN, INCLUYENDO LA POLÍTICA DE PRIVACIDAD, DEBERÁ ABSTENERSE DE UTILIZAR EL PORTAL Y/O LOS SERVICIOS.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mb-2">
+          Si los Usuarios tienen dudas respecto a estos Términos y Condiciones, pueden comunicarse con nuestro equipo de Atención al Cliente al correo electrónico marlin.aplicacion@gmail.com.
           </Text>
         </View>
 
@@ -30,28 +54,28 @@ export function TerminosCondiciones({ navigation }) {
 
         <View>
           <Text className=" dark:text-white text-xl font-Excon_bold my-2"> DEFINICIONES</Text>
-          <Text className=" dark:text-white text-md font-Excon_bold"> "Aplicación": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a la aplicación “Marlin” disponible para dispositivos móviles.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Aplicación": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a la aplicación “Marlin” disponible para dispositivos móviles.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Bienes": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Son los bienes, productos o servicios ofrecidos por los Oferentes a través del Portal e integran el Pedido del Usuario. Los Bienes son suministrados por los Oferentes, siendo estos los responsables de los mismos ante los Usuarios.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Bienes": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Son los bienes, productos o servicios ofrecidos por los Oferentes a través del Portal e integran el Pedido del Usuario. Los Bienes son suministrados por los Oferentes, siendo estos los responsables de los mismos ante los Usuarios.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Oferente": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Se refiere a agentes externos y/o terceros ajenos a Marlin que previamente han contratado con Marlin sus servicios de intermediación, aportando toda la información de los Bienes que se exhiben a través del Portal (precio, características, y en general todas sus condiciones objetivas). Estos son los responsables directos de cumplir con todas las características del producto y/o servicio publicado en el Portal.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Oferente": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Se refiere a agentes externos y/o terceros ajenos a Marlin que previamente han contratado con Marlin sus servicios de intermediación, aportando toda la información de los Bienes que se exhiben a través del Portal (precio, características, y en general todas sus condiciones objetivas). Estos son los responsables directos de cumplir con todas las características del producto y/o servicio publicado en el Portal.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Pedido": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a la solicitud del Usuario a través del Portal de los Bienes de Oferentes.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Pedido": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a la solicitud del Usuario a través del Portal de los Bienes de Oferentes.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Nosotros", "Nuestro" y "Marlin": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Siempre que se haga referencia a estos términos, se estará haciendo referencia directa a NexGen Devs Costa Rica Limitada.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Nosotros", "Nuestro" y "Marlin": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Siempre que se haga referencia a estos términos, se estará haciendo referencia directa a NexGen Devs Costa Rica Limitada.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Servicio": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia al servicio de intermediación solicitado por el Usuario a través del Portal.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Servicio": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia al servicio de intermediación solicitado por el Usuario a través del Portal.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Usuario" y "Cliente": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a todas las personas físicas o jurídicas que acceden a nuestro Portal y realizan Pedidos a través del Sitio Web o la Aplicación.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Usuario" y "Cliente": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia a todas las personas físicas o jurídicas que acceden a nuestro Portal y realizan Pedidos a través del Sitio Web o la Aplicación.
           </Text></Text>
 
-          <Text className=" dark:text-white text-md font-Excon_bold mt-2"> "Portal": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia al Sitio Web y/o Aplicación mediante los cuales, en calidad de intermediarios, facilitamos el contacto entre Oferentes, Usuarios y repartidores.
+          <Text className=" dark:text-white text-md font-Excon_bold mt-4"> "Portal": <Text className=" dark:text-white text-md font-Excon_regular text-justify">Hace referencia al Sitio Web y/o Aplicación mediante los cuales, en calidad de intermediarios, facilitamos el contacto entre Oferentes, Usuarios y repartidores.
           </Text></Text>
 
         </View>
@@ -64,13 +88,19 @@ export function TerminosCondiciones({ navigation }) {
 
         <View>
           <Text className=" dark:text-white text-xl font-Excon_bold my-2"> DERECHOS DE AUTOR</Text>
-          <Text className=" dark:text-white text-md font-Excon_regular text-justify">El contenido del Portal, incluyendo, pero no limitado a los textos, gráficos, imágenes, logotipos, íconos, software y cualquier otro material (en adelante, el "Material"), está protegido bajo las leyes aplicables de propiedad intelectual. Todo el Material es propiedad de Marlin o de sus proveedores. Queda prohibido modificar, copiar, reutilizar, extraer, explotar o distribuir de cualquier forma el contenido del Portal sin autorización previa. El uso no autorizado del Material puede constituir una violación de las leyes sobre derechos de autor.
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify">El contenido del Portal, incluyendo, pero no limitado a los textos, gráficos, imágenes, logotipos, íconos, software y cualquier otro material (en adelante, el "Material"), está protegido bajo las leyes aplicables de propiedad intelectual. Todo el Material es propiedad de Marlin o de sus proveedores. 
+          </Text>
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-2">
+          Queda prohibido modificar, copiar, reutilizar, extraer, explotar o distribuir de cualquier forma el contenido del Portal sin autorización previa. El uso no autorizado del Material puede constituir una violación de las leyes sobre derechos de autor.
           </Text>
         </View>
 
         <View>
           <Text className=" dark:text-white text-xl font-Excon_bold my-2"> MARCAS COMERCIALES</Text>
-          <Text className=" dark:text-white text-md font-Excon_regular text-justify">Marlin, el logotipo de Marlin y otras marcas indicadas en el Portal son marcas comerciales de Marlin o de sus Oferentes, quienes han autorizado su uso en el Portal. Las marcas comerciales no podrán ser utilizadas en relación con productos o servicios ajenos a Marlin, de manera que pueda causar confusión entre los Usuarios.
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify">Marlin, el logotipo de Marlin y otras marcas indicadas en el Portal son marcas comerciales de Marlin o de sus Oferentes, quienes han autorizado su uso en el Portal. 
+          </Text>
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-2">
+          Las marcas comerciales no podrán ser utilizadas en relación con productos o servicios ajenos a Marlin, de manera que pueda causar confusión entre los Usuarios.
           </Text>
         </View>
 
@@ -95,16 +125,39 @@ export function TerminosCondiciones({ navigation }) {
         <View>
           <Text className=" dark:text-white text-xl font-Excon_bold my-2"> PROCEDIMIENTO DE PEDIDOS Y ACLARACIONES GENERALES</Text>
           <Text className=" dark:text-white text-md font-Excon_regular text-justify">Marlin ofrece un portal para que los Oferentes puedan registrar sus tiendas y exhibir sus productos, permitiendo a los Usuarios adquirirlos y solicitar su entrega a domicilio. La información de los productos se exhibe según la información provista por el Oferente, no asumiendo Marlin responsabilidad alguna por la exactitud y/o veracidad de la misma, ni por el precio ofrecido.
-            El Usuario entiende y acepta que Marlin no produce, provee, vende, ni actúa como agente o representante de los productos exhibidos. La relación de compraventa se establece exclusivamente entre el Usuario y el Oferente. El Usuario es responsable de proporcionar correctamente las direcciones de entrega y recogida de los Pedidos, eximiendo a Marlin y a los repartidores de cualquier responsabilidad por errores o negligencias.
-            El Usuario podrá visualizar las opciones disponibles sin necesidad de registrarse en el portal. Sin embargo, para finalizar un Pedido, el Usuario debe estar registrado y proporcionar su domicilio de entrega. Tras completar estos pasos, podrá ver las diferentes opciones de Oferentes, productos, ubicaciones, etc.
-            Una vez definido el Pedido, el Usuario debe ingresar al perfil del Oferente en el portal y seleccionar los productos deseados. Las características, condiciones y valor total del Pedido se presentarán según la información proporcionada por el Oferente, incluyendo comisiones y impuestos aplicables. El Usuario deberá validar el Pedido y seleccionar el método de pago entre los disponibles.
-            Al seleccionar la forma de pago, el Usuario deberá confirmar el Pedido. Es importante aclarar que el Usuario se compromete a pagar el precio del Pedido desde el momento en que recibe la comunicación de confirmación del mismo. Si el Pedido no se recibe en el domicilio indicado, o si surge algún contratiempo en la verificación de los datos del Usuario, la responsabilidad recaerá sobre el Usuario, quien deberá indemnizar a Marlin por los costos que puedan surgir.
-            Todos los Pedidos realizados a través del portal son transmitidos a los Oferentes, quienes podrán comunicarse con el Usuario si los productos o servicios solicitados no están disponibles. Cuando el Oferente acepta o rechaza el Pedido, se comunicará al Usuario a través de correo electrónico, notificación PUSH, u otro medio. Si el Pedido es rechazado, Marlin notificará al Usuario sin obligación de explicar los motivos.
-            Si el Pedido es confirmado, se indicará al Usuario el tiempo estimado de entrega, el cual puede sufrir ajustes debido a factores como el tráfico, clima y capacidad de entrega del Oferente. El Usuario reconoce que al realizar el Pedido, acepta que estos factores pueden influir en la entrega.
+          </Text>
 
-            Durante el tiempo entre la confirmación del Pedido y su entrega, el Usuario puede comunicarse con Marlin para hacer consultas o presentar quejas. Marlin actuará como intermediaria y se esforzará por resolver cualquier situación problemática. Las quejas deben presentarse en un lenguaje respetuoso; de lo contrario, Marlin puede bloquear al Usuario de su base de datos.
-            Los comentarios y calificaciones son revisados por Marlin y registrados en el historial de cada Usuario. La entrega del Pedido puede realizarse a través de repartidores del Oferente o de otros asignados por Marlin. El Usuario entiende que Marlin no se hace responsable de la falta de entrega del Pedido si el Oferente gestiona el servicio.
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify">
+          El Usuario entiende y acepta que Marlin no produce, provee, vende, ni actúa como agente o representante de los productos exhibidos. La relación de compraventa se establece exclusivamente entre el Usuario y el Oferente. El Usuario es responsable de proporcionar correctamente las direcciones de entrega y recogida de los Pedidos, eximiendo a Marlin y a los repartidores de cualquier responsabilidad por errores o negligencias.
+          </Text>
 
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-4">
+          El Usuario podrá visualizar las opciones disponibles sin necesidad de registrarse en el portal. Sin embargo, para finalizar un Pedido, el Usuario debe estar registrado y proporcionar su domicilio de entrega. Tras completar estos pasos, podrá ver las diferentes opciones de Oferentes, productos, ubicaciones, etc.  
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-4">
+          Una vez definido el Pedido, el Usuario debe ingresar al perfil del Oferente en el portal y seleccionar los productos deseados. Las características, condiciones y valor total del Pedido se presentarán según la información proporcionada por el Oferente, incluyendo comisiones y impuestos aplicables.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-4">
+          El Usuario deberá validar el Pedido y seleccionar el método de pago entre los disponibles.
+          Al seleccionar la forma de pago, el Usuario deberá confirmar el Pedido. Es importante aclarar que el Usuario se compromete a pagar el precio del Pedido desde el momento en que recibe la comunicación de confirmación del mismo. Si el Pedido no se recibe en el domicilio indicado, o si surge algún contratiempo en la verificación de los datos del Usuario, la responsabilidad recaerá sobre el Usuario, quien deberá indemnizar a Marlin por los costos que puedan surgir.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify ">
+          Todos los Pedidos realizados a través del portal son transmitidos a los Oferentes, quienes podrán comunicarse con el Usuario si los productos o servicios solicitados no están disponibles. Cuando el Oferente acepta o rechaza el Pedido, se comunicará al Usuario a través de correo electrónico, notificación PUSH, u otro medio. Si el Pedido es rechazado, Marlin notificará al Usuario sin obligación de explicar los motivos.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-4">
+          Si el Pedido es confirmado, se indicará al Usuario el tiempo estimado de entrega, el cual puede sufrir ajustes debido a factores como el tráfico, clima y capacidad de entrega del Oferente. El Usuario reconoce que al realizar el Pedido, acepta que estos factores pueden influir en la entrega.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify">
+          Durante el tiempo entre la confirmación del Pedido y su entrega, el Usuario puede comunicarse con Marlin para hacer consultas o presentar quejas. Marlin actuará como intermediaria y se esforzará por resolver cualquier situación problemática. Las quejas deben presentarse en un lenguaje respetuoso; de lo contrario, Marlin puede bloquear al Usuario de su base de datos.
+          </Text>
+
+          <Text className=" dark:text-white text-md font-Excon_regular text-justify mt-4">
+          Los comentarios y calificaciones son revisados por Marlin y registrados en el historial de cada Usuario. La entrega del Pedido puede realizarse a través de repartidores del Oferente o de otros asignados por Marlin. El Usuario entiende que Marlin no se hace responsable de la falta de entrega del Pedido si el Oferente gestiona el servicio.
           </Text>
         </View>
 

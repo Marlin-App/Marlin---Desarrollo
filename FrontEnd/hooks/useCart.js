@@ -12,15 +12,17 @@ const useCart = () => {
   useEffect(() => {
     const loadCart = async () => {
       try {
+      /*   await clearCart(); */
         const jsonValue = await AsyncStorage.getItem('@cart');
         if (jsonValue != null) {
           setCart(JSON.parse(jsonValue));
+          console.log(cart);
         }
       } catch (e) {
         console.error('Error al cargar el carrito:', e);
       }
     };
-
+  
     loadCart();
   }, []);
 
@@ -36,8 +38,6 @@ const useCart = () => {
 
     if (cart.length > 0) {
       saveCart();
-    } else {
-      AsyncStorage.removeItem('@cart');
     }
   }, [cart]);
 
@@ -74,22 +74,16 @@ const useCart = () => {
   };
 
   const removeFromCart = async (productId, color, size) => {
-    setCart((prevCart) => {
-      const newCart = prevCart.filter((item) => 
-        !(item.id === productId && item.color === color && item.size === size)
-      );
-      saveCart(newCart);
-      return newCart;
-    });
-  };
-
-  const saveCart = async (newCart) => {
-    try {
-      const jsonValue = JSON.stringify(newCart || cart);
-      await AsyncStorage.setItem('@cart', jsonValue);
-    } catch (e) {
-      console.error('Error al guardar el carrito:', e);
+    if(cart.length==1){
+      await clearCart();
+      return;
     }
+      setCart((prevCart) => 
+      prevCart.filter((item) => 
+        !(item.id === productId && item.color === color && item.size === size)
+      )
+    );
+
   };
 
   const clearCart = async () => {
@@ -113,11 +107,8 @@ const useCart = () => {
     return cart[0].store_id === store_id;
   };
 
-  const cartLength = cart.length;
-
   return {
     cart,
-    cartLength,
     addToCart,
     increaseQuantity,
     decreaseQuantity,

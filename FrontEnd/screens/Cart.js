@@ -22,8 +22,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useDirections from "../hooks/useDirection";
+import { useTransportFee } from "../hooks/useTransportFee";
+import useStoreCordenates from "../hooks/useStoreCoordenates";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export function CartScreen({ navigation }) {
+
+    const[isLoading, setIsLoading]=useState(true);
+
+const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
+
     const {
         cart,
         removeFromCart,
@@ -64,8 +72,38 @@ export function CartScreen({ navigation }) {
         }
     }, [fontsLoaded]);
 
-    const deliveryFee = 250;
-    const transportFee = 750;
+    const [distance, setDistance] = useState(null);
+    const [transportFee, setTransportFee] = useState(0);
+
+
+    useEffect(() => {
+
+        const calculateDistanceAndRoute = async () => {
+
+            //await getStoreCordenates(cart[0].store_id); 9.984033, -84.717067
+            //const startCoords = { latitude: storeLatitude, longitude: storeLongitude }; //agregar loader para que le de tiempo a cargar las coordenadas y poder hacer el calculo de la distancia y la tarifa
+            const startCoords = { latitude: 9.984033, longitude: -84.717067 };
+            const endCoords = { latitude: directionSelected.coodernates.latitude, longitude: directionSelected.coodernates.longitude };
+
+            const result = await useTransportFee(startCoords, endCoords);
+            if (result) {
+                if (result.distanceValue < 1000) {
+                    setTransportFee(700);
+                } else if (result.distanceValue < 5000) {
+                    setTransportFee(1500);
+                } else {
+                    setTransportFee(2500);
+                }
+                setDistance(result.distanceValue);
+            }
+        };
+
+        calculateDistanceAndRoute();
+    }, [directionSelected]);
+
+
+    const deliveryFee = 250; //comision de la aplicacion
+    //const transportFee = distance?distance:0;
 
     const [isPickUp, setIsPickUp] = useState(false);
 
@@ -97,6 +135,8 @@ export function CartScreen({ navigation }) {
 
         const itemTotal = item.price * item.cantidad;
         /*const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
+
+
 
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">

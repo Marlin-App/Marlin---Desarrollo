@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { Modal, View, Button, StyleSheet } from 'react-native';
+import { Modal, View, Button, StyleSheet, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 const useSelectLocation = () => {
   const [location, setLocation] = useState({
-    latitude: 313,
-    longitude: 3123,
+    latitude: 9.994514,
+    longitude:  -84.651531,
   }); // Guardar la ubicación actual
   const [isModalVisible, setModalVisible] = useState(false);
-  const mapRef = useRef(null); // Crear una referencia para el MapView
+  const mapRef = useRef(null); 
   const [selectedLocation, setSelectedLocation] = useState(null); // Guardar la ubicación seleccionada (solo del marcador)
   
   useEffect(() => {
@@ -52,7 +52,7 @@ const useSelectLocation = () => {
       animationType="slide"
     >
       <View style={styles.modalContainer}>
-       
+       <Text>Se abrio el modal</Text>
           <MapView
             ref={mapRef} 
             style={styles.map}
