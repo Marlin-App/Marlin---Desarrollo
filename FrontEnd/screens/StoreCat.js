@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
 
+
 import image from '../assets/img/fondoLanding.png';
 
 export function StoreCat({ navigation }) {
@@ -39,14 +40,17 @@ export function StoreCat({ navigation }) {
         addToCart,
         total,
     } = useCart();
-  
+
+    const scrollToTopButtonRef = useRef(null); 
+    const listRef = useRef(null); 
+
     useEffect(() => {
-      const fetchUserToken = async () => {
-          const token = await AsyncStorage.getItem('@userToken');
-          setIsLogged(token);
-      };
-      fetchUserToken();
-  }, [navigation, isFocused]);
+        const fetchUserToken = async () => {
+            const token = await AsyncStorage.getItem('@userToken');
+            setIsLogged(token);
+        };
+        fetchUserToken();
+    }, [navigation, isFocused]);
 
 
     const route = useRoute();
@@ -57,13 +61,13 @@ export function StoreCat({ navigation }) {
 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-    const notifications = [
-        {
-            id: 1,
-            title: "Notificación 1",
-            description: "Descripción de la notificación 1",
-        }
-    ];
+    const [notifications, setNotifications] = useState([
+        
+    ]);
+
+    const handleNotificationClick = (notificationId) => {
+        setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
+    };
 
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
@@ -87,7 +91,7 @@ export function StoreCat({ navigation }) {
                 banner: item.banner,
             }));
 
-            setOriginalStoreSelected(formattedData);  
+            setOriginalStoreSelected(formattedData);
             setStoreSelected(formattedData);
         };
 
@@ -173,6 +177,22 @@ export function StoreCat({ navigation }) {
         }
     }, [allCategories, id]);
 
+    const [isCategoriesVisible, setIsCategoriesVisible] = useState(true);
+
+
+    const handleScroll = (event) => {
+        const contentOffsetY = event.nativeEvent.contentOffset.y;
+        if (contentOffsetY > 100) {  
+            scrollToTopButtonRef.current?.setNativeProps({ style: { opacity: 1 } });
+        } else {
+            scrollToTopButtonRef.current?.setNativeProps({ style: { opacity: 0 } });
+        }
+    };
+
+    const scrollToTop = () => {
+        listRef.current?.scrollTo({ y: 0, animated: true });
+    };
+
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 " >
             <NotificationDropdown
@@ -180,11 +200,12 @@ export function StoreCat({ navigation }) {
                 isDropdownVisible={isDropdownVisible}
                 toggleDropdown={toggleDropdown}
                 closeDropdown={closeDropdown}
+                onNotificationClick={handleNotificationClick}
             />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8 ">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                    <Image className="w-12 h-10 ml-2" source={logo} />
+                        <Image className="w-12 h-10 ml-2" source={logo} />
                         <Text className="text-white dark:text-dk-blue text-2xl font-Outfit-medium">
                             Marlin
                         </Text>
@@ -257,81 +278,98 @@ export function StoreCat({ navigation }) {
                     </View>
                 ) : null}
 
-                <View className="">
-                    <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
-                               
+                <ScrollView
+                    ref={listRef} // Attach the ref to the ScrollView
+                    onScroll={handleScroll} // Listen to scroll events
+                    scrollEventThrottle={16} // Improve scroll performance
+                >
+                    <View className="">
+                        <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
 
-                    <SectionList
-                        ref={sectionListRef}
-                        sections={allCategories}
-                        horizontal={true}
-                        renderItem={({ item }) => (
-                            <>
-                                {item.id == 1 ? (
-                                    <View key={0}>
-                                         <Pressable onPress={() => handleCategorySelect(0)}>
-                                    <View className="my-4 mx-2 items-center">
-                                        <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
-                                            <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "#1952BE"} />
+
+                        <SectionList
+                            ref={sectionListRef}
+                            sections={allCategories}
+                            horizontal={true}
+                            renderItem={({ item }) => (
+                                <>
+                                    {item.id == 1 ? (
+                                        <View key={0}>
+                                            <Pressable onPress={() => handleCategorySelect(0)}>
+                                                <View className="my-4 mx-2 items-center">
+                                                    <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == 0 ? 'bg-main-blue' : ''}`}>
+                                                        <AntDesign name="CodeSandbox" size={40} color={selectedCategoryId == 0 ? "white" : "#1952BE"} />
+                                                    </View>
+                                                    <Text className="text-lg text-center text-light-blue">Todas</Text>
+                                                </View>
+                                            </Pressable>
                                         </View>
-                                        <Text className="text-lg text-center text-light-blue">Todas</Text>
-                                    </View>
-                                </Pressable>
-                                    </View>
-                                ) : null}
-                                <View key={item.id}>
-                                    <Pressable onPress={() => handleCategorySelect(item.id)}>
-                                        <View className="my-4 mx-2 items-center">
-                                            <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
-                                                {selectedCategoryId == item.id ? (
-                                                    <Image source={{ uri: item.image_selected.replace("image/upload/", "")}} className="w-full h-full " resizeMode="cover" />
-                                                ) : (
-                                                    <Image source={{ uri: item.image.replace("image/upload/", "")}} className="w-full h-full" resizeMode="cover" />
-                                                )}
+                                    ) : null}
+                                    <View key={item.id}>
+                                        <Pressable onPress={() => handleCategorySelect(item.id)}>
+                                            <View className="my-4 mx-2 items-center">
+                                                <View className={`bg-gray-200 dark:dark:bg-dk-input p-5 rounded-lg w-20 h-20 ${selectedCategoryId == item.id ? 'bg-main-blue' : ''} `}>
+                                                    {selectedCategoryId == item.id ? (
+                                                        <Image source={{ uri: item.image_selected.replace("image/upload/", "") }} className="w-full h-full " resizeMode="cover" />
+                                                    ) : (
+                                                        <Image source={{ uri: item.image.replace("image/upload/", "") }} className="w-full h-full" resizeMode="cover" />
+                                                    )}
+                                                </View>
+                                                <Text className="text-lg text-center text-light-blue">{item.name}</Text>
                                             </View>
-                                            <Text className="text-lg text-center text-light-blue">{item.name}</Text>
-                                        </View>
-                                    </Pressable>
-                                </View>
-                            </>
-                        )}
-                    />
-                </View>
-
-                <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue ">Tiendas de esta categoría</Text>
-                {storeSelected.length == 0 ? (
-                    <View className="flex-1 justify-center items-center">
-                        <Text className="text-red-500">No se encontraron tiendas</Text>
+                                        </Pressable>
+                                    </View>
+                                </>
+                            )}
+                        />
                     </View>
-                ) : null}
 
-                <FlatList
-                    data={storeSelected}
-                    numColumns={2}
-                    className="flex  "
-                    columnWrapperStyle={{ justifyContent: 'space-around' }}
-                    renderItem={({ item }) => (
+                    <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue ">Tiendas de esta categoría</Text>
+                    {storeSelected.length == 0 ? (
+                        <View className="flex-1 justify-center items-center">
+                            <Text className="text-red-500">No se encontraron tiendas</Text>
+                        </View>
+                    ) : null}
 
-                        <Pressable onPress={() => navigation.navigate('Store', { id: item.id, store: item })} className=" mt-4">
-                            <View className="items-center ">
-                                <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
-                                    <Image
-                                        source={{ uri: item.picture }}
-                                        className="rounded-lg w-full h-full"
-                                        resizeMode="cover"
-                                    />
+                    <FlatList
+                        data={storeSelected}
+                        numColumns={2}
+                        className="flex  "
+                        columnWrapperStyle={{ justifyContent: 'space-around' }}
+                        renderItem={({ item }) => (
+
+                            <Pressable onPress={() => navigation.navigate('Store', { id: item.id, store: item })} className=" mt-4">
+                                <View className="items-center ">
+                                    <View className="rounded-lg w-40 h-40 bg-[#EDEEF3] p-[2px] ">
+                                        <Image
+                                            source={{ uri: item.picture }}
+                                            className="rounded-lg w-full h-full"
+                                            resizeMode="cover"
+                                        />
+                                    </View>
+                                    <Text className="text-lg text-light-blue dark:text-white w-40"
+                                        numberOfLines={1}
+                                        ellipsizeMode='tail'
+                                    >{item.name}</Text>
+                                    <Text className="text-lg text-light-blue">{item.district} </Text>
                                 </View>
-                                <Text className="text-lg text-light-blue dark:text-white w-40"
-                                    numberOfLines={1}
-                                    ellipsizeMode='tail'
-                                >{item.name}</Text>
-                                <Text className="text-lg text-light-blue">{item.district} </Text>
-                            </View>
-                        </Pressable>
+                            </Pressable>
 
-                    )}
-                    keyExtractor={item => item.id}
-                />
+                        )}
+                        keyExtractor={item => item.id}
+                    />
+
+                    
+                </ScrollView>
+                <TouchableOpacity
+                    onPress={scrollToTop}
+                    ref={scrollToTopButtonRef}
+                    className="absolute bottom-10 right-5 bg-light-blue p-2 rounded-full shadow-lg"
+                    style={{ opacity: 0 }} 
+                >
+                    <Ionicons name="arrow-up" size={26} color="white" />
+                </TouchableOpacity>
+
             </View>
         </View>
     );

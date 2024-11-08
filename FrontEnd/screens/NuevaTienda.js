@@ -275,7 +275,9 @@ export function NuevaTienda({ navigation }) {
                     value={formData.sinpe}
                     placeholderTextColor={placeholderTextColor}
                     onChangeText={(value) => handleInputChange('sinpe', value)}
-                    keyboardType='numeric' />
+                    keyboardType='numeric' 
+                    maxLength={10}
+                    />
             </View>
 
             <View className="flex-col px-5 my-4">

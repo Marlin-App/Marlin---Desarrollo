@@ -1,9 +1,8 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, View, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
 
-const NotificationDropdown = ({ notifications, isDropdownVisible, toggleDropdown, closeDropdown }) => {
+const NotificationDropdown = ({ notifications, isDropdownVisible, toggleDropdown, closeDropdown, onNotificationClick }) => {
     const { colorScheme } = useColorScheme();
 
     return (
@@ -20,12 +19,14 @@ const NotificationDropdown = ({ notifications, isDropdownVisible, toggleDropdown
                             <Text className="text-xl font-Excon_bold px-4 py-2 border-b text-main-blue dark:text-light-blue dark:border-main-blue">Notificaciones</Text>
                             <FlatList
                                 data={notifications}
-                                keyExtractor={(item) => item.id}
+                                keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => (
-                                    <View className="px-4 py-2 border-b border-gray-200 dark:border-light-blue">
-                                        <Text className="font-semibold text-gray-800">{item.title}</Text>
-                                        <Text className="text-gray-400">{item.description}</Text>
-                                    </View>
+                                    <TouchableOpacity onPress={() => onNotificationClick(item.id)}>
+                                        <View className="px-4 py-2 border-b border-gray-200 dark:border-light-blue">
+                                            <Text className="font-semibold text-gray-800">{item.title}</Text>
+                                            <Text className="text-gray-400">{item.description}</Text>
+                                        </View>
+                                    </TouchableOpacity>
                                 )}
                                 ListEmptyComponent={
                                     <View className="px-4 py-4 items-center">

@@ -5,15 +5,21 @@ import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import {  MaterialIcons } from '@expo/vector-icons';
 
 export function RegisterPage({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [passwordVisible, setpasswordVisible] = React.useState(false);
   const [userName, setUserName] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState("");
+
+  const togglePasswordVisible = () => {
+    setpasswordVisible(!passwordVisible);
+  };
 
   // Modificación de la función handleLogin
   const handleLogin = async () => {
@@ -135,7 +141,7 @@ export function RegisterPage({ navigation }) {
         </View>
 
         <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Contraseña</Text>
-        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2">
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 relative">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
             id='passwordRegister'
@@ -144,9 +150,16 @@ export function RegisterPage({ navigation }) {
             placeholderTextColor={'#1877F2'}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry = {!passwordVisible}
             autoCapitalize="none"
           />
+          <TouchableOpacity className="absolute right-4 text-[16px] font-Excon_regular text-main-blue z-10 opacity-70" onPress={togglePasswordVisible}>
+            <MaterialIcons
+              name={passwordVisible ? 'visibility' : 'visibility-off'}
+              size={24}
+              color="#1952BE"
+            />
+          </TouchableOpacity>
         </View>
 
         <Text className="mb-6 text-red-500 text-center w-full">{error} </Text>

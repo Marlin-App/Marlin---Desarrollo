@@ -42,13 +42,13 @@ export function HomeScreen({ navigation }) {
     const { data: items, loading, error } = useItems();
     const { data: stores } = useStores();
 
-    const notifications = [
-        {
-            id: 1,
-            title: "Notificación 1",
-            description: "Descripción de la notificación 1",
-        }
-    ];
+    const [notifications, setNotifications] = useState([
+        
+    ]);
+
+    const handleNotificationClick = (notificationId) => {
+        setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
+    };
 
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
@@ -219,6 +219,7 @@ export function HomeScreen({ navigation }) {
                 isDropdownVisible={isDropdownVisible}
                 toggleDropdown={toggleDropdown}
                 closeDropdown={closeDropdown}
+                onNotificationClick={handleNotificationClick}
             />
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">

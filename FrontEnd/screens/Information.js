@@ -134,6 +134,7 @@ export function InformationScreen() {
                         onChangeText={(value) => handleInputChange('phone', value)}
                         keyboardType="numeric"
                         placeholder="Digita tu número de teléfono"
+                        maxLength={10}
                     />
                 </View>
                     <View className="flex-row items-center justify-center mt-2 gap-x-4">

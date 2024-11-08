@@ -1,14 +1,22 @@
 import * as React from 'react';
-import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { err } from 'react-native-svg';
+import {  MaterialIcons } from '@expo/vector-icons';
+
 export function LoginPage({ navigation }) {
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [passwordVisible, setpasswordVisible] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+
+  const togglePasswordVisible = () => {
+    setpasswordVisible(!passwordVisible);
+  };
+
   const handleLogin = async () => {
     try {
       setIsLoading(true);
@@ -28,13 +36,13 @@ export function LoginPage({ navigation }) {
       if (response.ok) {
         console.log('Registro exitoso:');
         setIsLoading(false);
-        
-        
-        await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
-        navigation.navigate('Mi perfil'); 
+
+
+        await AsyncStorage.setItem('@userToken', JSON.stringify(data));
+        navigation.navigate('Mi perfil');
       } else {
-       
-      setError("Nombre de usuario o contraseña incorrectos!");  
+
+        setError("Nombre de usuario o contraseña incorrectos!");
         setIsLoading(false);
       }
     } catch (error) {
@@ -46,20 +54,20 @@ export function LoginPage({ navigation }) {
 
   return (
     <View className="flex-1  bg-white"   >
-       
-        {isLoading ? (
-           <View className={`w-full h-full justify-center items-center absolute z-10  `}>
+
+      {isLoading ? (
+        <View className={`w-full h-full justify-center items-center absolute z-10  `}>
           <ActivityIndicator size="large" color="#3498db" />
-          </View>
-        ): null}
-    
+        </View>
+      ) : null}
+
 
       <Image
         source={require('../assets/img/FondoLogin.png')}
         className="w-full h-[50%]  "
         style={{ resizeMode: 'stretch', marginBottom: 30 }}
       />
-      <Text  className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4  ">¡Bienvenido de vuelta!    </Text>
+      <Text className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4  ">¡Bienvenido de vuelta!    </Text>
 
       <View className="px-8">
         <Text className="text-[24px] font-Excon_regular  text-main-blue">Nombre de usuario</Text>
@@ -78,7 +86,7 @@ export function LoginPage({ navigation }) {
         </View>
 
         <Text className="text-[24px] font-Excon_regular text-main-blue ">Contraseña</Text>
-        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 ">
+        <View className="flex-row items-center border-b-2 border-[#1952BE] mb-2 gap-2 relative">
           <Feather name="lock" size={18} color="#1952BE" />
           <TextInput
             id='password'
@@ -87,13 +95,21 @@ export function LoginPage({ navigation }) {
             placeholderTextColor={'#1877F2'}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry = {!passwordVisible}
             autoCapitalize="none"
+
           />
+          <TouchableOpacity className="absolute right-4 text-[16px] font-Excon_regular text-main-blue opacity-70" onPress={togglePasswordVisible}>
+            <MaterialIcons
+              name={passwordVisible ? 'visibility' : 'visibility-off'}
+              size={24}
+              color="#1952BE"
+            />
+          </TouchableOpacity>
         </View>
-        <Text  className="text-red-500 text-center w-full">{error} </Text>
-        <Pressable onPress={()=>navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
-      
+        <Text className="text-red-500 text-center w-full">{error} </Text>
+        <Pressable onPress={() => navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
+
         <Pressable
           onPress={handleLogin}
           style={({ pressed }) => [
@@ -112,7 +128,7 @@ export function LoginPage({ navigation }) {
 
 
         <Pressable
-         onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Register')}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : 'white',
@@ -122,9 +138,9 @@ export function LoginPage({ navigation }) {
               borderRadius: 10,
               alignItems: 'center',
               justifyContent: 'center',
-              
+
             },
-            
+
           ]}
         >
           <Text className="text-[16px] font-Excon_bold text-[#3765AE] ">Crea una cuenta</Text>
@@ -144,6 +160,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    
+
   },
 });

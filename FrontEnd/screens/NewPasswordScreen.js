@@ -1,40 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import {  MaterialIcons } from '@expo/vector-icons';
 
-export function NewPasswordScreen({navigation }) {
+export function NewPasswordScreen({ navigation }) {
 
     const route = useRoute();
     const { uid, token } = route.params;
     const [password, setPassword] = useState("");
+    const [passwordVisible, setpasswordVisible] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const changePassword = async () => {
-         if(password === confirmPassword) {
-             try {
-                 const response = await fetch(`https://marlin-backend.vercel.app/api/reset-password/${uid}/${token}/`, {
-                     method: 'POST',
-                     headers: {
-                         'Content-Type': 'application/json',
-                     },
-                     body: JSON.stringify({
-                         new_password: password
-                     }),
-                 });
-     
-                 if (response.ok) {
-                     navigation.navigate('Login');
-                     Alert.alert('Perfecto','La contraseña ha sido cambiada exitosamente');
-                 } else {
-                     console.log('Error al restablecer la contraseña');
-                 }
-             } catch (error) {
-                 console.error('Error en la solicitud:', error);
-             }
+    const togglePasswordVisible = () => {
+        setpasswordVisible(!passwordVisible);
+      };
 
-         } else {
-             Alert.alert('Atención','La contraseña y su confirmación no coinciden.');
-         }
+    const changePassword = async () => {
+        if (password === confirmPassword) {
+            try {
+                const response = await fetch(`https://marlin-backend.vercel.app/api/reset-password/${uid}/${token}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        new_password: password
+                    }),
+                });
+
+                if (response.ok) {
+                    navigation.navigate('Login');
+                    Alert.alert('Perfecto', 'La contraseña ha sido cambiada exitosamente');
+                } else {
+                    console.log('Error al restablecer la contraseña');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
+
+        } else {
+            Alert.alert('Atención', 'La contraseña y su confirmación no coinciden.');
+        }
 
     }
 
@@ -59,6 +65,13 @@ export function NewPasswordScreen({navigation }) {
                         onChangeText={(value) => setPassword(value)}
                         secureTextEntry={true}
                     />
+                    <TouchableOpacity className="absolute right-4 text-[16px] font-Excon_regular text-main-blue" onPress={togglePasswordVisible}>
+                        <MaterialIcons
+                            name={passwordVisible ? 'visibility' : 'visibility-off'}
+                            size={24}
+                            color="#1952BE"
+                        />
+                    </TouchableOpacity>
                 </View>
                 <Text className="text-lg text-center font-Excon_bold my-4 ml-4">Confirme su contraseña</Text>
                 <View className="flex-col px-5 mb-10">
@@ -67,7 +80,7 @@ export function NewPasswordScreen({navigation }) {
                         placeholder="Confirme nueva contraseña"
                         value={confirmPassword}
                         onChangeText={(value) => setConfirmPassword(value)}
-                        secureTextEntry={true}
+                        secureTextEntry={!passwordVisible}
                     />
                 </View>
                 <TouchableOpacity
