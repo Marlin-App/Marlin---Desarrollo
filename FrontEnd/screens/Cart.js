@@ -327,7 +327,7 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
                                 <>
                                     <View className="flex-row justify-between mb-2">
                                         <Text className="font-Excon_bold text-gray-800 dark:text-white">
-                                            Tarifa de entrega:
+                                            Tarifa de Servicio:
                                         </Text>
                                         <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">
                                             {formatCurrency(deliveryFee)}

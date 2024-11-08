@@ -18,6 +18,7 @@ export function ItemPage({ navigation }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [item, setItem] = useState(null);
+    const [maxQuantity, setMaxQuantity] = useState(0);
 
     const route = useRoute();
     const { id } = route.params;
@@ -34,6 +35,10 @@ export function ItemPage({ navigation }) {
                 const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}`);
                 const result = await response.json();
                 setItem(result);
+
+                const totalStock = result.variations.reduce((acc, variation) => acc + variation.stock, 0);
+                setMaxQuantity(totalStock);
+
             } catch (err) {
                 setError(err);
             } finally {
@@ -87,7 +92,9 @@ export function ItemPage({ navigation }) {
     }
 
     const increaseQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        if (quantity < maxQuantity) {
+            setQuantity(prevQuantity => prevQuantity + 1);
+        }
     };
 
     const decreaseQuantity = () => {
@@ -303,6 +310,7 @@ export function ItemPage({ navigation }) {
                     <View className="flex-row items-center bg-gray-100 dark:bg-dk-blue rounded-lg">
                         <TouchableOpacity
                             onPress={decreaseQuantity}
+                            disabled={quantity <= 1}
                             className="bg-gray-200 dark:bg-main-blue rounded-l-lg w-8 h-8 flex items-center justify-center"
                         >
                             <Text className="text-main-blue dark:text-white font-Excon_bold text-lg">-</Text>
@@ -311,10 +319,12 @@ export function ItemPage({ navigation }) {
                             value={String(quantity)}
                             onChangeText={text => setQuantity(Number(text))}
                             keyboardType="numeric"
+                            editable={false}
                             className="w-12 text-center mx-2 font-Excon_regular text-main-blue dark:text-white"
                         />
                         <TouchableOpacity
                             onPress={increaseQuantity}
+                            disabled={quantity >= maxQuantity}
                             className=" bg-gray-200 dark:bg-main-blue rounded-r-lg  w-8 h-8 flex items-center justify-center"
                         >
                             <Text className="text-main-blue dark:text-white font-Excon_bold text-lg">+</Text>
