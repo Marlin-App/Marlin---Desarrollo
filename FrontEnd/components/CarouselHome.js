@@ -1,12 +1,11 @@
-import React from "react";
-import { View, Text, FlatList, Animated } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { View, Text, FlatList, Animated, StyleSheet, Dimensions } from "react-native";
 import CarouselInfo from "../hooks/useCarousel";
 import HomeCarouselItem from "./HomeCarouselItem";
-import { useRef, useState, useEffect } from "react";
 
+const { width } = Dimensions.get('window');
 
-export default CarouselHome = ({navigation}) => {
-
+export default CarouselHome = ({ navigation }) => {
     const scrollX = useRef(new Animated.Value(0)).current;
     const CarouselInfoRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,8 +13,7 @@ export default CarouselHome = ({navigation}) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
-                const nextIndex = (prevIndex + 1) % CarouselInfo.length; 
-                /* console.log(nextIndex); */
+                const nextIndex = (prevIndex + 1) % CarouselInfo.length;
                 CarouselInfoRef.current.scrollToIndex({ index: nextIndex, animated: true });
                 return nextIndex;
             });
@@ -25,10 +23,17 @@ export default CarouselHome = ({navigation}) => {
     }, [CarouselInfo.length]);
 
     const viewableItemsChanged = useRef(({ viewableItems }) => {
-        // Maneja el cambio de elementos visibles si es necesario
+        if (viewableItems.length > 0) {
+            setCurrentIndex(viewableItems[0].index);
+        }
     }).current;
 
     const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+
+    const onMomentumScrollEnd = (event) => {
+        const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+        setCurrentIndex(newIndex);
+    };
 
     return (
         <View>
@@ -47,7 +52,43 @@ export default CarouselHome = ({navigation}) => {
                 onViewableItemsChanged={viewableItemsChanged}
                 viewabilityConfig={viewConfig}
                 ref={CarouselInfoRef}
+                onMomentumScrollEnd={onMomentumScrollEnd}
             />
+            <View style={styles.dotContainer}>
+                {CarouselInfo.map((_, index) => (
+                    <View
+                        key={index}
+                        style={[
+                            styles.dot,
+                            currentIndex === index ? styles.dotActive : styles.dotInactive
+                        ]}
+                    />
+                ))}
+            </View>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    dotContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 8,
+        width: '100%',
+    },
+    dot: {
+        height: 3,
+        width: 9,
+        borderRadius: 5,
+        marginHorizontal: 4,
+    },
+    dotActive: {
+        backgroundColor: '#fff',
+    },
+    dotInactive: {
+        backgroundColor: '#ccc',
+        opacity: 0.5,
+    },
+});
