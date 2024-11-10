@@ -234,7 +234,7 @@ export function StoreCat({ navigation }) {
             </View>
 
 
-            <View className="flex-row text-center mt-5 mb-5 bg-grey-light dark:bg-dk-input rounded-lg mx-2 ">
+            <View className="flex-row text-center mt-5 mb-5 bg-gray-input dark:bg-dk-input rounded-lg mx-2 ">
                 <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => {
                         searchStore(search);

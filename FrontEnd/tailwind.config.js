@@ -12,6 +12,7 @@ module.exports = {
         'light-blue': '#60a5fa',
         'gray-tab': '#AAC3F3',
         'gray-light': '#e5e7eb',
+        'gray-input': '#EDEEF3',
         'dk-main-bg': '#121212',
         'dk-tab': '#1C1C1C',
         'dk-blue': '#5186EC',
