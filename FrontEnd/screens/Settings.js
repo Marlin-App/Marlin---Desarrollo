@@ -93,33 +93,35 @@ export function ProfileScreen({ navigation }) {
                   size={24}
                   color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                 />
-                <Text className="dark:text-white">
+                <Text className="dark:text-white font-Excon_regular">
                   iniciar Sesion o Registrarse
                 </Text>
               </Pressable>
-              <Text className="text-lg font-Excon_bold mb-4 dark:text-white">
-                Ajustes de la aplicación
-              </Text>
-              <Pressable
-                className="flex-row justify-between mt-5 border-b-2 border-light-blue dark:border-main-blue "
+              <View className="border border-main-blue dark:border-light-blue">
+
+              </View>
+              
+            </View>
+            <View className="w-full ">
+            <Pressable
+                className="flex-row justify-between mt-5  "
                 onPress={() => toggleColorScheme()}
               >
-                <View className="flex-row gap-2 mb-1">
-                  <Ionicons
-                    name="color-palette-outline"
+              <Pressable
+                className="flex-row items-center flex gap-3 mb-4"
+                onPress={() => toggleColorScheme()}
+              >
+                  <Feather
+                    name={colorScheme === "dark" ? "sun" : "moon"}
                     size={24}
                     color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                   />
-                  <Text className="text-center font-Erode_regular dark:text-white">
-                    Tema de la aplicación{" "}
+                  <Text className="text-center font-Excon_regular dark:text-white">
+                    {colorScheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
                   </Text>
-                </View>
-                <Text className="text-main-blue dark:text-light-blue">
-                  {">"}
-                </Text>
               </Pressable>
-            </View>
-            <View className="w-full mt-6">
+                
+              </Pressable>
               <Pressable
                 className="flex-row items-center py-4 flex gap-3"
                 onPress={() => navigation.navigate("TerminosCondiciones")}
@@ -129,7 +131,7 @@ export function ProfileScreen({ navigation }) {
                   size={24}
                   color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                 />
-                <Text className="dark:text-white">Terminos y condiciones</Text>
+                <Text className="dark:text-white font-Excon_regular">Terminos y condiciones</Text>
               </Pressable>
             </View>
           </View>
