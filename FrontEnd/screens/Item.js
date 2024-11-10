@@ -6,6 +6,7 @@ import { useRoute } from '@react-navigation/native';
 import { styled, useColorScheme } from "nativewind";
 import useCart from '../hooks/useCart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Swiper from 'react-native-swiper';
 
 export function ItemPage({ navigation }) {
     const { addToCart, isSameStore, clearCart } = useCart();
@@ -250,20 +251,19 @@ export function ItemPage({ navigation }) {
                 </Modal>
 
                 <View className="px-8">
-                    <FlatList
-                        data={item.item_images}
-                        keyExtractor={(item) => item.picture}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <Image
-                                className="w-[310] h-[310] rounded-3xl bg-black mt-10 mb-3 mr-3"
-                                source={{ uri: item.picture }}
-                                resizeMode="stretch"
-                                onError={(e) => console.log('Error loading image:', e.nativeEvent.error)}
-                            />
-                        )}
-                    />
+                <Swiper
+                        className="my-4 h-[310]"
+                        showsButtons={false}
+                        loop={false}
+                        dot={<View className="bg-gray-400 w-2 h-2 rounded-full m-1" />}
+                        activeDot={<View className="bg-main-blue w-2 h-2 rounded-full m-1" />}
+                    >
+                        {item.item_images.map((image, index) => (
+                            <View className="justify-center items-center" key={index}>
+                                <Image source={{ uri: image.picture }} className="w-[310] h-[310] rounded-lg" />
+                            </View>
+                        ))}
+                    </Swiper>
                     <Text className="text-xl pl-1 font-Excon_bold dark:text-white">{item.name}</Text>
                     <Text className="text-sm pl-1 font-Excon_regular dark:text-white">{item.description}</Text>
 

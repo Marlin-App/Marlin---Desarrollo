@@ -16,14 +16,14 @@ const HomeCarouselItem = ({ item, navigation }) => {
       </View>
       {/* <View style={styles.overlay} className="items-center justify-center"/> */}
 
-      <View className="absolute flex items-center m-auto top-3 bottom-0 left-0 right-0">
-        <Text className="text-white text-3xl font-bold text-center mt-6">{item.title}</Text>
-        <Text className="text-white text-base leading-5 mx-6 text-center">{item.description}</Text>
+      <View className="absolute flex items-center m-auto top-0 bottom-3 left-0 right-0">
+        <Text className="text-white text-[7vw] font-bold text-center mt-[5vw]">{item.title}</Text>
+        <Text className="text-white text-[4vw] leading-5 mx-5 text-center">{item.description}</Text>
       
-        <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded mt-2"
+        <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded mt-[1vh]"
         onPress={() => navigation.navigate('Tiendas', item )} 
         >
-          <Text className="text-white text-lg font-semibold">Pescalo !!</Text>
+          <Text className="text-white text-[4vw] font-semibold">Pescalo !!</Text>
         </TouchableOpacity>
       
       </View>

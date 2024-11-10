@@ -101,16 +101,16 @@ export function Store({ navigation }) {
                     className="w-full h-full absolute "
                 />
                 <View className="absolute bg-black opacity-50 w-full h-full"></View>
-                <View className="mt-5">
-                    <View className="flex-row justify-between items-center mb-2">
+                <View className="mt-2">
+                    <View className="flex-row justify-around items-center mb-2">
                         <View className="w-[70%]">
-                            <Text className="text-[22px] font-Excon_bold text-white text-start w-full">
+                            <Text className="text-sm font-Excon_bold text-white text-start w-full">
                                 {route.params.store.name}
                             </Text>
-                            <Text className="text-[15px] font-Excon_bold text-white mt-2">
+                            <Text className="text-sm font-Excon_bold text-white mt-2">
                                 Ubicacion: <Text className="font-Excon_regular">{route.params.store.canton}, {route.params.store.district}</Text>
                             </Text> 
-                            <Text className="text-[15px] font-Excon_bold text-white ">Numero de WhatsApp:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
+                            <Text className="text-sm font-Excon_bold text-white ">Numero de WhatsApp:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
                         </View>
                         <Image
                             source={{ uri: route.params.store.picture }}
