@@ -75,7 +75,7 @@ const useCRUDTiendas = (navigation) => {
                     throw new Error('Error creando la tienda');
                 } else {
                     console.log('Tienda creada con éxito');
-                    navigation.navigate('Mi tiendas');
+                    navigation.navigate('Mis tiendas');
                     Alert.alert('Tienda creada', '¡Tu tienda ha sido creada con éxito!');
                 }
             } catch (error) {

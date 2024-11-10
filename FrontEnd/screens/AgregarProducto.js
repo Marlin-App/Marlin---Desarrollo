@@ -26,31 +26,15 @@ export function AgregarProducto({ navigation }) {
     const { addProduct } = useCRUDProductos(navigation);
     const route = useRoute();
     const storeId = route.params || {};
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
+    const switchColor = () => setColor(previousState => !previousState);
+    const switchTalla = () => setTalla(previousState => !previousState);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
     const [row, setRow] = useState(1);
     const [variations, setVariations] = useState([]);
     const [images, setImages] = useState([]);
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [isEnabled2, setIsEnabled2] = useState(false);
-
-    // const pickImages = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsMultipleSelection: true,
-    //         quality: 1,
-    //     });
-
-    //     if (!result.canceled) {
-    //         const uniqueImages = result.assets.map(asset => ({
-    //         uri: asset.uri,
-    //         id: asset.assetId || asset.uri // Ensure each image has a unique identifier
-    //         }));
-    //         setImages(uniqueImages);
-    //     }
-    // };
+    const [color, setColor] = useState(false);
+    const [talla, setTalla] = useState(false);
 
     const pickImages = async () => {
         try {
@@ -102,7 +86,7 @@ export function AgregarProducto({ navigation }) {
     const addRow = () => {
         setVariations(prevVariations => [
             ...prevVariations,
-            { color: '', size: '', quantity: 0 },
+            { color: '', size: '', quantity: '' },
         ]);
     };
 
@@ -116,24 +100,24 @@ export function AgregarProducto({ navigation }) {
     };
 
     useEffect(() => {
-        if (isEnabled || isEnabled2) {
+        if (color || talla) {
             if (variations.length === 0) {
-                setVariations([{ color: '', size: '', quantity: 0 }]);
+                setVariations([{ color: '', size: '', quantity: '' }]);
             }
         } else {
             setVariations([]);
         }
-    }, [isEnabled, isEnabled2]);
+    }, [color, talla]);
 
     const AddProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
 
-            if (isEnabled) {
+            if (color) {
                 attributes.push({ name: 'Color', value: variation.color });
             }
 
-            if (isEnabled2) {
+            if (talla) {
                 attributes.push({ name: 'Talla', value: variation.size });
             }
 
@@ -182,10 +166,10 @@ export function AgregarProducto({ navigation }) {
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Necesita añadir color?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
-                            thumbColor={isEnabled ? '#015DEC' : '#f4f3f4'}
+                            thumbColor={color ? '#015DEC' : '#f4f3f4'}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
+                            onValueChange={switchColor}
+                            value={color}
                         />
                     </View>
 
@@ -193,16 +177,16 @@ export function AgregarProducto({ navigation }) {
                         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Necesita añadir Talla?</Text>
                         <Switch
                             trackColor={{ false: '#767577', true: '#81b0ff' }}
-                            thumbColor={isEnabled2 ? '#015DEC' : '#f4f3f4'}
+                            thumbColor={talla ? '#015DEC' : '#f4f3f4'}
                             ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitch2}
-                            value={isEnabled2}
+                            onValueChange={switchTalla}
+                            value={talla}
                         />
                     </View>
 
                     <View className="px-5">
 
-                        {isEnabled || isEnabled2 ?
+                        {color || talla ?
                             (
                                 <ScrollView>
                                     <View className="flex-row justify-between border-b-2 border-main-blue dark:border-light-blue p-[10px]">
@@ -214,14 +198,14 @@ export function AgregarProducto({ navigation }) {
                                         {variations.map((variation, index) => (
                                             <View key={index} className="relative flex-row py-[10px] border-b-2 border-main-blue dark:border-light-blue justify-between mb-2">
                                                 <TextInput
-                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
-                                                    editable={isEnabled}
+                                                    className={`border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue ${!color ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
+                                                    editable={color}
                                                     value={variation.color}
                                                     onChangeText={(value) => handleVariationChange(index, 'color', value)}
                                                 />
                                                 <TextInput
-                                                    className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
-                                                    editable={isEnabled2}
+                                                    className={`border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue ${!talla ? 'bg-gray-200 dark:bg-gray-700' : ''}`}
+                                                    editable={talla}
                                                     value={variation.size}
                                                     onChangeText={(value) => handleVariationChange(index, 'size', value)}
                                                 />
@@ -229,7 +213,13 @@ export function AgregarProducto({ navigation }) {
                                                     keyboardType="numeric"
                                                     className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue"
                                                     value={variation.quantity.toString()}
-                                                    onChangeText={(value) => handleVariationChange(index, 'quantity', value)}
+                                                    onChangeText={(value) => {
+                                                        if (/^\d*$/.test(value)) {
+                                                            handleVariationChange(index, 'quantity', value);
+                                                        } else {
+                                                            alert('Valor inválido. Por favor, ingrese solo números.');
+                                                        }
+                                                    }}
                                                 />
                                             </View>
                                         ))}
@@ -251,40 +241,36 @@ export function AgregarProducto({ navigation }) {
                                 </ScrollView>) :
                             (<View className="relative flex-row py-[10px] justify-between items-center mb-2">
                                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Cantidad en inventario</Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.stock} onChangeText={(value) => handleInputChange('stock', value)} />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.stock}
+                                onChangeText={(value) => {
+                                    if (/^\d*$/.test(value)) {
+                                        handleInputChange('stock', value);
+                                    } else {
+                                        alert('Valor inválido. Por favor, ingrese solo números.');
+                                    }
+                                }}
+                                 />
                             </View>)}
 
                         <View className="relative flex-row py-[10px] justify-between items-center mb-2">
                             <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Precio</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-main-blue text-md font-Excon_regular dark:text-light-blue">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue dark:border-light-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} onChangeText={(value) => handleInputChange('price', value)} />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue dark:border-light-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} 
+                                
+                                onChangeText={(value) => {
+                                    if (/^\d*$/.test(value)) {
+                                        handleInputChange('price', value);
+                                    } else {
+                                        alert('Valor inválido. Por favor, ingrese solo números.');
+                                    }
+                                }}
+                                 />
                             </View>
                         </View>
 
                         <View className="flex-col my-4">
                             <Text className="text-main-blue text-md font-Excon_bold mb-2 dark:text-light-blue">Foto de producto</Text>
-
-                            {/* <Pressable className="justify-center items-center mb-4" onPress={pickImages}> 
-                                {images.length === 0 ? (
-                                    <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full dark:border-light-blue">
-                                        <Feather name="upload" size={24} color={colorScheme === 'dark' ? '#60a5fa' : '#015DEC'} />
-                                        <Text className="text-main-blue text-md font-Excon_thin dark:text-light-blue">
-                                            Haz click para subir imágenes
-                                        </Text>
-                                    </View>
-                                ) : (
-                                    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                        {images.map((image, index) => (
-                                            <Image
-                                                key={index}
-                                                source={{ uri: image.uri }}
-                                                style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
-                                            />
-                                        ))}
-                                    </ScrollView>
-                                )}
-                            </Pressable>*/}
 
                             <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
                                 {images.length === 0 ? (

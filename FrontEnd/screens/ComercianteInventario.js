@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import useCRUDProductos  from '../hooks/useCRUDProductos';
 import NotificationDropdown from '../components/NotificationDropdown';
+import noContent from '../assets/box.png';
 
 
 export function ComercianteInventario({ navigation }) {
@@ -115,50 +116,57 @@ export function ComercianteInventario({ navigation }) {
                                 </Pressable>
                             </View>
                             <View className="border-[0.5px] border-main-blue rounded-lg px-4 py-2 dark:border-light-blue">
-                                <FlatList
-                                    className="h-[40vh]"
-                                    data={store.items}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item, index }) => (
-                                        <Pressable
-                                            key={index}
-                                            className="flex-col justify-center mb-1 "
-                                            onPress={() => navigation.navigate("EditarProducto", { store: store.id, product: item.id })}
-                                            onLongPress={() => longpress(item.id)}
-                                        >
-                                            <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-main-blue w-full items-center rounded-md dark:bg-dk-main-bg dark:border-light-blue">
-                                                <View className="flex-row w-[95%] max-w-full">
-                                                    <View className="justify-center items-center">
-                                                        <Image
-                                                            className="rounded-lg"
-                                                            source={{ uri: item.item_images.length > 0 ? item.item_images[0].picture : 'https://via.placeholder.com/150', }}
-                                                            style={{ width: 100, height: 100 }}
-                                                        />
-                                                    </View>
-                                                    <View className="px-6 flex-shrink">
-                                                        <Text className="font-Excon_bold text-sm dark:text-white">{item.name}</Text>
-                                                        <Text className="font-Excon_thin text-sm dark:text-white" numberOfLines={3}>
-                                                            {item.description}
-                                                        </Text>
-                                                        <View className="justify-between flex-row">
-                                                            <Text className="font-Excon_thin text-sm dark:text-white">₡{item.price}  </Text>
-                                                            <Text className="font-Excon_bold text-sm dark:text-white">
-                                                                Inventario: <Text className="font-Excon_thin text-sm">{item.stock}</Text>
+                                {store.items.length > 0 ? (
+                                    <FlatList
+                                        className="h-[40vh]"
+                                        data={store.items}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        renderItem={({ item, index }) => (
+                                            <Pressable
+                                                key={index}
+                                                className="flex-col justify-center mb-1 "
+                                                onPress={() => navigation.navigate("EditarProducto", { store: store.id, product: item.id })}
+                                                onLongPress={() => longpress(item.id)}
+                                            >
+                                                <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-main-blue w-full items-center rounded-md dark:bg-dk-main-bg dark:border-light-blue">
+                                                    <View className="flex-row w-[95%] max-w-full">
+                                                        <View className="justify-center items-center">
+                                                            <Image
+                                                                className="rounded-lg"
+                                                                source={{ uri: item.item_images.length > 0 ? item.item_images[0].picture : 'https://via.placeholder.com/150', }}
+                                                                style={{ width: 100, height: 100 }}
+                                                            />
+                                                        </View>
+                                                        <View className="px-6 flex-shrink">
+                                                            <Text className="font-Excon_bold text-sm dark:text-white">{item.name}</Text>
+                                                            <Text className="font-Excon_thin text-sm dark:text-white" numberOfLines={3}>
+                                                                {item.description}
                                                             </Text>
+                                                            <View className="justify-between flex-row">
+                                                                <Text className="font-Excon_thin text-sm dark:text-white">₡{item.price}  </Text>
+                                                                <Text className="font-Excon_bold text-sm dark:text-white">
+                                                                    Inventario: <Text className="font-Excon_thin text-sm">{item.stock}</Text>
+                                                                </Text>
+                                                            </View>
                                                         </View>
                                                     </View>
+                                                    <View className="flex-col gap-y-1 h-full items-center">
+                                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
+                                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
+                                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
+                                                    </View>
                                                 </View>
-                                                <View className="flex-col gap-y-1 h-full items-center">
-                                                    <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
-                                                    <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
-                                                    <View className="bg-main-blue rounded-full w-[5px] h-[5px]"></View>
-                                                </View>
-                                            </View>
-                                        </Pressable>
-                                    )}
-                                    showsVerticalScrollIndicator={false}
-                                    contentContainerStyle={{ paddingBottom: 20 }}
-                                />
+                                            </Pressable>
+                                        )}
+                                        showsVerticalScrollIndicator={false}
+                                        contentContainerStyle={{ paddingBottom: 20 }}
+                                    />
+                                ) : (
+                                    <View className="flex-col justify-center mb-1 items-center">
+                                        <Image className="m-4" source={noContent} style={{ width: 150, height: 150 }} />
+                                    <Text className="text-lg text-main-blue font-Excon_bold">No hay productos disponibles.</Text>
+                                    </View>
+                                )}
                             </View>
                         </View>
                     </View>

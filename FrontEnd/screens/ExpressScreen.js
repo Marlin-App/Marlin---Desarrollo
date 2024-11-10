@@ -22,6 +22,7 @@ import React, { useEffect, useCallback, useState, useRef } from "react";
 import useOrders from '../hooks/useOrders'; 
 
 
+
 export function ExpressScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [longPressProduct, setLongPressProduct] = useState(null);
@@ -32,14 +33,91 @@ export function ExpressScreen({ navigation }) {
   const [currentPage, setCurrentPage] = useState(0);
   const { orders } = useOrders(); 
   
+  // const ordenes = [
+  //   {
+  //     id: 1,
+  //     tienda: "Bazar Marta",
+  //     destinatario: "Jeremy Guzman",
+  //     detalle: "Detalles del pedido aquí",
+  //     tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
+  //     entregaCoordenadas: { latitude: 9.979, longitude: -84.813 },
+  //     estado: "Pendientes",
+  //   },
+  //   {
+  //     id: 2,
+  //     tienda: "Panadería La Esperanza",
+  //     destinatario: "Ana Lopez",
+  //     detalle: "Detalles del pedido aquí",
+  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
+  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
+  //     estado: "En Progreso",
+  //   },
+  //   {
+  //     id: 3,
+  //     tienda: "Panadería La Esperanza",
+  //     destinatario: "Ana Lopez",
+  //     detalle: "Detalles del pedido aquí",
+  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
+  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
+  //     estado: "Completada",
+  //   },
+  // ];
 
   const [prueba, setprueba] = useState([
-    { title: "Pendientes", pedidos: [1] },
-    { title: "En Progreso", pedidos: [1] },
-    { title: "Completados", pedidos: [1] },
+    { title: "Pendientes", orders: [{
+      id: 1,
+      tienda: "Bazar Marta",
+      codigo: "1234",
+      destinatario: "Jeremy Guzman",
+      detalle: "Detalles del pedido aquí",
+      tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
+      entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
+      estado: "Pendientes",
+    }] },
+    { title: "En Progreso", orders:[] },
+    { title: "Completados", orders:[] },
   ]);
-  // const [prueba, setprueba]=useState([{title:"Pendientes",pedidos:[1,2,3]},{title:"En Progreso",pedidos:[{tienda:"Bazar marta",destinatario:"Jeremy Guzman", detalle:[informacion del pedido de la api de Jere]}]},{title:"Completados",pedidos:[1,2,3,4,5]}])
-  console.log("storeWithproducts:", prueba);
+
+  const handleRejectOrder = (orderId) => {
+    setprueba((prevPrueba) => {
+      const updatedPrueba = prevPrueba.map((category) => {
+        if (category.title === "Pendientes") {
+          return {
+            ...category,
+            orders: category.orders.filter((order) => order.id !== orderId),
+          };
+        }
+        return category;
+      });
+      return updatedPrueba;
+    });
+  };
+  const handleAcceptOrder = (orderId) => {
+    setprueba((prevPrueba) => {
+      const updatedPrueba = prevPrueba.map((category) => {
+        if (category.title === "Pendientes") {
+          const orderToMove = category.orders.find((order) => order.id === orderId);
+          if (orderToMove) {
+            orderToMove.estado = "En Progreso";
+            return {
+              ...category,
+              orders: category.orders.filter((order) => order.id !== orderId),
+            };
+          }
+        } else if (category.title === "En Progreso") {
+          const orderToMove = prevPrueba.find((cat) => cat.title === "Pendientes").orders.find((order) => order.id === orderId);
+          if (orderToMove) {
+            return {
+              ...category,
+              orders: [...category.orders, orderToMove],
+            };
+          }
+        }
+        return category;
+      });
+      return updatedPrueba;
+    });
+  };
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -137,11 +215,11 @@ const handleNotificationClick = (notificationId) => {
             </Text>
             <View className="flex-col">
               <FlatList
-                className="h-[40vh]"
-                data={store.pedidos}
+                className="h-[60vh] my-4"
+                data={store.orders}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                  <ScrollView className="flex-col p-4 rounded-lg mb-4">
+                  <ScrollView className="flex-col px-4 rounded-lg mb- bg-red-60">
                     <View className="flex-row justify-center mb-1">
                       <View className="flex-row justify-center mt-2 py-4 border-[0.5px] border-main-blue dark:border-light-blue w-full items-center rounded-md ">
                         <View>
@@ -157,13 +235,13 @@ const handleNotificationClick = (notificationId) => {
                             </View>
                             <View className="ml-2">
                               <Text className="font-Excon_bold text-base dark:text-white">
-                                Nombre de la tienda
+                                {item.tienda}
                               </Text>
                               <Text className="font-Excon_regular text-sm dark:text-white">
-                                Usuario: Nombre Cliente
+                                Usuario: {item.destinatario}
                               </Text>
                               <TouchableOpacity onPress={() =>
-                                navigation.navigate("OrderInfo")
+                                navigation.navigate("OrderInfo",{order:item})
                               }>
                               <Text className="font-Excon_regular text-sm dark:text-white underline">
                                 Más información
@@ -172,8 +250,8 @@ const handleNotificationClick = (notificationId) => {
                             </View>
                           </View>
                           <View className="flex-row justify-center gap-x-4 mt-3">
-                            {/* Botones de Aceptar / No Aceptar para la primera vista y basados en scroll para las demás */}
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                            onPress={() => handleAcceptOrder(item.id)}>
                               <Text
                                 className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${
                                   storeIndex === 0 ||
@@ -185,7 +263,8 @@ const handleNotificationClick = (notificationId) => {
                                 Aceptar
                               </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                            onPress={()=>handleRejectOrder(item.id)}>
                               <Text
                                 className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${
                                   storeIndex === 0 ||

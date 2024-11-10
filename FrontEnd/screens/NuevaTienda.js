@@ -27,6 +27,7 @@ export function NuevaTienda({ navigation }) {
 
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
+    
 
 
 
@@ -77,9 +78,6 @@ export function NuevaTienda({ navigation }) {
     };
 
     
-
-
-
     const pickImage = async (pic) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
