@@ -78,7 +78,7 @@ export function RegisterPage({ navigation }) {
 
       <ScrollView className="px-8">
 
-        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombre</Text>
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombres</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
@@ -111,7 +111,7 @@ export function RegisterPage({ navigation }) {
           />
         </View>
 
-        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombre de usuario</Text>
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE] mt-4">Nombre de usuario</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput

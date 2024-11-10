@@ -118,7 +118,7 @@ export function Store({ navigation }) {
                         />
                     </View>
 
-                    <View className="flex-row text-center  bg-grey-light rounded-lg  dark:bg-dk-input mt-2  ">
+                    <View className="flex-row text-center  bg-gray-input rounded-lg  dark:bg-dk-input mt-2  ">
                         <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                             onPress={() => {
                                 searchProduct(search);
