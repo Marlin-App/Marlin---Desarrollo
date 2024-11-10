@@ -204,7 +204,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         if self.voucher and hasattr(self.voucher, 'name'):
             ext = os.path.splitext(self.voucher.name)[1]
-            public_id_picture = f'{self.name}_voucher'
+            public_id_picture = f'{self.order_num}_voucher'
             image_uploaded = upload(self.voucher, folder="vouchers", public_id=public_id_picture, format="webp")
             self.voucher = image_uploaded.get('secure_url', image_uploaded.get('url', ''))
 
