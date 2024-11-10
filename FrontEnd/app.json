@@ -3,7 +3,7 @@
     "name": "marlin-app",
     "slug": "drex",
     "scheme": "marlin-app",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon2.png",
     "userInterfaceStyle": "light",
@@ -14,16 +14,17 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.luisda1828.marlinapp"
+      "bundleIdentifier": "Marlin"
     },
     "android": {
+      "versionCode": 4,
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.RECORD_AUDIO"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/iconMobile.png",
+        "foregroundImage": "./assets/marlinLogoApp.png",
         "backgroundColor": "#1952BE"
       },
       "package": "com.luisda1828.marlinapp",

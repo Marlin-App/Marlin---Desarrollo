@@ -22,7 +22,7 @@ export function ProfileScreen({ navigation }) {
   const { toggleColorScheme } = useColorScheme();
   const { colorScheme } = useColorScheme();
   const { isDelivery, esRepartidor } = useCRUDDelivery();
-  const siEsRepartidor=false;
+  const siEsRepartidor = false;
 
   let formatePicture = "";
 
@@ -272,9 +272,12 @@ export function ProfileScreen({ navigation }) {
 
               <Pressable
                 className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
-                onPress={() =>navigation.navigate(esRepartidor!="" ? "thirdScreen" : "DeliveryFormScreen")}
+                onPress={() =>
+                  navigation.navigate(
+                    esRepartidor != "" ? "thirdScreen" : "DeliveryFormScreen"
+                  )
+                }
               >
-                
                 <View className="flex-row gap-2 mb-1 items-center">
                   <Ionicons
                     name="bicycle"
@@ -290,28 +293,24 @@ export function ProfileScreen({ navigation }) {
                 </Text>
               </Pressable>
 
+
+            </View>
+            <View className="w-full mt-10">
               <Pressable
-                className="flex-row justify-between mt-5 border-b-2 border-main-blue dark:border-light-blue"
+                className="flex-row items-center flex gap-3 mb-4"
                 onPress={() => toggleColorScheme()}
               >
-                <View className="flex-row gap-2 mb-1 items-center">
-                  <Ionicons
-                    name="color-palette-outline"
+                  <Feather
+                    name={colorScheme === "dark" ? "sun" : "moon"}
                     size={24}
                     color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                   />
-                  <Text className="text-center font-Erode_regular dark:text-white">
-                    Cambiar el tema de la aplicación{" "}
+                  <Text className="text-center font-Excon_regular dark:text-white">
+                    {colorScheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
                   </Text>
-                </View>
-                <Text className="text-main-blue dark:text-light-blue">
-                  {">"}
-                </Text>
               </Pressable>
-            </View>
-            <View className="w-full mt-6">
               <Pressable
-                className="flex-row items-center py-4 flex gap-3"
+                className="flex-row items-center flex gap-3 mb-4"
                 onPress={() => navigation.navigate("TerminosCondiciones")}
               >
                 <AntDesign
@@ -319,7 +318,7 @@ export function ProfileScreen({ navigation }) {
                   size={24}
                   color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                 />
-                <Text className="dark:text-white">Terminos y condiciones</Text>
+                <Text className="dark:text-white font-Excon_regular">Terminos y condiciones</Text>
               </Pressable>
               <Pressable
                 className="flex-row flex gap-3 items-center"
@@ -330,7 +329,7 @@ export function ProfileScreen({ navigation }) {
                   size={24}
                   color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
                 />
-                <Text className="dark:text-white">Cerrar Sesión</Text>
+                <Text className="dark:text-white font-Excon_regular">Cerrar Sesión</Text>
               </Pressable>
             </View>
           </View>
