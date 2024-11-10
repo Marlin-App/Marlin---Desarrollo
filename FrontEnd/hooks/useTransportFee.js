@@ -1,5 +1,7 @@
+import {GOOGLE_API_KEY} from '@env'
+
 export const useTransportFee = async (startCoords, endCoords) => {
-    const apiKey = '';
+    const apiKey = GOOGLE_API_KEY;
     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startCoords.latitude},${startCoords.longitude}&destination=${endCoords.latitude},${endCoords.longitude}&key=${apiKey}`;
   
     try {
