@@ -1,27 +1,77 @@
-import { View, Text, Image, Pressable, Button, Modal, ScrollView } from "react-native";
+import { View, Text, Image, Pressable, Button, Modal, ScrollView, Alert } from "react-native";
 import { useColorScheme } from "nativewind";
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import {useRoute} from '@react-navigation/native';
-
-export function ComerciantePedidoScreen() {
+import { useRoute } from '@react-navigation/native';
+import useDecodeJWT from "../hooks/useDecodeJWT";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+export function ComerciantePedidoScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
-
+    const { getToken, isTokenExpired, refreshToken } = useDecodeJWT();
     const [modalVisible, setModalVisible] = useState(false);
     const [modalProduct, setModalProduct] = useState(null);
-    const {order} = useRoute().params;
-    const dateForm = (order_date) => {    
+    const { order } = useRoute().params;
+    const dateForm = (order_date) => {
         const date = new Date(order_date);
 
         // Opciones de formato para mostrar mes, día y hora
         const options = { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-        
+
         // Formatear la fecha
-      const formattedDate = date.toLocaleString('es-ES', options);
-      return formattedDate;
+        const formattedDate = date.toLocaleString('es-ES', options);
+        return formattedDate;
     }
+
+    const handleReady = async () => {
+        if (await isTokenExpired()) {
+            await refreshToken();
+        }
+        let token = await getToken();
+        console.log(token);
+        console.log(order.id);
+        try {
+            const response = await fetch(
+                `https://marlin-backend.vercel.app/api/orders/${order.id}/`,
+                {
+                    method: "PATCH", // Corregido a mayúsculas
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token.access}`,
+                    },
+                    body: JSON.stringify({
+                        status: "Buscando repartidor",
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`Error ${response.status}: ${errorText}`);
+                return;
+            }else{
+                Alert.alert(
+                    "Perfecto",
+                    "Porximiamente vendra un repartidor a recoger el pedido",
+                    [
+                        {
+                            text: "OK",
+                            onPress: () => {
+                                navigation.navigate("Inicio");
+                            },
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            }
+
+            
+        } catch (error) {
+
+        }
+    }
+
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950 h-full px-5">
@@ -32,12 +82,14 @@ export function ComerciantePedidoScreen() {
                         <Text className="text-md font-Excon_regular text-main-blue   dark:text-light-blue">Cliente</Text>
                         <Text className="text-xl font-Excon_bold text-main-blue  dark:text-light-blue">{order.user_name} </Text>
                     </View>
-                    <Image className="bg-red-200" source={{uri: order.user_picture }} style={{ width: 70, height: 70, resizeMode: "cover" }} />
+                    <Image className="bg-red-200 rounded-lg" source={{ uri: order.user_picture }} style={{ width: 70, height: 70, resizeMode: "cover" }} />
 
                 </View>
-                <Text className="text-md font-Excon_thin mt-4 ml-4 dark:text-white">Fecha: {dateForm(order.order_date)} </Text>
-                <Text className="text-md font-Excon_thin mt-2 ml-4 dark:text-white">Recibo: {order.order_num}</Text>
-                <Text className="text-lg font-Excon_regular mt-2 ml-4 dark:text-white">Total: ₡{order.total_price}</Text>
+                <Text className="text-md font-Excon_regular mt-4 ml-4 dark:text-white">Fecha: <Text className=" text-md font-Excon_thin">{dateForm(order.order_date)}</Text> </Text>
+                <Text className="text-md font-Excon_regular mt-2 ml-4 dark:text-white">Total a pagar: <Text className=" text-md font-Excon_thin">₡{order.total_price}</Text></Text>
+                <Text className="text-md font-Excon_regular mt-2 ml-4 dark:text-white">Recibo: <Text className=" text-md font-Excon_thin">{order.order_num}</Text></Text>
+
+
             </View>
 
             <View className="flex-col mt-5 border-b-[0.5px] pb-6 dark:border-light-blue">
@@ -52,21 +104,30 @@ export function ComerciantePedidoScreen() {
                         <Text className="text-md font-Excon_bold text-main-blue">Subtotal</Text>
                     </View>
 
-                        {order.products.map((product, index) => (
-                            <View className="flex-row justify-between w-full mt-2">
-                            <Pressable onPress={() =>{setModalVisible(true); setModalProduct(product)}
-                                
-                            }>
-                            <Text className="text-md font-Excon_thin dark:text-white">{product.item_name}</Text>
+                    {order.products.map((product, index) => (
+                        <View key={index} className="flex-row justify-between w-full mt-2">
+                            <Pressable
+                                onPress={() => {
+                                    setModalVisible(true);
+                                    setModalProduct(product);
+                                }}
+                            >
+                                <Text className="text-md font-Excon_thin dark:text-white">
+                                    {product.item_name.split(' ').slice(0, 2).join(' ')}
+                                </Text>
                             </Pressable>
-                            <Text className="text-md font-Excon_thin dark:text-white">₡{product.total_price / product.quantity}</Text>
-                            <Text className="text-md font-Excon_thin dark:text-white">₡{product.quantity}</Text>
-                            <Text className="text-md font-Excon_thin dark:text-white">₡{product.total_price}</Text>
-                            </View>
-                            ))
-                            }
-                  
-                    
+                            <Text className="text-md font-Excon_thin dark:text-white">
+                                ₡{product.total_price / product.quantity}
+                            </Text>
+                            <Text className="text-md font-Excon_thin dark:text-white">
+                                {product.quantity}
+                            </Text>
+                            <Text className="text-md font-Excon_thin dark:text-white">
+                                ₡{product.total_price}
+                            </Text>
+                        </View>
+                    ))}
+
                 </View>
 
             </View>
@@ -77,18 +138,21 @@ export function ComerciantePedidoScreen() {
 
                 <View className="flex-col mt-5 ml-4">
                     <Text className="text-xl font-Excon_bold text-main-blue dark:text-light-blue">Referencias para la entrega</Text>
-                    <Text className="my-2 font-Excon_thin dark:text-white">{order.direction == "Re"} </Text>
+                    <Text className="my-2 font-Excon_thin dark:text-white">{order.direction} </Text>
                 </View>
 
                 {/* <Image className="bg-red-200" source={require('../assets/img/marlin.png')} style={{ width: 100, height: 100, resizeMode: "contain" }} /> */}
             </View>
 
             <View className="flex-col mt-5 pb-6 justify-between px-5 gap-y-2">
-                <Pressable className="bg-main-blue rounded-lg py-2 justify-center items-center flex-row gap-x-2" onPress={""}>
-                    <Feather name="check" size={24} color="white" />
-                    <Text className="text-white text-md font-Excon_regular">Confirmar</Text>
-                </Pressable>
-                <Pressable className="border-[0.5px] rounded-lg py-2 justify-center items-cente flex-row gap-x-2 dark:border-light-blue" onPress={""}>
+                {order.status == "Pendiente" ? (
+                    <Pressable className="bg-main-blue rounded-lg py-2 justify-center items-center flex-row gap-x-2" onPress={handleReady} >
+                        <Feather name="check" size={24} color="white" />
+                        <Text className="text-white text-md font-Excon_regular">Listo para recoger</Text>
+                    </Pressable>
+                ) : null}
+
+                <Pressable className="border-[0.5px] rounded-lg py-2 justify-center items-cente flex-row gap-x-2 dark:border-light-blue" >
                     <AntDesign name="warning" size={24} color={colorScheme === 'dark' ? "#5186EC" : "black"} />
                     <Text className=" text-md font-Excon_thin dark:text-light-blue">Notificar problema</Text>
                 </Pressable>
@@ -104,10 +168,10 @@ export function ComerciantePedidoScreen() {
                     }}
                 >
                     <View className="flex-1 justify-center items-center bg-white dark:bg-neutral-950 p-10">
-                    <Text className="text-main-blue text-2xl font-Excon_bold mb-10 dark:text-light-blue">Información del producto</Text>
-                        <Image 
-                            source={{ uri: modalProduct.item_image }} 
-                            style={{ width: 200, height: 200, resizeMode: 'contain' }} 
+                        <Text className="text-main-blue text-2xl font-Excon_bold mb-10 dark:text-light-blue">Información del producto</Text>
+                        <Image
+                            source={{ uri: modalProduct.item_image }}
+                            style={{ width: 200, height: 200, resizeMode: 'contain' }}
                         />
                         <Text className="text-main-blue text-2xl font-Excon_bold mt-4 dark:text-light-blue">{modalProduct.productName}</Text>
                         <Text className="text-md font-Excon_thin mt-2 mb-10 dark:text-white">{modalProduct.description}</Text>

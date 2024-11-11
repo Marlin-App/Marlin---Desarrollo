@@ -302,8 +302,13 @@ export function NuevaTienda({ navigation }) {
                                 <View className="my-4 mx-2 items-center">
                                     <View
                                         className={`bg-gray-200 p-5 rounded-lg w-20 h-20 ${selectedCategoryIds.includes(item.id) ? 'bg-main-blue' : ''}`}>
-                                        <AntDesign name="CodeSandbox" size={40} color={selectedCategoryIds.includes(item.id) ? 'white' : 'black'} />
+                                                    {selectedCategoryIds.includes(item.id) ? (
+                                                        <Image source={{ uri: item.image_selected.replace("image/upload/", "") }} className="w-full h-full " resizeMode="cover" />
+                                                    ) : (
+                                                        <Image source={{ uri: item.image.replace("image/upload/", "") }} className="w-full h-full" resizeMode="cover" />
+                                                    )}
                                     </View>
+                                    
                                     <Text className="text-lg text-center text-light-blue">{item.name}</Text>
                                 </View>
                             </Pressable>

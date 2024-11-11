@@ -12,9 +12,7 @@ export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const [filter, setFilter] = useState("Completado");
     const {orders} = useOrders([]);
- 
 
-    
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
     const [notifications, setNotifications] = useState([
@@ -34,12 +32,19 @@ export function HomeComercianteScreen({ navigation }) {
     };
     const [orderFiler, setOrderFilter] = useState(orders);
 
+ 
+
 
     useEffect(() => {
+            if(filter==="Pendiente"){
+                const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor" );
+                setOrderFilter(filteredOrders);
+                return;
+            }
             const filteredOrders = orders.filter(order => order.status === filter);
             setOrderFilter(filteredOrders);
         
-    }, [filter]);
+    }, [filter, orders]);
 
     const dateForm = (order_date) => {    
         const date = new Date(order_date);
@@ -49,12 +54,13 @@ export function HomeComercianteScreen({ navigation }) {
         
         // Formatear la fecha
       const formattedDate = date.toLocaleString('es-ES', options);
-      return `${formattedDate.slice(0, 15)}...`;
+      return formattedDate;
     }
 
 
+
     return (
-        <View className="flex-1 bg-white dark:bg-neutral-950">
+        <View className="flex-1  dark:bg-neutral-950">
             <NotificationDropdown
                 notifications={notifications}
                 isDropdownVisible={isDropdownVisible}
@@ -80,19 +86,19 @@ export function HomeComercianteScreen({ navigation }) {
                 </View>
             </View>
             <Text className="text-2xl font-Excon_bold text-main-blue mt-8 ml-4 dark:text-light-blue">Tus pedidos</Text>
-            <View className="flex-row justify-center gap-x-2 p-4 mt-4 ">
+            <View className="flex-row justify-around p-4 mt-4 ">
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Completado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Completado")} >
                     <Text className="font-Excon_thin text-sm dark:text-white">Completados</Text>
                 </Pressable>
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Pendiente" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Pendiente")}>
                     <Text className="font-Excon_thin text-sm dark:text-white">Pendientes</Text>
                 </Pressable>
-                <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Cancelado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Cancelado")}>
+                <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Cancelada" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Cancelada")}>
                     <Text className="font-Excon_thin text-sm dark:text-white">Cancelados</Text>
                 </Pressable>
             </View>
 
-            <ScrollView className="flex-col p-4 mx-5  border border-light-blue dark:border-main-blue rounded-lg mb-4">
+            <ScrollView className="flex-col p-1 mx-1  mb-4">
 
                     <FlatList
                         data={orderFiler}
@@ -106,29 +112,25 @@ export function HomeComercianteScreen({ navigation }) {
                             </View>
                         }
                         renderItem={({ item }) => (
-                            <Pressable className="flex-row justify-center mb-1" onPress={() => navigation.navigate("Pedido", { order: item })}>
-                                <View className="flex-row justify-between mt-2 px-4 py-4 border-[0.5px] border-[#D6D6D6] dark:border-light-blue w-full items-center rounded-md ">
-                                    <View className="flex-row">
-                                        <View className=" justify-center item-center dark:bg-neutral-900">
-                                            <Image source={{uri: item.user_picture }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
+                            <Pressable className="flex-row justify-center mb-3 bg-white rounded-lg border-gray-200 dark:border-[#232323] dark:bg-[#1C1C1C] border " onPress={() => navigation.navigate("Pedido", { order: item })}>
+                                <View className="flex-row justify-between  px-3 py-3  dark:border-light-blue w-full items-center rounded-md ">
+                                    <View className="flex-row ">
+                                        <View className=" justify-center item-center dark:bg-neutral-900 ">
+                                            <Image className="rounded-lg" source={{uri: item.user_picture }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
                                         </View>
-                                        <View className="px-6">
+                                        <View className="flex-1 ml-2 justify-center">
                                             <Text className="font-Excon_bold text-sm dark:text-white">Fecha: <Text className="font-Excon_thin text-sm">{dateForm(item.order_date)} </Text></Text>
                                             <Text className="font-Excon_bold text-sm dark:text-white">Estado: <Text className="font-Excon_thin text-sm">{item.status} </Text></Text>
                                             <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.order_num} </Text></Text>
-                                            <Text className="font-Excon_thin text-sm dark:text-white">₡{item.total_price} - {item.products.length} productos</Text>
+                                            <View className="flex-row justify-between">
+                                                <Text className="font-Excon_bold text-sm dark:text-[#cdcdcd]">Productos: <Text className="font-Excon_thin">{item.products.length}</Text></Text>
+                                                <Text className="font-Excon_bold text-sm dark:text-[#f1f1f1]">Total: <Text className="font-Excon_thin">₡{item.total_price}</Text></Text>
+                                            </View>
                                         </View>
                                     </View>
-
-                                    <View className="flex-col gap-y-1 h-full">
-                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px] dark:bg-light-blue"></View>
-                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px] dark:bg-light-blue"></View>
-                                        <View className="bg-main-blue rounded-full w-[5px] h-[5px] dark:bg-light-blue"></View>
-                                    </View>
-
                                 </View>
                             </Pressable>
-                        )}
+                        )} 
                     />
             </ScrollView>
         </View>

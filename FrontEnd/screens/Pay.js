@@ -6,6 +6,7 @@ import {
     ScrollView,
     Alert,
     Image,
+    ActivityIndicator,
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Feather } from "@expo/vector-icons";
@@ -18,7 +19,6 @@ import { useEffect } from "react";
 import { useColorScheme } from "nativewind";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useRoute } from "@react-navigation/native";
-import useDirections from "../hooks/useDirection";
 import useGetUser from "../hooks/useGetUser";
 
 export function PayScreen({ navigation }) {
@@ -27,6 +27,7 @@ export function PayScreen({ navigation }) {
     const { addToCart, isSameStore, cart } = useCart();
     const { fetchData, user, token } = useGetUser();
     const [randomCode, setRandomCode] = useState();
+    const [loading , setLoading] = useState(false);
 
     const [infoStore, setInfoStore] = useState(null);
     useEffect(() => {
@@ -93,6 +94,7 @@ export function PayScreen({ navigation }) {
     };
 
     const postOrder = async () => {
+        setLoading(true);
         const order = {
             products: cart.map((product) => ({
                 item_id: product.id,
@@ -101,7 +103,7 @@ export function PayScreen({ navigation }) {
             store_id: route.params.idTienda,
             order_num: randomCode,
             status: "Pendiente",
-            direction: `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`,
+            direction: !route.params.direction ? "Recoger en el lugar" : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`,
             user_id: user.id,
         };
 
@@ -121,12 +123,11 @@ export function PayScreen({ navigation }) {
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error(`Error ${response.status}: ${errorText}`);
+                setLoading(false);
                 return;
             }
 
-            const data = await response.json();
-            console.log("Order created successfully:", data);
-
+           setLoading(false);
             Alert.alert(
                 "Compra Exitosa",
                 "La compra se ha realizado con éxito.",
@@ -178,6 +179,12 @@ export function PayScreen({ navigation }) {
             className="flex-1 bg-white dark:bg-neutral-950 p-4"
             onLayout={onLayoutRootView}
         >
+
+        {loading ? (
+        <View className={`w-full h-full justify-center items-center absolute z-10  `}>
+          <ActivityIndicator size="large" color="#3498db" />
+        </View>
+      ) : null}
             <Text className="text-2xl mb-6 text-center font-Excon_bold text-main-blue dark:text-white">
                 Métodos de pago
             </Text>

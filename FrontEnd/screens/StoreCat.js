@@ -244,7 +244,7 @@ export function StoreCat({ navigation }) {
                     <MaterialCommunityIcons name="magnify" size={30} color="white" />
                 </Pressable>
                 <TextInput
-                    className="ml-2 py-4 text-md text-light-blue dark:text-white font-Excon_regular w-[70%] "
+                    className="ml-2 py-4 text-md text-light-blue dark:text-white  font-Excon_regular w-[70%] "
                     placeholder='Buscar Productos'
                     placeholderTextColor={placeholderTextColor}
                     value={search}
@@ -333,6 +333,7 @@ export function StoreCat({ navigation }) {
 
                     <FlatList
                         data={storeSelected}
+                        scrollEnabled={false}
                         numColumns={2}
                         className="flex  "
                         columnWrapperStyle={{ justifyContent: 'space-around' }}

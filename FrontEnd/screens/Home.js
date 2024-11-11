@@ -29,15 +29,10 @@ export function HomeScreen({ navigation }) {
     }, [navigation, isFocused]);
 
     const {
-        cart,
-        cartLength,
-        increaseQuantity,
-        decreaseQuantity,
-        removeFromCart,
-        clearCart,
-        addToCart,
-        total,
+    getCarLength
     } = useCart();
+
+    
 
     const { data: items, loading, error } = useItems();
     const { data: stores } = useStores();
@@ -65,7 +60,7 @@ export function HomeScreen({ navigation }) {
         }
         return parte;
     };
-
+    
     const verticalData = [
         {
             id: "1",
@@ -242,11 +237,11 @@ export function HomeScreen({ navigation }) {
                             }>
                                 <Feather name="shopping-cart" size={26} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             </Pressable>
-                            {cartLength > 0 && (
+                            {getCarLength() > 0 ? (
                                 <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
-                                    <Text className="text-white text-xs font-bold">{cartLength}</Text>
+                                    <Text className="text-white text-xs font-bold">{getCarLength()}</Text>
                                 </View>
-                            )}
+                            ): null}
                         </View>
                     </View>
                 </View>

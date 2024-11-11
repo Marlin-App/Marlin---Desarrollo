@@ -105,36 +105,44 @@ export function ItemPage({ navigation }) {
     };
 
     const verifyCart = () => {
-        if (!item.variations.length) {
-            handleAddToCart();
-            return;
-        }
 
+        
         if (!isLoggedIn) {
             Alert.alert('Error', 'Debes estar logueado para agregar productos al carrito.');
             return;
         }
 
-        if (item.variations.length > 0) {
-            const hasColorVariants = colors.length > 0;
-            const hasSizeVariants = sizes.length > 0;
-
-            if (hasColorVariants && !selectedColor) {
-                Alert.alert('Error', 'Debes seleccionar un color.');
-                return;
-            }
-
-            if (hasSizeVariants && !selectedSize) {
-                Alert.alert('Error', 'Debes seleccionar una talla.');
-                return;
-            }
-        }
-
         if (isSameStore(item.store_id)) {
-            handleAddToCart();
+            if (!item.variations.length) {
+                handleAddToCart();
+                return;
+            }
+
+            if (item.variations.length > 0) {
+                const hasColorVariants = colors.length > 0;
+                const hasSizeVariants = sizes.length > 0;
+    
+                if (hasColorVariants && !selectedColor) {
+                    Alert.alert('Error', 'Debes seleccionar un color.');
+                    return;
+                }
+    
+                if (hasSizeVariants && !selectedSize) {
+                    Alert.alert('Error', 'Debes seleccionar una talla.');
+                    return;
+                }
+                handleAddToCart();
+            }
+            
         } else {
             setModalVisible2(true);
         }
+        
+
+       
+
+        
+
     };
 
     const handleAddToCart = () => {

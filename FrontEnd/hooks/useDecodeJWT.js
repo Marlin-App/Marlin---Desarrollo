@@ -1,8 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const useDecodeJWT = () => {
+
+
   const base64UrlDecode = useCallback((base64Url) => {
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const padding = base64.length % 4;
@@ -64,8 +66,13 @@ const useDecodeJWT = () => {
     return token;
   }
 
+  async function getAccessToken() {
+    let token = decodeJWT(await getToken());
+    return token.access;
+  }
 
-  return { decodeJWT, isTokenExpired, refreshToken, getToken };
+
+  return { decodeJWT, isTokenExpired, refreshToken, getToken, getAccessToken };
 };
 
 

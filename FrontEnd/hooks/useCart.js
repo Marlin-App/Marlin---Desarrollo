@@ -16,7 +16,6 @@ const useCart = () => {
         const jsonValue = await AsyncStorage.getItem('@cart');
         if (jsonValue != null) {
           setCart(JSON.parse(jsonValue));
-          console.log(cart);
         }
       } catch (e) {
         console.error('Error al cargar el carrito:', e);
@@ -104,8 +103,14 @@ const useCart = () => {
     if (cart.length === 0) {
       return true;
     }
-    return cart[0].store_id === store_id;
+    console.log(cart[0].store_id);
+    console.log(store_id);
+    return cart[0].store_id == store_id;
   };
+
+  function getCarLength(){
+    return cart.length;
+  }
 
   return {
     cart,
@@ -115,6 +120,7 @@ const useCart = () => {
     removeFromCart,
     clearCart,
     isSameStore,
+    getCarLength,
     total,
   };
 };
