@@ -19,17 +19,12 @@ export function NuevaTienda({ navigation }) {
     const sectionListRef = useRef(null);
     const { createShop, loading, deleteShop, updateShop } = useCRUDTiendas(navigation);
     const route = useRoute();
-   
 
     const { store } = route.params || {};
 
 
-
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-    
-
-
 
     const addCategoryList = (id) => {
         setSelectedCategoryIds((prevSelected) => {
@@ -77,7 +72,7 @@ export function NuevaTienda({ navigation }) {
         }
     };
 
-    
+
     const pickImage = async (pic) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -120,7 +115,7 @@ export function NuevaTienda({ navigation }) {
     const [selectedCategoryIds, setSelectedCategoryIds] = useState(formData.store_type);
     const [selectedValue, setSelectedValue] = useState(formData.canton);
     const [selectedValue2, setSelectedValue2] = useState(formData.district);
-    const { location, setModalVisible , LocationPickerComponent, isModalVisible } = useSelectLocation();
+    const { location, setModalVisible, LocationPickerComponent, isModalVisible } = useSelectLocation();
     const [imagePerfil, setimagePerfil] = useState(formData.picture);
     const [imagePortada, setimagePortada] = useState(formData.banner);
 
@@ -160,14 +155,14 @@ export function NuevaTienda({ navigation }) {
         await createShop(formData, imagePerfil, imagePortada, acceptedTerms);
         if (createShop.ok) {
             navigation.navigate('Home');
-             
+
         }
 
     };
 
     const handledeleteShop = async () => {
         await deleteShop(store.id);
-         
+
 
     }
 
@@ -183,9 +178,9 @@ export function NuevaTienda({ navigation }) {
         setDistricts(getDistrictsByCanton(selectedValue));
 
     }, [selectedValue]);
-    
 
- 
+
+
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950 px-5">
@@ -234,7 +229,7 @@ export function NuevaTienda({ navigation }) {
                     <DropDown
                         title="Selecciona el distrito donde se ubica tu emprendimiento:"
                         place="Distrito"
-                        active={selectedValue ? true:false}
+                        active={selectedValue ? true : false}
                         options={districts}
                         selectedValue={selectedValue2}
                         onValueChange={(value) => setSelectedValue2(value)}
@@ -247,11 +242,11 @@ export function NuevaTienda({ navigation }) {
                     ) : (
                         <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin dark:border-main-blue dark:text-white">Coordenadas</Text>
                     )}
-                    <Pressable onPress={()=>setModalVisible(true) }>
+                    <Pressable onPress={() => setModalVisible(true)}>
                         <Image className="" source={require('../assets/img/location.png')} />
                     </Pressable>
                     {isModalVisible && <LocationPickerComponent />}
-                    
+
                 </View>
             </View>
             <View className="flex-col px-5">
@@ -269,13 +264,13 @@ export function NuevaTienda({ navigation }) {
 
             <View className="flex-col px-5 my-4">
                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Numero para recibir Sinpe Movil?</Text>
-                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" placeholder="Número de teléfono" 
+                <TextInput className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white" placeholder="Número de teléfono"
                     value={formData.sinpe}
                     placeholderTextColor={placeholderTextColor}
                     onChangeText={(value) => handleInputChange('sinpe', value)}
-                    keyboardType='numeric' 
+                    keyboardType='numeric'
                     maxLength={10}
-                    />
+                />
             </View>
 
             <View className="flex-col px-5 my-4">
@@ -357,29 +352,23 @@ export function NuevaTienda({ navigation }) {
 
             {store ? (
                 <TouchableOpacity
-                /*  className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                 onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                 disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
-                    */ className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                    className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
                     onPress={handleUpdateShop}
                 >
                     <FontAwesome5 name="upload" size={24} color="white" />
                     <Text className="text-white font-Excon_bold text-lg ml-2">Actualizar</Text>
                 </TouchableOpacity>
             ) : (
-
                 <TouchableOpacity
-                /*  className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                 onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                 disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
- /*                */ className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                    onPress={handleShop}
+                    className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
+                    onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? handleShop : null}
+                    disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
+
                 >
                     <FontAwesome5 name="upload" size={24} color="white" />
 
                     <Text className="text-white font-Excon_bold text-lg ml-2">Guardar</Text>
                 </TouchableOpacity>
-
             )
             }
 

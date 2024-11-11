@@ -1,12 +1,48 @@
 import { useEffect, useState } from 'react';
-import { Button, Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Button, Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Feather from '@expo/vector-icons/Feather';
 import useGetUser from '../hooks/useGetUser';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export function InformationScreen() {
+export function InformationScreen({ navigation }) {
     const [image, setImage] = useState(null);
     const { fetchData, user, updateUser, loading } = useGetUser();
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [token, setToken] = useState(null);
+
+    
+    useEffect(() => {
+        const getToke= async()=>{
+            const jsonValue = await AsyncStorage.getItem('@userToken');
+            const userData = JSON.parse(jsonValue);
+            setToken(userData.access);
+        };
+        getToke();
+    }, []);
+
+    const deleteAccount = async () => {
+        try {
+            const response = await fetch('https://marlin-backend.vercel.app/api/delete-account/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.status === 200) {
+                await AsyncStorage.removeItem('@userToken');
+                navigation.navigate('Home');
+                alert('La cuenta ha sido borrada con éxito');
+            } else {
+                console.log('Error al eliminar la cuenta');
+            }
+        } catch (error) {
+            console.log('Error al eliminar la cuenta', error);
+        }
+    }
+    
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -76,10 +112,6 @@ export function InformationScreen() {
                     </View>
                 ) : null}
                 <View className="mt-4 items-center p-4 ">
-
-
-
-
                     <Pressable
                         className="mt-1 h-44 w-44 bg-light-blue dark:bg-main-blue  p-1 rounded-full relative"
                         onPress={pickImage}
@@ -147,13 +179,43 @@ export function InformationScreen() {
                     </TouchableOpacity>
 
                     <TouchableOpacity className="border-2 px-4 border-red-600 py-2 rounded-lg items-center "
-                        onPress={handleSave}
+                        onPress={() => setVisibleModal(true)}
                         >
                         <Text className="text-red-600 font-Excon_bold text-lg">Eliminar cuenta</Text>
                     </TouchableOpacity>
                     
                         </View>
             </ScrollView>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={visibleModal}
+                onRequestClose={() => {
+                    setVisibleModal(!visibleModal);
+                }}
+            >
+                <View className="flex-1 justify-center items-center bg-black/80">
+                    <View className="bg-white rounded-lg p-6 w-80">
+                        <Text className="text-lg font-bold mb-4">Confirmar eliminación</Text>
+                        <Text className="text-base mb-6">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</Text>
+                        <View className="flex-row justify-between mx-4">
+                            <TouchableOpacity
+                                className="bg-main-blue px-6 py-2 rounded-lg"
+                                onPress={() => setVisibleModal(false)}
+                            >
+                                <Text className="text-white font-Excon_regular">Cancelar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                className="border-red-600 border-2 px-6 py-2 rounded-lg"
+                                onPress={deleteAccount}
+                            >
+                                <Text className="text-red-600 font-Excon_regular">Eliminar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
 
     );
