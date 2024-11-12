@@ -261,6 +261,8 @@ class DeliveryProfile(models.Model):
     iD_back_picture = CloudinaryField('image')
     license_picture = CloudinaryField('image')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pendiente')
+    coordinates = models.CharField(max_length=100, null=True, blank=True)
+    is_active = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         cloudinary_fields = ['selfie', 'vehicle_picture', 'iD_front_picture', 'iD_back_picture', 'license_picture']
