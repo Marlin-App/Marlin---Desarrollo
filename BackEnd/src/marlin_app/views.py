@@ -19,9 +19,9 @@ from django.core.mail import EmailMultiAlternatives
 import os
 import asyncio
 from asgiref.sync import sync_to_async
-
+from dotenv import load_dotenv
 import googlemaps
-
+load_dotenv()
 gmaps = googlemaps.Client(key=os.getenv('API_KEY_GOOGLE'))
 
 class RegisterUserAPIView(APIView):
