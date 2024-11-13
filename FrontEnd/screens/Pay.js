@@ -105,6 +105,9 @@ export function PayScreen({ navigation }) {
             status: "Pendiente",
             direction: !route.params.direction ? "Recoger en el lugar" : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`,
             user_id: user.id,
+            delivery_distance:'1',
+            user_coordinates: `${route.params.direction.coodernates.latitude},${route.params.direction.coodernates.longitude}`,
+            references:`${route.params.direction.referencias}`,
         };
 
         try {
