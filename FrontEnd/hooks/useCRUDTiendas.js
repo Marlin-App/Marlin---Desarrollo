@@ -32,7 +32,7 @@ const useCRUDTiendas = (navigation) => {
             formDataToSend.append('referencias', formData.referencias);
             formDataToSend.append('canton', formData.canton);
             formDataToSend.append('district', formData.district);
-            formDataToSend.append('coodernates', formData.coodernates.location + ',' + formData.coodernates.latitude);
+            formDataToSend.append('coodernates', formData.coodernates.latitude + ',' + formData.coodernates.longitude);
             formDataToSend.append('user_id', user_id);
             formDataToSend.append('num_sinpe', formData.sinpe);
             formDataToSend.append('owner_sinpe', formData.sinpe_name);
