@@ -21,7 +21,6 @@ import asyncio
 from asgiref.sync import sync_to_async
 from dotenv import load_dotenv
 import googlemaps
-import trio
 load_dotenv()
 gmaps = googlemaps.Client(key=os.getenv('API_KEY_GOOGLE'))
 
@@ -152,7 +151,7 @@ class AcceptOrder(APIView):
         #     {"id": delivery.id, "name": delivery.user_id.first_name}  # Incluye los atributos necesarios
         #     for delivery, _ in deliveries_with_distance[:10]
         # ]
-        trio.run(self.assign_order_to_deliveries(order, deliveries_organized))
+        asyncio.run(self.assign_order_to_deliveries(order, deliveries_organized))
         return Response({"message": "Orden aceptada"}, status=status.HTTP_200_OK)
         
     async def assign_order_to_deliveries(self, order, deliveries):
