@@ -29,31 +29,24 @@ export function ComerciantePedidoScreen({ navigation }) {
             await refreshToken();
         }
         let token = await getToken();
-        console.log(token);
-        console.log(order.id);
         try {
             const response = await fetch(
-                `https://marlin-backend.vercel.app/api/orders/${order.id}/`,
+                `https://marlin-backend.vercel.app/api/accept-order/`,
                 {
-                    method: "PATCH", // Corregido a mayúsculas
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token.access}`,
+                        Authorization: `Bearer ${token.access}`, 
                     },
                     body: JSON.stringify({
-                        status: "Buscando repartidor",
+                        order_id: order.id,
                     }),
                 }
             );
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error(`Error ${response.status}: ${errorText}`);
-                return;
-            }else{
+            
                 Alert.alert(
                     "Perfecto",
-                    "Porximiamente vendra un repartidor a recoger el pedido",
+                    "Próximamente vendrá un repartidor a recoger el pedido",
                     [
                         {
                             text: "OK",
@@ -64,14 +57,12 @@ export function ComerciantePedidoScreen({ navigation }) {
                     ],
                     { cancelable: false }
                 );
-            }
-
             
         } catch (error) {
-
+            console.error("Error en handleReady:", error);
+            Alert.alert("Error", "Hubo un problema al procesar el pedido.");
         }
-    }
-
+    };
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950 h-full px-5">
@@ -145,7 +136,7 @@ export function ComerciantePedidoScreen({ navigation }) {
             </View>
 
             <View className="flex-col mt-5 pb-6 justify-between px-5 gap-y-2">
-                {order.status == "Pendiente" ? (
+                {order.status == "Buscando repartidor" ? (
                     <Pressable className="bg-main-blue rounded-lg py-2 justify-center items-center flex-row gap-x-2" onPress={handleReady} >
                         <Feather name="check" size={24} color="white" />
                         <Text className="text-white text-md font-Excon_regular">Listo para recoger</Text>
