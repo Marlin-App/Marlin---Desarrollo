@@ -11,6 +11,7 @@ import {
   FlatList,
   navigation,
   navigate,
+  Switch
 } from "react-native";
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -19,7 +20,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useCRUDProductos } from "../hooks/useCRUDProductos";
 import NotificationDropdown from "../components/NotificationDropdown";
 import React, { useEffect, useCallback, useState, useRef } from "react";
-import useOrders from '../hooks/useOrders'; 
+import useOrders from '../hooks/useOrders';
 
 
 
@@ -31,8 +32,10 @@ export function ExpressScreen({ navigation }) {
   const screenWidth = Dimensions.get("window").width;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentPage, setCurrentPage] = useState(0);
-  const { orders } = useOrders(); 
-  
+  const { orders } = useOrders();
+  const [online, setOnline] = useState(false);
+  const switchOnline = () => setOnline(previousState => !previousState);
+
   // const ordenes = [
   //   {
   //     id: 1,
@@ -64,18 +67,20 @@ export function ExpressScreen({ navigation }) {
   // ];
 
   const [prueba, setprueba] = useState([
-    { title: "Pendientes", orders: [{
-      id: 1,
-      tienda: "Bazar Marta",
-      codigo: "1234",
-      destinatario: "Jeremy Guzman",
-      detalle: "Detalles del pedido aquí",
-      tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
-      entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
-      estado: "Pendientes",
-    }] },
-    { title: "En Progreso", orders:[] },
-    { title: "Completados", orders:[] },
+    {
+      title: "Pendientes", orders: [{
+        id: 1,
+        tienda: "Bazar Marta",
+        codigo: "1234",
+        destinatario: "Jeremy Guzman",
+        detalle: "Detalles del pedido aquí",
+        tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
+        entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
+        estado: "Pendientes",
+      }]
+    },
+    { title: "En Progreso", orders: [] },
+    { title: "Completados", orders: [] },
   ]);
 
   const handleRejectOrder = (orderId) => {
@@ -122,12 +127,12 @@ export function ExpressScreen({ navigation }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const [notifications, setNotifications] = useState([
-    
-]);
 
-const handleNotificationClick = (notificationId) => {
+  ]);
+
+  const handleNotificationClick = (notificationId) => {
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
-};
+  };
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -162,6 +167,11 @@ const handleNotificationClick = (notificationId) => {
     const pageIndex = Math.round(contentOffsetX / screenWidth);
     setCurrentPage(pageIndex);
   };
+
+  useEffect(() => {
+    console.log(online);
+  }, [online]);
+
   return (
     <View className="bg-white dark:bg-neutral-950 h-full">
       <NotificationDropdown
@@ -241,37 +251,35 @@ const handleNotificationClick = (notificationId) => {
                                 Usuario: {item.destinatario}
                               </Text>
                               <TouchableOpacity onPress={() =>
-                                navigation.navigate("OrderInfo",{order:item})
+                                navigation.navigate("OrderInfo", { order: item })
                               }>
-                              <Text className="font-Excon_regular text-sm dark:text-white underline">
-                                Más información
-                              </Text>
+                                <Text className="font-Excon_regular text-sm dark:text-white underline">
+                                  Más información
+                                </Text>
                               </TouchableOpacity>
                             </View>
                           </View>
                           <View className="flex-row justify-center gap-x-4 mt-3">
                             <TouchableOpacity
-                            onPress={() => handleAcceptOrder(item.id)}>
+                              onPress={() => handleAcceptOrder(item.id)}>
                               <Text
-                                className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${
-                                  storeIndex === 0 ||
+                                className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${storeIndex === 0 ||
                                   scrollX._value / screenWidth === storeIndex
-                                    ? "bg-main-blue"
-                                    : "bg-main-gray"
-                                }`}
+                                  ? "bg-main-blue"
+                                  : "bg-main-gray"
+                                  }`}
                               >
                                 Aceptar
                               </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                            onPress={()=>handleRejectOrder(item.id)}>
+                              onPress={() => handleRejectOrder(item.id)}>
                               <Text
-                                className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${
-                                  storeIndex === 0 ||
+                                className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${storeIndex === 0 ||
                                   scrollX._value / screenWidth === storeIndex
-                                    ? "bg-main-red"
-                                    : "bg-main-gray"
-                                }`}
+                                  ? "bg-main-red"
+                                  : "bg-main-gray"
+                                  }`}
                               >
                                 No Aceptar
                               </Text>
@@ -289,6 +297,17 @@ const handleNotificationClick = (notificationId) => {
           </View>
         ))}
       </Animated.ScrollView>
+
+      <View className="flex-row justify-between items-center px-5 mb-2">
+        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Deseas recibir pedidos?</Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={online ? '#015DEC' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={switchOnline}
+          value={online}
+        />
+      </View>
 
       <View className="flex-row justify-center mt-4">
         {prueba.map((_, index) => {

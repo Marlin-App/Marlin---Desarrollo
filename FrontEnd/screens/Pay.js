@@ -109,7 +109,7 @@ export function PayScreen({ navigation }) {
                 ? "Recoger en el lugar"
                 : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, coordenadas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude}, referencias: ${route.params.direction.referencias}`,
             user_id: user.id,
-            delivery_distance:'1',
+            delivery_distance:'1', //cambiar por el valor de la distancia
             user_coordinates: !route.params.direction
             ? "Recoger en el lugar": `${route.params.direction.coodernates.latitude},${route.params.direction.coodernates.longitude}`,
             references:  !route.params.direction

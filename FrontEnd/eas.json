@@ -16,6 +16,9 @@
       }
     },
     "production": {
+      "env": {
+        "GOOGLE_API_KEY": "AIzaSyB0fbhtl6sU-fzxajDD1-e5uD0f0XYrVpI"
+      },
       "android": {
         "buildType": "app-bundle"
       },
