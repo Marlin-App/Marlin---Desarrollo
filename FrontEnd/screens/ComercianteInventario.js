@@ -3,13 +3,11 @@ import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect, useRef } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import useCRUDProductos  from '../hooks/useCRUDProductos';
+import useCRUDProductos from '../hooks/useCRUDProductos';
 import NotificationDropdown from '../components/NotificationDropdown';
 import noContent from '../assets/box.png';
 
-
 export function ComercianteInventario({ navigation }) {
-
     const [modalVisible, setModalVisible] = useState(false);
     const { deleteProduct, fetchStoresWithProducts, storesWithProducts } = useCRUDProductos();
     const [longPressProduct, setLongPressProduct] = useState(null);
@@ -19,49 +17,53 @@ export function ComercianteInventario({ navigation }) {
     const scrollX = useRef(new Animated.Value(0)).current;
     const [currentPage, setCurrentPage] = useState(0);
 
+    // llama a la función fetchStoresWithProducts al montarse el componente
     useEffect(() => {
         const fetchStores = async () => {
             await fetchStoresWithProducts();
         };
         const focusListener = navigation.addListener('focus', fetchStores);
     }, [navigation]);
-
+    // ------------------------------------------------------------------------
 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
     const [notifications, setNotifications] = useState([
-        
+        // aqui va la lista de notificaciones
     ]);
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el clic en el icono de notificaciones
     const toggleDropdown = () => {
         setIsDropdownVisible(!isDropdownVisible);
     };
+    // ------------------------------------------------------------------------
 
+    //cierra el dropdown de notificaciones
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el clic largo en un producto
     const longpress = (id) => {
         setLongPressProduct(id);
         setModalVisible(true);
     }
+    // ------------------------------------------------------------------------
 
-    const goToPage = (page) => {
-        setCurrentPage(page);
-        if (scrollViewRef.current) {
-            scrollViewRef.current.scrollTo({ x: page * screenWidth, animated: true });
-        }
-    };
-
+    // Función para manejar el scroll
     const handleScroll = (event) => {
         const contentOffsetX = event.nativeEvent.contentOffset.x;
         const pageIndex = Math.round(contentOffsetX / screenWidth);
         setCurrentPage(pageIndex);
     };
+    // ------------------------------------------------------------------------
+
     return (
         <View className="bg-white dark:bg-neutral-950 h-full">
             <NotificationDropdown
@@ -79,11 +81,11 @@ export function ComercianteInventario({ navigation }) {
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
-                    <TouchableOpacity onPress={toggleDropdown}>
+                        <TouchableOpacity onPress={toggleDropdown}>
                             <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
-                            )} 
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -164,7 +166,7 @@ export function ComercianteInventario({ navigation }) {
                                 ) : (
                                     <View className="flex-col justify-center mb-1 items-center">
                                         <Image className="m-4" source={noContent} style={{ width: 150, height: 150 }} />
-                                    <Text className="text-lg text-main-blue font-Excon_bold">No hay productos disponibles.</Text>
+                                        <Text className="text-lg text-main-blue font-Excon_bold">No hay productos disponibles.</Text>
                                     </View>
                                 )}
                             </View>
@@ -253,4 +255,3 @@ export function ComercianteInventario({ navigation }) {
         </View>
     );
 }
-

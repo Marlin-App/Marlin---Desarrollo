@@ -9,7 +9,7 @@ export default [
         id: 1,
         image: require('../assets/img/carousel/2.jpg'),
         title: 'Pesca',
-        description: 'Visítanos y equípate con lo mejor para tu próxima aventura de pesca. ¡La captura perfecta comienza aquí!', 
+        description: 'Visítanos y equípate con lo mejor para tu próxima aventura de pesca. ¡La captura perfecta comienza aquí!',
     },
     {
         id: 8,

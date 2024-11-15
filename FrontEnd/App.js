@@ -14,6 +14,7 @@ SplashScreen.preventAutoHideAsync();
   default: "native",
 }); */
 
+// Configuración de enlaces
 const linking = {
   prefixes: ['marlin-app://'],
   config: {
@@ -22,9 +23,13 @@ const linking = {
     },
   },
 };
+// ------------------------------------------------------------------------
+
 
 export default function App() {
   const { colorScheme } = useColorScheme();
+
+  // Función principal
   const [fontsLoaded] = useFonts({
     'Excon_regular': require('./assets/fonts/Excon/Excon-Regular.otf'),
     'Excon_bold': require('./assets/fonts/Excon/Excon-Bold.otf'),
@@ -33,9 +38,11 @@ export default function App() {
     'Erode_bold': require('./assets/fonts/Erode/Erode-Bold.otf'),
     'Erode-Medium': require('./assets/fonts/Erode/Erode-Medium.otf'),
     'Outfit-medium': require('./assets/fonts/Outfit/Outfit-Medium.ttf')
-    
-  });
 
+  });
+  // ------------------------------------------------------------------------
+
+  // Ocultar el splash
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();
@@ -43,8 +50,9 @@ export default function App() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; 
+    return null;
   }
+  // ------------------------------------------------------------------------
 
   return (
     <NavigationContainer linking={linking} onReady={onLayoutRootView}>

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Modal, View, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import { useColorScheme } from "nativewind";
 
-const NotificationDropdown = ({ notifications, isDropdownVisible, toggleDropdown, closeDropdown, onNotificationClick }) => {
-    const { colorScheme } = useColorScheme();
+const NotificationDropdown = ({ notifications, isDropdownVisible, closeDropdown, onNotificationClick }) => {
 
+    // solo se muestra si hay notificaciones
     return (
         <Modal
             transparent={true}

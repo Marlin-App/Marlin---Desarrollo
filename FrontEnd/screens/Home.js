@@ -1,7 +1,6 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList, Image, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { useColorScheme } from "nativewind";
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import useCart from '../hooks/useCart';
@@ -11,7 +10,6 @@ import HomeCarousel from '../components/CarouselHome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import NotificationDropdown from '../components/NotificationDropdown';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
@@ -20,6 +18,7 @@ export function HomeScreen({ navigation }) {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const logo = colorScheme === 'dark' ? require('../assets/logoDark.png') : require('../assets/LogoLight.png');
 
+    // Función para obtener el token
     useEffect(() => {
         const fetchUserToken = async () => {
             const token = await AsyncStorage.getItem('@userToken');
@@ -27,20 +26,24 @@ export function HomeScreen({ navigation }) {
         };
         fetchUserToken();
     }, [navigation, isFocused]);
+    // ------------------------------------------------------------------------
 
+    // Función para obtener la cantidad de productos en el carrito
     const {
-    getCarLength
+        getCarLength
     } = useCart();
-
-    
+    // ------------------------------------------------------------------------
 
     const { data: items, loading, error } = useItems();
     const { data: stores } = useStores();
 
+    // Función para obtener las notificaciones
     const [notifications, setNotifications] = useState([
-        
+        // Aquí puedes agregar las notificaciones
     ]);
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
@@ -52,15 +55,19 @@ export function HomeScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para dividir un array en partes de tamaño divisionSize
     const division = (array, divisionSize) => {
-        const parte = [];
+        const part = [];
         for (let i = 0; i < array.length; i += divisionSize) {
-            parte.push(array.slice(i, i + divisionSize));
+            part.push(array.slice(i, i + divisionSize));
         }
-        return parte;
+        return part;
     };
-    
+    // ------------------------------------------------------------------------
+
+    // Datos para el carrusel
     const verticalData = [
         {
             id: "1",
@@ -123,7 +130,9 @@ export function HomeScreen({ navigation }) {
             })),
         },
     ];
+    // ------------------------------------------------------------------------
 
+    // Función para formatear los items
     const renderHorizontalItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Item', { id: item.id })}>
             <View className="my-2 mx-4 items-start">
@@ -145,7 +154,9 @@ export function HomeScreen({ navigation }) {
             </View>
         </TouchableOpacity>
     );
+    // ------------------------------------------------------------------------
 
+    // Función para formatear las tiendas
     const renderStoreItem = ({ item }) => (
         <TouchableOpacity onPress={() => navigation.navigate('Store', { id: item.id, store: item })}>
             <View className="my-2 mx-4 items-center">
@@ -160,7 +171,9 @@ export function HomeScreen({ navigation }) {
             </View>
         </TouchableOpacity>
     );
+    // ------------------------------------------------------------------------
 
+    // Función para renderizar los apartados
     const renderVerticalItem = ({ item }) => {
         if (item.type === "product") {
             const largo = division(item.horizontalData, 10);
@@ -198,6 +211,7 @@ export function HomeScreen({ navigation }) {
 
         return null;
     };
+    // ------------------------------------------------------------------------
 
     if (error) {
         return (
@@ -241,7 +255,7 @@ export function HomeScreen({ navigation }) {
                                 <View className="absolute top-[-10px] right-[-10px] w-5 h-5 bg-red-600 rounded-full items-center justify-center">
                                     <Text className="text-white text-xs font-bold">{getCarLength()}</Text>
                                 </View>
-                            ): null}
+                            ) : null}
                         </View>
                     </View>
                 </View>

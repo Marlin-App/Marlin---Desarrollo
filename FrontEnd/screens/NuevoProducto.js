@@ -1,12 +1,11 @@
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity, Modal, Switch } from 'react-native';
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Text, View, TextInput, Pressable, Image, ScrollView, TouchableOpacity, Modal, Switch } from 'react-native';
+import React, { useState, useRef } from 'react';
 import { useColorScheme } from "nativewind";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
 
 export function NuevoProducto({ navigation }) {
 
@@ -17,40 +16,37 @@ export function NuevoProducto({ navigation }) {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const { colorScheme } = useColorScheme();
 
-
-    // const [nombreProducto, setNombreProducto] = useState("");
-    //const [descripcion, setDescripcion] = useState("");	
-    //const [color, setColor] = useState("");
-    //const [talla, setTalla] = useState("");
-    //const [cantidad, setCantidad] = useState("");
-    //const [precio, setPrecio] = useState("");
-    //const [foto, setfoto] = useState("");
-
-
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
 
-
+    // Función para abrir el modal
     const AddProduct = () => {
         setModalVisible(true);
     };
+    // ------------------------------------------------------------------------
 
     const [row, setRow] = useState(1);
 
+    // Función para agregar una nueva variación
     const addrow = () => {
-
         setRow(row + 1);
     }
+    // ------------------------------------------------------------------------
 
+    // Función para eliminar una variación
     const removeRow = () => {
         if (row > 1) {
 
             setRow(row - 1);
         }
     }
+    // ------------------------------------------------------------------------
 
+    // State para almacenar las imagenes
     const [images, setImages] = useState([]);
+    // ------------------------------------------------------------------------
 
+    // Función para manejar la selección de imágenes
     const pickImages = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,9 +58,7 @@ export function NuevoProducto({ navigation }) {
             setImages(result.assets);
         }
     };
-
-    //fetch para agregar producto a la base de datos
-
+    // ------------------------------------------------------------------------
 
     return (
         <View className="flex-1 bg-white">
@@ -90,7 +84,7 @@ export function NuevoProducto({ navigation }) {
                         <View className="border-[0.5px] border-main-blue rounded-lg px-4 py-2 h-[45vh]">
                             <ScrollView>
                                 <Pressable className="flex-row justify-center mb-1" onPress={() => navigation.navigate("Pedido")}>
-                                    {/* Foto con imnformacion */}
+                                    {/* Foto con informacion */}
                                     <View className="flex-row justify-between m-2 px-2 py-4 border-[0.5px] border-main-blue w-full items-center rounded-md">
                                         {/* Contenedor de la imagen y la información del producto */}
                                         <View className="flex-row w-[95%] max-w-full">
@@ -137,9 +131,6 @@ export function NuevoProducto({ navigation }) {
                     </View>
                 </View>
                 <TouchableOpacity
-                    // className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? '' : 'opacity-50'}`}
-                    // onPress={acceptedTerms && selectedValue && selectedValue2 && imagePerfil && imagePortada && selectedCategoryIds.length > 0 ? createShop : null}
-                    // disabled={!acceptedTerms || !selectedValue || !selectedValue2 || !imagePerfil || !imagePortada || selectedCategoryIds.length === 0}
                     className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms ? '' : 'opacity-50'}`}
                     onPress={"createShop"}
                 >
@@ -292,12 +283,10 @@ export function NuevoProducto({ navigation }) {
                                 </View>
                             </View>
                         </View>
-
                     </ScrollView>
                 </Modal>
             )
             }
         </View >
     );
-
 }

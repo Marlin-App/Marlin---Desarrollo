@@ -9,9 +9,9 @@ import useDirections from '../hooks/useDirection';
 export function AddDirectionScreen({ navigation }) {
   const { colorScheme } = useColorScheme();
   const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-  const { direction, addToDirection } = useDirections(navigation); 
- 
+  const { direction, addToDirection } = useDirections(navigation);
 
+  // Datos de la tienda
   const [data, setData] = useState({
     id: 1,
     name: "",
@@ -21,13 +21,17 @@ export function AddDirectionScreen({ navigation }) {
     coodernates: "",
     isSelected: false
   });
+  // ------------------------------------------------------------------------
 
-  const cantones = [
+  // Opciones de cantones
+  const cantons = [
     { label: 'Puntarenas', value: 'Puntarenas' },
     { label: 'Esparza', value: 'Esparza' },
     { label: 'Montes de Oro', value: 'Montes de Oro' },
   ];
+  // ------------------------------------------------------------------------
 
+  // Opciones de distritos
   const getDistrictsByCanton = (canton) => {
     switch (canton) {
       case 'Puntarenas':
@@ -53,52 +57,63 @@ export function AddDirectionScreen({ navigation }) {
         return [];
     }
   };
+  // ------------------------------------------------------------------------
 
   const [selectedValue, setSelectedValue] = useState();
   const [selectedValue2, setSelectedValue2] = useState();
 
-  
-
   const { location, setModalVisible, LocationPickerComponent, isModalVisible } = useSelectLocation();
 
+  // Función para manejar los cambios en los campos
   const handleInputChange = (name, value) => {
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
+  // ------------------------------------------------------------------------
 
+  // Función para manejar los cambios de los distritos
   useEffect(() => {
     handleInputChange('district', selectedValue2);
   }, [selectedValue2]);
+  // ------------------------------------------------------------------------
 
+  // Función para manejar los cambios de la ubicación
   useEffect(() => {
     setData((prevData) => ({
       ...prevData,
       id: direction.length + 1,
-      isSelected: direction.length === 0, 
+      isSelected: direction.length === 0,
     }));
   }, [direction]);
+  // ------------------------------------------------------------------------
 
+  // Función para manejar los cambios de los cantones
   useEffect(() => {
     handleInputChange('canton', selectedValue);
   }, [selectedValue]);
+  // ------------------------------------------------------------------------
 
+  // Función para manejar los cambios de la ubicación
   useEffect(() => {
     handleInputChange('coodernates', location);
   }, [location]);
+  // ------------------------------------------------------------------------
 
   const [districts, setDistricts] = useState([]);
 
+  // Función para manejar los cambios de los distritos
   useEffect(() => {
     setDistricts(getDistrictsByCanton(selectedValue));
   }, [selectedValue]);
+  // ------------------------------------------------------------------------
 
+  // Función para manejar el evento de guardar
   const handleSave = async () => {
     addToDirection(data);
   };
+  // ------------------------------------------------------------------------
 
   return (
     <ScrollView className="bg-white dark:bg-neutral-950 px-5">
-
-        
       <View className="w-full flex-col px-4 py-8">
         <Text className="text-main-blue text-3xl font-Excon_bold dark:text-light-blue">
           ¡Vamos agregar una nueva direccion!!
@@ -122,11 +137,12 @@ export function AddDirectionScreen({ navigation }) {
             title="Selecciona el cantón donde se ubica tu emprendimiento:"
             active={true}
             place="Cantón"
-            options={cantones}
+            options={cantons}
             selectedValue={selectedValue}
             onValueChange={(value) => setSelectedValue(value)}
           />
         </View>
+
         <View className="border-[0.5px] px-4 py-2 rounded-lg my-2 dark:border-main-blue">
           <DropDown
             title="Selecciona el distrito donde se ubica tu emprendimiento:"
@@ -137,6 +153,7 @@ export function AddDirectionScreen({ navigation }) {
             onValueChange={(value) => setSelectedValue2(value)}
           />
         </View>
+
         <View className="flex-row justify-between items-center my-4">
           {location ? (
             <Text className="border-b-[0.5px] w-[70vw] px-4 pb-2 font-Excon_thin dark:border-main-blue dark:text-white">

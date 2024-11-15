@@ -7,10 +7,10 @@ const useCRUDTiendas = (navigation) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [allStores, setAllStores] = useState([]);
-    ;
     const { decodeJWT, isTokenExpired, refreshToken } = useDecodeJWT();
 
-    const createShop = async (formData, imagePerfil, imagePortada, acceptedTerms) => {
+    // funcion que crea la tienda
+    const createShop = async (formData, imageProfile, imagePortada, acceptedTerms) => {
 
         if (await isTokenExpired()) {
             await refreshToken();
@@ -40,13 +40,13 @@ const useCRUDTiendas = (navigation) => {
             formDataToSend.append('closing_hour', formData.closing_hour);
             formDataToSend.append('store_type', formData.store_type);
 
-            if (imagePerfil) {
-                const perfilFile = {
-                    uri: imagePerfil,
+            if (imageProfile) {
+                const profileFile = {
+                    uri: imageProfile,
                     type: 'image/jpeg',
                     name: 'perfil.jpg',
                 };
-                formDataToSend.append('picture', perfilFile);
+                formDataToSend.append('picture', profileFile);
             }
 
 
@@ -86,7 +86,9 @@ const useCRUDTiendas = (navigation) => {
             }
         }
     };
+    // ------------------------------------------------------------------------
 
+    //Funcione que obtiene la tienda del usuario
     const getUserStores = async () => {
         setLoading(true);
         setError(null);
@@ -120,8 +122,9 @@ const useCRUDTiendas = (navigation) => {
             setLoading(false);
         }
     };
+    // ------------------------------------------------------------------------
 
-
+    // funcion que elimina la tienda
     const deleteShop = async (storeId) => {
         const jsonValue = await AsyncStorage.getItem('@userToken');
         const userData = JSON.parse(jsonValue);
@@ -151,11 +154,11 @@ const useCRUDTiendas = (navigation) => {
         } finally {
             setLoading(false);
         }
+    };
+    // ------------------------------------------------------------------------
 
-    }
-
-
-    const updateShop = async (formData, imagePerfil, imagePortada, store_id) => {
+    // Actualiza la informacion de la tienda
+    const updateShop = async (formData, imageProfile, imagePortada, store_id) => {
         if (await isTokenExpired()) {
             await refreshToken();
         }
@@ -183,13 +186,13 @@ const useCRUDTiendas = (navigation) => {
         formDataToSend.append('store_type', formData.store_type);
 
         // Agregar la imagen de perfil si existe
-        if (imagePerfil) {
-            const perfilFile = {
-                uri: imagePerfil,
+        if (imageProfile) {
+            const profileFile = {
+                uri: imageProfile,
                 type: 'image/jpeg',
                 name: 'perfil.jpg',
             };
-            formDataToSend.append('picture', perfilFile);
+            formDataToSend.append('picture', profileFile);
         }
 
         // Agregar la imagen de portada si existe
@@ -229,8 +232,7 @@ const useCRUDTiendas = (navigation) => {
             setLoading(false);
         }
     };
-
-
+    // ------------------------------------------------------------------------
 
     return { createShop, loading, error, getUserStores, allStores, getUserStores, setAllStores, deleteShop, updateShop };
 };

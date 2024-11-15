@@ -30,18 +30,18 @@ export function StoreStackScreen({ navigation }) {
                 }}
             />
 
-                <StoreStack.Screen
-                        name="Item"
-                        component={ItemPage}
-                        options={{
-                        headerShown: true,
-                        headerTitle: 'Regresar',
-                        headerTintColor: "#015DEC",
-                        headerTitleStyle: {
-                            fontFamily: 'Excon_regular',
-                        }
-                        }}
-                    />
+            <StoreStack.Screen
+                name="Item"
+                component={ItemPage}
+                options={{
+                    headerShown: true,
+                    headerTitle: 'Regresar',
+                    headerTintColor: "#015DEC",
+                    headerTitleStyle: {
+                        fontFamily: 'Excon_regular',
+                    }
+                }}
+            />
 
         </StoreStack.Navigator>
     );

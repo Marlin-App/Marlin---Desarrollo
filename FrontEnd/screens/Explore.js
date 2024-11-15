@@ -1,11 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Button, Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, FlatList, Image, Pressable, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import useCart from '../hooks/useCart';
 import useItems from '../hooks/useItems';
@@ -38,6 +35,7 @@ export function ExploreScreen({ navigation }) {
         total,
     } = useCart();
 
+    // Función para obtener el token
     useEffect(() => {
         const fetchUserToken = async () => {
             const token = await AsyncStorage.getItem('@userToken');
@@ -45,14 +43,14 @@ export function ExploreScreen({ navigation }) {
         };
         fetchUserToken();
     }, [navigation, isFocused]);
-
+    // ------------------------------------------------------------------------
 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
     const [notifications, setNotifications] = useState([
-        
+        // aqui va la lista de notificaciones
     ]);
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
@@ -64,13 +62,17 @@ export function ExploreScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
 
+    // funcion para formatear los items en vertical
     useEffect(() => {
         if (items) {
             setVerticalData(formatItems(items));
         }
     }, [items]);
+    // ------------------------------------------------------------------------
 
+    // Función para formatear los items
     const formatItems = (data) => data.map(item => ({
         id: item.id.toString(),
         name: item.name,
@@ -84,8 +86,9 @@ export function ExploreScreen({ navigation }) {
         store_id: item.store_id,
         item_type: item.item_type
     }));
-    /* console.log(items[3].item_images[0].picture); */
+    // ------------------------------------------------------------------------
 
+    // Función para manejar la búsqueda
     const handleSearch = debounce((text) => {
         if (items) {
             const filteredData = items.filter(item =>
@@ -95,7 +98,9 @@ export function ExploreScreen({ navigation }) {
             setIsSearch(!!text);
         }
     }, 300);
+    // ------------------------------------------------------------------------
 
+    // Función para manejar la actualización
     const onRefresh = async () => {
         if (isSearch) {
             return;
@@ -104,7 +109,9 @@ export function ExploreScreen({ navigation }) {
         await refetch();
         setRefreshing(false);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el clic en un item
     const renderHorizontalItem = useCallback(({ item }) => (
         <Pressable onPress={() => navigation.navigate('Item', { id: item.id })}>
             <View className="mt-4 items-center">
@@ -123,10 +130,7 @@ export function ExploreScreen({ navigation }) {
             </View>
         </Pressable>
     ), [navigation]);
-
-    const getItemLayout = (data, index) => (
-        { length: 100, offset: 100 * index, index }
-    );
+    // ------------------------------------------------------------------------
 
     if (error) {
         return (
@@ -148,7 +152,7 @@ export function ExploreScreen({ navigation }) {
             <View className="w-full flex-col px-4 bg-main-blue dark:bg-dk-tab py-8">
                 <View className="flex-row justify-between w-full">
                     <View className="flex-row items-center">
-                    <Image className="w-12 h-10 ml-2" source={logo} />
+                        <Image className="w-12 h-10 ml-2" source={logo} />
                         <Text className="text-white dark:text-dk-blue text-2xl font-Outfit-medium">
                             Marlin
                         </Text>

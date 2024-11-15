@@ -1,10 +1,11 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 const useStoreType = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [allStores, setAllStores] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Función para obtener las categorías
     const getStoreCat = async () => {
         try {
             const response1 = await fetch('https://marlin-backend.vercel.app/api/storeTypes/');
@@ -30,10 +31,15 @@ const useStoreType = () => {
             console.error('Error en el registro:', error);
         }
     }
+    // ------------------------------------------------------------------------
+
+    // Obtiene las categorías
     useEffect(() => {
         getStoreCat();
     }, []);
-    return {allCategories, allStores, loading};
+    // ------------------------------------------------------------------------
+
+    return { allCategories, allStores, loading };
 };
 
 export default useStoreType;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 const useSelectedStoreType = (categoryId) => {
     const [stores, setStores] = useState([]);
 
+    // Función para obtener las tiendas
     const getStores = async () => {
         try {
             const response = await fetch("https://marlin-backend.vercel.app/api/stores/");
@@ -20,12 +21,15 @@ const useSelectedStoreType = (categoryId) => {
             console.error('Error en el registro:', error);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Obtiene las tiendas
     useEffect(() => {
         if (categoryId !== null) {
             getStores();
         }
     }, [categoryId]);
+    // ------------------------------------------------------------------------
 
     return [stores];
 };

@@ -5,6 +5,7 @@ export const useHistorical = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // funcion que obtiene las ordenes
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -23,6 +24,7 @@ export const useHistorical = () => {
 
     fetchOrders();
   }, []);
+  // ------------------------------------------------------------------------
 
   return { orders, loading, error };
 };

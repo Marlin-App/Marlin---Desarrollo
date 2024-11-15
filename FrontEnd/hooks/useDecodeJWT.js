@@ -1,10 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const useDecodeJWT = () => {
 
-
+  // Función para decodificar el JWT
   const base64UrlDecode = useCallback((base64Url) => {
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const padding = base64.length % 4;
@@ -13,7 +12,9 @@ const useDecodeJWT = () => {
     }
     return decodeURIComponent(escape(atob(base64)));
   }, []);
+  // ------------------------------------------------------------------------
 
+  // decodifica las partes codificadas
   const decodeJWT = useCallback((token) => {
     const [header, payload, signature] = token.split('.');
     const decodedHeader = base64UrlDecode(header);
@@ -28,8 +29,9 @@ const useDecodeJWT = () => {
       signature: signature
     };
   }, [base64UrlDecode]);
+  // ------------------------------------------------------------------------
 
-
+  // Función para comprobar si el token ha expirado
   async function isTokenExpired() {
     const token = await getToken();
     if (!token) return true;
@@ -37,8 +39,9 @@ const useDecodeJWT = () => {
     const currentTime = Math.floor(Date.now() / 1000);
     return decodeToken.payload.exp < currentTime;
   }
+  // ------------------------------------------------------------------------
 
-
+  // Función para refrescar el token
   async function refreshToken() {
     const token = await getToken();
     const response = await fetch('https://marlin-backend.vercel.app/api/token/refresh/', {
@@ -58,22 +61,25 @@ const useDecodeJWT = () => {
     const data = await response.json();
     await AsyncStorage.setItem('@userToken', JSON.stringify(data));
   }
+  // ------------------------------------------------------------------------
 
+  // Función para obtener el token
   async function getToken() {
     const jsonValue = await AsyncStorage.getItem('@userToken');
     const userData = JSON.parse(jsonValue);
     const token = userData;
     return token;
   }
+  // ------------------------------------------------------------------------
 
+  // Función para obtener el access token
   async function getAccessToken() {
     let token = decodeJWT(await getToken());
     return token.access;
   }
-
+  // ------------------------------------------------------------------------
 
   return { decodeJWT, isTokenExpired, refreshToken, getToken, getAccessToken };
 };
-
 
 export default useDecodeJWT;

@@ -1,25 +1,12 @@
-import { useEffect, useState } from "react";
-import {
-    Button,
-    Image,
-    View,
-    Text,
-    Alert,
-    Pressable,
-    TextInput,
-    ScrollView,
-    TouchableOpacity,
-    ActivityIndicator,
-} from "react-native";
+import { useState } from "react";
+import { Image, View, Text, Alert, Pressable, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import useGetDeliveryForm from "../hooks/useGetDeliveryForm";
 import * as ImagePicker from "expo-image-picker";
 import { useColorScheme } from "nativewind";
 import { DropDown } from "../components/DropDown";
 import Feather from "@expo/vector-icons/Feather";
-import { Settings } from "../screens/Settings";
 
 export function DeliveryFormScreen({ navigation }) {
-    const [image, setImage] = useState(null);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === "dark" ? "white" : "#60a5fa";
     const { handleDeliveryForm } = useGetDeliveryForm(navigation);
@@ -39,56 +26,31 @@ export function DeliveryFormScreen({ navigation }) {
     const [imageIDBack, setimageIDBack] = useState(null);
 
     const allPictures = [
-        { uri: imageDelivery},
-        { uri: imageVehicle},
-        { uri: imageLicense},
-        { uri: imageIDFront},
+        { uri: imageDelivery },
+        { uri: imageVehicle },
+        { uri: imageLicense },
+        { uri: imageIDFront },
         { uri: imageIDBack },
     ];
 
+    // Función para manejar el cambio en los campos del formulario
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
-
-
-    // const handleSubmitForm = () => {
-    // if (
-    //     formData.brand &&
-    //     formData.model &&
-    //     formData.plate &&
-    //     acceptedTerms &&
-    //     imageDelivery &&
-    //     imageLicense &&
-    //     imageIDFront &&
-    //     imageIDBack &&
-    //     imageVehicle
-    // ) {
-    //         Alert.alert(
-    //             "Solicitud enviada",
-    //             "Tu solicitud está siendo verificada por los administradores."
-    //         );
-
-    //         // navigation.navigate("Mi perfil");
-    //         navigation.navigate("thirdScreen");
-    //     } else {
-    //         Alert.alert(
-    //             "Formulario incompleto",
-    //             "Por favor, completa todos los campos obligatorios."
-    //         );
-    //     }
-    // };
+    // ------------------------------------------------------------------------
 
     const [selectedValue, setSelectedValue] = useState(formData.TipoVehículo);
 
+    // Opciones de vehículos
     const tipoVehículo = [
         { label: "Carga Liviana", value: "Carga Liviana" },
         { label: "Liviano", value: "Liviano" },
         { label: "Bicicleta", value: "Bicicleta" },
         { label: "Motocicleta", value: "Motocicleta" },
     ];
+    // ------------------------------------------------------------------------
 
-
-
+    // Opciones para la imagen
     const pickImage = async (pic) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -118,9 +80,10 @@ export function DeliveryFormScreen({ navigation }) {
             }
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el envío del formulario
     const deliveryRequest = () => {
-
         if (
             formData.brand &&
             formData.model &&
@@ -149,8 +112,7 @@ export function DeliveryFormScreen({ navigation }) {
             );
         }
     };
-
-
+    // ------------------------------------------------------------------------
 
     return (
         <View>
@@ -183,9 +145,11 @@ export function DeliveryFormScreen({ navigation }) {
                                 <Feather name="camera" size={28} color="#015DEC" />
                             </View>
                         </Pressable>
+
                         <Text className="font-Excon_regular mt-4 text-main-blue dark:text-[#c2c2c2] text-[11px] text-center">
                             Ingresa una foto clara de tu rostro para tu perfil
                         </Text>
+
                         <Text className="font-Excon_regular text-main-blue dark:text-white text-[20px] w-full  mt-8">
                             Datos del vehículo
                         </Text>
@@ -193,6 +157,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-4">
                             Marca del vehículo:
                         </Text>
+
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             value={formData.brand}
@@ -204,6 +169,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Tipo de vehículo:
                         </Text>
+
                         <View className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-[9px]">
                             <DropDown
                                 title="Selecciona el tipo de vehículo que conduces para realizar entregas:"
@@ -219,6 +185,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Modelo del vehículo:
                         </Text>
+
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             placeholderTextColor={placeholderTextColor}
@@ -230,6 +197,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Placa del vehículo:
                         </Text>
+
                         <TextInput
                             className="w-full border-[0.5px] border-light-blue dark:text-white dark:border-main-blue mt-2 rounded-md px-2 py-1"
                             placeholderTextColor={placeholderTextColor}
@@ -246,6 +214,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Fotos del vehículo:
                         </Text>
+
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
@@ -274,6 +243,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Foto de la cédula de identidad por delante:
                         </Text>
+
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
@@ -302,6 +272,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Foto de la cédula de identidad por detras:
                         </Text>
+
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
@@ -330,6 +301,7 @@ export function DeliveryFormScreen({ navigation }) {
                         <Text className="font-Erode_regular text-main-blue dark:text-white text-[15px] w-full  mt-3">
                             Foto de la licencia de conducir:
                         </Text>
+
                         <View className=" my-2 font-Excon_thin w-full">
                             <Pressable
                                 className="justify-center items-center"
@@ -377,7 +349,6 @@ export function DeliveryFormScreen({ navigation }) {
 
                         <TouchableOpacity
                             className="bg-main-blue p-4 mt-6 rounded-lg w-full items-center justify-center"
-                            // onPress={() => navigation.replace("thirdScreen")}
                             onPress={deliveryRequest}
                         >
                             <Text className="text-white font-bold ml-2">

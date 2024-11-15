@@ -1,16 +1,10 @@
-// navigation/HomeStack.js
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen } from "../screens/Home";
-import { StoreCat } from "../screens/StoreCat";
 import { Store } from "../screens/Store";
 import { ItemPage } from "../screens/Item";
 import { CartScreen } from "../screens/Cart";
 import * as React from "react";
-import { useEffect, useCallback } from "react";
 import { useFonts } from "expo-font";
-import { Alert } from "react-native";
 import { useState } from "react";
-import * as SplashScreen from "expo-splash-screen";
 import { LandingPage } from "../screens/landing";
 import { PayScreen } from "../screens/Pay";
 import { useColorScheme } from "nativewind";
@@ -18,7 +12,6 @@ import { MainTabNavigator } from "./MainTabNavigator";
 import { LoginPage } from "../screens/Login";
 import { RegisterPage } from "../screens/Register";
 import { DirectionScreen } from "../screens/DirectionScreen";
-import { HomeComercianteScreen } from "../screens/HomeComerciante";
 import { ProfileStackScreen } from "./ProfileStack";
 import { InformationScreen } from "../screens/Information";
 import { HistoricalScreen } from "../screens/Historical";
@@ -33,6 +26,7 @@ import { OrderInfo } from "../screens/OrderInfo";
 const HomeStack = createNativeStackNavigator();
 
 export function HomeStackScreen({ navigation, route }) {
+
   const [fontsLoaded] = useFonts({
     Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
     Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -46,27 +40,9 @@ export function HomeStackScreen({ navigation, route }) {
   const [isVerified, setIsVerified] = useState(false);
   const [formCompleted, setFormCompleted] = useState(false);
 
-  // const handleSubmitForm = () => {
-  //   if (formCompleted) {
-  //     setFormCompleted(true);
-  //     Alert.alert(
-  //       "Solicitud enviada",
-  //       "Tu solicitud está siendo verificada por los administradores."
-  //     );
-
-  //     setIsVerified(true);
-
-  //     navigation.navigate("ProfileScreen");
-  //   } else {
-  //     Alert.alert(
-  //       "Formulario incompleto",
-  //       "Por favor, completa todos los campos obligatorios."
-  //     );
-  //   }
-  // };
-
   return (
     <HomeStack.Navigator>
+
       <HomeStack.Screen
         name="Home"
         component={MainTabNavigator}
@@ -224,18 +200,6 @@ export function HomeStackScreen({ navigation, route }) {
           }}
         />
       )}
-      {/* <HomeStack.Screen
-        name="DeliveryFormScreen"
-        component={DeliveryFormScreen}
-        options={{
-          headerShown: true,
-          headerTitle: 'Regresar',
-          headerTintColor: colorScheme === 'dark' ? '#60a5fa' : '#015DEC',
-          headerStyle: {
-            backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#ffffff',
-          }
-        }}
-      /> */}
 
       <HomeStack.Screen
         name="InformationScreen"
@@ -249,6 +213,7 @@ export function HomeStackScreen({ navigation, route }) {
           },
         }}
       />
+
       <HomeStack.Screen
         name="HistoricalScreen"
         component={HistoricalScreen}
@@ -339,6 +304,7 @@ export function HomeStackScreen({ navigation, route }) {
           },
         }}
       />
+
     </HomeStack.Navigator>
   );
 }

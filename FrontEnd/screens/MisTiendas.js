@@ -5,20 +5,16 @@ import React, { useEffect, useState } from 'react';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import useCRUDTiendas from '../hooks/useCRUDTiendas';
 import NotificationDropdown from '../components/NotificationDropdown';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export function MisTiendas({ navigation }) {
     const { colorScheme } = useColorScheme();
-
     const { allStores, loading, getUserStores, setAllStores } = useCRUDTiendas();
-
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-
     const [notifications, setNotifications] = useState([
-        
+        // Notificaciones de ejemplo
     ]);
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
@@ -30,15 +26,18 @@ export function MisTiendas({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
 
+    // llama a la función getUserStores al montarse el componente
     useEffect(() => {
         const fetchStores = async () => {
             await getUserStores();
         };
         const focusListener = navigation.addListener('focus', fetchStores);
     }, [navigation]);
+    // ------------------------------------------------------------------------
 
-
+    // Función para formatear las tiendas
     const renderStoreItem = ({ item }) => (
         <View className="relative">
             <View className="absolute h-[150] w-[425] items-center justify-center">
@@ -56,6 +55,7 @@ export function MisTiendas({ navigation }) {
             </Pressable>
         </View>
     );
+    // ------------------------------------------------------------------------
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">

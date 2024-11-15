@@ -23,7 +23,7 @@ export function CartStackScreen({ navigation, route }) {
                     headerTintColor: "#015DEC",
                     headerTitleStyle: {
                         fontFamily: 'Excon_regular',
-                    },                  
+                    },
                 }}
             />
         </Stack.Navigator>

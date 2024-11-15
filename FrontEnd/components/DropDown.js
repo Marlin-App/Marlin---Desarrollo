@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-export function DropDown({options, selectedValue, onValueChange, place, title, active }) {
+export function DropDown({ options, selectedValue, onValueChange, place, title, active }) {
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Función para manejar la selección de una opción
   const handleSelect = (value) => {
     onValueChange(value);
     setModalVisible(false);
   };
+  // ------------------------------------------------------------------------
 
   return (
     <View>
-        <View>
-      <TouchableOpacity
-      className="flex-row items-center justify-between"
-      
-        onPress={() => {active?setModalVisible(true):setModalVisible(false)}}
+      <View>
+        <TouchableOpacity
+          className="flex-row items-center justify-between"
+          onPress={() => { active ? setModalVisible(true) : setModalVisible(false) }}
         >
-        <Text className="font-Excon_thin dark:text-white">{selectedValue || place} </Text>
-        <Text className="font-Excon_thin text-main-blue">{'▼'} </Text>
-      </TouchableOpacity>
-          </View>
+          <Text className="font-Excon_thin dark:text-white">{selectedValue || place} </Text>
+          <Text className="font-Excon_thin text-main-blue">{'▼'} </Text>
+        </TouchableOpacity>
+      </View>
 
       <Modal
         transparent={true}
@@ -30,7 +31,7 @@ export function DropDown({options, selectedValue, onValueChange, place, title, a
       >
         <View className="flex-col justify-center items-center bg-black/50 ">
           <View className="my-60 bg-white px-5 py-10 rounded-lg  dark:bg-neutral-900">
-          <Text className="font-Excon_bold text-xl text-main-blue mb-8 dark:text-light-blue">{title}</Text>
+            <Text className="font-Excon_bold text-xl text-main-blue mb-8 dark:text-light-blue">{title}</Text>
             <FlatList className=""
               data={options}
               showsVerticalScrollIndicator={true}
@@ -51,4 +52,3 @@ export function DropDown({options, selectedValue, onValueChange, place, title, a
     </View>
   );
 };
-

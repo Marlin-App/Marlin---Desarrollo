@@ -8,9 +8,9 @@ import Entypo from '@expo/vector-icons/Entypo';
 import useCRUDProductos from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
 
-
 export function AgregarProducto({ navigation }) {
 
+    // State para almacenar los datos del formulario
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -21,7 +21,7 @@ export function AgregarProducto({ navigation }) {
         item_type: 1, // Por ejemplo, un valor por defecto
         variations: [],
     });
-
+    // ------------------------------------------------------------------------
 
     const { addProduct } = useCRUDProductos(navigation);
     const route = useRoute();
@@ -30,12 +30,12 @@ export function AgregarProducto({ navigation }) {
     const switchTalla = () => setTalla(previousState => !previousState);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-    const [row, setRow] = useState(1);
     const [variations, setVariations] = useState([]);
     const [images, setImages] = useState([]);
     const [color, setColor] = useState(false);
     const [talla, setTalla] = useState(false);
 
+    // Función para manejar la selección de imágenes
     const pickImages = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -43,7 +43,7 @@ export function AgregarProducto({ navigation }) {
                 allowsMultipleSelection: true, // Activa selección múltiple
                 quality: 1,
             });
-    
+
             if (!result.canceled) {
                 // Si permite selección múltiple, toma assets; si no, usa directamente el resultado
                 const newImages = result.assets ? result.assets.map((asset) => ({
@@ -53,27 +53,32 @@ export function AgregarProducto({ navigation }) {
                     uri: result.uri,
                     id: Math.random().toString(36).substring(7),
                 }];
-                
+
                 setImages((prevImages) => [...prevImages, ...newImages]);
             }
         } catch (error) {
             console.log("Error al seleccionar imágenes: ", error);
         }
-        
-    };
 
+    };
+    // ------------------------------------------------------------------------
+
+    // Función para manejar la eliminación de imágenes
     const removeImage = (id) => {
         setImages((prevImages) => prevImages.filter((image) => image.id !== id));
     };
+    // ------------------------------------------------------------------------
 
-
+    // Función para manejar el cambio en los campos del formulario
     const handleInputChange = (field, value) => {
         setFormData(prevState => ({
             ...prevState,
             [field]: value,
         }));
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el cambio en las variaciones
     const handleVariationChange = (index, field, value) => {
         const updatedVariations = [...variations];
         updatedVariations[index] = {
@@ -82,14 +87,18 @@ export function AgregarProducto({ navigation }) {
         };
         setVariations(updatedVariations);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para agregar una nueva variación
     const addRow = () => {
         setVariations(prevVariations => [
             ...prevVariations,
             { color: '', size: '', quantity: '' },
         ]);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para eliminar una variación
     const removeRow = () => {
         setVariations(prevVariations => {
             if (prevVariations.length > 1) {
@@ -98,7 +107,9 @@ export function AgregarProducto({ navigation }) {
             return prevVariations;
         });
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar la selección de color y talla
     useEffect(() => {
         if (color || talla) {
             if (variations.length === 0) {
@@ -108,7 +119,9 @@ export function AgregarProducto({ navigation }) {
             setVariations([]);
         }
     }, [color, talla]);
+    // ------------------------------------------------------------------------
 
+    // Función para agregar el producto
     const AddProductos = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
@@ -127,20 +140,20 @@ export function AgregarProducto({ navigation }) {
             };
         });
 
+        // Agregar el nuevo producto
         const newProduct = {
             attributes: productVariations,
             name: formData.name,
             description: formData.description,
             price: formData.price,
             stock: productVariations.length > 0 ? productVariations.reduce((total, variation) => total + variation.stock, 0) : formData.stock,
-            pictures: images.length > 0 ? images : '', 
+            pictures: images.length > 0 ? images : '',
             store_id: storeId.store,
             item_type: 1,
         };
         addProduct(newProduct);
     };
-
-
+    // ------------------------------------------------------------------------
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950">
@@ -185,7 +198,6 @@ export function AgregarProducto({ navigation }) {
                     </View>
 
                     <View className="px-5">
-
                         {color || talla ?
                             (
                                 <ScrollView>
@@ -242,30 +254,30 @@ export function AgregarProducto({ navigation }) {
                             (<View className="relative flex-row py-[10px] justify-between items-center mb-2">
                                 <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Cantidad en inventario</Text>
                                 <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue px-4 my-2 font-Excon_thin dark:text-white dark:border-light-blue" value={formData.stock}
-                                onChangeText={(value) => {
-                                    if (/^\d*$/.test(value)) {
-                                        handleInputChange('stock', value);
-                                    } else {
-                                        alert('Valor inválido. Por favor, ingrese solo números.');
-                                    }
-                                }}
-                                 />
+                                    onChangeText={(value) => {
+                                        if (/^\d*$/.test(value)) {
+                                            handleInputChange('stock', value);
+                                        } else {
+                                            alert('Valor inválido. Por favor, ingrese solo números.');
+                                        }
+                                    }}
+                                />
                             </View>)}
 
                         <View className="relative flex-row py-[10px] justify-between items-center mb-2">
                             <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Precio</Text>
                             <View className="flex-row items-center">
                                 <Text className="text-main-blue text-md font-Excon_regular dark:text-light-blue">₡ </Text>
-                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue dark:border-light-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price} 
-                                
-                                onChangeText={(value) => {
-                                    if (/^\d*$/.test(value)) {
-                                        handleInputChange('price', value);
-                                    } else {
-                                        alert('Valor inválido. Por favor, ingrese solo números.');
-                                    }
-                                }}
-                                 />
+                                <TextInput keyboardType="numeric" className="border-[0.5px] rounded-lg w-[25vw] border-main-blue dark:border-light-blue px-4 my-2 font-Excon_thin dark:text-white" value={formData.price}
+
+                                    onChangeText={(value) => {
+                                        if (/^\d*$/.test(value)) {
+                                            handleInputChange('price', value);
+                                        } else {
+                                            alert('Valor inválido. Por favor, ingrese solo números.');
+                                        }
+                                    }}
+                                />
                             </View>
                         </View>
 
@@ -322,9 +334,6 @@ export function AgregarProducto({ navigation }) {
                     </View>
                 </View>
             </View>
-
         </ScrollView>
-
     );
-
 }

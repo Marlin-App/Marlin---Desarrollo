@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home";
-import { Keyboard, Platform, Text } from "react-native"
+import { Keyboard, Platform } from "react-native"
 import { useColorScheme } from "nativewind";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { ExploreScreen } from "../screens/Explore";
 import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
@@ -16,7 +15,7 @@ export function MainTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { colorScheme } = useColorScheme();
 
-
+    // funcion que verifica si el teclado esta visible
     useEffect(() => {
         const keyboardShowListener =
             Platform.OS === "ios"
@@ -41,6 +40,7 @@ export function MainTabNavigator() {
             keyboardHideListener.remove();
         };
     }, []);
+    // ------------------------------------------------------------------------
 
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
@@ -75,6 +75,7 @@ export function MainTabNavigator() {
                 /*  */
             }}
         >
+
             <Tab.Screen
                 name="Inicio"
                 component={HomeScreen}
@@ -117,6 +118,7 @@ export function MainTabNavigator() {
                     ),
                 }}
             />
+
         </Tab.Navigator>
     );
 }

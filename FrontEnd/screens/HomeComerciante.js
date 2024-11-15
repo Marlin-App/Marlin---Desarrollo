@@ -1,24 +1,21 @@
-
 import { Text, View, FlatList, Pressable, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
-import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useCallback, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Feather from '@expo/vector-icons/Feather';
 import NotificationDropdown from '../components/NotificationDropdown';
 import useOrders from '../hooks/useOrders';
 export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const [filter, setFilter] = useState("Completado");
-    const {orders} = useOrders([]);
-
+    const { orders } = useOrders([]);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
+    // Estado para almacenar las notificaciones
     const [notifications, setNotifications] = useState([
-        
+        // Aquí puedes agregar las notificaciones
     ]);
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
@@ -30,34 +27,35 @@ export function HomeComercianteScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
+
     const [orderFiler, setOrderFilter] = useState(orders);
 
- 
-
-
+    // función para filtrar los pedidos
     useEffect(() => {
-            if(filter==="Pendiente"){
-                const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor" );
-                setOrderFilter(filteredOrders);
-                return;
-            }
-            const filteredOrders = orders.filter(order => order.status === filter);
+        if (filter === "Pendiente") {
+            const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor");
             setOrderFilter(filteredOrders);
-        
-    }, [filter, orders]);
+            return;
+        }
+        const filteredOrders = orders.filter(order => order.status === filter);
+        setOrderFilter(filteredOrders);
 
-    const dateForm = (order_date) => {    
+    }, [filter, orders]);
+    // ------------------------------------------------------------------------
+
+    // Función para formatear la fecha
+    const dateForm = (order_date) => {
         const date = new Date(order_date);
 
         // Opciones de formato para mostrar mes, día y hora
         const options = { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-        
+
         // Formatear la fecha
-      const formattedDate = date.toLocaleString('es-ES', options);
-      return formattedDate;
+        const formattedDate = date.toLocaleString('es-ES', options);
+        return formattedDate;
     }
-
-
+    // ------------------------------------------------------------------------
 
     return (
         <View className="flex-1  dark:bg-neutral-950">
@@ -76,11 +74,11 @@ export function HomeComercianteScreen({ navigation }) {
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-center gap-x-4 mr-2">
-                    <TouchableOpacity onPress={toggleDropdown}>
+                        <TouchableOpacity onPress={toggleDropdown}>
                             <Ionicons name="notifications-outline" size={24} color={colorScheme === 'dark' ? "#5186EC" : "white"} />
                             {notifications.length > 0 && (
                                 <View className="absolute top-[-2px] right-[-2px] w-2 h-2 bg-red-600 rounded-full" />
-                            )} 
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -100,38 +98,38 @@ export function HomeComercianteScreen({ navigation }) {
 
             <ScrollView className="flex-col p-1 mx-1  mb-4">
 
-                    <FlatList
-                        data={orderFiler}
-                        scrollEnabled={false}   
-                        keyExtractor={(item) => item.id.toString()}
-                        contentContainerStyle={{ paddingBottom: 20 }}
-                        className=""
-                        ListEmptyComponent={
-                            <View className="items-center mt-4">
-                                <Text className="text-gray-600 dark:text-gray-400">No hay pedidos</Text>
-                            </View>
-                        }
-                        renderItem={({ item }) => (
-                            <Pressable className="flex-row justify-center mb-3 bg-white rounded-lg border-gray-200 dark:border-[#232323] dark:bg-[#1C1C1C] border " onPress={() => navigation.navigate("Pedido", { order: item })}>
-                                <View className="flex-row justify-between  px-3 py-3  dark:border-light-blue w-full items-center rounded-md ">
-                                    <View className="flex-row ">
-                                        <View className=" justify-center item-center dark:bg-neutral-900 ">
-                                            <Image className="rounded-lg" source={{uri: item.user_picture }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
-                                        </View>
-                                        <View className="flex-1 ml-2 justify-center">
-                                            <Text className="font-Excon_bold text-sm dark:text-white">Fecha: <Text className="font-Excon_thin text-sm">{dateForm(item.order_date)} </Text></Text>
-                                            <Text className="font-Excon_bold text-sm dark:text-white">Estado: <Text className="font-Excon_thin text-sm">{item.status} </Text></Text>
-                                            <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.order_num} </Text></Text>
-                                            <View className="flex-row justify-between">
-                                                <Text className="font-Excon_bold text-sm dark:text-[#cdcdcd]">Productos: <Text className="font-Excon_thin">{item.products.length}</Text></Text>
-                                                <Text className="font-Excon_bold text-sm dark:text-[#f1f1f1]">Total: <Text className="font-Excon_thin">₡{item.total_price}</Text></Text>
-                                            </View>
+                <FlatList
+                    data={orderFiler}
+                    scrollEnabled={false}
+                    keyExtractor={(item) => item.id.toString()}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    className=""
+                    ListEmptyComponent={
+                        <View className="items-center mt-4">
+                            <Text className="text-gray-600 dark:text-gray-400">No hay pedidos</Text>
+                        </View>
+                    }
+                    renderItem={({ item }) => (
+                        <Pressable className="flex-row justify-center mb-3 bg-white rounded-lg border-gray-200 dark:border-[#232323] dark:bg-[#1C1C1C] border " onPress={() => navigation.navigate("Pedido", { order: item })}>
+                            <View className="flex-row justify-between  px-3 py-3  dark:border-light-blue w-full items-center rounded-md ">
+                                <View className="flex-row ">
+                                    <View className=" justify-center item-center dark:bg-neutral-900 ">
+                                        <Image className="rounded-lg" source={{ uri: item.user_picture }} style={{ width: 100, height: 100, resizeMode: "stretch" }} />
+                                    </View>
+                                    <View className="flex-1 ml-2 justify-center">
+                                        <Text className="font-Excon_bold text-sm dark:text-white">Fecha: <Text className="font-Excon_thin text-sm">{dateForm(item.order_date)} </Text></Text>
+                                        <Text className="font-Excon_bold text-sm dark:text-white">Estado: <Text className="font-Excon_thin text-sm">{item.status} </Text></Text>
+                                        <Text className="font-Excon_bold text-sm dark:text-white">Recibo: <Text className="font-Excon_thin text-sm">{item.order_num} </Text></Text>
+                                        <View className="flex-row justify-between">
+                                            <Text className="font-Excon_bold text-sm dark:text-[#cdcdcd]">Productos: <Text className="font-Excon_thin">{item.products.length}</Text></Text>
+                                            <Text className="font-Excon_bold text-sm dark:text-[#f1f1f1]">Total: <Text className="font-Excon_thin">₡{item.total_price}</Text></Text>
                                         </View>
                                     </View>
                                 </View>
-                            </Pressable>
-                        )} 
-                    />
+                            </View>
+                        </Pressable>
+                    )}
+                />
             </ScrollView>
         </View>
     );

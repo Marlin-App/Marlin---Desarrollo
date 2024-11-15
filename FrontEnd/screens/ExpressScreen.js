@@ -1,83 +1,37 @@
-import {
-  Button,
-  Image,
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  FlatList,
-  navigation,
-  navigate,
-} from "react-native";
+import { Image, View, Text, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Animated, Modal, Dimensions } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCRUDProductos } from "../hooks/useCRUDProductos";
+import { Animated, Dimensions } from "react-native";
 import NotificationDropdown from "../components/NotificationDropdown";
-import React, { useEffect, useCallback, useState, useRef } from "react";
-import useOrders from '../hooks/useOrders'; 
-
-
+import React, { useEffect, useState, useRef } from "react";
+import useOrders from '../hooks/useOrders';
 
 export function ExpressScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [longPressProduct, setLongPressProduct] = useState(null);
   const { colorScheme } = useColorScheme();
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get("window").width;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentPage, setCurrentPage] = useState(0);
-  const { orders } = useOrders(); 
-  
-  // const ordenes = [
-  //   {
-  //     id: 1,
-  //     tienda: "Bazar Marta",
-  //     destinatario: "Jeremy Guzman",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
-  //     entregaCoordenadas: { latitude: 9.979, longitude: -84.813 },
-  //     estado: "Pendientes",
-  //   },
-  //   {
-  //     id: 2,
-  //     tienda: "Panadería La Esperanza",
-  //     destinatario: "Ana Lopez",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
-  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
-  //     estado: "En Progreso",
-  //   },
-  //   {
-  //     id: 3,
-  //     tienda: "Panadería La Esperanza",
-  //     destinatario: "Ana Lopez",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
-  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
-  //     estado: "Completada",
-  //   },
-  // ];
+  const { orders } = useOrders();
 
   const [prueba, setprueba] = useState([
-    { title: "Pendientes", orders: [{
-      id: 1,
-      tienda: "Bazar Marta",
-      codigo: "1234",
-      destinatario: "Jeremy Guzman",
-      detalle: "Detalles del pedido aquí",
-      tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
-      entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
-      estado: "Pendientes",
-    }] },
-    { title: "En Progreso", orders:[] },
-    { title: "Completados", orders:[] },
+    {
+      title: "Pendientes", orders: [{
+        id: 1,
+        tienda: "Bazar Marta",
+        codigo: "1234",
+        destinatario: "Jeremy Guzman",
+        detalle: "Detalles del pedido aquí",
+        tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
+        entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
+        estado: "Pendientes",
+      }]
+    },
+    { title: "En Progreso", orders: [] },
+    { title: "Completados", orders: [] },
   ]);
 
+  // funcion para rechazar una orden
   const handleRejectOrder = (orderId) => {
     setprueba((prevPrueba) => {
       const updatedPrueba = prevPrueba.map((category) => {
@@ -92,6 +46,9 @@ export function ExpressScreen({ navigation }) {
       return updatedPrueba;
     });
   };
+  // ------------------------------------------------------------------------
+
+  // funcion para aceptar una orden
   const handleAcceptOrder = (orderId) => {
     setprueba((prevPrueba) => {
       const updatedPrueba = prevPrueba.map((category) => {
@@ -118,16 +75,17 @@ export function ExpressScreen({ navigation }) {
       return updatedPrueba;
     });
   };
+  // ------------------------------------------------------------------------
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
   const [notifications, setNotifications] = useState([
-    
-]);
+    // aqui va la lista de notificaciones
+  ]);
 
-const handleNotificationClick = (notificationId) => {
+  // Función para manejar el clic en una notificación
+  const handleNotificationClick = (notificationId) => {
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
-};
+  };
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -136,7 +94,9 @@ const handleNotificationClick = (notificationId) => {
   const closeDropdown = () => {
     setIsDropdownVisible(false);
   };
+  // ------------------------------------------------------------------------
 
+  // funcion para obtener las tiendas
   useEffect(() => {
     const fetchStores = async () => {
       await fetchStoresWithProducts();
@@ -144,24 +104,16 @@ const handleNotificationClick = (notificationId) => {
 
     fetchStores();
   }, [navigation]);
+  // ------------------------------------------------------------------------
 
-  const longpress = (id) => {
-    setLongPressProduct(id);
-    setModalVisible(true);
-  };
-
-  const goToPage = (page) => {
-    setCurrentPage(page);
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ x: page * screenWidth, animated: true });
-    }
-  };
-
+  // Función para manejar el scroll
   const handleScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const pageIndex = Math.round(contentOffsetX / screenWidth);
     setCurrentPage(pageIndex);
   };
+  // ------------------------------------------------------------------------
+
   return (
     <View className="bg-white dark:bg-neutral-950 h-full">
       <NotificationDropdown
@@ -241,37 +193,35 @@ const handleNotificationClick = (notificationId) => {
                                 Usuario: {item.destinatario}
                               </Text>
                               <TouchableOpacity onPress={() =>
-                                navigation.navigate("OrderInfo",{order:item})
+                                navigation.navigate("OrderInfo", { order: item })
                               }>
-                              <Text className="font-Excon_regular text-sm dark:text-white underline">
-                                Más información
-                              </Text>
+                                <Text className="font-Excon_regular text-sm dark:text-white underline">
+                                  Más información
+                                </Text>
                               </TouchableOpacity>
                             </View>
                           </View>
                           <View className="flex-row justify-center gap-x-4 mt-3">
                             <TouchableOpacity
-                            onPress={() => handleAcceptOrder(item.id)}>
+                              onPress={() => handleAcceptOrder(item.id)}>
                               <Text
-                                className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${
-                                  storeIndex === 0 ||
+                                className={`font-Excon_regular text-sm text-white dark:text-white px-4 py-1 rounded-xl mr-2 ${storeIndex === 0 ||
                                   scrollX._value / screenWidth === storeIndex
-                                    ? "bg-main-blue"
-                                    : "bg-main-gray"
-                                }`}
+                                  ? "bg-main-blue"
+                                  : "bg-main-gray"
+                                  }`}
                               >
                                 Aceptar
                               </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                            onPress={()=>handleRejectOrder(item.id)}>
+                              onPress={() => handleRejectOrder(item.id)}>
                               <Text
-                                className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${
-                                  storeIndex === 0 ||
+                                className={`font-Excon_regular text-sm text-white dark:text-white px-2 py-1 rounded-xl ${storeIndex === 0 ||
                                   scrollX._value / screenWidth === storeIndex
-                                    ? "bg-main-red"
-                                    : "bg-main-gray"
-                                }`}
+                                  ? "bg-main-red"
+                                  : "bg-main-gray"
+                                  }`}
                               >
                                 No Aceptar
                               </Text>

@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from "nativewind";
-import { ProfileScreen } from '../screens/Settings';
-import { LandingPage } from '../screens/landing';
-import { LoginPage } from '../screens/Login';
-import { RegisterPage } from '../screens/Register';
-import { DirectionScreen } from '../screens/DirectionScreen';
 import { ComercianteTabNavigator } from './ComercianteTabNavigator';
 import { ComerciantePedidoScreen } from '../screens/ComerciantePedidoScreen';
 import { NuevaTienda } from '../screens/NuevaTienda';
 import { NuevoProducto } from '../screens/NuevoProducto';
 import { EditarProducto } from '../screens/EditarProducto';
 import { AgregarProducto } from '../screens/AgregarProducto';
-import { ComercianteInventario } from '../screens/ComercianteInventario';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -55,6 +48,7 @@ export function ProfileStackScreen({ navigation, route }) {
           }
         }}
       />
+
       <ProfileStack.Screen
         name="NuevoProducto"
         component={NuevoProducto}
@@ -88,6 +82,7 @@ export function ProfileStackScreen({ navigation, route }) {
           }
         }}
       />
+
     </ProfileStack.Navigator>
   );
 }
