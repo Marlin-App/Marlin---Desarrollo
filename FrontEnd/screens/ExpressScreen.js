@@ -114,6 +114,12 @@ export function ExpressScreen({ navigation }) {
   };
   // ------------------------------------------------------------------------
 
+  // funcion para manejar la conexion
+  useEffect(() => {
+    console.log(online);
+  }, [online]);
+  // ------------------------------------------------------------------------
+
   return (
     <View className="bg-white dark:bg-neutral-950 h-full">
       <NotificationDropdown
@@ -239,6 +245,17 @@ export function ExpressScreen({ navigation }) {
           </View>
         ))}
       </Animated.ScrollView>
+
+      <View className="flex-row justify-between items-center px-5 mb-2">
+        <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">¿Deseas recibir pedidos?</Text>
+        <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={online ? '#015DEC' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={switchOnline}
+          value={online}
+        />
+      </View>
 
       <View className="flex-row justify-center mt-4">
         {prueba.map((_, index) => {

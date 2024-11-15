@@ -107,33 +107,66 @@ export function PayScreen({ navigation }) {
             store_id: route.params.idTienda,
             order_num: randomCode,
             status: "Pendiente",
-            direction: !route.params.direction ? "Recoger en el lugar" : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, cordenedas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude} , referencias: ${route.params.direction.referencias}`,
+            direction: !route.params.direction
+                ? "Recoger en el lugar"
+                : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, coordenadas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude}, referencias: ${route.params.direction.referencias}`,
             user_id: user.id,
-            delivery_distance: '1',
-            user_coordinates: `${route.params.direction.coodernates.latitude},${route.params.direction.coodernates.longitude}`,
-            references: `${route.params.direction.referencias}`,
+            delivery_distance:'1', //cambiar por el valor de la distancia
+            user_coordinates: !route.params.direction
+            ? "Recoger en el lugar": `${route.params.direction.coodernates.latitude},${route.params.direction.coodernates.longitude}`,
+            references:  !route.params.direction
+            ? "Recoger en el lugar": `${route.params.direction.referencias}`,
         };
-
+    
         try {
-            const response = await fetch(
-                "https://marlin-backend.vercel.app/api/orders/",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(order),
-                }
-            );
-
+           
+            const response = await fetch("https://marlin-backend.vercel.app/api/orders/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(order),
+            });
+    
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error(`Error ${response.status}: ${errorText}`);
                 setLoading(false);
                 return;
             }
-
+    
+           
+            const createdOrder = await response.json();
+            const orderId = createdOrder.id;  
+    
+          
+            if (paymentReceipt) {
+                const formData = new FormData();
+                const uriParts = paymentReceipt.split(".");
+                const fileType = uriParts[uriParts.length - 1];
+                formData.append("voucher", {
+                    uri: paymentReceipt,
+                    name: `voucher.${fileType}`,
+                    type: `image/${fileType}`,
+                });
+    
+                const patchResponse = await fetch(`https://marlin-backend.vercel.app/api/orders/${orderId}/`, {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+    
+                if (!patchResponse.ok) {
+                    const errorText = await patchResponse.text();
+                    console.error(`Error ${patchResponse.status}: ${errorText}`);
+                    setLoading(false);
+                    return;
+                }
+            }
+    
             setLoading(false);
             Alert.alert(
                 "Compra Exitosa",
@@ -151,6 +184,7 @@ export function PayScreen({ navigation }) {
             );
         } catch (error) {
             console.error("Network or other error:", error);
+            setLoading(false);
         }
     };
     // ------------------------------------------------------------------------
