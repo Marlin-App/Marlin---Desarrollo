@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute } from '@react-navigation/native';
 import useDecodeJWT from "../hooks/useDecodeJWT";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
 export function ComerciantePedidoScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const { getToken, isTokenExpired, refreshToken } = useDecodeJWT();
@@ -24,7 +24,9 @@ export function ComerciantePedidoScreen({ navigation }) {
         return formattedDate;
     }
 
+    // Funcion para marcar el pedido como listo
     const handleReady = async () => {
+        // Verificar si el token ha expirado
         if (await isTokenExpired()) {
             await refreshToken();
         }
@@ -63,6 +65,7 @@ export function ComerciantePedidoScreen({ navigation }) {
             Alert.alert("Error", "Hubo un problema al procesar el pedido.");
         }
     };
+    // ------------------------------------------------------------------------
 
     return (
         <ScrollView className="bg-white dark:bg-neutral-950 h-full px-5">
@@ -74,19 +77,14 @@ export function ComerciantePedidoScreen({ navigation }) {
                         <Text className="text-xl font-Excon_bold text-main-blue  dark:text-light-blue">{order.user_name} </Text>
                     </View>
                     <Image className="bg-red-200 rounded-lg" source={{ uri: order.user_picture }} style={{ width: 70, height: 70, resizeMode: "cover" }} />
-
                 </View>
                 <Text className="text-md font-Excon_regular mt-4 ml-4 dark:text-white">Fecha: <Text className=" text-md font-Excon_thin">{dateForm(order.order_date)}</Text> </Text>
                 <Text className="text-md font-Excon_regular mt-2 ml-4 dark:text-white">Total a pagar: <Text className=" text-md font-Excon_thin">₡{order.total_price}</Text></Text>
                 <Text className="text-md font-Excon_regular mt-2 ml-4 dark:text-white">Recibo: <Text className=" text-md font-Excon_thin">{order.order_num}</Text></Text>
-
-
             </View>
 
             <View className="flex-col mt-5 border-b-[0.5px] pb-6 dark:border-light-blue">
-
                 <Text className="text-xl font-Excon_bold text-main-blue ml-4 dark:text-light-blue">Detalles de la orden:</Text>
-
                 <View className="flex-col mt-5 ml-4">
                     <View className="flex-row justify-between pb-2">
                         <Text className="text-md font-Excon_bold text-main-blue">Producto *</Text>
@@ -118,21 +116,16 @@ export function ComerciantePedidoScreen({ navigation }) {
                             </Text>
                         </View>
                     ))}
-
                 </View>
-
             </View>
+
             <Text className="text-xs font-Excon_thin mt-5 ml-4 dark:text-white">* Puedes hacer click en el nombre del producto para mayor información.</Text>
 
             <View className="flex-col mt-5 pb-6">
-
-
                 <View className="flex-col mt-5 ml-4">
                     <Text className="text-xl font-Excon_bold text-main-blue dark:text-light-blue">Referencias para la entrega</Text>
                     <Text className="my-2 font-Excon_thin dark:text-white">{order.direction} </Text>
                 </View>
-
-                {/* <Image className="bg-red-200" source={require('../assets/img/marlin.png')} style={{ width: 100, height: 100, resizeMode: "contain" }} /> */}
             </View>
 
             <View className="flex-col mt-5 pb-6 justify-between px-5 gap-y-2">
@@ -173,6 +166,4 @@ export function ComerciantePedidoScreen({ navigation }) {
             }
         </ScrollView>
     );
-
-
 }

@@ -1,16 +1,19 @@
-import { View, Text, TextInput, TouchableOpacity, Modal, Alert } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
+import React, { useState } from 'react';
 
 export function RestorePasswordScreen({ navigation }) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [correo, setCorreo] = useState("");
+
+    // Función para abrir el modal
     const openModal = () => {
         setModalVisible(true);
     }
+    // ------------------------------------------------------------------------
 
+    // Función para enviar el correo
     const sendEmail = () => {
-        
         fetch('https://marlin-backend.vercel.app/api/password-reset/', {
             method: 'POST',
             headers: {
@@ -31,9 +34,8 @@ export function RestorePasswordScreen({ navigation }) {
                 console.error('Error:', error);
                 alert('Error al enviar el correo. Por favor, inténtelo de nuevo.');
             });
-        
-    }
-
+    };
+    // ------------------------------------------------------------------------
 
     return (
         <View className="bg-white w-full h-full">

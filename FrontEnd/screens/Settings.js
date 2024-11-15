@@ -1,18 +1,14 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect } from "react";
 import { View, Text, Pressable, ScrollView, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { useFonts } from "expo-font";
 import { useIsFocused } from "@react-navigation/native";
-import * as SplashScreen from "expo-splash-screen";
 import { styled, useColorScheme } from "nativewind";
 import useDecodeJWT from "../hooks/useDecodeJWT";
 import useGetUser from "../hooks/useGetUser";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import useCRUDDelivery from "../hooks/useCRUDDelivery";
 
 export function ProfileScreen({ navigation }) {
@@ -24,8 +20,7 @@ export function ProfileScreen({ navigation }) {
   const { isDelivery, esRepartidor } = useCRUDDelivery();
   const siEsRepartidor = false;
 
-  let formatePicture = "";
-
+  // Verificar si el usuario esta logueado
   useEffect(() => {
     const loadUser = async () => {
       const jsonValue = await AsyncStorage.getItem("@userToken");
@@ -39,7 +34,9 @@ export function ProfileScreen({ navigation }) {
 
     loadUser();
   }, [isFocused, navigation]);
+  // ------------------------------------------------------------------------
 
+  // Verificar el estado de inicio de sesión
   useEffect(() => {
     const search = async () => {
       const jsonValue = await AsyncStorage.getItem("@userToken");
@@ -52,7 +49,9 @@ export function ProfileScreen({ navigation }) {
     search();
     console.log("buscar usuario: ");
   }, []);
+  // ------------------------------------------------------------------------
 
+  // Función para cerrar sesión
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("@userToken");
@@ -63,6 +62,7 @@ export function ProfileScreen({ navigation }) {
       console.error("Error al cerrar sesión:", e);
     }
   };
+  // ------------------------------------------------------------------------
 
   return (
     <View
@@ -83,6 +83,7 @@ export function ProfileScreen({ navigation }) {
                 Bienvenido a Marlin
               </Text>
             </View>
+
             <View className="w-full mt-6">
               <Pressable
                 className="flex-row flex gap-3 items-center mb-6"
@@ -100,17 +101,17 @@ export function ProfileScreen({ navigation }) {
               <View className="border border-main-blue dark:border-light-blue">
 
               </View>
-              
             </View>
+
             <View className="w-full ">
-            <Pressable
+              <Pressable
                 className="flex-row justify-between mt-5  "
                 onPress={() => toggleColorScheme()}
               >
-              <Pressable
-                className="flex-row items-center flex gap-3 mb-4"
-                onPress={() => toggleColorScheme()}
-              >
+                <Pressable
+                  className="flex-row items-center flex gap-3 mb-4"
+                  onPress={() => toggleColorScheme()}
+                >
                   <Feather
                     name={colorScheme === "dark" ? "sun" : "moon"}
                     size={24}
@@ -119,9 +120,9 @@ export function ProfileScreen({ navigation }) {
                   <Text className="text-center font-Excon_regular dark:text-white">
                     {colorScheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
                   </Text>
+                </Pressable>
               </Pressable>
-                
-              </Pressable>
+
               <Pressable
                 className="flex-row items-center py-4 flex gap-3"
                 onPress={() => navigation.navigate("TerminosCondiciones")}
@@ -133,6 +134,7 @@ export function ProfileScreen({ navigation }) {
                 />
                 <Text className="dark:text-white font-Excon_regular">Terminos y condiciones</Text>
               </Pressable>
+
             </View>
           </View>
         </ScrollView>
@@ -157,6 +159,7 @@ export function ProfileScreen({ navigation }) {
                   style={{ width: 108, height: 108, borderRadius: 100 }}
                 />
               </View>
+
               <View className="ml-6">
                 <Text className="text-lg dark:text-white font-Erode_regular">
                   {user.username}
@@ -185,6 +188,7 @@ export function ProfileScreen({ navigation }) {
                     Información
                   </Text>
                 </View>
+
                 <Text className="text-main-blue dark:text-light-blue">
                   {">"}
                 </Text>
@@ -294,23 +298,23 @@ export function ProfileScreen({ navigation }) {
                   {">"}
                 </Text>
               </Pressable>
-
-
             </View>
+
             <View className="w-full mt-10">
               <Pressable
                 className="flex-row items-center flex gap-3 mb-4"
                 onPress={() => toggleColorScheme()}
               >
-                  <Feather
-                    name={colorScheme === "dark" ? "sun" : "moon"}
-                    size={24}
-                    color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
-                  />
-                  <Text className="text-center font-Excon_regular dark:text-white">
-                    {colorScheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-                  </Text>
+                <Feather
+                  name={colorScheme === "dark" ? "sun" : "moon"}
+                  size={24}
+                  color={colorScheme === "dark" ? "#60a5fa" : "#015DEC"}
+                />
+                <Text className="text-center font-Excon_regular dark:text-white">
+                  {colorScheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+                </Text>
               </Pressable>
+
               <Pressable
                 className="flex-row items-center flex gap-3 mb-4"
                 onPress={() => navigation.navigate("TerminosCondiciones")}
@@ -322,6 +326,7 @@ export function ProfileScreen({ navigation }) {
                 />
                 <Text className="dark:text-white font-Excon_regular">Terminos y condiciones</Text>
               </Pressable>
+              
               <Pressable
                 className="flex-row flex gap-3 items-center"
                 onPress={handleLogout}

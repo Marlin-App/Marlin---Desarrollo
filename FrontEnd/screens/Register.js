@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, Alert, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import {  MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export function RegisterPage({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -17,14 +15,14 @@ export function RegisterPage({ navigation }) {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [error, setError] = useState("");
 
+  // Función para alternar la visibilidad de la contraseña
   const togglePasswordVisible = () => {
     setpasswordVisible(!passwordVisible);
   };
+  // ------------------------------------------------------------------------
 
   // Modificación de la función handleLogin
   const handleLogin = async () => {
-
-
     try {
       const response = await fetch('https://marlin-backend.vercel.app/api/register/', {
         method: 'POST',
@@ -40,20 +38,20 @@ export function RegisterPage({ navigation }) {
         }),
       });
 
-     
+
       const data = await response.json();
       if (response.ok) {
         console.log('Registro exitoso:', data);
         Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
-        navigation.navigate('Mi perfil'); 
-        
-        await AsyncStorage.setItem('@userToken', JSON.stringify(data)); 
+        navigation.navigate('Mi perfil');
+
+        await AsyncStorage.setItem('@userToken', JSON.stringify(data));
       } else {
-       if(Object.keys(data)[0] === 'email'){
-        setError('El correo electrónico ya está en uso');
-        }else if(Object.keys(data)[0] === 'username'){
+        if (Object.keys(data)[0] === 'email') {
+          setError('El correo electrónico ya está en uso');
+        } else if (Object.keys(data)[0] === 'username') {
           setError('El nombre de usuario ya está en uso');
-        }else{
+        } else {
           setError('Error en el registro, por favor intenta de nuevo o más tarde.');
         }
       }
@@ -62,6 +60,7 @@ export function RegisterPage({ navigation }) {
     }
 
   };
+  // ------------------------------------------------------------------------
 
   return (
     <View className="flex-1 bg-white">
@@ -71,7 +70,7 @@ export function RegisterPage({ navigation }) {
         style={{ resizeMode: 'stretch' }}
       />
       <Text
-       className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 "
+        className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 "
       >
         ¡Crea una cuenta!
       </Text>
@@ -150,7 +149,7 @@ export function RegisterPage({ navigation }) {
             placeholderTextColor={'#1877F2'}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry = {!passwordVisible}
+            secureTextEntry={!passwordVisible}
             autoCapitalize="none"
           />
           <TouchableOpacity className="absolute right-4 text-[16px] font-Excon_regular text-main-blue z-10 opacity-70" onPress={togglePasswordVisible}>
@@ -165,36 +164,23 @@ export function RegisterPage({ navigation }) {
         <Text className="mb-6 text-red-500 text-center w-full">{error} </Text>
 
         <View className="flex-col px-5 my-4">
-                <View className="flex-row items-center">
-                    <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
-                        <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
-                    </TouchableOpacity>
-                    {/* corregir la ruta para mostrar los terminos y condiciones */}
-                    <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
-                </View>
-            </View>
-
-            <TouchableOpacity
-                 className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && email && password && userName && firstName && lastName ? '' : 'opacity-50'}`}
-                 onPress={acceptedTerms && email && password && userName && firstName && lastName ? handleLogin : null}
-                 disabled={!acceptedTerms || !email || !password || !userName || !firstName || !lastName}
-            >
-                    <Text className="text-white font-Excon_bold text-lg ml-2">Crear cuenta</Text>
+          <View className="flex-row items-center">
+            <TouchableOpacity onPress={() => setAcceptedTerms(!acceptedTerms)}>
+              <View className={`w-6 h-6 border-2 border-main-blue ${acceptedTerms ? 'bg-main-blue' : 'bg-white'}`} />
             </TouchableOpacity>
+            {/* corregir la ruta para mostrar los terminos y condiciones */}
+            <Text className="ml-2 text-main-blue text-xs font-Excon_thin">He leído y acepto los <Text onPress={() => navigation.navigate("TerminosCondiciones")} className="text-main-blue text-xs font-Excon_bold">términos y condiciones</Text> </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2 ${acceptedTerms && email && password && userName && firstName && lastName ? '' : 'opacity-50'}`}
+          onPress={acceptedTerms && email && password && userName && firstName && lastName ? handleLogin : null}
+          disabled={!acceptedTerms || !email || !password || !userName || !firstName || !lastName}
+        >
+          <Text className="text-white font-Excon_bold text-lg ml-2">Crear cuenta</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: 'white',
-    fontSize: 16,
-  },
-});

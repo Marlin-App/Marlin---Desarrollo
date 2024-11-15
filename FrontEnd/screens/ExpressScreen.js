@@ -9,8 +9,6 @@ import useDecodeJWT from "../hooks/useDecodeJWT";
 
 export function ExpressScreen({ navigation }) {
   const { getToken, isTokenExpired, refreshToken } = useDecodeJWT();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [longPressProduct, setLongPressProduct] = useState(null);
   const { colorScheme } = useColorScheme();
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get("window").width;

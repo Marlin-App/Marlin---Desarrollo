@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDecodeJWT from './useDecodeJWT';
-
 
 const useCRUDProductos = (navigation) => {
 
@@ -10,6 +9,7 @@ const useCRUDProductos = (navigation) => {
     const { decodeJWT, refreshToken, isTokenExpired } = useDecodeJWT();
     const [loading, setLoading] = useState(true);
 
+    // Función para obtener las tiendas del usuario
     const fetchStoresWithProducts = async () => {
         try {
             if (await isTokenExpired()) {
@@ -52,10 +52,10 @@ const useCRUDProductos = (navigation) => {
             setLoading(false);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Función para agregar un producto
     const addProduct = async (formData) => {
-
-
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
         formDataToSend.append('description', formData.description);
@@ -65,7 +65,7 @@ const useCRUDProductos = (navigation) => {
         formDataToSend.append('item_type', formData.item_type);
         formDataToSend.append('attributes', JSON.stringify(formData.attributes));
 
-
+        // Agrega las imagenes
         if (formData.pictures && formData.pictures.length > 0) {
             formData.pictures.forEach((image, index) => {
                 const perfilFile = {
@@ -77,7 +77,7 @@ const useCRUDProductos = (navigation) => {
             });
         }
 
-
+        // intenta agregar un producto a través de una solicitud
         try {
             const jsonValue = await AsyncStorage.getItem('@userToken');
 
@@ -114,7 +114,9 @@ const useCRUDProductos = (navigation) => {
             setLoading(false);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // funcion que edita el producto
     const editProduct = async (formData, productId) => {
         console.log('formData:', formData.pictures);
 
@@ -138,7 +140,6 @@ const useCRUDProductos = (navigation) => {
                 formDataToSend.append('new_images', perfilFile);
             });
         }
-        
 
         console.log('formDataToSend:', formDataToSend);
         try {
@@ -170,19 +171,17 @@ const useCRUDProductos = (navigation) => {
                 navigation.navigate('Inventario');
                 console.log('Producto actualizado con éxito');
                 Alert.alert('Producto actualizado', '¡Tu producto ha sido actualizado con éxito!');
-                //   fetchStoresWithProducts();
             }
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
         } finally {
             setLoading(false);
         }
-
-
     };
+    // ------------------------------------------------------------------------
 
+    // Funcion que se encarga de eliminar el producto
     const deleteProduct = async (id) => {
-
         const jsonValue = await AsyncStorage.getItem('@userToken');
         if (jsonValue == null) {
             setLoading(false);
@@ -211,9 +210,10 @@ const useCRUDProductos = (navigation) => {
             console.log('Error al eliminar el producto:', err);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // funcion que obtiene la informacion de un producto
     const getProduct = async (id) => {
-
         const jsonValue = await AsyncStorage.getItem('@userToken');
         if (jsonValue == null) {
             setLoading(false);
@@ -240,7 +240,7 @@ const useCRUDProductos = (navigation) => {
             console.log('Error al obtener el producto:', err);
         }
     };
-
+    // ------------------------------------------------------------------------
 
     return { deleteProduct, fetchStoresWithProducts, storesWithProducts, addProduct, getProduct, editProduct };
 

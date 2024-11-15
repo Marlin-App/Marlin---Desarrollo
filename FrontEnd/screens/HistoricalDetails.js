@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useHistorical } from '../hooks/useHistorical';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 
 export function HistoricalDetailsScreen({ route }) {
   const { compraId } = route.params;
-
   const { orders } = useHistorical();
   const compra = orders.find(p => p.id === compraId);
 
-
+  // Efecto para cargar los detalles de la compra
   if (!compra) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -19,6 +18,7 @@ export function HistoricalDetailsScreen({ route }) {
     );
   }
 
+  // Función para formatear el precio
   const formatCurrency = (value) => {
     return value.toLocaleString('es-CR', {
       style: 'currency',
@@ -26,16 +26,9 @@ export function HistoricalDetailsScreen({ route }) {
       maximumFractionDigits: 0,
     });
   };
+  // ------------------------------------------------------------------------
 
-  const renderItem = ({ item }) => (
-    <View className="flex-row mb-1 pb-2 justify-between items-center">
-      <Text className="text-gray-800 font-Erode_regular text-base dark:text-[#e8e8e8] w-1/3">{item.item_name}</Text>
-      <Text className="text-gray-600 font-Erode_regular text-base dark:text-[#e8e8e8] w-1/5">{formatCurrency(item.total_price)}</Text>
-      <Text className="text-gray-600 font-Erode_regular text-base dark:text-[#e8e8e8] w-1/6">{item.quantity}</Text>
-      <Text className="text-gray-600 font-Erode_regular text-base dark:text-[#e8e8e8] w-1/7">{formatCurrency(item.quantity * item.total_price)}</Text>
-    </View>
-  );
-
+  //Funcion para descargar el PDF con los detalles de la compra
   const handleDownload = async () => {
     try {
       const htmlContent = `
@@ -78,16 +71,21 @@ export function HistoricalDetailsScreen({ route }) {
       Alert.alert('Error', 'No se pudo generar el PDF.');
     }
   };
+  // ------------------------------------------------------------------------
 
+  // Función para manejar la notificación de problema
   const handleNotifyProblem = () => {
-    Alert.alert('Notificación', 'Has presionado el botón de notificar problema.');
+    Alert.alert('Notificación', 'Se ha notificado el problema.');
   };
+  // ------------------------------------------------------------------------
 
+  // Función para formatear la fecha
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = new Date(dateString);
     return date.toLocaleDateString('es-CR', options);
   };
+  // ------------------------------------------------------------------------
 
   return (
     <View className="flex-1 bg-white dark:bg-black py-4 px-8">
@@ -114,7 +112,7 @@ export function HistoricalDetailsScreen({ route }) {
       {compra.products.map((item, index) => (
         <View key={index} className="flex-row justify-between mb-3">
           <Text className="font-Erode_regular w-1/3 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{item.item_name}</Text>
-          <Text className="font-Erode_regular w-1/5 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price/item.quantity)}</Text>
+          <Text className="font-Erode_regular w-1/5 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price / item.quantity)}</Text>
           <Text className="font-Erode_regular w-1/6 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{item.quantity}</Text>
           <Text className="font-Erode_regular w-1/7 text-gray-600 text-lg dark:text-[#e6e6e6d0]">{formatCurrency(item.total_price)}</Text>
         </View>

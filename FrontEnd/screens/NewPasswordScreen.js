@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import {  MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export function NewPasswordScreen({ navigation }) {
-
     const route = useRoute();
     const { uid, token } = route.params;
     const [password, setPassword] = useState("");
     const [passwordVisible, setpasswordVisible] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisible = () => {
         setpasswordVisible(!passwordVisible);
-      };
+    };
+    // ------------------------------------------------------------------------
 
+    // Función para restablecer la contraseña
     const changePassword = async () => {
         if (password === confirmPassword) {
             try {
@@ -42,7 +44,8 @@ export function NewPasswordScreen({ navigation }) {
             Alert.alert('Atención', 'La contraseña y su confirmación no coinciden.');
         }
 
-    }
+    };
+    // ------------------------------------------------------------------------
 
     return (
         <View className="bg-white w-full h-full">
@@ -92,6 +95,4 @@ export function NewPasswordScreen({ navigation }) {
             </View>
         </View>
     );
-
-
 };

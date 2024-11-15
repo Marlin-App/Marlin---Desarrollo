@@ -1,9 +1,8 @@
 import React from "react";
-import { View, Text, Image, useWindowDimensions, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, useWindowDimensions, TouchableOpacity } from "react-native";
 
 const HomeCarouselItem = ({ item, navigation }) => {
   const { width, height } = useWindowDimensions();
- 
 
   return (
     <View className="relative" style={{ width, height: height / 3.5 }}>
@@ -14,30 +13,18 @@ const HomeCarouselItem = ({ item, navigation }) => {
           style={{ width, height: height / 3.5 }}
         />
       </View>
-      {/* <View style={styles.overlay} className="items-center justify-center"/> */}
 
       <View className="absolute flex items-center m-auto top-0 bottom-3 left-0 right-0">
         <Text className="text-white text-[7vw] font-bold text-center mt-[5vw]">{item.title}</Text>
         <Text className="text-white text-[4vw] leading-5 mx-5 text-center">{item.description}</Text>
-      
         <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded mt-[1vh]"
-        onPress={() => navigation.navigate('Tiendas', item )} 
+          onPress={() => navigation.navigate('Tiendas', item)}
         >
           <Text className="text-white text-[4vw] font-semibold">Pescalo !!</Text>
         </TouchableOpacity>
-      
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-   width: '100%',
-   height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  },
-});
 
 export default HomeCarouselItem;

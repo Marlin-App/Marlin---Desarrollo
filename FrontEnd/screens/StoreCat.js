@@ -1,5 +1,5 @@
-import { React, useState, useEffect, useCallback, useRef } from 'react';
-import { Text, View, Button, Item, FlatList, TextInput, SafeAreaView, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { React, useState, useEffect, useRef } from 'react';
+import { Text, View, FlatList, TextInput, SectionList, Pressable, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useColorScheme } from "nativewind";
 import useStoreType from '../hooks/useStoreType';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -7,15 +7,11 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import { useRoute } from '@react-navigation/native';
 import NotificationDropdown from '../components/NotificationDropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import useCart from '../hooks/useCart';
-
-
-import image from '../assets/img/fondoLanding.png';
 
 export function StoreCat({ navigation }) {
     const { allCategories, allStores, loading } = useStoreType();
@@ -29,7 +25,6 @@ export function StoreCat({ navigation }) {
     const isFocused = useIsFocused();
     const logo = colorScheme === 'dark' ? require('../assets/logoDark.png') : require('../assets/LogoLight.png');
 
-
     const {
         cart,
         cartLength,
@@ -41,9 +36,10 @@ export function StoreCat({ navigation }) {
         total,
     } = useCart();
 
-    const scrollToTopButtonRef = useRef(null); 
-    const listRef = useRef(null); 
+    const scrollToTopButtonRef = useRef(null);
+    const listRef = useRef(null);
 
+    // Función para verificar el estado de inicio de sesión
     useEffect(() => {
         const fetchUserToken = async () => {
             const token = await AsyncStorage.getItem('@userToken');
@@ -51,20 +47,19 @@ export function StoreCat({ navigation }) {
         };
         fetchUserToken();
     }, [navigation, isFocused]);
-
+    // ------------------------------------------------------------------------
 
     const route = useRoute();
 
     const id = route.params ? route.params.id : null;
-    /* const { item } = route.params || {};
-    console.log(item); */
 
+    // Estados para la notificación
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
     const [notifications, setNotifications] = useState([
-        
+        // Notificaciones iniciales
     ]);
 
+    // Función para manejar el clic en una notificación
     const handleNotificationClick = (notificationId) => {
         setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
     };
@@ -76,7 +71,9 @@ export function StoreCat({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+    // ------------------------------------------------------------------------
 
+    // carga los datos de las tiendas
     useEffect(() => {
         const selectedStore = () => {
             const formattedData = allStores.map(item => ({
@@ -97,25 +94,31 @@ export function StoreCat({ navigation }) {
 
         selectedStore();
     }, [allStores]);
+    // ------------------------------------------------------------------------
 
-
+    // Función para realizar la búsqueda de la tienda
     const searchStore = (text) => {
         const filteredData = originalStoreSelected.filter(item =>
             item.name.toLowerCase().startsWith(text.toLowerCase())
         );
         setStoreSelected(filteredData);
     };
+    // ------------------------------------------------------------------------
 
     // Para limpiar la búsqueda
     const clearSearch = () => {
         setSearch('');
         setStoreSelected(originalStoreSelected);  // Restablecer la lista original
     };
+    // ------------------------------------------------------------------------
+
+    // Función para filtrar la tienda
     useEffect(() => {
         if (categoryId === 0) {
             setStoreSelected(allStores);
             return;
         }
+        // selecciona el tipo de tienda
         const selectedStoreType = () => {
             const filteredData = allStores.filter(item => item.store_type.includes(categoryId));
             const formattedData2 = filteredData.map(item => ({
@@ -136,13 +139,18 @@ export function StoreCat({ navigation }) {
 
         selectedStoreType();
     }, [categoryId]);
+    // ------------------------------------------------------------------------
 
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+    // Función para manejar la selección de categoría
     const handleCategorySelect = (categoryId) => {
         setCategoryId(categoryId);
         setSelectedCategoryId(categoryId);
     };
+    // ------------------------------------------------------------------------
 
+    // carga de fuentes
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -150,13 +158,11 @@ export function StoreCat({ navigation }) {
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
-
-
-
-
+    // ------------------------------------------------------------------------
 
     const sectionListRef = useRef(null);
 
+    // Funcion del scroll de las categorias
     useEffect(() => {
         const scrollToItem = (sectionIndex, itemIndex) => {
             if (sectionListRef.current) {
@@ -176,22 +182,24 @@ export function StoreCat({ navigation }) {
             }, 100);
         }
     }, [allCategories, id]);
+    // ------------------------------------------------------------------------
 
-    const [isCategoriesVisible, setIsCategoriesVisible] = useState(true);
-
-
+    // Función para manejar el scroll
     const handleScroll = (event) => {
         const contentOffsetY = event.nativeEvent.contentOffset.y;
-        if (contentOffsetY > 100) {  
+        if (contentOffsetY > 100) {
             scrollToTopButtonRef.current?.setNativeProps({ style: { opacity: 1 } });
         } else {
             scrollToTopButtonRef.current?.setNativeProps({ style: { opacity: 0 } });
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Función para desplazarse hacia arriba
     const scrollToTop = () => {
         listRef.current?.scrollTo({ y: 0, animated: true });
     };
+    // ------------------------------------------------------------------------
 
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 " >
@@ -233,7 +241,6 @@ export function StoreCat({ navigation }) {
                 </View>
             </View>
 
-
             <View className="flex-row text-center mt-5 mb-5 bg-gray-input dark:bg-dk-input rounded-lg mx-2 ">
                 <Pressable className="bg-light-blue dark:bg-main-blue rounded-l-lg px-2 flex justify-center"
                     onPress={() => {
@@ -270,7 +277,6 @@ export function StoreCat({ navigation }) {
                 }
             </View>
 
-
             <View className="px-2 flex-1">
                 {loading ? (
                     <View className={`w-full h-full justify-center items-center ${loading ? 'blur-sm' : 'blur-0'}`}>
@@ -285,7 +291,6 @@ export function StoreCat({ navigation }) {
                 >
                     <View className="">
                         <Text className="mt-2 ml-2 text-2xl font-Excon_bold text-main-blue">Categorias</Text>
-
 
                         <SectionList
                             ref={sectionListRef}
@@ -355,18 +360,16 @@ export function StoreCat({ navigation }) {
                                     <Text className="text-lg text-light-blue">{item.district} </Text>
                                 </View>
                             </Pressable>
-
                         )}
                         keyExtractor={item => item.id}
                     />
-
-                    
                 </ScrollView>
+
                 <TouchableOpacity
                     onPress={scrollToTop}
                     ref={scrollToTopButtonRef}
                     className="absolute bottom-10 right-5 bg-light-blue p-2 rounded-full shadow-lg"
-                    style={{ opacity: 0 }} 
+                    style={{ opacity: 0 }}
                 >
                     <Ionicons name="arrow-up" size={26} color="white" />
                 </TouchableOpacity>

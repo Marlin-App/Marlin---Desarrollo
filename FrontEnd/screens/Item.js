@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, Modal, Alert, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { Text, TextInput, View, Image, TouchableOpacity, Modal, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { styled, useColorScheme } from "nativewind";
 import useCart from '../hooks/useCart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Swiper from 'react-native-swiper';
@@ -24,7 +23,9 @@ export function ItemPage({ navigation }) {
     const route = useRoute();
     const { id } = route.params;
 
+    // Chequear si el usuario está logueado
     useEffect(() => {
+        // Función para verificar el estado de inicio de sesión
         async function checkLoginStatus() {
             const userToken = await AsyncStorage.getItem('@userToken');
             setIsLoggedIn(userToken !== null);
@@ -53,13 +54,17 @@ export function ItemPage({ navigation }) {
         }
         prepare();
     }, [id]);
+    // ------------------------------------------------------------------------
 
+    // Función para ocultar el splash
     const onLayout = useCallback(async () => {
         if (fontsLoaded) {
             await SplashScreen.hideAsync();
         }
     }, [fontsLoaded]);
+    // ------------------------------------------------------------------------
 
+    // Función para cargar las fuentes
     const [fontsLoaded] = useFonts({
         'Excon_regular': require('../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf'),
         'Excon_bold': require('../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf'),
@@ -67,6 +72,7 @@ export function ItemPage({ navigation }) {
         'Erode_regular': require('../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf'),
         'Erode_bold': require('../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf')
     });
+    // ------------------------------------------------------------------------
 
     if (loading) {
         return (
@@ -92,26 +98,30 @@ export function ItemPage({ navigation }) {
         );
     }
 
+    // Funciones para aumentar la cantidad 
     const increaseQuantity = () => {
         if (quantity < maxQuantity) {
             setQuantity(prevQuantity => prevQuantity + 1);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Funciones para disminuir la cantidad
     const decreaseQuantity = () => {
         if (quantity > 1) {
             setQuantity(prevQuantity => prevQuantity - 1);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Funciones para agregar al carrito y verificar el carrito
     const verifyCart = () => {
-
-        
         if (!isLoggedIn) {
             Alert.alert('Error', 'Debes estar logueado para agregar productos al carrito.');
             return;
         }
 
+        // Verificar si el carrito pertenece a la misma tienda
         if (isSameStore(item.store_id)) {
             if (!item.variations.length) {
                 handleAddToCart();
@@ -121,40 +131,28 @@ export function ItemPage({ navigation }) {
             if (item.variations.length > 0) {
                 const hasColorVariants = colors.length > 0;
                 const hasSizeVariants = sizes.length > 0;
-    
+
                 if (hasColorVariants && !selectedColor) {
                     Alert.alert('Error', 'Debes seleccionar un color.');
                     return;
                 }
-    
+
                 if (hasSizeVariants && !selectedSize) {
                     Alert.alert('Error', 'Debes seleccionar una talla.');
                     return;
                 }
                 handleAddToCart();
             }
-            
+
         } else {
             setModalVisible2(true);
         }
-        
-
-       
-
-        
-
     };
+    // ------------------------------------------------------------------------
 
+    // Funciones para agregar al carrito
     const handleAddToCart = () => {
         setModalVisible(true);
-        
-      /*   const itemWithImage = {
-            ...item,
-            cantidad: quantity,
-            image: item.item_images?.[0]?.picture,
-            ...(selectedColor && { selectedColor }),
-            ...(selectedSize && { selectedSize })
-        }; */
 
         const itemWithImage = {
             ...item,
@@ -163,32 +161,38 @@ export function ItemPage({ navigation }) {
             color: selectedColor,
             size: selectedSize
         };
-    
+
         addToCart(itemWithImage);
     };
+    // ------------------------------------------------------------------------
 
     const unitPrice = Number(item.price.toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 }));
     const totalPrice = unitPrice * quantity;
 
+    // Función para formatear el precio
     const formattedTotalPrice = totalPrice.toLocaleString('es-CR', {
         style: 'currency',
         currency: 'CRC',
         maximumFractionDigits: 0
     });
+    // ------------------------------------------------------------------------
 
+    // Función para obtener los colores
     const colors = Array.from(new Set(
         item.variations
             .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Color').map(itemVar => itemVar.value))
     ));
+    // ------------------------------------------------------------------------
 
+    // Función para obtener las tallas
     const sizes = Array.from(new Set(
         item.variations
             .flatMap(variation => variation.item_variations.filter(itemVar => itemVar.attribute_name === 'Talla').map(itemVar => itemVar.value))
     ));
+    // ------------------------------------------------------------------------
 
     const hasColors = colors.length > 0;
     const hasSizes = sizes.length > 0;
-
 
     return (
         <View className="flex-grow-1 bg-white dark:bg-neutral-950 h-full" onLayout={onLayout}>
@@ -259,7 +263,7 @@ export function ItemPage({ navigation }) {
                 </Modal>
 
                 <View className="px-8">
-                <Swiper
+                    <Swiper
                         className="my-4 h-[310]"
                         showsButtons={false}
                         loop={false}
@@ -350,4 +354,3 @@ export function ItemPage({ navigation }) {
         </View>
     );
 }
-

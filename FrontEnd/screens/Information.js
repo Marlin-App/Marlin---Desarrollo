@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Modal } from 'react-native';
+import { Image, View, Text, Pressable, TextInput, ScrollView, TouchableOpacity, ActivityIndicator, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Feather from '@expo/vector-icons/Feather';
 import useGetUser from '../hooks/useGetUser';
@@ -11,16 +11,18 @@ export function InformationScreen({ navigation }) {
     const [visibleModal, setVisibleModal] = useState(false);
     const [token, setToken] = useState(null);
 
-    
+    // Obtiene el token
     useEffect(() => {
-        const getToke= async()=>{
+        const getToke = async () => {
             const jsonValue = await AsyncStorage.getItem('@userToken');
             const userData = JSON.parse(jsonValue);
             setToken(userData.access);
         };
         getToke();
     }, []);
+    // ------------------------------------------------------------------------
 
+    // Elimina la cuenta
     const deleteAccount = async () => {
         try {
             const response = await fetch('https://marlin-backend.vercel.app/api/delete-account/', {
@@ -30,7 +32,7 @@ export function InformationScreen({ navigation }) {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            
+
             if (response.status === 200) {
                 await AsyncStorage.removeItem('@userToken');
                 navigation.navigate('Home');
@@ -41,9 +43,10 @@ export function InformationScreen({ navigation }) {
         } catch (error) {
             console.log('Error al eliminar la cuenta', error);
         }
-    }
-    
+    };
+    // ------------------------------------------------------------------------
 
+    // le cargamos la informacion del usuario
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -51,11 +54,15 @@ export function InformationScreen({ navigation }) {
         email: '',
         phone: ''
     });
+    // ------------------------------------------------------------------------
 
+    // cargamos la informacion del usuario
     useEffect(() => {
         fetchData();
     }, []);
+    // ------------------------------------------------------------------------
 
+    // Funcion para seleccionar la imagen
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -68,7 +75,9 @@ export function InformationScreen({ navigation }) {
             setImage(result.assets[0].uri);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // cargamos la informacion del usuario
     useEffect(() => {
         if (user) {
             setFormData({
@@ -80,11 +89,15 @@ export function InformationScreen({ navigation }) {
             });
         }
     }, [user]);
+    // ------------------------------------------------------------------------
 
+    // Funcion para manejar los cambios en los campos
     const handleInputChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
+    // ------------------------------------------------------------------------
 
+    // Funcion para guardar los cambios
     const handleSave = () => {
         const updatedUser = {
             first_name: formData.firstName,
@@ -97,6 +110,7 @@ export function InformationScreen({ navigation }) {
         };
         updateUser(updatedUser);
     };
+    // ------------------------------------------------------------------------
 
     return (
         <View className="h-full bg-white dark:bg-neutral-950 ">
@@ -169,22 +183,22 @@ export function InformationScreen({ navigation }) {
                         maxLength={10}
                     />
                 </View>
-                    <View className="flex-row items-center justify-center mt-2 gap-x-4">
+                <View className="flex-row items-center justify-center mt-2 gap-x-4">
 
                     {/* <TouchableOpacity className="bg-main-blue py-4  rounded-lg items-center mx-2" */}
                     <TouchableOpacity className="bg-main-blue  border-2 border-main-blue px-14 py-2 rounded-lg items-center "
                         onPress={handleSave}
-                        >
+                    >
                         <Text className="text-white font-Excon_bold text-lg">Guardar</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className="border-2 px-4 border-red-600 py-2 rounded-lg items-center "
                         onPress={() => setVisibleModal(true)}
-                        >
+                    >
                         <Text className="text-red-600 font-Excon_bold text-lg">Eliminar cuenta</Text>
                     </TouchableOpacity>
-                    
-                        </View>
+
+                </View>
             </ScrollView>
 
             <Modal

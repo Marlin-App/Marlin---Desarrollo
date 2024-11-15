@@ -1,10 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { View, Text} from 'react-native';
 import { useRoute } from "@react-navigation/native";
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useTransportFee } from '../hooks/useTransportFee';
-
 
 export function OrderInfo({ navigation }) {
 
@@ -27,6 +25,7 @@ export function OrderInfo({ navigation }) {
     const startCoords = { latitude: startLatitude, longitude: startLongitude };
     const endCoords = { latitude: endLatitude, longitude:endLongitude }; //corregir en el backend
 
+    // Función para calcular la distancia y la ruta
     const calculateDistanceAndRoute = async () => {
         console.log(order);
         const result = await useTransportFee(startCoords, endCoords);
@@ -36,9 +35,13 @@ export function OrderInfo({ navigation }) {
             setRouteCoordinates(route);
         }
     };
-    useEffect(() => {
+    // ------------------------------------------------------------------------
+
+  // Calcular la distancia y la ruta al cargar el componente
+  useEffect(() => {
         calculateDistanceAndRoute();
     }, []);
+    // ------------------------------------------------------------------------
 
     return (
         <View className="flex-1 bg-white dark:bg-black py-4 px-8">

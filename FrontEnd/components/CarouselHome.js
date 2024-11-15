@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, Text, FlatList, Animated, StyleSheet, Dimensions } from "react-native";
+import { View, FlatList, Animated, StyleSheet, Dimensions } from "react-native";
 import CarouselInfo from "../hooks/useCarousel";
 import HomeCarouselItem from "./HomeCarouselItem";
 
@@ -10,6 +10,7 @@ export default CarouselHome = ({ navigation }) => {
     const CarouselInfoRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    // Autoplay hace que el carrusel se mueva de forma automática
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => {
@@ -17,23 +18,28 @@ export default CarouselHome = ({ navigation }) => {
                 CarouselInfoRef.current.scrollToIndex({ index: nextIndex, animated: true });
                 return nextIndex;
             });
-        }, 8000); // Cambia el tiempo según tus necesidades
+        }, 8000);
 
         return () => clearInterval(interval);
     }, [CarouselInfo.length]);
+    // ------------------------------------------------------------------------
 
+    // Para que el carrusel se mueva de forma automática al hacer scroll
     const viewableItemsChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
             setCurrentIndex(viewableItems[0].index);
         }
     }).current;
+    // ------------------------------------------------------------------------
 
     const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
+    // hace un seguido del carrusel
     const onMomentumScrollEnd = (event) => {
         const newIndex = Math.round(event.nativeEvent.contentOffset.x / width);
         setCurrentIndex(newIndex);
     };
+    // ------------------------------------------------------------------------
 
     return (
         <View>

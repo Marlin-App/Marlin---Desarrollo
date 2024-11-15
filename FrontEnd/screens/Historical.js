@@ -14,28 +14,33 @@ export function HistoricalScreen({ navigation }) {
     fetchData();
   }, []);
 
+  // Función para obtener los detalles de la tienda
   const getStoreDetails = (storeId) => {
     const store = stores.find(store => store.id === storeId);
     return store ? { storeName: store.name, storePicture: store.picture } : { storeName: 'Tienda desconocida', storePicture: null };
   };
+  // ------------------------------------------------------------------------
 
+  // Función para formatear la fecha
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const date = new Date(dateString);
     return date.toLocaleDateString('es-CR', options);
   };
+  // ------------------------------------------------------------------------
 
+  // Función para renderizar los items
   const HistoricalDetailsScreen = ({ item }) => {
     const { storeName, storePicture } = getStoreDetails(item.store_id);
-  
+
     return (
       <TouchableOpacity
         className="flex flex-row p-2 items-center mb-1 bg-white rounded-lg border-gray-200 dark:border-[#232323] dark:bg-[#1C1C1C] border"
         onPress={() => {
-          navigation.navigate('HistoricalDetailsScreen', { 
+          navigation.navigate('HistoricalDetailsScreen', {
             compraId: item.id,
-            products: item.products, 
-            totalPrice: item.total_price, 
+            products: item.products,
+            totalPrice: item.total_price,
             orderDate: item.order_date
           });
         }}
@@ -52,7 +57,9 @@ export function HistoricalScreen({ navigation }) {
       </TouchableOpacity>
     );
   };
+  // ------------------------------------------------------------------------
 
+  // Función para formatear el precio
   const formatCurrency = (value) => {
     return value.toLocaleString('es-CR', {
       style: 'currency',
@@ -60,14 +67,18 @@ export function HistoricalScreen({ navigation }) {
       maximumFractionDigits: 0,
     });
   };
+  // ------------------------------------------------------------------------
 
   const ordenHistoricalData = [...orders].sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
 
+  // Filtrar los datos
   const filteredData = ordenHistoricalData.filter(item => {
     if (filter === 'all') return item.user_id === user.id;
     return item.status === filter && item.user_id === user.id;
   });
+  // ------------------------------------------------------------------------
 
+  // Renderizar la pantalla
   if (userLoading || historicalLoading || storesLoading) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -75,6 +86,7 @@ export function HistoricalScreen({ navigation }) {
       </View>
     );
   }
+  // ------------------------------------------------------------------------
 
   if (error || storesError) {
     return (

@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Alert } from 'react-native';
 import useDecodeJWT from './useDecodeJWT';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+
 const useGetUser = () => {
     const [user, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,8 +11,7 @@ const useGetUser = () => {
     const [isLogged, setIsLogged] = useState(true);
     const [token, setToken] = useState(null);
 
-
-
+    // Función para obtener los datos del usuario
     const fetchData = async () => {
         const jsonValue = await AsyncStorage.getItem('@userToken');
         if (await isTokenExpired()) {
@@ -41,14 +39,14 @@ const useGetUser = () => {
             setLoading(false);
         }
     };
+    // ------------------------------------------------------------------------
 
+    // Función para actualizar los datos del usuario
     const updateUser = async (updatedUser) => {
         try {
-
             if (await isTokenExpired()) {
                 await refreshToken();
             }
-
             setLoading(true);
 
             const token = await getToken();
@@ -56,7 +54,6 @@ const useGetUser = () => {
             if (!token) {
                 throw new Error('No se encontró el token de usuario');
             }
-
             if (!token) {
                 throw new Error('Token no disponible');
             }
@@ -66,7 +63,6 @@ const useGetUser = () => {
 
             const formData = new FormData();
 
-
             if (updatedUser.picture) {
                 formData.append('picture', {
                     uri: updatedUser.picture,
@@ -75,14 +71,11 @@ const useGetUser = () => {
                 });
             }
 
-
             for (const key in updatedUser) {
                 if (key !== 'picture') {
                     formData.append(key, updatedUser[key]);
                 }
             }
-
-
 
             const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}/`, {
                 method: 'PATCH',
@@ -92,8 +85,6 @@ const useGetUser = () => {
                 body: formData,
             });
 
-
-
             if (!response.ok) {
                 const errorData = await response.json();
                 console.log('Error de respuesta:', errorData);
@@ -101,23 +92,18 @@ const useGetUser = () => {
             } else {
                 Alert.alert('Usuario actualizado', '¡Tu perfil ha sido actualizado con éxito!');
             }
-
             const data = await response.json();
             setData(data);
-
-        } catch (err) {
+        }
+        catch (err) {
             setError(err);
             console.log(err.message);
-
-        } finally {
+        }
+        finally {
             setLoading(false);
         }
     };
-    
-
-
-
-
+    // ------------------------------------------------------------------------
 
     return { user, loading, isLogged, setIsLogged, fetchData, updateUser, token };
 };

@@ -1,37 +1,18 @@
 import React, { useEffect, useCallback, useState } from "react";
-import {
-    View,
-    Text,
-    Pressable,
-    FlatList,
-    Image,
-    Alert,
-    Switch,
-    ScrollView,
-} from "react-native";
-import Entypo from "@expo/vector-icons/Entypo";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { View, Text, Pressable, FlatList, Image, Alert, Switch, ScrollView } from "react-native";
 import { useFonts } from "expo-font";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import * as SplashScreen from "expo-splash-screen";
 import useCart from "../hooks/useCart";
 import { useColorScheme } from "nativewind";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import useDirections from "../hooks/useDirection";
 import { useTransportFee } from "../hooks/useTransportFee";
 import useStoreCordenates from "../hooks/useStoreCoordenates";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export function CartScreen({ navigation }) {
 
-    const[isLoading, setIsLoading]=useState(true);
-
-const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
-
+    const { getStoreCordenates, storeLatitude, storeLongitude } = useStoreCordenates();
     const {
         cart,
         removeFromCart,
@@ -42,15 +23,18 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
     const { direction, reLoadDirections } = useDirections(navigation);
     const directionSelected = direction.find((item) => item.isSelected === true);
 
+    // Recargar las direcciones
     useEffect(() => {
         const reload = async () => {
             await reLoadDirections();
         };
         const focusListener = navigation.addListener("focus", reload);
     }, [navigation]);
+    // ------------------------------------------------------------------------
 
     const { colorScheme } = useColorScheme();
 
+    // carga de fuentes
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -71,17 +55,14 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
             await SplashScreen.hideAsync();
         }
     }, [fontsLoaded]);
+    // ------------------------------------------------------------------------
 
     const [distance, setDistance] = useState(null);
     const [transportFee, setTransportFee] = useState(0);
 
-
+    // Calcular el costo de transporte
     useEffect(() => {
-
         const calculateDistanceAndRoute = async () => {
-
-            //await getStoreCordenates(cart[0].store_id); 9.984033, -84.717067
-            //const startCoords = { latitude: storeLatitude, longitude: storeLongitude }; //agregar loader para que le de tiempo a cargar las coordenadas y poder hacer el calculo de la distancia y la tarifa
             const startCoords = { latitude: 9.984033, longitude: -84.717067 };
             const endCoords = { latitude: directionSelected.coodernates.latitude, longitude: directionSelected.coodernates.longitude };
 
@@ -100,15 +81,13 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
 
         calculateDistanceAndRoute();
     }, [directionSelected]);
-
+    // ------------------------------------------------------------------------
 
     const deliveryFee = 250; //comision de la aplicacion
-    //const transportFee = distance?distance:0;
-
     const [isPickUp, setIsPickUp] = useState(false);
-
     const total = isPickUp ? cartTotal : deliveryFee + transportFee + cartTotal;
 
+    // Funcion para formatear el precio
     const formatCurrency = (value) => {
         return value.toLocaleString("es-CR", {
             style: "currency",
@@ -116,8 +95,11 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
             maximumFractionDigits: 0,
         });
     };
+    // ------------------------------------------------------------------------
 
+    // Funcion para renderizar el item del carrito
     const CartItem = ({ item }) => {
+        // Funcion para eliminar un producto
         const handleDelete = () => {
             Alert.alert(
                 "Eliminar producto",
@@ -132,11 +114,9 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
                 { cancelable: false }
             );
         };
+        // ------------------------------------------------------------------------
 
         const itemTotal = item.price * item.cantidad;
-        /*const selectedVariation = item.variations && item.variations.length > 0 ? item.variations[0].item_variations : []; */
-
-
 
         return (
             <View className="mx-4 my-2 rounded-lg border-2 border-main-blue dark:border-light-blue p-2">
@@ -149,6 +129,7 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
                         />
                     </Pressable>
                 </View>
+
                 <View className="flex-row">
                     <View className="rounded-lg shadow-lg p-[2px] dark:bg-neutral-900">
                         {item.item_images && (
@@ -223,6 +204,7 @@ const {getStoreCordenates, storeLatitude, storeLongitude}=useStoreCordenates();
             </View>
         );
     };
+    // ------------------------------------------------------------------------
 
     return (
         <View

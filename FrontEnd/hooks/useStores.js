@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
-const useStores  = () => {
+const useStores = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
 
+  // funcion que obtiene las tiendas
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,7 +21,7 @@ const useStores  = () => {
 
     fetchData();
   }, []);
-
+  // ------------------------------------------------------------------------
 
   return { data, loading, error };
 };

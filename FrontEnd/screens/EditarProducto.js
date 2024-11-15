@@ -9,11 +9,9 @@ import useCRUDProductos from '../hooks/useCRUDProductos';
 import { useRoute } from '@react-navigation/native';
 import loaderGif from '../assets/loader.gif';
 
-
-
 export function EditarProducto({ navigation }) {
 
-
+    // Datos del producto
     const [formData, setFormData] = useState({
         id: 0,
         name: '',
@@ -25,7 +23,7 @@ export function EditarProducto({ navigation }) {
         item_type: 1, // Por ejemplo, un valor por defecto
         variations: [],
     });
-
+    // ------------------------------------------------------------------------
 
     const { getProduct, deleteProduct, editProduct } = useCRUDProductos(navigation);
     const route = useRoute();
@@ -34,7 +32,6 @@ export function EditarProducto({ navigation }) {
     const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-    const [row, setRow] = useState(1);
     const [variations, setVariations] = useState([]);
     const [images, setImages] = useState([]);
     const [oldPictures, setOldPictures] = useState([]);
@@ -44,7 +41,9 @@ export function EditarProducto({ navigation }) {
     const [product, setProduct] = useState(null);
     const [isloading, setIsLoading] = useState(true);
 
+    // funcion que obtiene el producto
     useEffect(() => {
+        // fetch para obtener el producto
         const fetchProduct = async () => {
             const fetchedProduct = await getProduct(storeId.product);
             setIsLoading(false);
@@ -52,6 +51,7 @@ export function EditarProducto({ navigation }) {
             // Enable switches based on fetched product attributes //revisar que no viene la informacion
             setImages(fetchedProduct.item_images);
 
+            // verificar si el producto tiene variaciones
             if (fetchedProduct.variations.length > 0) {
                 const hasColorAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Color');
                 const hasSizeAttribute = fetchedProduct.variations[0].item_variations.some(attr => attr.attribute_name == 'Talla');
@@ -101,28 +101,14 @@ export function EditarProducto({ navigation }) {
                     variations: fetchedProduct.variations,
                 });
             }
-
-
-
-
         };
 
         fetchProduct();
         console.log(formData);
     }, [storeId.product]);
+    // ------------------------------------------------------------------------
 
-    // const pickImages = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //         allowsMultipleSelection: true,
-    //         quality: 1,
-    //     });
-
-    //     if (!result.canceled) {
-    //         setImages(result.assets);
-    //     }
-    // };
-
+    // Función para seleccionar imágenes
     const pickImages = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -143,23 +129,29 @@ export function EditarProducto({ navigation }) {
 
                 setImages((prevImages) => [...prevImages, ...newImages]);
             }
-        } catch (error) {
+        }
+        catch (error) {
             console.log("Error al seleccionar imágenes: ", error);
         }
-
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar la eliminación de imágenes
     const removeImage = (id) => {
         setImages((prevImages) => prevImages.filter((image) => image.id !== id));
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar los cambios en el formulario
     const handleInputChange = (field, value) => {
         setFormData(prevState => ({
             ...prevState,
             [field]: value,
         }));
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el cambio en las variaciones
     const handleVariationChange = (index, field, value) => {
         const updatedVariations = [...variations];
         updatedVariations[index] = {
@@ -168,14 +160,18 @@ export function EditarProducto({ navigation }) {
         };
         setVariations(updatedVariations);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para agregar una nueva variación
     const addRow = () => {
         setVariations(prevVariations => [
             ...prevVariations,
             { color: '', size: '', quantity: 0 },
         ]);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para eliminar una variación
     const removeRow = () => {
         setVariations(prevVariations => {
             if (prevVariations.length > 1) {
@@ -184,7 +180,9 @@ export function EditarProducto({ navigation }) {
             return prevVariations;
         });
     };
+    // ------------------------------------------------------------------------
 
+    // Función para manejar el cambio en las variaciones
     useEffect(() => {
         if (isEnabled || isEnabled2) {
             if (variations.length === 0) {
@@ -194,7 +192,9 @@ export function EditarProducto({ navigation }) {
             setVariations([]);
         }
     }, [isEnabled, isEnabled2]);
+    // ------------------------------------------------------------------------
 
+    // funcion que se ejecuta cuando cambian las imagenes
     useEffect(() => {
         const { newPictures, oldPictures } = images.reduce(
             (acc, image) => {
@@ -210,8 +210,10 @@ export function EditarProducto({ navigation }) {
         setNewPictures(newPictures);
         setOldPictures(oldPictures);
     }, [images]);
+    // ------------------------------------------------------------------------
 
-    const EditarProductos = () => {
+    // Función para editar el producto
+    const editProducts = () => {
         const productVariations = variations.map((variation, index) => {
             const attributes = [];
 
@@ -243,11 +245,14 @@ export function EditarProducto({ navigation }) {
         };
         editProduct(newProduct, storeId.product);
     };
+    // ------------------------------------------------------------------------
 
+    // Función para eliminar el producto
     const DeleteProduct = () => {
         deleteProduct(storeId.product);
         navigation.goBack();
     }
+    // ------------------------------------------------------------------------
 
     if (isloading) {
         return (
@@ -364,27 +369,6 @@ export function EditarProducto({ navigation }) {
                             <View className="flex-col my-4">
                                 <Text className="text-main-blue text-md font-Excon_bold mb-2 dark:text-light-blue">Foto de producto</Text>
 
-                                {/* <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
-                                    {images.length === 0 ? (
-                                        <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full dark:border-light-blue">
-                                            <Feather name="upload" size={24} color="#015DEC" />
-                                            <Text className="text-main-blue text-md font-Excon_thin">
-                                                Haz click para subir imágenes
-                                            </Text>
-                                        </View>
-                                    ) : (
-                                        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                            {images.map((image, index) => (
-                                                <Image
-                                                    key={index}
-                                                    source={{ uri: image.uri ? image.uri : image.picture }}
-                                                    style={{ width: 80, height: 80, margin: 5, borderRadius: 8 }}
-                                                />
-                                            ))}
-                                        </ScrollView>
-                                    )}
-                                </Pressable> */}
-
                                 <Pressable className="justify-center items-center mb-4" onPress={pickImages}>
                                     {images.length === 0 ? (
                                         <View className="justify-center items-center py-4 border-[0.5px] border-main-blue rounded-xl w-full">
@@ -419,12 +403,11 @@ export function EditarProducto({ navigation }) {
                                         </ScrollView>
                                     )}
                                 </Pressable>
-
                             </View>
                         </View>
 
                         <View className="flex-row justify-center gap-x-2 px-5">
-                            <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={() => EditarProductos()}>
+                            <Pressable className="bg-main-blue w-[45%] rounded-lg py-2 justify-center items-center mx-2 flex-row gap-x-2" onPress={() => editProducts()}>
                                 <Feather name="check" size={24} color="white" />
                                 <Text className="text-white text-md font-Excon_bold">Actualizar</Text>
                             </Pressable>
@@ -435,13 +418,7 @@ export function EditarProducto({ navigation }) {
                         </View>
                     </View>
                 </View>
-
             </ScrollView>
-
         );
     }
-
-
-
-
 }

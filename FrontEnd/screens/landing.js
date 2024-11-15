@@ -1,30 +1,26 @@
-import { Link } from '@react-navigation/native';
-
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
-
+import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 
 export function LandingPage({ navigation }) {
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/img/fondoLanding.png')} style={styles.backgroundImage}>
-      {/* Usa require para imágenes locales */}
-      <Image
-        source={require('../assets/img/marlin.png')}
-        style={styles.image}
-      />
-      <Text style={styles.title}>¡Bienvenido!</Text>
-      <Text style={styles.subtitle}>
-        Conéctate con el puerto, compra local y apoya a lo nuestro
-      </Text>
-      <TouchableOpacity style={styles.buttonA} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.buttonTextA}>Iniciar Sesión</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonB} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.buttonTextB}>Crear una cuenta</Text>
-      </TouchableOpacity>
+        {/* Usa require para imágenes locales */}
+        <Image
+          source={require('../assets/img/marlin.png')}
+          style={styles.image}
+        />
+        <Text style={styles.title}>¡Bienvenido!</Text>
+        <Text style={styles.subtitle}>
+          Conéctate con el puerto, compra local y apoya a lo nuestro
+        </Text>
+        <TouchableOpacity style={styles.buttonA} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.buttonTextA}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonB} to={{ screen: 'Login' }} onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.buttonTextB}>Crear una cuenta</Text>
+        </TouchableOpacity>
 
       </ImageBackground>
     </View>
@@ -45,7 +41,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 180,
     height: 180,
-    
+
   },
 
   title: {
@@ -60,7 +56,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 25,
     textAlign: 'center',
-    paddingHorizontal: 20,	
+    paddingHorizontal: 20,
   },
 
   buttonA: {

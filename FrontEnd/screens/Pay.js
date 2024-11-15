@@ -1,13 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    Alert,
-    Image,
-    ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert, Image, ActivityIndicator } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -27,9 +19,11 @@ export function PayScreen({ navigation }) {
     const { addToCart, isSameStore, cart } = useCart();
     const { fetchData, user, token } = useGetUser();
     const [randomCode, setRandomCode] = useState();
-    const [loading , setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [infoStore, setInfoStore] = useState(null);
+
+    // funcion que obtiene la tienda
     useEffect(() => {
         async function prepare() {
             response = await fetch(
@@ -45,10 +39,12 @@ export function PayScreen({ navigation }) {
         }
         prepare();
     }, []);
+    // ------------------------------------------------------------------------
 
     const { colorScheme } = useColorScheme();
     const { clearCart, total } = useCart();
 
+    // carga de fuentes
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -56,7 +52,9 @@ export function PayScreen({ navigation }) {
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
+    // ------------------------------------------------------------------------
 
+    // pantalla de carga
     useEffect(() => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
@@ -69,15 +67,19 @@ export function PayScreen({ navigation }) {
             await SplashScreen.hideAsync();
         }
     }, [fontsLoaded]);
+    // ------------------------------------------------------------------------
 
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [paymentReceipt, setPaymentReceipt] = useState(null);
 
+    // metodos de pago
     const methods = [
         { id: 1, type: "SinpeMovil" },
         { id: 2, type: "PayPal" },
     ];
+    // ------------------------------------------------------------------------
 
+    // Función para formatear el precio
     const formatCurrency = (value) => {
         return value.toLocaleString("es-CR", {
             style: "currency",
@@ -85,18 +87,18 @@ export function PayScreen({ navigation }) {
             maximumFractionDigits: 0,
         });
     };
+    // ------------------------------------------------------------------------
 
-    const deliveryFee = 250;
-    const transportFee = 750;
-
+    // Función para generar un código aleatorio
     const generateRandomCode = () => {
         return Math.random().toString(36).substring(7).toUpperCase();
     };
+    // ------------------------------------------------------------------------
 
+    // Función para realizar el pedido
     const postOrder = async () => {
         setLoading(true);
-    
-        
+        // crea el pedido
         const order = {
             products: cart.map((product) => ({
                 item_id: product.id,
@@ -185,8 +187,9 @@ export function PayScreen({ navigation }) {
             setLoading(false);
         }
     };
-    
+    // ------------------------------------------------------------------------
 
+    // Función para finalizar el pedido
     const handleFinalize = () => {
         if (selectedMethod === null) {
             Alert.alert(
@@ -197,7 +200,9 @@ export function PayScreen({ navigation }) {
         }
         postOrder();
     };
+    // ------------------------------------------------------------------------
 
+    // Función para seleccionar la imagen
     const pickImage = async () => {
         const permissionResult =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -213,18 +218,18 @@ export function PayScreen({ navigation }) {
             setPaymentReceipt(result.assets[0].uri);
         }
     };
+    // ------------------------------------------------------------------------
 
     return (
         <View
             className="flex-1 bg-white dark:bg-neutral-950 p-4"
             onLayout={onLayoutRootView}
         >
-
-        {loading ? (
-        <View className={`w-full h-full justify-center items-center absolute z-10  `}>
-          <ActivityIndicator size="large" color="#3498db" />
-        </View>
-      ) : null}
+            {loading ? (
+                <View className={`w-full h-full justify-center items-center absolute z-10  `}>
+                    <ActivityIndicator size="large" color="#3498db" />
+                </View>
+            ) : null}
             <Text className="text-2xl mb-6 text-center font-Excon_bold text-main-blue dark:text-white">
                 Métodos de pago
             </Text>
@@ -234,15 +239,15 @@ export function PayScreen({ navigation }) {
                         key={method.id}
                         onPress={() => setSelectedMethod(method.id)}
                         className={`flex-row items-center justify-between p-4 border rounded-lg ${selectedMethod === method.id
-                                ? "border-main-blue dark:border-light-blue"
-                                : "border-gray-300 dark:border-white"
+                            ? "border-main-blue dark:border-light-blue"
+                            : "border-gray-300 dark:border-white"
                             }`}
                     >
                         <View className="flex-row items-center">
                             <View
                                 className={`w-4 h-4 mr-4 rounded-full border justify-center items-center ${selectedMethod === method.id
-                                        ? "bg-main-blue border-0 dark:bg-light-blue"
-                                        : "border-gray-300 dark:border-white"
+                                    ? "bg-main-blue border-0 dark:bg-light-blue"
+                                    : "border-gray-300 dark:border-white"
                                     }`}
                             >
                                 {selectedMethod === method.id && (

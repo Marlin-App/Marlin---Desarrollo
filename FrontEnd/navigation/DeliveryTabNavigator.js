@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "../screens/Home";
 import { Keyboard, Platform, Text, View } from "react-native"
@@ -15,9 +15,10 @@ const Tab = createBottomTabNavigator();
 export function DeliveryTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
     const { colorScheme } = useColorScheme();
-    const backgroundPedidos  = colorScheme === 'dark' ? 'B0B0B0' : '#5186EC';
+    const backgroundPedidos = colorScheme === 'dark' ? 'B0B0B0' : '#5186EC';
 
 
+    // funcion que verifica si el teclado esta visible
     useEffect(() => {
         const keyboardShowListener =
             Platform.OS === "ios"
@@ -42,7 +43,9 @@ export function DeliveryTabNavigator() {
             keyboardHideListener.remove();
         };
     }, []);
+    // ------------------------------------------------------------------------
 
+    // carga de fuentes
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -50,6 +53,7 @@ export function DeliveryTabNavigator() {
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
+    // ------------------------------------------------------------------------
 
     return (
         <Tab.Navigator
@@ -84,7 +88,6 @@ export function DeliveryTabNavigator() {
                         marginTop: -20,
                         fontFamily: "Excon_regular",
                     }
-
                 }}
 
             />
@@ -92,10 +95,9 @@ export function DeliveryTabNavigator() {
             <Tab.Screen
                 name="Explorar"
                 component={ExploreScreen}
-                
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <View style={{ paddingBottom: 10}}>
+                        <View style={{ paddingBottom: 10 }}>
                             <Feather name="search" size={26} color={color} />
                         </View>
                     ),
@@ -113,17 +115,16 @@ export function DeliveryTabNavigator() {
                 component={ExpressScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
-                        <View style={{display: "flex", justifyContent: "center", alignItems: "center"  }}>
-                            <View style={{ backgroundColor: color == "#5186EC"  ? "#5186EC": "#D8D8D8" , borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
-                                <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC"  ? "#D8D8D8": "#5186EC"} />
+                        <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ backgroundColor: color == "#5186EC" ? "#5186EC" : "#D8D8D8", borderRadius: 100, padding: 8, marginTop: -10, position: "relative" }}>
+                                <MaterialIcons name="delivery-dining" size={34} color={color == "#5186EC" ? "#D8D8D8" : "#5186EC"} />
                             </View>
-                            <Text style={{color: color == "#5186EC"  ? "#D8D8D8": "#5186EC", fontSize: 18, fontWeight: "bold", backgroundColor: color == "#5186EC"  ? "#5186EC": "#D8D8D8", borderRadius: 10, position:"absolute", paddingHorizontal: 7, top:30}}>Pedidos</Text>
+                            <Text style={{ color: color == "#5186EC" ? "#D8D8D8" : "#5186EC", fontSize: 18, fontWeight: "bold", backgroundColor: color == "#5186EC" ? "#5186EC" : "#D8D8D8", borderRadius: 10, position: "absolute", paddingHorizontal: 7, top: 30 }}>Pedidos</Text>
                         </View>
                     ),
                     tabBarLabelStyle: {
                         display: "none"
                     }
-
                 }}
             />
 

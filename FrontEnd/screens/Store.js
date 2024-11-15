@@ -8,8 +8,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useColorScheme } from "nativewind";
 
-
-
 export function Store({ navigation }) {
     const route = useRoute();
     const { data, loading, setData } = useStoreItem(route.params.id);
@@ -27,6 +25,7 @@ export function Store({ navigation }) {
     const { colorScheme } = useColorScheme();
     const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
 
+    // Ocultar el splash
     useEffect(() => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
@@ -39,68 +38,59 @@ export function Store({ navigation }) {
             await SplashScreen.hideAsync();
         }
     }, [fontsLoaded]);
+    // ------------------------------------------------------------------------
 
+    // Formatear los datos
     if (!fontsLoaded) return null;
-
-    // useEffect(() => {
-    //     if (data && data.length > 0) {
-    //         const recontar = data.map(item => ({
-    //             ...item,
-    //             price: Number(item.price).toLocaleString('es-CR', { 
-    //                 style: 'currency', 
-    //                 currency: 'CRC', 
-    //                 maximumFractionDigits: 0 
-    //             })
-    //         }));
-    //         setFormattedData(recontar);
-    //     }
-    // }, [data]);
     useEffect(() => {
         if (data) {
             setFormattedData(formatItems(data));
         }
     }, [data]);
+    // ------------------------------------------------------------------------
 
+    // Función para formatear los items
     const formatItems = (data) => data.map(item => ({
         id: item.id.toString(),
-                name: item.name,
-                description: item.description,
-                baseprice: item.price,
-                variation: item.variations,
-                price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
-                stock: item.stock,
-                picture: item.item_images[0]?.picture,
-                pictures: item.item_images,
-                store_id: item.store_id,
-                item_type: item.item_type
+        name: item.name,
+        description: item.description,
+        baseprice: item.price,
+        variation: item.variations,
+        price: `${Number(item.price).toLocaleString('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 0 })}`,
+        stock: item.stock,
+        picture: item.item_images[0]?.picture,
+        pictures: item.item_images,
+        store_id: item.store_id,
+        item_type: item.item_type
     }));
+    // ------------------------------------------------------------------------
 
+    // Función para buscar un producto
     const searchProduct = (text) => {
         const filteredData = data.filter(item =>
             item.name.toLowerCase().startsWith(text.toLowerCase())
         );
         const recontarFilteredData = filteredData.map(item => ({
             ...item,
-            price: Number(item.price).toLocaleString('es-CR', { 
-                style: 'currency', 
-                currency: 'CRC', 
-                maximumFractionDigits: 0 
+            price: Number(item.price).toLocaleString('es-CR', {
+                style: 'currency',
+                currency: 'CRC',
+                maximumFractionDigits: 0
             })
         }));
         setFormattedData(recontarFilteredData);
     };
-
+    // ------------------------------------------------------------------------
 
     return (
         <View className="bg-white dark:bg-neutral-950 flex-1 w-full" onLayout={onLayout}>
-
             <View className="h-[200px] items-center justify-center">
-
                 <Image
                     source={{ uri: route.params.store.banner }}
                     className="w-full h-full absolute "
                 />
                 <View className="absolute bg-black opacity-50 w-full h-full"></View>
+
                 <View className="mt-2">
                     <View className="flex-row justify-around items-center mb-2">
                         <View className="w-[70%]">
@@ -109,9 +99,10 @@ export function Store({ navigation }) {
                             </Text>
                             <Text className="text-sm font-Excon_bold text-white mt-2">
                                 Ubicacion: <Text className="font-Excon_regular">{route.params.store.canton}, {route.params.store.district}</Text>
-                            </Text> 
+                            </Text>
                             <Text className="text-sm font-Excon_bold text-white ">Numero de WhatsApp:<Text className="font-Excon_regular"> {route.params.store.num_sinpe}</Text></Text>
                         </View>
+
                         <Image
                             source={{ uri: route.params.store.picture }}
                             className="h-20 w-20 rounded-lg"
@@ -127,6 +118,7 @@ export function Store({ navigation }) {
                         >
                             <MaterialCommunityIcons name="magnify" size={30} color="white" />
                         </Pressable>
+
                         <TextInput
                             className="ml-2 py-2  text-md text-light-blue dark:text-white  font-Excon_regular w-[70%] "
                             placeholder='Buscar Productos'
@@ -198,15 +190,9 @@ export function Store({ navigation }) {
                     keyExtractor={item => item.id.toString()}
                     contentContainerStyle={{ paddingBottom: 20 }} // Añade espacio al final
                 />
-
-
-
-
             ) : (
                 <ActivityIndicator size="large" color="#3498db" />
             )}
         </View>
     );
 }
-
-

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { Pressable, Text, TextInput, View, Alert, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { err } from 'react-native-svg';
-import {  MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export function LoginPage({ navigation }) {
   const [userName, setUserName] = React.useState("");
@@ -13,10 +11,13 @@ export function LoginPage({ navigation }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
+  // Función para alternar la visibilidad de la contraseña
   const togglePasswordVisible = () => {
     setpasswordVisible(!passwordVisible);
   };
+  // ------------------------------------------------------------------------
 
+  // Función para manejar el inicio de sesión
   const handleLogin = async () => {
     try {
       setIsLoading(true);
@@ -51,6 +52,7 @@ export function LoginPage({ navigation }) {
       setIsLoading(false);
     }
   };
+  // ------------------------------------------------------------------------
 
   return (
     <View className="flex-1  bg-white"   >
@@ -60,7 +62,6 @@ export function LoginPage({ navigation }) {
           <ActivityIndicator size="large" color="#3498db" />
         </View>
       ) : null}
-
 
       <Image
         source={require('../assets/img/FondoLogin.png')}
@@ -95,7 +96,7 @@ export function LoginPage({ navigation }) {
             placeholderTextColor={'#1877F2'}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry = {!passwordVisible}
+            secureTextEntry={!passwordVisible}
             autoCapitalize="none"
 
           />
@@ -126,7 +127,6 @@ export function LoginPage({ navigation }) {
           <Text className="text-[#3765AE] text-[16px] font-Excon_regular " >o</Text>
         </View>
 
-
         <Pressable
           onPress={() => navigation.navigate('Register')}
           style={({ pressed }) => [
@@ -156,10 +156,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   text: {
     color: 'white',
-
   },
 });

@@ -1,26 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "../screens/Home";
 import { Keyboard, Platform } from "react-native";
 import { useColorScheme } from "nativewind";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { ExploreScreen } from "../screens/Explore";
-import { StoreCat } from "../screens/StoreCat";
 import { ProfileScreen } from '../screens/Settings';
 import { HomeComercianteScreen } from "../screens/HomeComerciante";
 import Octicons from '@expo/vector-icons/Octicons';
-import {MisTiendas} from '../screens/MisTiendas';
+import { MisTiendas } from '../screens/MisTiendas';
 import { ComercianteInventario } from '../screens/ComercianteInventario';
 const Tab = createBottomTabNavigator();
 
 export function ComercianteTabNavigator() {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-    const {colorScheme} = useColorScheme();
+    const { colorScheme } = useColorScheme();
 
-
+    // funcion que verifica si el teclado esta visible
     useEffect(() => {
         const keyboardShowListener =
             Platform.OS === "ios"
@@ -45,7 +42,9 @@ export function ComercianteTabNavigator() {
             keyboardHideListener.remove();
         };
     }, []);
+    // ------------------------------------------------------------------------
 
+    // carga de las fuentes
     const [fontsLoaded] = useFonts({
         Excon_regular: require("../../FrontEnd/assets/fonts/Excon/Excon-Regular.otf"),
         Excon_bold: require("../../FrontEnd/assets/fonts/Excon/Excon-Bold.otf"),
@@ -53,7 +52,9 @@ export function ComercianteTabNavigator() {
         Erode_regular: require("../../FrontEnd/assets/fonts/Erode/Erode-Regular.otf"),
         Erode_bold: require("../../FrontEnd/assets/fonts/Erode/Erode-Bold.otf"),
     });
+    // ------------------------------------------------------------------------
 
+    // carga de las pantallas
     useEffect(() => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
@@ -68,13 +69,13 @@ export function ComercianteTabNavigator() {
     }, [fontsLoaded]);
 
     if (!fontsLoaded) return null;
-
+    // ------------------------------------------------------------------------
 
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor:  colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
+                tabBarActiveTintColor: colorScheme === 'dark' ? '#5186EC' : '#FFFFFF',
                 tabBarInactiveTintColor: colorScheme === 'dark' ? '#B0B0B0' : '#AAC3F3',
                 tabBarLabelPosition: "below-icon",
                 animationEnabled: false,

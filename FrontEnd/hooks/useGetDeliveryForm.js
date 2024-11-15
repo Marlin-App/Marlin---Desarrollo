@@ -1,15 +1,14 @@
 import { Alert } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useDecodeJWT from './useDecodeJWT';
 
 const useGetDeliveryForm = (navigation) => {
-
     const { decodeJWT, refreshToken, isTokenExpired } = useDecodeJWT();
     const [loading, setLoading] = useState(true);
 
+    // Función para obtener el access token
     const handleDeliveryForm = async (deliveryForm) => {
-
         if (await isTokenExpired()) {
             await refreshToken();
         } else {
@@ -37,6 +36,7 @@ const useGetDeliveryForm = (navigation) => {
         formDataToSend.append("plate", deliveryForm.plate);
         formDataToSend.append("vehicle", deliveryForm.vehicle);
 
+        // Agregar las imagenes
         if (deliveryForm.pictures && deliveryForm.pictures.length > 0) {
             deliveryForm.pictures.forEach((image, index) => {
                 const perfilFile = {
@@ -70,7 +70,6 @@ const useGetDeliveryForm = (navigation) => {
         console.log("Formulario de repartidor", formDataToSend._parts[5]);
 
         //revision con Jeremy, error 401, unauthorized
-        
         try {
 
             const jsonValue = await AsyncStorage.getItem('@userToken');
@@ -90,28 +89,29 @@ const useGetDeliveryForm = (navigation) => {
                 },
                 body: formDataToSend
             });
-        
-        console.log('Estoy aqui',response);
-        
-        
-        if (!response.ok) {
-            //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
-            const errorText = await response.text();
-            console.log('Error en registro de repartidor', errorText);
-            throw new Error('Error en registro de repartidor');
-        } else {
-            navigation.navigate('thirdScreen');
-            console.log('Producto actualizado con éxito');
-            Alert.alert('Solicitud enviada', '¡Tu solicitud está siendo verificada por los administradores!');
-            
-        }
-    } catch (error) {
+
+            console.log('Estoy aqui', response);
+
+
+            if (!response.ok) {
+                //Intenta obtener el texto en lugar de JSON para ver si hay un HTML o un mensaje de error
+                const errorText = await response.text();
+                console.log('Error en registro de repartidor', errorText);
+                throw new Error('Error en registro de repartidor');
+            } else {
+                navigation.navigate('thirdScreen');
+                console.log('Producto actualizado con éxito');
+                Alert.alert('Solicitud enviada', '¡Tu solicitud está siendo verificada por los administradores!');
+
+            }
+        } catch (error) {
             console.error('Error en registro de repartidorbbbb ', error);
         } finally {
             setLoading(false);
         }
 
     };
+    // ------------------------------------------------------------------------
 
     return {
         handleDeliveryForm,
