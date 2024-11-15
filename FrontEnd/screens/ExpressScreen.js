@@ -1,30 +1,14 @@
-import {
-  Button,
-  Image,
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  FlatList,
-  navigation,
-  navigate,
-  Switch
-} from "react-native";
+import { Image, View, Text, ScrollView, TouchableOpacity, FlatList, Switch} from "react-native";
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Animated, Modal, Dimensions } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { useCRUDProductos } from "../hooks/useCRUDProductos";
+import { Animated, Dimensions } from "react-native";
 import NotificationDropdown from "../components/NotificationDropdown";
-import React, { useEffect, useCallback, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useOrders from '../hooks/useOrders';
-
-
+import useDecodeJWT from "../hooks/useDecodeJWT";
 
 export function ExpressScreen({ navigation }) {
+  const { getToken, isTokenExpired, refreshToken } = useDecodeJWT();
   const [modalVisible, setModalVisible] = useState(false);
   const [longPressProduct, setLongPressProduct] = useState(null);
   const { colorScheme } = useColorScheme();
@@ -35,57 +19,73 @@ export function ExpressScreen({ navigation }) {
   const { orders } = useOrders();
   const [online, setOnline] = useState(false);
   const switchOnline = () => setOnline(previousState => !previousState);
+  const [pendiente, setPendiente] = useState([]);
+  const [enProgreso, setEnProgreso] = useState([]);
+  const [completado, setCompletado] = useState([]);
 
-  // const ordenes = [
-  //   {
-  //     id: 1,
-  //     tienda: "Bazar Marta",
-  //     destinatario: "Jeremy Guzman",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
-  //     entregaCoordenadas: { latitude: 9.979, longitude: -84.813 },
-  //     estado: "Pendientes",
-  //   },
-  //   {
-  //     id: 2,
-  //     tienda: "Panadería La Esperanza",
-  //     destinatario: "Ana Lopez",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
-  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
-  //     estado: "En Progreso",
-  //   },
-  //   {
-  //     id: 3,
-  //     tienda: "Panadería La Esperanza",
-  //     destinatario: "Ana Lopez",
-  //     detalle: "Detalles del pedido aquí",
-  //     tiendaCoordenadas: { latitude: 9.978, longitude: -84.834 },
-  //     entregaCoordenadas: { latitude: 9.981, longitude: -84.820 },
-  //     estado: "Completada",
-  //   },
-  // ];
-
-  const [prueba, setprueba] = useState([
-    {
-      title: "Pendientes", orders: [{
-        id: 1,
-        tienda: "Bazar Marta",
-        codigo: "1234",
-        destinatario: "Jeremy Guzman",
-        detalle: "Detalles del pedido aquí",
-        tiendaCoordenadas: { latitude: 9.9763, longitude: -84.833 },
-        entregaCoordenadas: { latitude: 9.9763, longitude: -84.830 },
-        estado: "Pendientes",
-      }]
-    },
-    { title: "En Progreso", orders: [] },
-    { title: "Completados", orders: [] },
+  const [misOrdenes, setMisOrdenes] = useState([
+    { title: "Pendientes", orders: pendiente },
+    { title: "En Progreso", orders: enProgreso },
+    { title: "Completados", orders: completado },
   ]);
 
+  useEffect(() => {
+    setMisOrdenes([
+      { title: "Pendientes", orders: pendiente },
+      { title: "En Progreso", orders: enProgreso },
+      { title: "Completados", orders: completado },
+    ]);
+  }, [pendiente, enProgreso, completado]);
+
+  //useEffect para actualizar los pedidos cada 10 segundos
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (await isTokenExpired()) {
+        await refreshToken();
+      }
+      let token = await getToken();
+
+      try {
+
+        const response = await fetch(
+          `https://marlin-backend.vercel.app/api/delivery-orders/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token.access}`,
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Error al obtener los datos');
+        }
+        const updatedOrders = await response.json();
+        const pendientes = updatedOrders.filter(order => order.status === "Pendiente");
+        setPendiente(updatedOrders);
+
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    // Llama a `fetchOrders` inmediatamente y luego cada 10 segundos
+    //fetchOrders();
+    const interval = setInterval(fetchOrders, 10000);
+
+    // Limpia el intervalo al desmontar el componente
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    console.log("Estado pendiente actualizado:", pendiente);
+}, [pendiente]);
+
+  // funcion para rechazar una orden
   const handleRejectOrder = (orderId) => {
-    setprueba((prevPrueba) => {
-      const updatedPrueba = prevPrueba.map((category) => {
+    setMisOrdenes((prevMisOrdenes) => {
+      const updatedMisOrdenes = prevMisOrdenes.map((category) => {
         if (category.title === "Pendientes") {
           return {
             ...category,
@@ -94,12 +94,52 @@ export function ExpressScreen({ navigation }) {
         }
         return category;
       });
-      return updatedPrueba;
+      return updatedMisOrdenes;
     });
   };
+  // ------------------------------------------------------------------------
+
+  const aceptOrder = async (orderId) => {
+    if (await isTokenExpired()) {
+      await refreshToken();
+    }
+    let token = await getToken();
+
+    try {
+
+      const response = await fetch(
+        `https://marlin-backend.vercel.app/api/accept-delivery/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token.access}`,
+          },
+          body: JSON.stringify({
+            delivery_order_id: orderId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos');
+      }
+      //logica para consultar pedidos a en progreso
+      alert('Orden aceptada con éxito, dirigite a la tienda para recoger el pedido');
+
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+
+
+  // funcion para aceptar una orden
   const handleAcceptOrder = (orderId) => {
-    setprueba((prevPrueba) => {
-      const updatedPrueba = prevPrueba.map((category) => {
+
+    aceptOrder(orderId);
+    
+    setMisOrdenes((prevMisOrdenes) => {
+      const updatedMisOrdenes = prevMisOrdenes.map((category) => {
         if (category.title === "Pendientes") {
           const orderToMove = category.orders.find((order) => order.id === orderId);
           if (orderToMove) {
@@ -110,7 +150,7 @@ export function ExpressScreen({ navigation }) {
             };
           }
         } else if (category.title === "En Progreso") {
-          const orderToMove = prevPrueba.find((cat) => cat.title === "Pendientes").orders.find((order) => order.id === orderId);
+          const orderToMove = prevMisOrdenes.find((cat) => cat.title === "Pendientes").orders.find((order) => order.id === orderId);
           if (orderToMove) {
             return {
               ...category,
@@ -120,16 +160,17 @@ export function ExpressScreen({ navigation }) {
         }
         return category;
       });
-      return updatedPrueba;
+      return updatedMisOrdenes;
     });
   };
+  // ------------------------------------------------------------------------
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
   const [notifications, setNotifications] = useState([
-
+    // aqui va la lista de notificaciones
   ]);
 
+  // Función para manejar el clic en una notificación
   const handleNotificationClick = (notificationId) => {
     setNotifications(prevNotifications => prevNotifications.filter(notification => notification.id !== notificationId));
   };
@@ -141,36 +182,21 @@ export function ExpressScreen({ navigation }) {
   const closeDropdown = () => {
     setIsDropdownVisible(false);
   };
+  // ------------------------------------------------------------------------
 
-  useEffect(() => {
-    const fetchStores = async () => {
-      await fetchStoresWithProducts();
-    };
-
-    fetchStores();
-  }, [navigation]);
-
-  const longpress = (id) => {
-    setLongPressProduct(id);
-    setModalVisible(true);
-  };
-
-  const goToPage = (page) => {
-    setCurrentPage(page);
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ x: page * screenWidth, animated: true });
-    }
-  };
-
+  // Función para manejar el scroll
   const handleScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const pageIndex = Math.round(contentOffsetX / screenWidth);
     setCurrentPage(pageIndex);
   };
+  // ------------------------------------------------------------------------
 
+  // funcion para manejar la conexion
   useEffect(() => {
     console.log(online);
   }, [online]);
+  // ------------------------------------------------------------------------
 
   return (
     <View className="bg-white dark:bg-neutral-950 h-full">
@@ -214,7 +240,7 @@ export function ExpressScreen({ navigation }) {
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
       >
-        {prueba.map((store, storeIndex) => (
+        {misOrdenes.map((store, storeIndex) => (
           <View
             key={storeIndex}
             style={{ width: screenWidth }}
@@ -236,19 +262,21 @@ export function ExpressScreen({ navigation }) {
                           <View className="flex-row">
                             <View className=" justify-center item-center bg-blue-800 rounded-lg dark:bg-neutral-900">
                               <Image
+                                //source={{ uri: item.order_id.store_photo }}
                                 style={{
                                   width: 100,
                                   height: 100,
                                   resizeMode: "stretch",
                                 }}
+
                               />
                             </View>
                             <View className="ml-2">
                               <Text className="font-Excon_bold text-base dark:text-white">
-                                {item.tienda}
+                                {item.order_id.order_num}
                               </Text>
                               <Text className="font-Excon_regular text-sm dark:text-white">
-                                Usuario: {item.destinatario}
+                                Usuario: {item.order_id.user_name}
                               </Text>
                               <TouchableOpacity onPress={() =>
                                 navigation.navigate("OrderInfo", { order: item })
@@ -310,7 +338,7 @@ export function ExpressScreen({ navigation }) {
       </View>
 
       <View className="flex-row justify-center mt-4">
-        {prueba.map((_, index) => {
+        {misOrdenes.map((_, index) => {
           // Animación del tamaño del punto
           const dotWidth = scrollX.interpolate({
             inputRange: [

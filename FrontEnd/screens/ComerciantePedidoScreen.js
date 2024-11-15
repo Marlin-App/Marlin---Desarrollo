@@ -136,7 +136,7 @@ export function ComerciantePedidoScreen({ navigation }) {
             </View>
 
             <View className="flex-col mt-5 pb-6 justify-between px-5 gap-y-2">
-                {order.status == "Buscando repartidor" ? (
+                {order.status == "Pendiente" ? (
                     <Pressable className="bg-main-blue rounded-lg py-2 justify-center items-center flex-row gap-x-2" onPress={handleReady} >
                         <Feather name="check" size={24} color="white" />
                         <Text className="text-white text-md font-Excon_regular">Listo para recoger</Text>
