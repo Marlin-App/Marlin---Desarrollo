@@ -49,6 +49,9 @@ export function HistoricalScreen({ navigation }) {
         <View className="flex-1">
           <Text className="font-Excon_bold text-base dark:text-[#f1f1f1]">{storeName}</Text>
           <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">Fecha: <Text className="font-Excon_thin">{formatDate(item.order_date)}</Text></Text>
+          <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">
+            Estado: <Text className="font-Excon_thin">{item.status === 'En camino' ? 'En camino' : 'Pendiente'}</Text>
+          </Text>
           <View className="flex-row justify-between">
             <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">Productos: <Text className="font-Excon_thin">{item.products.length}</Text></Text>
             <Text className="font-Excon_bold text-xs dark:text-[#f1f1f1]">Total: <Text className="font-Excon_thin">{formatCurrency(item.total_price)}</Text></Text>
@@ -74,6 +77,7 @@ export function HistoricalScreen({ navigation }) {
   // Filtrar los datos
   const filteredData = ordenHistoricalData.filter(item => {
     if (filter === 'all') return item.user_id === user.id;
+    if (filter === 'Pendiente') return (item.status === 'Pendiente' || item.status === 'En camino') && item.user_id === user.id;
     return item.status === filter && item.user_id === user.id;
   });
   // ------------------------------------------------------------------------
@@ -102,8 +106,8 @@ export function HistoricalScreen({ navigation }) {
       <Text className="text-base mb-4 font-Excon_bold dark:text-[#efeeee]">Historial de Compras</Text>
       <View className="flex-row justify-between mb-4">
         <TouchableOpacity
-          className={`px-4 py-2 rounded-xl ${filter === 'Completado' ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'}`}
-          onPress={() => setFilter('Completado')}
+          className={`px-4 py-2 rounded-xl ${filter === 'Entregado' ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'}`}
+          onPress={() => setFilter('Entregado')}
         >
           <Text className="text-center dark:text-white">Completados</Text>
         </TouchableOpacity>

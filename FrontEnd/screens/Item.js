@@ -38,9 +38,12 @@ export function ItemPage({ navigation }) {
                 const result = await response.json();
                 setItem(result);
 
-                const totalStock = result.variations.reduce((acc, variation) => acc + variation.stock, 0);
+                // Calcular el stock total
+                const totalStock = result.variations.length > 0 
+                    ? result.variations.reduce((acc, variation) => acc + variation.stock, 0) 
+                    : result.stock;
                 setMaxQuantity(totalStock);
-
+     
             } catch (err) {
                 setError(err);
             } finally {
