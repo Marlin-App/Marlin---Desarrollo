@@ -65,13 +65,13 @@ export function LoginPage({ navigation }) {
 
       <Image
         source={require('../assets/img/FondoLogin.png')}
-        className="w-full h-[50%]  "
+        className="w-full h-[30%] "
         style={{ resizeMode: 'stretch', marginBottom: 30 }}
       />
       <Text className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4  ">¡Bienvenido de vuelta!    </Text>
 
       <View className="px-8">
-        <Text className="text-[24px] font-Excon_regular  text-main-blue">Nombre de usuario</Text>
+        <Text className="text-[24px] font-Excon_regular  text-main-blue mt-6">Nombre de usuario</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2 ">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
@@ -109,7 +109,7 @@ export function LoginPage({ navigation }) {
           </TouchableOpacity>
         </View>
         <Text className="text-red-500 text-center w-full">{error} </Text>
-        <Pressable onPress={() => navigation.navigate("RestorePasswordScreen")} className="mb-6" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
+        <Pressable onPress={() => navigation.navigate("RestorePasswordScreen")} className="mb-10" ><Text className="text-right text-main-blue font-Excon_regular mb-1">Olvidaste tu contraseña?</Text></Pressable>
 
         <Pressable
           onPress={handleLogin}

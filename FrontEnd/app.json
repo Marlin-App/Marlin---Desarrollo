@@ -3,7 +3,7 @@
     "name": "marlin-app",
     "slug": "drex",
     "scheme": "marlin-app",
-    "version": "1.0.4",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon2.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,7 @@
       "bundleIdentifier": "Marlin"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 6,
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION",

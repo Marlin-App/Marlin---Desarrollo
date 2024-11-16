@@ -66,7 +66,7 @@ export function RegisterPage({ navigation }) {
     <View className="flex-1 bg-white">
       <Image
         source={require('../assets/img/FondoLogin.png')}
-        className="w-full h-[50%]"
+        className="w-full h-[30%]"
         style={{ resizeMode: 'stretch' }}
       />
       <Text
@@ -77,7 +77,7 @@ export function RegisterPage({ navigation }) {
 
       <ScrollView className="px-8">
 
-        <Text className="text-[24px] font-Excon_regular text-[#1952BE]">Nombres</Text>
+        <Text className="text-[24px] font-Excon_regular text-[#1952BE] mt-6">Nombres</Text>
         <View className="flex-row items-center border-b-2 border-[#1952BE] mb-4 gap-2">
           <Feather name="user" size={18} color="#1952BE" />
           <TextInput
