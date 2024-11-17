@@ -244,7 +244,7 @@ export function HomeStackScreen({ navigation, route }) {
         name="HistoricalDetailsScreen"
         component={HistoricalDetailsScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerTitle: "Regresar",
           headerTintColor: colorScheme === "dark" ? "#60a5fa" : "#015DEC",
           headerStyle: {
