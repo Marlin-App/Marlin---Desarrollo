@@ -80,14 +80,35 @@ const useDirections = (navigation) => {
 
       const jsonValue = JSON.stringify(updatedDirections);
       await AsyncStorage.setItem('@Directions', jsonValue);
-
     } catch (e) {
       console.error('Error al eliminar la dirección:', e);
     }
   };
   // ------------------------------------------------------------------------
 
-  return { direction, addToDirection, reLoadDirections, replaceDirection, removeDirection };
+   // Actualizar una direccion
+  const updateDirection = async (uptateDirection) => {
+    console.log(direction);
+    console.log(uptateDirection);
+    try {
+      const updatedDirections = direction.map((item) =>
+        item.id === uptateDirection.id ? { ...item, ...uptateDirection } : item
+      );
+      setDirections(updatedDirections);
+
+      const jsonValue = JSON.stringify(updatedDirections);
+      await AsyncStorage.setItem('@Directions', jsonValue);
+      if (navigation) {
+        navigation.navigate('DirectionScreen');
+      }
+    } catch (e) {
+      console.error('Error al actualizar la dirección:', e);
+    }
+  };
+  // ------------------------------------------------------------------------
+
+
+  return { direction, addToDirection, reLoadDirections, replaceDirection, removeDirection, updateDirection };
 }
 
 export default useDirections;

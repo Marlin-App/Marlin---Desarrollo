@@ -5,21 +5,23 @@ import { DropDown } from '../components/DropDown';
 import useSelectLocation from '../hooks/useSelectLocation';
 import Feather from '@expo/vector-icons/Feather';
 import useDirections from '../hooks/useDirection';
+import { useRoute } from '@react-navigation/native';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 export function AddDirectionScreen({ navigation }) {
   const { colorScheme } = useColorScheme();
   const placeholderTextColor = colorScheme === 'dark' ? 'white' : '#60a5fa';
-  const { direction, addToDirection } = useDirections(navigation);
-
+  const { direction, addToDirection, updateDirection } = useDirections(navigation);
+  const direccion = useRoute().params?.item;
   // Datos de la tienda
   const [data, setData] = useState({
-    id: 1,
-    name: "",
-    referencias: "",
-    district: "",
-    canton: "",
-    coodernates: "",
-    isSelected: false
+    id: direccion ? direccion.id : 1,
+    name: direccion ? direccion.name : "",
+    referencias: direccion ? direccion.referencias : "",
+    district: direccion ? direccion.district : "",
+    canton: direccion ? direccion.canton : "",
+    coodernates: direccion ? direccion.coodernates : "",
+    isSelected: direccion ? direccion.isSelected : false,
   });
   // ------------------------------------------------------------------------
 
@@ -59,8 +61,8 @@ export function AddDirectionScreen({ navigation }) {
   };
   // ------------------------------------------------------------------------
 
-  const [selectedValue, setSelectedValue] = useState();
-  const [selectedValue2, setSelectedValue2] = useState();
+  const [selectedValue, setSelectedValue] = useState(data.canton);
+  const [selectedValue2, setSelectedValue2] = useState(data.district);
 
   const { location, setModalVisible, LocationPickerComponent, isModalVisible } = useSelectLocation();
 
@@ -78,12 +80,17 @@ export function AddDirectionScreen({ navigation }) {
 
   // Función para manejar los cambios de la ubicación
   useEffect(() => {
+    
+
+    !direccion ? 
     setData((prevData) => ({
       ...prevData,
-      id: direction.length + 1,
+      id: direction.length > 0 ? direction[0].id + 1 : 0 ,
       isSelected: direction.length === 0,
-    }));
+    })):null
+  console.log(data)
   }, [direction]);
+  
   // ------------------------------------------------------------------------
 
   // Función para manejar los cambios de los cantones
@@ -108,7 +115,13 @@ export function AddDirectionScreen({ navigation }) {
 
   // Función para manejar el evento de guardar
   const handleSave = async () => {
-    addToDirection(data);
+    if(direccion){
+    
+     updateDirection(data);
+     
+    }else{
+      addToDirection(data);
+    }
   };
   // ------------------------------------------------------------------------
 
@@ -124,6 +137,7 @@ export function AddDirectionScreen({ navigation }) {
         <Text className="text-main-blue text-md font-Excon_bold dark:text-light-blue">Nombre de la Ubicacion</Text>
         <TextInput
           className="border-b-[0.5px] border-main-blue px-4 my-2 font-Excon_thin dark:text-white"
+          value={data.name}
           onChangeText={(value) => handleInputChange('name', value)}
           placeholder="Dale un nombre a la direccion"
           placeholderTextColor={placeholderTextColor}
@@ -176,18 +190,19 @@ export function AddDirectionScreen({ navigation }) {
           multiline
           numberOfLines={4}
           maxLength={120}
+          value={data.referencias}
           placeholderTextColor={placeholderTextColor}
           placeholder="Brinda direcciones, calles, avenidas o puntos de referencia para que tu negocio pueda ser ubicado."
           onChangeText={(value) => handleInputChange('referencias', value)}
         />
       </View>
-
+      
       <TouchableOpacity
         className={`bg-main-blue py-4 my-6 rounded-lg flex-row items-center justify-center mx-2`}
         onPress={handleSave}
       >
-        <Feather name="check" size={24} color="white" />
-        <Text className="text-white font-Excon_bold text-lg ">Agregar</Text>
+       <FontAwesome5 name="upload" size={24} color="white" />
+        <Text className="text-white font-Excon_bold text-lg ml-2 ">Guardar</Text>
       </TouchableOpacity>
     </ScrollView>
   );
