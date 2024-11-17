@@ -64,16 +64,16 @@ export function RegisterPage({ navigation }) {
 
   return (
     <View className="flex-1 bg-white">
-      <Image
-        source={require('../assets/img/FondoLogin.png')}
-        className="w-full h-[30%]"
-        style={{ resizeMode: 'stretch' }}
-      />
-      <Text
-        className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 "
-      >
-        ¡Crea una cuenta!
-      </Text>
+      <View>
+        <Image
+          source={require("../assets/img/FondoLogin.png")}
+          className="w-full h-56"
+          style={{ resizeMode: "stretch", marginBottom: 30 }}
+        />
+        <Text className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 mt-6  ">
+          ¡Bienvenido de vuelta!{" "}
+        </Text>
+      </View>
 
       <ScrollView className="px-8">
 
