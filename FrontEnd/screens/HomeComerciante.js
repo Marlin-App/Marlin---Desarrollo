@@ -34,7 +34,7 @@ export function HomeComercianteScreen({ navigation }) {
     // función para filtrar los pedidos
     useEffect(() => {
         if (filter === "Pendiente") {
-            const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor");
+            const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor" || order.status === "En camino");
             setOrderFilter(filteredOrders);
             return;
         }
