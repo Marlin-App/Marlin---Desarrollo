@@ -32,7 +32,7 @@ export function HistoricalScreen({ navigation }) {
     fetchData();
   }, []);
 
-  // Función para obtener los detalles de la tienda
+  // Función para obtener los detalles de la tienda
   const getStoreDetails = (storeId) => {
     const store = stores.find((store) => store.id === storeId);
     return store
@@ -41,7 +41,7 @@ export function HistoricalScreen({ navigation }) {
   };
   // ------------------------------------------------------------------------
 
-  // Función para formatear la fecha
+  // Función para formatear la fecha
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     const date = new Date(dateString);
@@ -49,7 +49,7 @@ export function HistoricalScreen({ navigation }) {
   };
   // ------------------------------------------------------------------------
 
-  // Función para renderizar los items
+  // Función para renderizar los items
   const HistoricalDetailsScreen = ({ item }) => {
     const { storeName, storePicture } = getStoreDetails(item.store_id);
 
@@ -79,12 +79,14 @@ export function HistoricalScreen({ navigation }) {
               {formatDate(item.order_date)}
             </Text>
           </Text>
-          <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">
-            Estado:{" "}
-            <Text className="font-Excon_thin">
-              {item.status}
+          {(item.status === "Pendiente" || item.status === "En camino") && (
+            <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">
+              Estado:{" "}
+              <Text className="font-Excon_thin">
+                {item.status === "En camino" ? "En camino" : item.status}
+              </Text>
             </Text>
-          </Text>
+          )}
           <View className="flex-row justify-between">
             <Text className="font-Excon_bold text-xs dark:text-[#cdcdcd]">
               Productos:{" "}
@@ -103,7 +105,7 @@ export function HistoricalScreen({ navigation }) {
   };
   // ------------------------------------------------------------------------
 
-  // Función para formatear el precio
+  // Función para formatear el precio
   const formatCurrency = (value) => {
     return value.toLocaleString("es-CR", {
       style: "currency",
@@ -157,35 +159,32 @@ export function HistoricalScreen({ navigation }) {
       </Text>
       <View className="flex-row justify-between mb-4">
         <TouchableOpacity
-          className={`px-10 py-2 rounded-xl ${
-            filter === "Entregado"
-              ? "border border-light-blue dark:border-main-blue"
-              : "border border-gray-800 dark:border-white"
-          }`}
+          className={`px-5 py-2 rounded-xl ${filter === "all"
+            ? "border border-light-blue dark:border-main-blue"
+            : "border border-gray-800 dark:border-white"
+            }`}
+          onPress={() => setFilter("all")}
+        >
+          <Text className="text-center dark:text-white">Todas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className={`px-5 py-2 rounded-xl ${filter === "Entregado"
+            ? "border border-light-blue dark:border-main-blue"
+            : "border border-gray-800 dark:border-white"
+            }`}
           onPress={() => setFilter("Entregado")}
         >
           <Text className="text-center dark:text-white">Completados</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className={`px-12 py-2 rounded-xl ${
-            filter === "Pendiente"
-              ? "border border-light-blue dark:border-main-blue"
-              : "border border-gray-800 dark:border-white"
-          }`}
+          className={`px-5 py-2 rounded-xl ${filter === "Pendiente"
+            ? "border border-light-blue dark:border-main-blue"
+            : "border border-gray-800 dark:border-white"
+            }`}
           onPress={() => setFilter("Pendiente")}
         >
           <Text className="text-center dark:text-[#f9f9f9]">Pendientes</Text>
         </TouchableOpacity>
-       {/*  <TouchableOpacity
-          className={`px-3 py-2 rounded-xl ${
-            filter === "En camino"
-              ? "border border-light-blue dark:border-main-blue"
-              : "border border-gray-800 dark:border-white"
-          }`}
-          onPress={() => setFilter("En camino")}
-        >
-          <Text className="text-center dark:text-white">En camino</Text>
-        </TouchableOpacity> */}
       </View>
       <FlatList
         data={filteredData}
