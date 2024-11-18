@@ -58,7 +58,7 @@ export function HomeComercianteScreen({ navigation }) {
     // ------------------------------------------------------------------------
 
     return (
-        <View className="flex-1  dark:bg-neutral-950">
+        <View className="flex-1 bg-white dark:bg-neutral-950">
             <NotificationDropdown
                 notifications={notifications}
                 isDropdownVisible={isDropdownVisible}
