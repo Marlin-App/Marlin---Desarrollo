@@ -68,7 +68,7 @@ export function RegisterPage({ navigation }) {
           style={{ resizeMode: "stretch", marginBottom: 30 }}
         />
         <Text className="text-[41px] font-Excon_bold  text-white absolute top-[10%] ml-4 mt-6  ">
-          ¡Bienvenido de vuelta!{" "}
+        ¡Crea una cuenta!{" "}
         </Text>
       </View>
 
