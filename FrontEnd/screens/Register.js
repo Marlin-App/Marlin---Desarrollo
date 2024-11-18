@@ -44,16 +44,13 @@ export function RegisterPage({ navigation }) {
         console.log('Registro exitoso:', data);
         Alert.alert('Registro exitoso', '¡Tu cuenta ha sido creada con éxito!');
         navigation.navigate('Mi perfil');
-
+        
         await AsyncStorage.setItem('@userToken', JSON.stringify(data));
       } else {
-        if (Object.keys(data)[0] === 'email') {
-          setError('El correo electrónico ya está en uso');
-        } else if (Object.keys(data)[0] === 'username') {
-          setError('El nombre de usuario ya está en uso');
-        } else {
-          setError('Error en el registro, por favor intenta de nuevo o más tarde.');
-        }
+      
+        const firstErrorKey = Object.keys(data)[0];
+        console.log('Primer error:', data[firstErrorKey][0]);
+        setError(data[firstErrorKey][0]);
       }
     } catch (error) {
       setError('Error en el registro, por favor intenta de nuevo o más tarde');
