@@ -8,7 +8,7 @@ export function DirectionScreen({ navigation }) {
   const { direction, reLoadDirections, replaceDirection, removeDirection } = useDirections(navigation);
   const [modalVisible, setModalVisible] = useState(false);
   const [delet, setDelete] = useState();
-
+  const [edit, setEdit] = useState(false);
   // Cargar las direcciones
   useEffect(() => {
     const fetchStores = async () => {
@@ -56,7 +56,14 @@ export function DirectionScreen({ navigation }) {
         {
           direction.map((item, index) =>
             <Pressable key={index} className="flex flex-row border-b-2 pb-2 justify-between border-light-blue dark:border-main-blue"
-              onPress={() => replaceDirection(index, item)}
+              onPress={() => {
+                !edit ?
+                  replaceDirection(index, item) : navigation.navigate('AddDirectionScreen', { item: item })
+                setEdit(false)
+
+              }
+
+              }
               /* onLongPress={() => removeDirection(item.id)} */
               onLongPress={() => {
                 setDelete(item.id)
@@ -71,7 +78,7 @@ export function DirectionScreen({ navigation }) {
                     <Text className="font-Erode_regular dark:text-white">{item.referencias} </Text>
                   </View>
                 </View>
-                {item.isSelected ? (
+                {item.isSelected && !edit ? (
 
                   <Feather name="check" size={24} color="#015DEC" />
                 ) : null
@@ -82,19 +89,37 @@ export function DirectionScreen({ navigation }) {
           )
         }
 
+
         {direction.length > 0 ? (null) : (
           <View className="flex-1 h-full items-center justify-center">
             <Text className="text-lg font-Excon_bold text-center dark:text-main-blue">No existen direcciones registradas</Text>
           </View>
         )}
-      </ScrollView>
 
-      <TouchableOpacity className="bg-main-blue p-4 mt-6 rounded-lg flex-row items-center justify-center"
-        onPress={() => navigation.navigate('AddDirectionScreen')}
-      >
-        <MaterialCommunityIcons name="map-marker-plus-outline" size={30} color="white" />
-        <Text className="text-white font-bold ml-2">Agregar dirección</Text>
-      </TouchableOpacity>
+        {!edit ? (null) : (
+          <View className="flex-1 h-full items-center justify-center">
+            <Text className="font-Excon_bold text-center text-red-400 dark:text-main-blue">Selecciona la dirección que deseas editar</Text>
+          </View>
+        )}
+      </ScrollView>
+      <View className="flex-row  items-center justify-center gap-2 h-10">
+        <TouchableOpacity className="bg-main-blue  mt-6 h-full rounded-lg px-4 flex-row items-center justify-center"
+          onPress={() => {
+            navigation.navigate('AddDirectionScreen')
+            setEdit(false)
+          }}
+        >
+          <MaterialCommunityIcons name="map-marker-plus-outline" size={30} color="white" />
+          <Text className="text-white font-bold ml-2">Agregar dirección</Text>
+        </TouchableOpacity>
+        <Pressable className={`bg-main-blue mt-6 rounded-lg flex-row px-4 h-full items-center justify-center ${edit ? 'opacity-80' : 'opacity-100'}`}
+          onPress={() => setEdit(!edit)}
+        >
+          <MaterialCommunityIcons name="view-dashboard-edit-outline" size={24} color="white" />
+          <Text className="text-white font-bold ml-2">Editar dirección</Text>
+        </Pressable>
+
+      </View>
     </View>
   );
 };

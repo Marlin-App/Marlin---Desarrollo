@@ -60,7 +60,6 @@ const useSelectLocation = () => {
       animationType="slide"
     >
       <View style={styles.modalContainer}>
-        <Text>Se abrio el modal</Text>
         <MapView
           ref={mapRef}
           style={styles.map}
