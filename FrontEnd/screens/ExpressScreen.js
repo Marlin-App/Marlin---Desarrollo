@@ -1,4 +1,4 @@
-import { Image, View, Text, ScrollView, TouchableOpacity, FlatList, Switch} from "react-native";
+import { Image, View, Text, ScrollView, TouchableOpacity, FlatList, Switch } from "react-native";
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Animated, Dimensions } from "react-native";
@@ -6,9 +6,10 @@ import NotificationDropdown from "../components/NotificationDropdown";
 import React, { useEffect, useState, useRef } from "react";
 import useOrders from '../hooks/useOrders';
 import useDecodeJWT from "../hooks/useDecodeJWT";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function ExpressScreen({ navigation }) {
-  const { getToken, isTokenExpired, refreshToken } = useDecodeJWT();
+  const { getToken, isTokenExpired, refreshToken, decodeJWT } = useDecodeJWT();
   const { colorScheme } = useColorScheme();
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get("window").width;
@@ -16,7 +17,7 @@ export function ExpressScreen({ navigation }) {
   const [currentPage, setCurrentPage] = useState(0);
   const { orders } = useOrders();
   const [online, setOnline] = useState(false);
-  const switchOnline = () => setOnline(previousState => !previousState);
+
   const [pendiente, setPendiente] = useState([]);
   const [enProgreso, setEnProgreso] = useState([]);
   const [completado, setCompletado] = useState([]);
@@ -26,6 +27,43 @@ export function ExpressScreen({ navigation }) {
     { title: "En Progreso", orders: enProgreso },
     { title: "Completados", orders: completado },
   ]);
+
+  const switchOnline = async () => {
+
+    if (await isTokenExpired()) {
+      await refreshToken();
+    }
+    const jsonValue = await AsyncStorage.getItem("@userToken");
+    const userData = JSON.parse(jsonValue);
+    const token = userData.access;
+    const decodedToken = decodeJWT(token);
+    const user_id = decodedToken.payload.user_id; //cambiar el id del usuario por id del repartidor
+
+    try {
+      const response = await fetch(
+        `https://marlin-backend.vercel.app/api/delivery-profiles/${user_id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            is_active: !online,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Error al poner en linea al usuario');
+      }
+
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+    setOnline(previousState => !previousState)
+  };
+
 
   useEffect(() => {
     setMisOrdenes([
@@ -37,6 +75,8 @@ export function ExpressScreen({ navigation }) {
 
   //useEffect para actualizar los pedidos cada 10 segundos
   useEffect(() => {
+    let interval;
+
     const fetchOrders = async () => {
       if (await isTokenExpired()) {
         await refreshToken();
@@ -68,17 +108,23 @@ export function ExpressScreen({ navigation }) {
       }
     };
 
-    // Llama a `fetchOrders` inmediatamente y luego cada 10 segundos
-    //fetchOrders();
-    const interval = setInterval(fetchOrders, 10000);
+    if (online) {
+      // Llama a `fetchOrders` inmediatamente y luego cada 10 segundos
+      fetchOrders(); // Llama inmediatamente
+      interval = setInterval(fetchOrders, 10000); // Intervalo cada 10 segundos
+    }
 
     // Limpia el intervalo al desmontar el componente
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [online]);
 
   useEffect(() => {
     console.log("Estado pendiente actualizado:", pendiente);
-}, [pendiente]);
+  }, [pendiente]);
 
   // funcion para rechazar una orden
   const handleRejectOrder = (orderId) => {
@@ -135,7 +181,7 @@ export function ExpressScreen({ navigation }) {
   const handleAcceptOrder = (orderId) => {
 
     aceptOrder(orderId);
-    
+
     setMisOrdenes((prevMisOrdenes) => {
       const updatedMisOrdenes = prevMisOrdenes.map((category) => {
         if (category.title === "Pendientes") {
@@ -260,7 +306,7 @@ export function ExpressScreen({ navigation }) {
                           <View className="flex-row">
                             <View className=" justify-center item-center bg-blue-800 rounded-lg dark:bg-neutral-900">
                               <Image
-                                //source={{ uri: item.order_id.store_photo }}
+                                source={{ uri: item.order_id.store_photo }}
                                 style={{
                                   width: 100,
                                   height: 100,

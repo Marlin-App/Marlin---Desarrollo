@@ -10,7 +10,7 @@ export function OrderInfo({ navigation }) {
     const { order } = route.params;
     
     const [startLatitude, startLongitude] = String(order.order_id.store_coordinates).split(",").map(Number);
-    const [endLatitude, endLongitude] = String(order.order_id.coordenadas).split(",").map(Number);
+    const [endLatitude, endLongitude] = String(order.order_id.user_coordinates).split(",").map(Number);
     const [modalVisible, setModalVisible] = useState(false);
     const [distance, setDistance] = useState(null);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -69,7 +69,7 @@ export function OrderInfo({ navigation }) {
 
             <Text className="text-xl mb-2 font-Excon_regular text-main-blue dark:text-white">Dirección de entrega:</Text>
 
-            <Text className="text-gray-600 dark:text-white font-Erode_regular mb-2 dark:text-[#e6e6e6d0]">{order.order_id.canton}, {order.order_id.distrito}, {order.order_id.referencias}</Text>
+            <Text className="text-gray-600 dark:text-white font-Erode_regular mb-2 dark:text-[#e6e6e6d0]">{order.order_id.direction}</Text>
 
             <View style={{ flex: 1 }}>
           <MapView
