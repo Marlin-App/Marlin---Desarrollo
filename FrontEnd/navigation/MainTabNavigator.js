@@ -69,10 +69,9 @@ export function MainTabNavigator() {
                     height: 80,
                     justifyContent: "space-around",
                     paddingBottom: 10,
-
                     display: isKeyboardVisible ? "none" : "flex",
                 },
-                /*  */
+                
             }}
         >
 

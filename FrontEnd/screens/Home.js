@@ -10,7 +10,7 @@ import HomeCarousel from '../components/CarouselHome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import NotificationDropdown from '../components/NotificationDropdown';
-
+import loaderGif from '../assets/loader.gif';
 export function HomeScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
     const isFocused = useIsFocused();
@@ -26,6 +26,9 @@ export function HomeScreen({ navigation }) {
         };
         fetchUserToken();
     }, [navigation, isFocused]);
+
+   
+
     // ------------------------------------------------------------------------
 
     // Función para obtener la cantidad de productos en el carrito
@@ -36,6 +39,19 @@ export function HomeScreen({ navigation }) {
 
     const { data: items, loading, error } = useItems();
     const { data: stores } = useStores();
+
+    useEffect(() => { 
+        navigation.setOptions({
+       tabBarStyle: { display: loading ?  "none" : "flex",
+         backgroundColor: colorScheme === 'dark' ? '#1C1C1C' : '#1952BE',
+         height: 80,
+         justifyContent: "space-around",
+         paddingBottom: 10,
+       },
+     
+     });
+ 
+       }, [loading]);
 
     // Función para obtener las notificaciones
     const [notifications, setNotifications] = useState([
@@ -223,6 +239,11 @@ export function HomeScreen({ navigation }) {
 
     return (
         <View className="flex-1 bg-white dark:bg-neutral-950">
+
+            <View className={`bg-main-blue absolute z-10 w-full h-full justify-center items-center  ${loading ? "flex" : "hidden"}`}>
+                <Image source={loaderGif} style={{ width: 300, height: 300 }} />
+            </View>
+
             <NotificationDropdown
                 notifications={notifications}
                 isDropdownVisible={isDropdownVisible}
