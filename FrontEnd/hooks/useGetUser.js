@@ -25,13 +25,16 @@ const useGetUser = () => {
         const userData = JSON.parse(jsonValue);
         const decodedToken = decodeJWT(userData.access);
         const user_id = decodedToken.payload.userprofile;
+        
         setToken(userData.access);
-
+        
+        
         try {
             const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}`);
             const json = await response.json();
             setIsLogged(true);
-            setData(json);
+            setData({ ...json, user_id: decodedToken.payload.user_id });
+           
 
         } catch (err) {
             setError(err);
@@ -60,6 +63,8 @@ const useGetUser = () => {
 
             const decodedToken = decodeJWT(token.access);
             const user_id = decodedToken.payload.userprofile;
+          
+            
 
             const formData = new FormData();
 
@@ -93,7 +98,10 @@ const useGetUser = () => {
                 Alert.alert('Usuario actualizado', '¡Tu perfil ha sido actualizado con éxito!');
             }
             const data = await response.json();
-            setData(data);
+
+            setData({...data, user_id: decodedToken.payload.user_id});
+         
+           
         }
         catch (err) {
             setError(err);

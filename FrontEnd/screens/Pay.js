@@ -97,6 +97,7 @@ export function PayScreen({ navigation }) {
 
     // Función para realizar el pedido
     const postOrder = async () => {
+        console.log(user.user_id)
         setLoading(true);
         // crea el pedido
         const order = {
@@ -110,14 +111,14 @@ export function PayScreen({ navigation }) {
             direction: !route.params.direction
                 ? "Recoger en el lugar"
                 : `canton: ${route.params.direction.canton}, distrito: ${route.params.direction.district}, coordenadas: ${route.params.direction.coodernates.latitude}, ${route.params.direction.coodernates.longitude}, referencias: ${route.params.direction.referencias}`,
-            user_id: user.id,
+            user_id: user.user_id,
             delivery_distance:'1', //cambiar por el valor de la distancia
             user_coordinates: !route.params.direction
             ? "Recoger en el lugar": `${route.params.direction.coodernates.latitude},${route.params.direction.coodernates.longitude}`,
             references:  !route.params.direction
             ? "Recoger en el lugar": `${route.params.direction.referencias}`,
         };
-    
+  
         try {
            
             const response = await fetch("https://marlin-backend.vercel.app/api/orders/", {

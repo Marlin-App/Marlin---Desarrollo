@@ -121,13 +121,13 @@ export function HistoricalScreen({ navigation }) {
 
   // Filtrar los datos
   const filteredData = ordenHistoricalData.filter((item) => {
-    if (filter === "all") return item.user_id === user.id;
+    if (filter === "all") return item.user_id === user.user_id;
     if (filter === "Pendiente")
       return (
         (item.status === "Pendiente" || item.status === "En camino") &&
-        item.user_id === user.id
+        item.user_id === user.user_id
       );
-    return item.status === filter && item.user_id === user.id;
+    return item.status === filter && item.user_id === user.user_id;
   });
   // ------------------------------------------------------------------------
 
