@@ -57,8 +57,15 @@ export function InformationScreen({ navigation }) {
     // ------------------------------------------------------------------------
 
     // cargamos la informacion del usuario
-    useEffect(() => {
-        fetchData();
+     useEffect(() => {
+        let isMounted = true; // Evita que el estado se actualice si el componente se desmonta
+        const loadData = async () => {
+            if (isMounted) {
+                await fetchData();
+            }
+        };
+        loadData();
+        return () => { isMounted = false; };
     }, []);
     // ------------------------------------------------------------------------
 

@@ -4,7 +4,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Animated, Dimensions } from "react-native";
 import NotificationDropdown from "../components/NotificationDropdown";
 import React, { useEffect, useState, useRef } from "react";
-import useOrders from '../hooks/useOrders';
 import useDecodeJWT from "../hooks/useDecodeJWT";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useCRUDDelivery from "../hooks/useCRUDDelivery";
