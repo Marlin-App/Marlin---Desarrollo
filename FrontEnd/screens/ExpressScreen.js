@@ -7,17 +7,17 @@ import React, { useEffect, useState, useRef } from "react";
 import useOrders from '../hooks/useOrders';
 import useDecodeJWT from "../hooks/useDecodeJWT";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useCRUDDelivery from "../hooks/useCRUDDelivery";
 
 export function ExpressScreen({ navigation }) {
   const { getToken, isTokenExpired, refreshToken, decodeJWT } = useDecodeJWT();
+  const { isDelivery, idRepartidor } = useCRUDDelivery();
   const { colorScheme } = useColorScheme();
   const scrollViewRef = useRef(null);
   const screenWidth = Dimensions.get("window").width;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentPage, setCurrentPage] = useState(0);
-  const { orders } = useOrders();
   const [online, setOnline] = useState(false);
-
   const [pendiente, setPendiente] = useState([]);
   const [enProgreso, setEnProgreso] = useState([]);
   const [completado, setCompletado] = useState([]);
@@ -28,6 +28,25 @@ export function ExpressScreen({ navigation }) {
     { title: "Completados", orders: completado },
   ]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (await isTokenExpired()) {
+        await refreshToken();
+      }
+      const jsonValue = await AsyncStorage.getItem("@userToken");
+      const userData = JSON.parse(jsonValue);
+      const token = userData.access;
+      const decodedToken = decodeJWT(token);
+      const user_id = decodedToken.payload.user_id; //cambiar el id del usuario por id del repartidor
+      isDelivery(user_id);
+    };
+
+    fetchData();
+    
+  }, []);
+
+
+
   const switchOnline = async () => {
 
     if (await isTokenExpired()) {
@@ -36,12 +55,10 @@ export function ExpressScreen({ navigation }) {
     const jsonValue = await AsyncStorage.getItem("@userToken");
     const userData = JSON.parse(jsonValue);
     const token = userData.access;
-    const decodedToken = decodeJWT(token);
-    const user_id = decodedToken.payload.user_id; //cambiar el id del usuario por id del repartidor
 
     try {
       const response = await fetch(
-        `https://marlin-backend.vercel.app/api/delivery-profiles/${user_id}/`,
+        `https://marlin-backend.vercel.app/api/delivery-profiles/${idRepartidor}/`,
         {
           method: "PATCH",
           headers: {
@@ -193,7 +210,7 @@ export function ExpressScreen({ navigation }) {
               orders: category.orders.filter((order) => order.id !== orderId),
             };
           }
-        } else if (category.title === "En Progreso") {
+        } else if (category.title === "En Camino") {
           const orderToMove = prevMisOrdenes.find((cat) => cat.title === "Pendientes").orders.find((order) => order.id === orderId);
           if (orderToMove) {
             return {

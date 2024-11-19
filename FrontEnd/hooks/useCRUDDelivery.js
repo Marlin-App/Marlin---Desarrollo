@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const useCRUDDelivery = () => {
     const [esRepartidor, setEsRepartidor] = useState([]);
+    const [idRepartidor, setIdRepartidor] = useState(null);
 
     // Verificar si el usuario es repartidor
     const isDelivery = async (userId) => {
@@ -17,6 +18,7 @@ const useCRUDDelivery = () => {
             }
             const deliver = await response.json();
             setEsRepartidor(deliver[0].status);
+            setIdRepartidor(deliver[0].id);
 
         } catch (err) {
             console.log("Error al realizar la consulta", err);
@@ -24,6 +26,6 @@ const useCRUDDelivery = () => {
     };
     // ------------------------------------------------------------------------
 
-    return { isDelivery, esRepartidor };
+    return { isDelivery, esRepartidor, idRepartidor };
 };
 export default useCRUDDelivery;
