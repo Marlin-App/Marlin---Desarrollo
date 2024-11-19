@@ -30,7 +30,7 @@ const useGetUser = () => {
         
         
         try {
-            const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}`);
+            const response = await fetch(`https://marlin-backend.vercel.app/api/userProfile/${user_id}/`);
             const json = await response.json();
             setIsLogged(true);
             setData({ ...json, user_id: decodedToken.payload.user_id });

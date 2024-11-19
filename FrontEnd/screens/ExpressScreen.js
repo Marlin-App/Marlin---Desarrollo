@@ -15,7 +15,7 @@ export function ExpressScreen({ navigation }) {
   const screenWidth = Dimensions.get("window").width;
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentPage, setCurrentPage] = useState(0);
-  const { orders } = useOrders();
+ /*  const { orders } = useOrders(); */ 
   const [online, setOnline] = useState(false);
 
   const [pendiente, setPendiente] = useState([]);
