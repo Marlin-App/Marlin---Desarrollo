@@ -97,7 +97,6 @@ export function PayScreen({ navigation }) {
 
     // Función para realizar el pedido
     const postOrder = async () => {
-        console.log(user.user_id)
         setLoading(true);
         // crea el pedido
         const order = {

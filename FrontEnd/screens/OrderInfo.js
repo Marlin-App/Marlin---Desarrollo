@@ -9,8 +9,8 @@ export function OrderInfo({ navigation }) {
     const route = useRoute();
     const { order } = route.params;
     
-    const [startLatitude, startLongitude] = String(order.order_id.store_coordinates).split(",").map(Number);
-    const [endLatitude, endLongitude] = String(order.order_id.user_coordinates).split(",").map(Number);
+    const [startLatitude, startLongitude] = String(order.store_coordinates).split(",").map(Number);
+    const [endLatitude, endLongitude] = String(order.user_coordinates).split(",").map(Number);
     const [modalVisible, setModalVisible] = useState(false);
     const [distance, setDistance] = useState(null);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -27,12 +27,13 @@ export function OrderInfo({ navigation }) {
 
     // Función para calcular la distancia y la ruta
     const calculateDistanceAndRoute = async () => {
-        console.log(order);
         const result = await useTransportFee(startCoords, endCoords);
         if (result) {
             setDistance(result.distance);
             const route = result.routeCoordinates || [];
+            console.log(result);
             setRouteCoordinates(route);
+            setDistance(result.distance);
         }
     };
     // ------------------------------------------------------------------------
@@ -51,9 +52,9 @@ export function OrderInfo({ navigation }) {
             
 
             <View className="mb-4">
-                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Código: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_id.order_num}</Text></Text>
-                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Usuario: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_id.user_name}</Text></Text>
-                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Contacto: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_id.user_phone}</Text></Text>
+                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Código: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_num}</Text></Text>
+                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Usuario: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.user_name}</Text></Text>
+                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Contacto: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.user_phone}</Text></Text>
             </View>
 
             <View className="border-b border-main-blue dark:border-light-blue mb-4" />
@@ -61,15 +62,15 @@ export function OrderInfo({ navigation }) {
             <Text className="text-xl mb-4 font-Excon_regular text-main-blue dark:text-white">Detalles del transporte:</Text>
 
             <View className="mb-4">
-                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Distancia: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_id.delivery_distance}</Text></Text>
-                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Precio: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.order_id.delivery_price}</Text></Text>
+                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Distancia: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{distance}</Text></Text>
+                <Text className="text-gray-600 font-Erode_bold mb-1 dark:text-[#e6e6e6]">Precio: <Text className="text-gray-600 font-Erode_regular mb-1 dark:text-[#e6e6e6]">{order.delivery_price}</Text></Text>
             </View>
 
             <View className="border-b border-main-blue dark:border-light-blue mb-4" />
 
             <Text className="text-xl mb-2 font-Excon_regular text-main-blue dark:text-white">Dirección de entrega:</Text>
 
-            <Text className="text-gray-600 dark:text-white font-Erode_regular mb-2 dark:text-[#e6e6e6d0]">{order.order_id.direction}</Text>
+            <Text className="text-gray-600 dark:text-white font-Erode_regular mb-2 dark:text-[#e6e6e6d0]">{order.direction}</Text>
 
             <View style={{ flex: 1 }}>
           <MapView
