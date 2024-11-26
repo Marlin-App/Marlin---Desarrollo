@@ -85,7 +85,7 @@ export function CartScreen({ navigation }) {
 
     const deliveryFee = 250; //comision de la aplicacion
     const [isPickUp, setIsPickUp] = useState(false);
-    const total = isPickUp ? cartTotal : deliveryFee + transportFee + cartTotal;
+    const total = isPickUp ? cartTotal + deliveryFee : deliveryFee + transportFee + cartTotal;
 
     // Funcion para formatear el precio
     const formatCurrency = (value) => {
@@ -305,16 +305,18 @@ export function CartScreen({ navigation }) {
                                 </Text>
                             </View>
 
+                            <View className="flex-row justify-between mb-2">
+                                <Text className="font-Excon_bold text-gray-800 dark:text-white">
+                                    Tarifa de Servicio:
+                                </Text>
+                                <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">
+                                    {formatCurrency(deliveryFee)}
+                                </Text>
+                            </View>
+
                             {!isPickUp && (
                                 <>
-                                    <View className="flex-row justify-between mb-2">
-                                        <Text className="font-Excon_bold text-gray-800 dark:text-white">
-                                            Tarifa de Servicio:
-                                        </Text>
-                                        <Text className="font-Excon_regular text-gray-800 dark:text-[#d0d0d0]">
-                                            {formatCurrency(deliveryFee)}
-                                        </Text>
-                                    </View>
+
 
                                     <View className="flex-row justify-between mb-2">
                                         <Text className="font-Excon_bold text-gray-800 dark:text-white">
