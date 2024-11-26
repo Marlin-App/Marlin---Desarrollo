@@ -1,4 +1,5 @@
 import { Text, View, FlatList, Pressable, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useColorScheme } from "nativewind";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useCallback, useState } from 'react';
@@ -6,8 +7,8 @@ import NotificationDropdown from '../components/NotificationDropdown';
 import useOrders from '../hooks/useOrders';
 export function HomeComercianteScreen({ navigation }) {
     const { colorScheme } = useColorScheme();
-    const [filter, setFilter] = useState("Completado");
-    const { orders } = useOrders([]);
+    const [filter, setFilter] = useState("Entregado");
+    const { orders, setStoresLoaded } = useOrders([]);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
     // Estado para almacenar las notificaciones
@@ -27,6 +28,14 @@ export function HomeComercianteScreen({ navigation }) {
     const closeDropdown = () => {
         setIsDropdownVisible(false);
     };
+
+    useFocusEffect(
+        useCallback(() => {
+            console.log("useFocusEffect");
+          setStoresLoaded((prev) => !prev); // Reiniciar el estado de las tiendas para recargar
+        }, [])
+      );
+        
     // ------------------------------------------------------------------------
 
     const [orderFiler, setOrderFilter] = useState(orders);
@@ -34,7 +43,7 @@ export function HomeComercianteScreen({ navigation }) {
     // función para filtrar los pedidos
     useEffect(() => {
         if (filter === "Pendiente") {
-            const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor");
+            const filteredOrders = orders.filter(order => order.status === filter || order.status === "Buscando repartidor" || order.status === "En camino" );
             setOrderFilter(filteredOrders);
             return;
         }
@@ -58,7 +67,7 @@ export function HomeComercianteScreen({ navigation }) {
     // ------------------------------------------------------------------------
 
     return (
-        <View className="flex-1  dark:bg-neutral-950">
+        <View className="flex-1 bg-white dark:bg-neutral-950">
             <NotificationDropdown
                 notifications={notifications}
                 isDropdownVisible={isDropdownVisible}
@@ -85,7 +94,7 @@ export function HomeComercianteScreen({ navigation }) {
             </View>
             <Text className="text-2xl font-Excon_bold text-main-blue mt-8 ml-4 dark:text-light-blue">Tus pedidos</Text>
             <View className="flex-row justify-around p-4 mt-4 ">
-                <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Completado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Completado")} >
+                <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Entregado" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Entregado")} >
                     <Text className="font-Excon_thin text-sm dark:text-white">Completados</Text>
                 </Pressable>
                 <Pressable className={`border-4 px-4 py-2 rounded-xl dark:border-light-blue ${filter === "Pendiente" ? 'border border-light-blue dark:border-main-blue' : 'border border-gray-800 dark:border-white'} `} onPress={() => setFilter("Pendiente")}>

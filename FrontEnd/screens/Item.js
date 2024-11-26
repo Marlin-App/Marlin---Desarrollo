@@ -34,7 +34,7 @@ export function ItemPage({ navigation }) {
 
         const fetchItem = async () => {
             try {
-                const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}`);
+                const response = await fetch(`https://marlin-backend.vercel.app/api/storeItems/${id}/`);
                 const result = await response.json();
                 setItem(result);
 
